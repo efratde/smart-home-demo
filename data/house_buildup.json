@@ -1,0 +1,166 @@
+{
+  "schema": 1,
+  "meta": {
+    "disclaimer_he": "נתוני המבנה נגזרים ממודל תלת-ממדי סינתטי (עוביי קירות, רום מפלסים, שטחים). שורות המסומנות «משוער · לא משורטט» אינן חלק מהמודל — ניתנות לעריכה ולא יידרסו בעדכון.",
+    "verified_src_he": "מודל תלת-ממד סינתטי"
+  },
+  "sources": [
+    { "id": "building.js", "he": "מודל תלת-ממד סינתטי" },
+    { "id": "plan", "he": "מודל סינתטי (דמו)" },
+    { "id": "permit", "he": "טבלת שטחים בהיתר" },
+    { "id": "derived", "he": "הסקה הנדסית — לא משורטט" }
+  ],
+  "assemblies": {
+    "extWall": {
+      "label": "קיר חוץ",
+      "thickness_m": 0.20,
+      "thickness_note_he": "20 ס\"מ במודל · בתוכנית מסומן 18",
+      "finish_he": "סיח ברור",
+      "layers": [
+        { "n": "בלוק", "t": "", "verified": false }
+      ],
+      "src": "building.js",
+      "verified": true,
+      "layers_verified": false,
+      "note_he": "העובי מאומת; הרכב השכבות (סוג בלוק · בידוד · גמר פנים) לא מצוין בתוכנית — משוער"
+    },
+    "partition": {
+      "label": "מחיצה פנים",
+      "thickness_m": 0.12,
+      "src": "building.js",
+      "verified": true,
+      "note_he": "מחיצת חדרים פנימית ~12 ס\"מ לפי תוכניות הקומה"
+    },
+    "slab": {
+      "label": "רצפת בטון",
+      "thickness_m": 0.20,
+      "src": "building.js",
+      "verified": true
+    },
+    "roofSlab": {
+      "label": "תקרת גג",
+      "thickness_m": 0.16,
+      "src": "building.js",
+      "verified": true
+    },
+    "parapet": {
+      "label": "קיר אקרוטריון",
+      "thickness_m": 0.20,
+      "height_m": 0.40,
+      "src": "building.js",
+      "verified": true,
+      "note_he": "מעקה גג 0.40 מ' מעל מפלס הגג (5.30 → 5.70)"
+    }
+  },
+  "levels": {
+    "ground_m": 0.00,
+    "firstFloor_m": 2.80,
+    "roofSlab_m": 5.30,
+    "parapet_m": 5.70,
+    "terraceRail_m": 3.88,
+    "storageRidge_m": 2.30,
+    "storageParapet_m": 2.55,
+    "groundStoreyH_m": 2.80,
+    "upperStoreyH_m": 2.50,
+    "src": "building.js",
+    "verified": true
+  },
+  "areas_permit": {
+    "ground_m2": 60.73,
+    "firstFloor_m2": 37.19,
+    "storage_m2": 9.00,
+    "shelter_m2": 5.18,
+    "src": "permit",
+    "verified": true
+  },
+  "rooms": {
+    "bathG": {
+      "floor": "ground",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "stairsG": {
+      "floor": "ground",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "kitchen": {
+      "floor": "ground",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "living": {
+      "floor": "ground",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "bedroomG": {
+      "floor": "ground",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "pantry": {
+      "floor": "ground",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "bedroomSW": {
+      "floor": "upper",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "bedroomNE": {
+      "floor": "upper",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "terrace": {
+      "floor": "upper",
+      "walls": ["parapet"],
+      "floorFinish": { "he": "ניקוז גג", "src": "building.js", "verified": true, "note_he": "מרפסת גג · מפלס 2.80, מעקה 3.88" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "bathU": {
+      "floor": "upper",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    },
+    "landing": {
+      "floor": "upper",
+      "walls": ["extWall", "partition"],
+      "floorFinish": { "he": "", "src": "derived", "verified": false, "note_he": "גמר ריצוף לא מצוין בתוכנית — משוער" },
+      "concreteBelt": { "present": null, "he": "", "src": "derived", "verified": false, "note_he": "חגורת בטון לא משורטטת (אין דף קונסטרוקציה)" },
+      "columns": { "count": null, "he": "", "src": "derived", "verified": false, "note_he": "לא מופיעים סימני עמודים בתוכנית" },
+      "circuit": { "he": "", "src": "derived", "verified": false, "note_he": "מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל" }
+    }
+  }
+}

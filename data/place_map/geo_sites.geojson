@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "תַּצְפִּית הָעֵמֶק",
+        "name_en": "Valley Overlook",
+        "type_he": "נְקֻדַּת תַּצְפִּית",
+        "desc_he": "תַּצְפִּית עַל קַרְקָעִית הָעֵמֶק — אֲתָר דֶּמוֹ.",
+        "coord_approx": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -40.025,
+          34.018
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "עַמּוּדֵי הַחוֹל",
+        "name_en": "Sand Pillars",
+        "type_he": "תַּצּוּרַת סְחִיפָה",
+        "desc_he": "עַמּוּדֵי חוֹל מְפֻסָּלִים — בִּדְיוֹנִי.",
+        "coord_approx": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -39.972,
+          34.012
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "כִּפַּת הַסֶּלַע",
+        "name_en": "Rock Dome",
+        "type_he": "תַּצּוּרַת סֶלַע",
+        "desc_he": "כִּפַּת סֶלַע חֲשׂוּפָה — לְהַדְגָּמָה.",
+        "coord_approx": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -40.005,
+          33.97
+        ]
+      }
+    }
+  ]
+}

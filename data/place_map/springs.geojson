@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "מַעְיַן הָעֵמֶק",
+        "aquifer_he": "אַקְוִיפֶר הָעֶלְיוֹן (דֶּמוֹ)",
+        "elev_m": 280,
+        "type_he": "נְבִיעָה עוֹנָתִית",
+        "note_he": "מַעְיָן בִּדְיוֹנִי לְהַדְגָּמָה."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -40.015,
+          34.008
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "מַעְיַן הַמָּצוֹק",
+        "aquifer_he": "אַקְוִיפֶר הַגִּיר (דֶּמוֹ)",
+        "elev_m": 240,
+        "type_he": "מַעְיַן מַגָּע",
+        "note_he": "נְקֻדָּה סִינְתֵטִית."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -39.98,
+          33.988
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "קְדִיחַת נִסּוּי 1",
+        "aquifer_he": "אַקְוִיפֶר עָמֹק (דֶּמוֹ)",
+        "elev_m": 300,
+        "type_he": "קְדִיחָה",
+        "note_he": "קְדִיחָה בְּדוּיָה."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -40.03,
+          33.98
+        ]
+      }
+    }
+  ]
+}

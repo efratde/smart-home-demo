@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "תַּחֲנַת הַדֶּרֶךְ הַיְשָׁנָה",
+        "name_en": "Old Waystation",
+        "category_he": "אֲתָר הִיסְטוֹרִי (דֶּמוֹ)",
+        "note_he": "תַּחֲנָה בְּדוּיָה לְהַדְגָּמָה.",
+        "coord_quality": "approx"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -40.02,
+          33.995
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "הַמִּבְצָר הַיָּשָׁן",
+        "name_en": "Old Fort",
+        "category_he": "אַרְכֵיאוֹלוֹגְיָה",
+        "note_he": "מִבְצָר סִינְתֵטִי לְהַדְגָּמָה.",
+        "coord_quality": "approx"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -39.985,
+          34.022
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "בְּאֵר הַדֶּרֶךְ",
+        "name_en": "Road Well",
+        "category_he": "מַיִם הִיסְטוֹרִיִּים",
+        "note_he": "בְּאֵר בְּדוּיָה.",
+        "coord_quality": "approx"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -39.965,
+          33.98
+        ]
+      }
+    }
+  ]
+}

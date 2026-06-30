@@ -1,0 +1,121 @@
+{
+  "recipient": {
+    "name_he": "אֶלֶכְּס",
+    "city_he": "לרקמונט"
+  },
+  "coords": {
+    "lat": 34.0,
+    "lon": -40.0,
+    "elevation_m": 300
+  },
+  "corners_wgs84": {
+    "SE": [
+      33.9999534,
+      -39.9999431
+    ],
+    "SW": [
+      33.9999534,
+      -40.0000569
+    ],
+    "NW": [
+      34.0000466,
+      -40.0000569
+    ],
+    "NE": [
+      34.0000466,
+      -39.9999431
+    ]
+  },
+  "building": {
+    "height_m": 7.0,
+    "footprint_ns_m": 10.29,
+    "footprint_ew_m": 10.5,
+    "tilt_deg": 4.8,
+    "footprint_shape": "L",
+    "footprint_ew_north_m": 8.41,
+    "footprint_ew_south_m": 10.5,
+    "footprint_step_n_m": 3.6
+  },
+  "bortle": 3,
+  "neighbors": [
+    {
+      "id": "north",
+      "offset_n_m": 14.5,
+      "offset_e_m": 0.0,
+      "height_m": 7.0
+    },
+    {
+      "id": "south",
+      "offset_n_m": -14.5,
+      "offset_e_m": 0.0,
+      "height_m": 7.0
+    }
+  ],
+  "milestones": [
+    {
+      "id": "move",
+      "label_he": "הַמַּעֲבָר לְלַרְקְמוֹנְט",
+      "date": "2020-01-01",
+      "emoji": "🌄"
+    },
+    {
+      "id": "house",
+      "label_he": "הַכְּנִיסָה לַבַּיִת",
+      "date": "2021-01-01",
+      "emoji": "🏠"
+    },
+    {
+      "id": "mortgage",
+      "label_he": "הַמַּשְׁכַּנְתָּא",
+      "date": "2022-01-01",
+      "emoji": "🏦"
+    },
+    {
+      "id": "birth",
+      "label_he": "יוֹם הַהֻלֶּדֶת שֶׁל אֶלֶכְּס (לְדֻגְמָה)",
+      "date": "2000-01-01",
+      "emoji": "🎂"
+    }
+  ],
+  "zones": [
+    {
+      "id": "backyard",
+      "name_he": "הֶחָצֵר הָאֲחוֹרִית",
+      "facing": "east",
+      "color": "#2a5d8f",
+      "elevation_offset_m": 0,
+      "offset_n_m": -3.6,
+      "offset_e_m": -0.32,
+      "size_n_m": 2.9,
+      "size_e_m": 7.5,
+      "notes_he": "הֶחָצֵר הָאֲחוֹרִית הַפְּתוּחָה — פּוֹנָה מִזְרָחָה אֶל הַשָּׂדֶה הַפָּתוּחַ, שֶׁמֶשׁ בֹּקֶר חֲזָקָה. שָׁם הַמַּחְסָן וְהַצְּמָחִים, מִתַּחַת לַמִּרְפֶּסֶת.",
+      "shades": []
+    },
+    {
+      "id": "balcony",
+      "name_he": "מִרְפֶּסֶת קוֹמָה רִאשׁוֹנָה",
+      "facing": "east",
+      "color": "#4a8a3a",
+      "elevation_offset_m": 3.88,
+      "offset_n_m": -0.26,
+      "offset_e_m": 2.64,
+      "size_n_m": 3.6,
+      "size_e_m": 7.32,
+      "notes_he": "מִרְפֶּסֶת מוּרְמֶת מֵעַל הֶחָצֵר; אַקְספּוֹזִיצְיָה מִזְרָחִית פְּתוּחָה — הֲכִי הַרְבֵּה שֶׁמֶשׁ לְאֹרֶךְ הַיּוֹם.",
+      "shades": []
+    },
+    {
+      "id": "front",
+      "name_he": "חֲזִית הַבַּיִת",
+      "facing": "west",
+      "color": "#d97f2a",
+      "elevation_offset_m": 0,
+      "offset_n_m": 6.6,
+      "offset_e_m": -0.3,
+      "size_n_m": 2.4,
+      "size_e_m": 4.0,
+      "notes_he": "חֲזִית הַבַּיִת הַפּוֹנָה מַעֲרָבָה אֶל הָרְחָבָה הַמְּשֻׁתֶּפֶת — הַכְּנִיסָה לַבַּיִת מֵהָרְחָבָה; בֹּקֶר בְּצֵל, שֶׁמֶשׁ אַחַר־צָהֳרַיִם.",
+      "shades": []
+    }
+  ]
+}

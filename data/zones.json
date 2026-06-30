@@ -1,0 +1,35 @@
+[
+{
+"id": "backyard",
+"name_he": "החצר האחורית",
+"color": "#2a5d8f",
+"bbox": {
+"south": 34.0,
+"north": 34.0,
+"west": -40.0,
+"east": -40.0
+}
+},
+{
+"id": "balcony",
+"name_he": "מרפסת קומה ראשונה",
+"color": "#4a8a3a",
+"bbox": {
+"south": 34.0,
+"north": 34.0,
+"west": -40.0,
+"east": -40.0
+}
+},
+{
+"id": "front",
+"name_he": "חזית הבית",
+"color": "#d97f2a",
+"bbox": {
+"south": 34.0,
+"north": 34.0,
+"west": -40.0,
+"east": -40.0
+}
+}
+]

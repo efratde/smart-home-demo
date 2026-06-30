@@ -1,0 +1,367 @@
+{
+"months_he_short": [
+"ינו",
+"פבר",
+"מרץ",
+"אפר",
+"מאי",
+"יונ",
+"יול",
+"אוג",
+"ספט",
+"אוק",
+"נוב",
+"דצמ"
+],
+"months_he_full": [
+"ינואר",
+"פברואר",
+"מרץ",
+"אפריל",
+"מאי",
+"יוני",
+"יולי",
+"אוגוסט",
+"ספטמבר",
+"אוקטובר",
+"נובמבר",
+"דצמבר"
+],
+"degree_days": {
+"rows": [
+{
+"month": 1,
+"hdd": 294.5,
+"cdd": 0.0,
+"tmean_c": 8.5
+},
+{
+"month": 2,
+"hdd": 224.0,
+"cdd": 0.0,
+"tmean_c": 10.0
+},
+{
+"month": 3,
+"hdd": 155.0,
+"cdd": 0.0,
+"tmean_c": 13.0
+},
+{
+"month": 4,
+"hdd": 45.0,
+"cdd": 0.0,
+"tmean_c": 16.5
+},
+{
+"month": 5,
+"hdd": 0.0,
+"cdd": 77.5,
+"tmean_c": 20.5
+},
+{
+"month": 6,
+"hdd": 0.0,
+"cdd": 165.0,
+"tmean_c": 23.5
+},
+{
+"month": 7,
+"hdd": 0.0,
+"cdd": 201.5,
+"tmean_c": 24.5
+},
+{
+"month": 8,
+"hdd": 0.0,
+"cdd": 201.5,
+"tmean_c": 24.5
+},
+{
+"month": 9,
+"hdd": 0.0,
+"cdd": 120.0,
+"tmean_c": 22.0
+},
+{
+"month": 10,
+"hdd": 0.0,
+"cdd": 0.0,
+"tmean_c": 18.0
+},
+{
+"month": 11,
+"hdd": 150.0,
+"cdd": 0.0,
+"tmean_c": 13.0
+},
+{
+"month": 12,
+"hdd": 263.5,
+"cdd": 0.0,
+"tmean_c": 9.5
+}
+],
+"annual_hdd": 1132.0,
+"annual_cdd": 766.0
+},
+"solar_hot_water": {
+"rows": [
+{
+"month": 1,
+"ghi": 3.3,
+"delivered_kwh_day": 4.12,
+"demand_kwh_day": 4.19,
+"fraction": 0.985
+},
+{
+"month": 2,
+"ghi": 4.1,
+"delivered_kwh_day": 5.12,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 3,
+"ghi": 5.3,
+"delivered_kwh_day": 6.62,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 4,
+"ghi": 6.4,
+"delivered_kwh_day": 8.0,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 5,
+"ghi": 7.1,
+"delivered_kwh_day": 8.88,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 6,
+"ghi": 7.6,
+"delivered_kwh_day": 9.5,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 7,
+"ghi": 7.5,
+"delivered_kwh_day": 9.38,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 8,
+"ghi": 7.0,
+"delivered_kwh_day": 8.75,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 9,
+"ghi": 6.0,
+"delivered_kwh_day": 7.5,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 10,
+"ghi": 4.8,
+"delivered_kwh_day": 6.0,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 11,
+"ghi": 3.7,
+"delivered_kwh_day": 4.62,
+"demand_kwh_day": 4.19,
+"fraction": 1.0
+},
+{
+"month": 12,
+"ghi": 3.0,
+"delivered_kwh_day": 3.75,
+"demand_kwh_day": 4.19,
+"fraction": 0.896
+}
+],
+"backup_months": [
+12
+],
+"backup_months_he": "דצמבר",
+"demand_l_day": 120,
+"tank_l": 150,
+"collector_area_m2": 2.5
+},
+"night_flush": {
+"rows": [
+{
+"month": 1,
+"open_hours": 0.0,
+"open_start": null,
+"open_end": null,
+"tmin_c": 4.0,
+"tmax_c": 13.0,
+"needs_cooling": false,
+"note_he": "ממילא קריר — אין צורך ברענון לילה"
+},
+{
+"month": 2,
+"open_hours": 0.0,
+"open_start": null,
+"open_end": null,
+"tmin_c": 5.0,
+"tmax_c": 15.0,
+"needs_cooling": false,
+"note_he": "ממילא קריר — אין צורך ברענון לילה"
+},
+{
+"month": 3,
+"open_hours": 0.0,
+"open_start": null,
+"open_end": null,
+"tmin_c": 8.0,
+"tmax_c": 18.0,
+"needs_cooling": false,
+"note_he": "ממילא קריר — אין צורך ברענון לילה"
+},
+{
+"month": 4,
+"open_hours": 0.0,
+"open_start": null,
+"open_end": null,
+"tmin_c": 11.0,
+"tmax_c": 22.0,
+"needs_cooling": false,
+"note_he": "ממילא קריר — אין צורך ברענון לילה"
+},
+{
+"month": 5,
+"open_hours": 17.2,
+"open_start": "18:15",
+"open_end": "11:30",
+"tmin_c": 15.0,
+"tmax_c": 26.0,
+"needs_cooling": true,
+"note_he": null
+},
+{
+"month": 6,
+"open_hours": 12.8,
+"open_start": "21:15",
+"open_end": "10:00",
+"tmin_c": 18.0,
+"tmax_c": 29.0,
+"needs_cooling": true,
+"note_he": null
+},
+{
+"month": 7,
+"open_hours": 11.2,
+"open_start": "22:00",
+"open_end": "09:15",
+"tmin_c": 19.0,
+"tmax_c": 30.0,
+"needs_cooling": true,
+"note_he": null
+},
+{
+"month": 8,
+"open_hours": 11.2,
+"open_start": "22:00",
+"open_end": "09:15",
+"tmin_c": 19.0,
+"tmax_c": 30.0,
+"needs_cooling": true,
+"note_he": null
+},
+{
+"month": 9,
+"open_hours": 15.0,
+"open_start": "19:45",
+"open_end": "10:45",
+"tmin_c": 17.0,
+"tmax_c": 27.0,
+"needs_cooling": true,
+"note_he": null
+},
+{
+"month": 10,
+"open_hours": 0.0,
+"open_start": null,
+"open_end": null,
+"tmin_c": 13.0,
+"tmax_c": 23.0,
+"needs_cooling": false,
+"note_he": "ממילא קריר — אין צורך ברענון לילה"
+},
+{
+"month": 11,
+"open_hours": 0.0,
+"open_start": null,
+"open_end": null,
+"tmin_c": 8.0,
+"tmax_c": 18.0,
+"needs_cooling": false,
+"note_he": "ממילא קריר — אין צורך ברענון לילה"
+},
+{
+"month": 12,
+"open_hours": 0.0,
+"open_start": null,
+"open_end": null,
+"tmin_c": 5.0,
+"tmax_c": 14.0,
+"needs_cooling": false,
+"note_he": "ממילא קריר — אין צורך ברענון לילה"
+}
+]
+},
+"shading": {
+"window_height_m": 2.0,
+"lat_deg": 34.0,
+"summer_alt_deg": 82.83,
+"winter_alt_deg": 35.95,
+"overhang_depth_m": 0.252,
+"winter_shadow_drop_m": 0.347,
+"blocks_winter": false
+},
+"pv": {
+"array_area_m2": 30,
+"module_efficiency_pct": 20,
+"performance_ratio_pct": 80,
+"annual_kwh": 9600,
+"annual_kwh_str": "9,618",
+"co2_tonnes_per_year": 5.8,
+"annual_savings_nis": 6300,
+"annual_savings_str": "6,252",
+"install_cost_nis": 25000,
+"install_cost_str": "25,000",
+"payback_years": 4.0,
+"_note": "legacy STATIC estimate (30 m² @ 20% @ 80% PR). Superseded by the live Derive.roofSolar() model that reads the roof:{} inputs below; kept here as a documented cross-check."
+},
+"roof": {
+"_note": "inputs for the live Derive.roofSolar() physical model. Gross roof = two flat slabs at +5.30 from building.js: north band 8.41×3.60 + SW bedroom 3.18×3.60 ≈ 41.7 m². usable_fraction is a CONSERVATIVE geometric estimate (parapet setback + inter-row spacing + room for the existing דוד-שמש collector); not a true packing solve.",
+"usable_fraction": 0.65,
+"usable_area_m2_override": null,
+"module_eff": 0.20,
+"performance_ratio": 0.80,
+"tilt_sweep_deg": [0, 5, 10, 15, 20],
+"tariff_nis_per_kwh": 0.65,
+"grid_co2_kg_per_kwh": 0.6,
+"ghi_calibration": 1.0,
+"_ghi_calibration_note": "NO fudge factor (1.0). The clearSkyGHI engine was previously a sea-level standard-atmosphere Kasten model that under-predicted this 300 m clean arid-highland site by ~30%, so a 1.30 factor was carried here to reach the measured-TMY band (~2,100 kWh/m²/yr horizontal). That clear-sky model is now altitude/turbidity-corrected (derive.js M3 fix: Kasten-Young air mass + 0.965 altitude pressure + cleaner arid-air transmission), so it ALREADY integrates to ~2,150 kWh/m²/yr horizontal — inside the Larkmont TMY band — and the roof tilt now points correctly south (derive.js C1 fix → best_tilt≈20°). With both fixed (plus the L12/L13 Liu–Jordan tilt view-factor fix to the diffuse/reflected split), the modeled tilted-plane POA is ~2,040 kWh/m²/yr and the specific yield ≈1,635 kWh/kWp — a defensible (slightly conservative, given the 20° tilt vs ~28° optimum + 0.80 PR + geometric usable-area packing) figure for the the highlands (~1,700–1,850 kWh/kWp typical). The factor is therefore set to 1.0; raise toward ~1.10 (→ ~1,800 kWh/kWp) only if validating against a specific real installation. Still disclosed in-UI as 'הערכה'."
+},
+"tariff": {
+"_note": "LABELED-ESTIMATE consumer tariffs used by the consumption dashboard in panels.js (renderEnergy). Approximate average household rates incl. tax; NOT a billed figure — the UI labels every cost value as 'הערכה'. Electricity ~0.62/kWh, water ~13/m³ (blended tariff incl. sewage), in local demo currency units. Tune freely.",
+"elec_nis_kwh": 0.62,
+"water_nis_m3": 13
+}
+}

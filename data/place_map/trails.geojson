@@ -1,0 +1,53 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "שְׁבִיל הָעֵמֶק",
+        "kind_he": "שְׁבִיל הֲלִיכָה"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -40.03,
+            34.0
+          ],
+          [
+            -40.01,
+            34.015
+          ],
+          [
+            -39.99,
+            34.02
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name_he": "שְׁבִיל הַגַּרְעִין",
+        "kind_he": "שְׁבִיל אוֹפְנֵי הָרִים"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -40.0,
+            33.98
+          ],
+          [
+            -39.98,
+            33.995
+          ],
+          [
+            -39.97,
+            34.01
+          ]
+        ]
+      }
+    }
+  ]
+}

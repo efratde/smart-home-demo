@@ -1,0 +1,536 @@
+{
+  "meta": {
+    "source": "Open-Meteo ERA5 archive",
+    "lat": 34.0,
+    "lon": -40.0,
+    "range": "1960–2024",
+    "generated_note": "נבנה 2026-06-07 מ-Open-Meteo ERA5 (reanalysis יומי, תא רשת ~11 ק״מ). ערכים מודלים — לא תחנת מדידה מקומית.",
+    "frost_note_he": "\"לילות קרים\" = מספר הלילות בשנה עם טמפ׳ מינימום ≤ ~3°C באוויר בגובה 2 מ׳ (ERA5). זו אינה ספירת \"לילות כפור\": כפור הקרקע האמיתי בלרקמונט הוא קרינתי — בגובה העשב האוויר קר בכמה מעלות מ-2 מ׳ בלילות שמיים בהירים ורגועים — ולכן כפור קרקע מתרחש לעיתים קרובות יותר ממה שמדד ה-2 מ׳ של ERA5 מראה."
+  },
+  "years": [
+    {
+      "y": 1960,
+      "coldNights": 14,
+      "rainMm": 87,
+      "hotDays": 6,
+      "meanTmax": 24.4,
+      "meanTmin": 12.3
+    },
+    {
+      "y": 1961,
+      "coldNights": 25,
+      "rainMm": 67,
+      "hotDays": 13,
+      "meanTmax": 22.8,
+      "meanTmin": 11
+    },
+    {
+      "y": 1962,
+      "coldNights": 21,
+      "rainMm": 25,
+      "hotDays": 12,
+      "meanTmax": 24.3,
+      "meanTmin": 12.2
+    },
+    {
+      "y": 1963,
+      "coldNights": 17,
+      "rainMm": 65,
+      "hotDays": 9,
+      "meanTmax": 24,
+      "meanTmin": 12
+    },
+    {
+      "y": 1964,
+      "coldNights": 42,
+      "rainMm": 54,
+      "hotDays": 5,
+      "meanTmax": 22.5,
+      "meanTmin": 10.9
+    },
+    {
+      "y": 1965,
+      "coldNights": 19,
+      "rainMm": 95,
+      "hotDays": 18,
+      "meanTmax": 23.7,
+      "meanTmin": 11.9
+    },
+    {
+      "y": 1966,
+      "coldNights": 14,
+      "rainMm": 130,
+      "hotDays": 7,
+      "meanTmax": 24.3,
+      "meanTmin": 12.4
+    },
+    {
+      "y": 1967,
+      "coldNights": 38,
+      "rainMm": 182,
+      "hotDays": 2,
+      "meanTmax": 22.3,
+      "meanTmin": 11
+    },
+    {
+      "y": 1968,
+      "coldNights": 20,
+      "rainMm": 76,
+      "hotDays": 10,
+      "meanTmax": 23.1,
+      "meanTmin": 11.5
+    },
+    {
+      "y": 1969,
+      "coldNights": 19,
+      "rainMm": 81,
+      "hotDays": 8,
+      "meanTmax": 23.7,
+      "meanTmin": 11.9
+    },
+    {
+      "y": 1970,
+      "coldNights": 21,
+      "rainMm": 38,
+      "hotDays": 5,
+      "meanTmax": 23.3,
+      "meanTmin": 11.4
+    },
+    {
+      "y": 1971,
+      "coldNights": 16,
+      "rainMm": 135,
+      "hotDays": 1,
+      "meanTmax": 22.8,
+      "meanTmin": 11.7
+    },
+    {
+      "y": 1972,
+      "coldNights": 20,
+      "rainMm": 107,
+      "hotDays": 2,
+      "meanTmax": 22.6,
+      "meanTmin": 11.8
+    },
+    {
+      "y": 1973,
+      "coldNights": 16,
+      "rainMm": 36,
+      "hotDays": 5,
+      "meanTmax": 23.3,
+      "meanTmin": 11.2
+    },
+    {
+      "y": 1974,
+      "coldNights": 29,
+      "rainMm": 120,
+      "hotDays": 7,
+      "meanTmax": 23,
+      "meanTmin": 11.4
+    },
+    {
+      "y": 1975,
+      "coldNights": 23,
+      "rainMm": 82,
+      "hotDays": 2,
+      "meanTmax": 22.8,
+      "meanTmin": 11.3
+    },
+    {
+      "y": 1976,
+      "coldNights": 27,
+      "rainMm": 30,
+      "hotDays": 0,
+      "meanTmax": 23,
+      "meanTmin": 11.1
+    },
+    {
+      "y": 1977,
+      "coldNights": 19,
+      "rainMm": 60,
+      "hotDays": 11,
+      "meanTmax": 23.3,
+      "meanTmin": 11.5
+    },
+    {
+      "y": 1978,
+      "coldNights": 23,
+      "rainMm": 39,
+      "hotDays": 15,
+      "meanTmax": 23.7,
+      "meanTmin": 11.3
+    },
+    {
+      "y": 1979,
+      "coldNights": 17,
+      "rainMm": 67,
+      "hotDays": 4,
+      "meanTmax": 23.7,
+      "meanTmin": 11.8
+    },
+    {
+      "y": 1980,
+      "coldNights": 31,
+      "rainMm": 87,
+      "hotDays": 9,
+      "meanTmax": 23.2,
+      "meanTmin": 11.3
+    },
+    {
+      "y": 1981,
+      "coldNights": 29,
+      "rainMm": 13,
+      "hotDays": 1,
+      "meanTmax": 23.2,
+      "meanTmin": 11.2
+    },
+    {
+      "y": 1982,
+      "coldNights": 28,
+      "rainMm": 71,
+      "hotDays": 1,
+      "meanTmax": 22.2,
+      "meanTmin": 10.9
+    },
+    {
+      "y": 1983,
+      "coldNights": 50,
+      "rainMm": 48,
+      "hotDays": 3,
+      "meanTmax": 22.1,
+      "meanTmin": 10.5
+    },
+    {
+      "y": 1984,
+      "coldNights": 19,
+      "rainMm": 34,
+      "hotDays": 3,
+      "meanTmax": 23.1,
+      "meanTmin": 11
+    },
+    {
+      "y": 1985,
+      "coldNights": 24,
+      "rainMm": 84,
+      "hotDays": 5,
+      "meanTmax": 23.4,
+      "meanTmin": 11.7
+    },
+    {
+      "y": 1986,
+      "coldNights": 25,
+      "rainMm": 89,
+      "hotDays": 1,
+      "meanTmax": 22.8,
+      "meanTmin": 11.4
+    },
+    {
+      "y": 1987,
+      "coldNights": 17,
+      "rainMm": 61,
+      "hotDays": 6,
+      "meanTmax": 23.1,
+      "meanTmin": 11.5
+    },
+    {
+      "y": 1988,
+      "coldNights": 18,
+      "rainMm": 138,
+      "hotDays": 12,
+      "meanTmax": 23.2,
+      "meanTmin": 11.7
+    },
+    {
+      "y": 1989,
+      "coldNights": 36,
+      "rainMm": 36,
+      "hotDays": 3,
+      "meanTmax": 23.2,
+      "meanTmin": 11.5
+    },
+    {
+      "y": 1990,
+      "coldNights": 22,
+      "rainMm": 80,
+      "hotDays": 4,
+      "meanTmax": 23.4,
+      "meanTmin": 11.6
+    },
+    {
+      "y": 1991,
+      "coldNights": 29,
+      "rainMm": 112,
+      "hotDays": 2,
+      "meanTmax": 23.2,
+      "meanTmin": 11.7
+    },
+    {
+      "y": 1992,
+      "coldNights": 57,
+      "rainMm": 62,
+      "hotDays": 8,
+      "meanTmax": 22.1,
+      "meanTmin": 10.6
+    },
+    {
+      "y": 1993,
+      "coldNights": 44,
+      "rainMm": 41,
+      "hotDays": 7,
+      "meanTmax": 23.4,
+      "meanTmin": 11.4
+    },
+    {
+      "y": 1994,
+      "coldNights": 11,
+      "rainMm": 97,
+      "hotDays": 9,
+      "meanTmax": 23.4,
+      "meanTmin": 11.9
+    },
+    {
+      "y": 1995,
+      "coldNights": 15,
+      "rainMm": 34,
+      "hotDays": 10,
+      "meanTmax": 23.4,
+      "meanTmin": 11.4
+    },
+    {
+      "y": 1996,
+      "coldNights": 9,
+      "rainMm": 53,
+      "hotDays": 9,
+      "meanTmax": 23.7,
+      "meanTmin": 11.7
+    },
+    {
+      "y": 1997,
+      "coldNights": 29,
+      "rainMm": 84,
+      "hotDays": 5,
+      "meanTmax": 22.8,
+      "meanTmin": 11.2
+    },
+    {
+      "y": 1998,
+      "coldNights": 20,
+      "rainMm": 38,
+      "hotDays": 19,
+      "meanTmax": 24.2,
+      "meanTmin": 12.1
+    },
+    {
+      "y": 1999,
+      "coldNights": 11,
+      "rainMm": 12,
+      "hotDays": 7,
+      "meanTmax": 24.1,
+      "meanTmin": 11.9
+    },
+    {
+      "y": 2000,
+      "coldNights": 27,
+      "rainMm": 41,
+      "hotDays": 10,
+      "meanTmax": 23.2,
+      "meanTmin": 11.3
+    },
+    {
+      "y": 2001,
+      "coldNights": 7,
+      "rainMm": 33,
+      "hotDays": 8,
+      "meanTmax": 24.1,
+      "meanTmin": 11.8
+    },
+    {
+      "y": 2002,
+      "coldNights": 11,
+      "rainMm": 61,
+      "hotDays": 13,
+      "meanTmax": 23.7,
+      "meanTmin": 12.1
+    },
+    {
+      "y": 2003,
+      "coldNights": 17,
+      "rainMm": 45,
+      "hotDays": 5,
+      "meanTmax": 23.8,
+      "meanTmin": 11.7
+    },
+    {
+      "y": 2004,
+      "coldNights": 24,
+      "rainMm": 61,
+      "hotDays": 8,
+      "meanTmax": 23.7,
+      "meanTmin": 11.7
+    },
+    {
+      "y": 2005,
+      "coldNights": 16,
+      "rainMm": 26,
+      "hotDays": 5,
+      "meanTmax": 23.9,
+      "meanTmin": 11.7
+    },
+    {
+      "y": 2006,
+      "coldNights": 22,
+      "rainMm": 48,
+      "hotDays": 10,
+      "meanTmax": 23.7,
+      "meanTmin": 11.4
+    },
+    {
+      "y": 2007,
+      "coldNights": 10,
+      "rainMm": 38,
+      "hotDays": 16,
+      "meanTmax": 23.8,
+      "meanTmin": 11.8
+    },
+    {
+      "y": 2008,
+      "coldNights": 23,
+      "rainMm": 40,
+      "hotDays": 5,
+      "meanTmax": 24.1,
+      "meanTmin": 12
+    },
+    {
+      "y": 2009,
+      "coldNights": 13,
+      "rainMm": 27,
+      "hotDays": 5,
+      "meanTmax": 24.1,
+      "meanTmin": 11.9
+    },
+    {
+      "y": 2010,
+      "coldNights": 3,
+      "rainMm": 77,
+      "hotDays": 16,
+      "meanTmax": 25.9,
+      "meanTmin": 13.7
+    },
+    {
+      "y": 2011,
+      "coldNights": 7,
+      "rainMm": 40,
+      "hotDays": 5,
+      "meanTmax": 23.3,
+      "meanTmin": 11.6
+    },
+    {
+      "y": 2012,
+      "coldNights": 29,
+      "rainMm": 32,
+      "hotDays": 13,
+      "meanTmax": 24.1,
+      "meanTmin": 12.2
+    },
+    {
+      "y": 2013,
+      "coldNights": 16,
+      "rainMm": 61,
+      "hotDays": 3,
+      "meanTmax": 24.1,
+      "meanTmin": 12
+    },
+    {
+      "y": 2014,
+      "coldNights": 5,
+      "rainMm": 98,
+      "hotDays": 6,
+      "meanTmax": 24.2,
+      "meanTmin": 12.4
+    },
+    {
+      "y": 2015,
+      "coldNights": 24,
+      "rainMm": 107,
+      "hotDays": 21,
+      "meanTmax": 23.9,
+      "meanTmin": 12.4
+    },
+    {
+      "y": 2016,
+      "coldNights": 17,
+      "rainMm": 56,
+      "hotDays": 13,
+      "meanTmax": 24.6,
+      "meanTmin": 12.8
+    },
+    {
+      "y": 2017,
+      "coldNights": 27,
+      "rainMm": 35,
+      "hotDays": 4,
+      "meanTmax": 22.9,
+      "meanTmin": 12
+    },
+    {
+      "y": 2018,
+      "coldNights": 4,
+      "rainMm": 87,
+      "hotDays": 6,
+      "meanTmax": 23.6,
+      "meanTmin": 13
+    },
+    {
+      "y": 2019,
+      "coldNights": 18,
+      "rainMm": 81,
+      "hotDays": 6,
+      "meanTmax": 22.9,
+      "meanTmin": 12.1
+    },
+    {
+      "y": 2020,
+      "coldNights": 11,
+      "rainMm": 109,
+      "hotDays": 10,
+      "meanTmax": 23.1,
+      "meanTmin": 12.5
+    },
+    {
+      "y": 2021,
+      "coldNights": 9,
+      "rainMm": 47,
+      "hotDays": 7,
+      "meanTmax": 23.8,
+      "meanTmin": 12.9
+    },
+    {
+      "y": 2022,
+      "coldNights": 28,
+      "rainMm": 55,
+      "hotDays": 3,
+      "meanTmax": 22.9,
+      "meanTmin": 12.2
+    },
+    {
+      "y": 2023,
+      "coldNights": 8,
+      "rainMm": 79,
+      "hotDays": 10,
+      "meanTmax": 23.9,
+      "meanTmin": 13
+    },
+    {
+      "y": 2024,
+      "coldNights": 3,
+      "rainMm": 19,
+      "hotDays": 9,
+      "meanTmax": 23.7,
+      "meanTmin": 13
+    }
+  ],
+  "trend": {
+    "tmax_per_decade": 0.1,
+    "total_warming_c": 0.7
+  }
+}

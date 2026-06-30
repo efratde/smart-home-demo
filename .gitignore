@@ -1,0 +1,39 @@
+# ---- OS / editor ----
+.DS_Store
+**/.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ---- dependencies / build ----
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# ---- Cloudflare / Wrangler local state ----
+.wrangler/
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+*.local
+
+# ---- caches / local databases ----
+*.db
+*.sqlite
+*.sqlite3
+*-cache/
+.cache/
+
+# ---- real / sensitive source assets (never commit) ----
+# These dirs historically held REAL aerial/satellite imagery, plan scans and
+# GPS-anchored rasters of an actual property. Keep them out of the repo; the
+# demo ships only synthetic stand-ins under data/.
+geo/
+uploads/
+data/timelapse/
+*.geotiff
+*.tif
+*.tiff

@@ -1,0 +1,98 @@
+{
+  "_meta": {
+    "title": "אגרונומיה לחצר של אלכס — לרקמונט (אֵזוֹר יָבֵשׁ, ~300 מ׳)",
+    "purpose_he": "ריכוז הנתונים החקלאיים שנאספו (קרקע, Kc/FAO-56, קור+GDD, מזיקים) — מסוננים ומותאמים לחמשת גידולי הפרי של אלכס: תאנה, זית, שקד, רימון, גפן. נתון מודל/ספרות, לא ייעוץ אגרונומי מחייב.",
+    "curated_from": "harvest/agriculture/ (regional agricultural GIS, FAO-56, pomology literature, open pesticides DB) — 2026-06-09",
+    "honesty_he": "כל המספרים הם ערכי ייחוס/מודל (FAO-56, ספרות מטעים, שכבות GIS חקלאיות אזוריות). אינם מדידה באתר. הטבלה האגרו-אקלימית נקודתית ללרקמונט; קצב הקור/GDD בפועל תלוי בשנה ובמיקרו-אקלים המדויק.",
+    "his_crops": ["fig", "olive", "almond", "pomegranate", "grape"],
+    "sources": [
+      { "id": "MoAG-GIS", "name_he": "שֵׁרוּת GIS חַקְלָאִי אֵזוֹרִי — שכבות קרקע (קבוצות קרקע אזוריות, טקסונומיית USDA, אידוי, משטרי קרקע)", "via": "open agricultural GIS" },
+      { "id": "FAO56", "name_he": "FAO Irrigation & Drainage Paper 56, טבלה 12 — מקדמי גידול Kc", "url": "https://www.fao.org/4/x0490e/x0490e0b.htm" },
+      { "id": "Pereira2024", "name_he": "Pereira et al. (2024) — Kc למטעים תת-טרופיים (תאנה, רימון)", "url": "https://link.springer.com/article/10.1007/s00271-024-00925-7" },
+      { "id": "ChillDormancy", "name_he": "מחקר חקלאי — שבירת תרדמה בתנאי קור-חורף לקוי", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10975621/" },
+      { "id": "MoAG-Pesticides", "name_he": "מאגר תכשירי הגנת הצומח המורשים", "url": "" }
+    ]
+  },
+
+  "site": {
+    "name_he": "לרקמונט",
+    "lon": -40.0,
+    "lat": 34.0,
+    "elev_m": 300,
+    "climate_he": "אֵזוֹר יָבֵשׁ עִם חֹרֶף קָרִיר: חורף עם קרות וצבירת קור אמיתית — נדיר באקלים יבש — לצד קיץ חם מאוד.",
+    "ecological_zone_he": "אֵזוֹר הָרָמָה (דֶּמוֹ)",
+    "soil_group_DanRaz": { "type": "X1", "desc_he": "סלעים חשופים ואלוביום גס", "general_he": "מחשופי סלע וליתוסולים רדודים", "source": "MoAG-GIS" },
+    "soil_taxonomy_USDA": { "order_he": "אָרידיסולס (Aridisols)", "suborder": "Cambids", "association_he": "ליתוסולים חומים וסירוזיומים לסיים", "desc_he": "מחשופי סלע, ליתוסול חום ולס (סירוזיום לסי)", "source": "MoAG-GIS" },
+    "soil_traits_he": ["דַּלַּת אוֹרְגָנִיקָה", "גִּירָנִית (calcareous)", "רְדוּדָה מֵעַל סֶלַע", "נִקּוּז מָהִיר", "כֹּשֶׁר אֲגִירַת מַיִם נָמוּךְ"],
+    "annual_evaporation_mm": "1700–1800",
+    "evaporation_source": "MoAG-GIS",
+    "moisture_regime_he": "אֲרידִי (aridic) — תלוי-השקיה לחלוטין בעונה היבשה",
+    "moisture_source": "MoAG-GIS",
+    "planting_implications_he": [
+      "לְהַעֲמִיק בּוֹרוֹת נְטִיעָה וְלִשְׁבֹּר אֶת שִׁכְבַת הַסֶּלַע / הָאֹפֶק הַגִּירִי מִתַּחַת.",
+      "לְשַׁפֵּר בְּמַצָּע אוֹרְגָנִי (קוֹמְפּוֹסְט) — הַקַּרְקַע מְקוֹמִית דַּלַּת חֻמְרִים.",
+      "חִפּוּי (mulch) לְהַקְטָנַת אִיּוּד וְהֲגַנַת שֹׁרֶשׁ מֵחֹם.",
+      "טִפְטוּף + הַשְׁקָיָה תְּכוּפָה וּמְדוּדָה (Kc × ET₀) — קַרְקַע רְדוּדָה לֹא אוֹגֶרֶת.",
+      "לִבְחֹר כַּנּוֹת סְבִילוֹת גִּיר/מֶלַח בְּשֶׁל הַקַּרְקַע הַגִּירָנִית."
+    ]
+  },
+
+  "kc": {
+    "note_he": "מקדם גידול Kc (FAO-56, גישת המקדם היחיד). ETc = Kc × ET₀. לְעֵץ צָעִיר/קָטָן — לְהַקְטִין Kc לְפִי אֲחוּז הַכִּסּוּי הַקַּרְקָעִי. ברמה הֶחָם וְהַיָּבֵשׁ עֶרְכֵי mid/end נוֹטִים לַגָּבוֹהַּ.",
+    "stages_he": { "ini": "תְּחִלַּת עוֹנָה / לִבְלוּב", "mid": "שִׂיא חוֹפָה / מִלּוּי פְּרִי", "end": "סוֹף עוֹנָה / הַזְדַּקְּנוּת" },
+    "crops": [
+      { "crop": "fig", "crop_he": "תְּאֵנָה", "emoji": "🪴", "kc_ini": 0.50, "kc_mid": 0.90, "kc_end": 0.55, "source": "Pereira2024", "note_he": "נְשִׁירָה: Kc ≈ 0 כְּשֶׁעֵירֻמָּה (חֹרֶף). טְוָוח mid ~0.4–1.0 לְפִי הַחוֹפָה." },
+      { "crop": "olive", "crop_he": "זַיִת", "emoji": "🫒", "kc_ini": 0.65, "kc_mid": 0.70, "kc_end": 0.70, "source": "FAO56", "note_he": "יְרוֹק-עַד; Kc כִּמְעַט קָבוּעַ. עֹדֶף מַיִם פּוֹגֵעַ בְּאֵיכוּת הַשֶּׁמֶן." },
+      { "crop": "almond", "crop_he": "שָׁקֵד", "emoji": "🌰", "kc_ini": 0.40, "kc_mid": 0.90, "kc_end": 0.65, "source": "FAO56", "note_he": "נְשִׁיר; Kc_mid עַד ~1.0–1.1 בְּמָטָע בּוֹגֵר בַּעַל חוֹפָה מְלֵאָה." },
+      { "crop": "pomegranate", "crop_he": "רִמּוֹן", "emoji": "🔴", "kc_ini": 0.40, "kc_mid": 0.85, "kc_end": 0.55, "source": "Pereira2024", "note_he": "נְשִׁיר; Kcb בָּסִיסִי נָמוּךְ יוֹתֵר (~0.24/0.60/0.52). Kc יָחִיד ~0.4/0.85/0.55." },
+      { "crop": "grape", "crop_he": "גֶּפֶן (מַאֲכָל)", "emoji": "🍇", "kc_ini": 0.30, "kc_mid": 0.85, "kc_end": 0.45, "source": "FAO56", "note_he": "גֶּפֶן נְשִׁירָה; Kc_end נָמוּךְ (הַשְׁקָיָה מֻפְחֶתֶת מְבֻקֶּרֶת לִפְנֵי קָצִיר נָפוֹצָה)." }
+    ]
+  },
+
+  "chill_gdd": {
+    "note_he": "שְׁעוֹת קֹר = שָׁעוֹת בְּ-0–7.2°C (מוֹדֵל Weinberger). GDD = סְכוּם עוֹנָתִי שֶׁל max(0,(Tmax+Tmin)/2 − Tbase). מַעֲלוֹת ה-Tbase שׁוֹנוֹת בֵּין הַמִּינִים.",
+    "context_he": "לרקמונט (~300 מ׳) מְקַבֵּל קֹר-חֹרֶף אֲמִתִּי (קְרוֹת) — נָדִיר בָּאֵזוֹר הַיָּבֵשׁ הַזֶּה, שֶׁרֻבּוֹ דַּל-קֹר — לְצַד חֹם-קַיִץ עָצוּם. כְּשֶׁהַקֹּר חָסֵר, מְגַדְּלִים מִשְׁתַּמְּשִׁים בְּחֹמֶר שְׁבִירַת תַּרְדֵּמָה (Dormex/ציאנמיד) — מְאֻשָּׁר בַּמָּאֲגָר עַל תְּאֵנָה וְגֶפֶן.",
+    "trees": [
+      { "tree": "fig", "tree_he": "תְּאֵנָה", "emoji": "🪴", "chill_low": 100, "chill_high": 300, "chill_class_he": "נָמוּךְ", "gdd_base_c": 10, "fit": "excellent", "fit_he": "מְצֻיָּן — קֹר נָמוּךְ, אוֹהֶבֶת חֹם. שְׁנֵי יְבוּלִים אֶפְשָׁרִיִּים (בִּכּוּרָה + עִקָּרִי).", "source": "chill_charts" },
+      { "tree": "olive", "tree_he": "זַיִת", "emoji": "🫒", "chill_low": 200, "chill_high": 400, "chill_class_he": "נָמוּךְ–בֵּינוֹנִי", "gdd_base_c": 6, "fit": "good", "fit_he": "טוֹב — קֹר-חֹרֶף מְסַיֵּעַ לְהַשְׁרָאַת פְּרִיחָה; סָבִיל יֹבֶשׁ וְחֹם.", "source": "chill_charts" },
+      { "tree": "almond", "tree_he": "שָׁקֵד", "emoji": "🌰", "chill_low": 300, "chill_high": 600, "chill_class_he": "בֵּינוֹנִי", "gdd_base_c": 4.5, "fit": "good_care", "fit_he": "טוֹב אִם זַן דַּל-קֹר; פּוֹרֵחַ מֻקְדָּם — סִכּוּן קְרוֹת אָבִיב בַּגֹּבַהּ.", "source": "ChillDormancy" },
+      { "tree": "pomegranate", "tree_he": "רִמּוֹן", "emoji": "🔴", "chill_low": 100, "chill_high": 200, "chill_class_he": "נָמוּךְ", "gdd_base_c": 4, "fit": "excellent", "fit_he": "מְצֻיָּן — קֹר נָמוּךְ + קַיִץ אָרֹךְ וְחַם = גִּדּוּל אֵזוֹר חַם קְלָאסִי.", "source": "pom_heat" },
+      { "tree": "grape", "tree_he": "גֶּפֶן", "emoji": "🍇", "chill_low": 100, "chill_high": 400, "chill_class_he": "נָמוּךְ–בֵּינוֹנִי", "gdd_base_c": 10, "fit": "good", "fit_he": "טוֹב — קֹר נָמוּךְ, חֹם בְּשֶׁפַע (אֵזוֹר חַם מְאוֹד); Dormex מְאַזֵּן הִתְפָּרְצוּת עֵינִים.", "source": "chill_charts" },
+      { "tree": "citrus", "tree_he": "הֲדָרִים", "emoji": "🍊", "chill_low": 0, "chill_high": 0, "chill_class_he": "אֵין", "gdd_base_c": 13, "fit": "marginal", "fit_he": "שׁוּלִי — רָגִישׁ קְרוֹת; הַגֹּבַהּ הַקַּר מְסֻכָּן לוֹ.", "his_plant": false, "source": "FAO56" },
+      { "tree": "date_palm", "tree_he": "דֶּקֶל תָּמָר", "emoji": "🌴", "chill_low": 0, "chill_high": 0, "chill_class_he": "אֵין", "gdd_base_c": 18, "fit": "marginal", "fit_he": "שׁוּלִי בַּגֹּבַהּ — צָרִיךְ חֹם קִיצוֹנִי לְהַבְשָׁלָה (אֵזוֹר חַם יוֹתֵר עֲדִיף).", "his_plant": false, "source": "chill_charts" }
+    ]
+  },
+
+  "pests": {
+    "note_he": "מַזִּיק/מַחֲלָה מֶרְכָּזִי לְכָל גִּדּוּל + אוֹפְּצְיָה אוֹרְגָנִית מְאֻשֶּׁרֶת לְשִׁמּוּשׁ (מְזֻקָּקָה מִתּוֹךְ ~1813 שׁוּרוֹת מָאֲגָר הַהַדְבָּרָה). בְּדִקְדּוּק תְּמִיד אֶת הַתָּוִית, מִינוּן וּתְקוּפַת הַמְתָּנָה לִפְנֵי קָטִיף.",
+    "organic_legend_he": { "AZADIRACHTIN": "שֶׁמֶן נִים (אוֹרְגָנִי)", "BACILLUS THURINGIENSIS": "Bt — חַיְדַּק לְזַחֲלֵי עָשִׁים (אוֹרְגָנִי)", "BACILLUS SUBTILIS": "Bacillus subtilis — בְּיוֹ-פוּנְגִיצִיד", "SPINOSAD": "Spinosad — מִקּוֹר חַיְדַּקִּי", "FATTY ACID POTASSIUM SALT": "סַבּוֹן אַשְׁלְגָנִי (אוֹרְגָנִי)", "COPPER": "תַּרְכֹּבֶת נְחֹשֶׁת (מֻתָּר בְּאוֹרְגָנִי, בְּזָהִירוּת)", "SULFUR": "גָּפְרִית (אוֹרְגָנִי)" },
+    "crops": [
+      { "crop": "fig", "crop_he": "תְּאֵנָה", "emoji": "🪴", "items": [
+        { "pest_he": "זְבוּב הַתְּאֵנָה", "pest_en": "Black fig fly", "pest_lat": "Silba adipata", "group_he": "חֲרָקִים", "organic_he": "שֶׁמֶן נִים (Azadirachtin)", "organic_active": "AZADIRACHTIN" },
+        { "pest_he": "אֲקָרִית צְהֻבָּה", "pest_en": "Two-spotted spider mite", "pest_lat": "Tetranychus urticae", "group_he": "חֲרָקִים/אֲקָרִיּוֹת", "organic_he": "גָּפְרִית / שֶׁמֶן מִינֵרָלִי", "organic_active": "SULFUR" },
+        { "pest_he": "חִלָּדוֹן (רוּסְט)", "pest_en": "Rust", "pest_lat": "Urdinales", "group_he": "פִּטְרִיּוֹת", "organic_he": "Bacillus subtilis (בְּיוֹ-פוּנְגִיצִיד)", "organic_active": "BACILLUS SUBTILIS" }
+      ]},
+      { "crop": "olive", "crop_he": "זַיִת", "emoji": "🫒", "items": [
+        { "pest_he": "זְבוּב הַזַּיִת", "pest_en": "Olive fruit fly", "pest_lat": "Bactrocera oleae", "group_he": "חֲרָקִים", "organic_he": "Spinosad (פִּתְיוֹן)", "organic_active": "SPINOSAD" },
+        { "pest_he": "עֵין הַטַּוָּס", "pest_en": "Peacock spot", "pest_lat": "Spilocaea oleaginea", "group_he": "פִּטְרִיּוֹת", "organic_he": "תַּרְכֹּבוֹת נְחֹשֶׁת", "organic_active": "COPPER" },
+        { "pest_he": "עַשׁ הַיַּסְמִין", "pest_en": "Jasmine moth", "pest_lat": "Palpita vitrealis", "group_he": "חֲרָקִים", "organic_he": "Bt (Bacillus thuringiensis)", "organic_active": "BACILLUS THURINGIENSIS" }
+      ]},
+      { "crop": "almond", "crop_he": "שָׁקֵד", "emoji": "🌰", "items": [
+        { "pest_he": "עַשׁ הַמִּשְׁמֵשׁ (אֲנַרְסְיָה)", "pest_en": "Peach twig borer", "pest_lat": "Anarsia lineatella", "group_he": "חֲרָקִים", "organic_he": "Bt (Bacillus thuringiensis)", "organic_active": "BACILLUS THURINGIENSIS" },
+        { "pest_he": "חִלָּדוֹן הַגַּלְעִינִיִּים", "pest_en": "Prunus rust", "pest_lat": "Tranzschelia discolor", "group_he": "פִּטְרִיּוֹת", "organic_he": "תַּרְכֹּבוֹת נְחֹשֶׁת / גָּפְרִית", "organic_active": "COPPER" },
+        { "pest_he": "מוֹנִילְיָה (רִקָּבוֹן חוּם)", "pest_en": "Monilia fruit rot", "pest_lat": "Monilinia spp.", "group_he": "פִּטְרִיּוֹת", "organic_he": "נְחֹשֶׁת (Copper hydroxide)", "organic_active": "COPPER" }
+      ]},
+      { "crop": "pomegranate", "crop_he": "רִמּוֹן", "emoji": "🔴", "items": [
+        { "pest_he": "כְּחַלִּיל הָרִמּוֹן", "pest_en": "Pomegranate butterfly", "pest_lat": "Deudorix livia", "group_he": "חֲרָקִים", "organic_he": "Bt / Spinosad", "organic_active": "BACILLUS THURINGIENSIS" },
+        { "pest_he": "זְבוּב הַפֵּרוֹת הַיָּם-תִּיכוֹנִי", "pest_en": "Mediterranean fruit fly", "pest_lat": "Ceratitis capitata", "group_he": "חֲרָקִים", "organic_he": "Spinosad (פִּתְיוֹן)", "organic_active": "SPINOSAD" },
+        { "pest_he": "אֲפִיד הָרִמּוֹן", "pest_en": "Pomegranate aphid", "pest_lat": "Aphis punicae", "group_he": "חֲרָקִים", "organic_he": "סַבּוֹן אַשְׁלְגָנִי", "organic_active": "FATTY ACID POTASSIUM SALT" }
+      ]},
+      { "crop": "grape", "crop_he": "גֶּפֶן", "emoji": "🍇", "items": [
+        { "pest_he": "עַשׁ פְּרִי הָאֶשְׁכּוֹל", "pest_en": "Grapeberry moth", "pest_lat": "Lobesia botrana", "group_he": "חֲרָקִים", "organic_he": "Bt (Bacillus thuringiensis)", "organic_active": "BACILLUS THURINGIENSIS" },
+        { "pest_he": "קִמְחוֹן הַגֶּפֶן", "pest_en": "Powdery mildew", "pest_lat": "Erysiphe necator", "group_he": "פִּטְרִיּוֹת", "organic_he": "גָּפְרִית (Sulfur)", "organic_active": "SULFUR" },
+        { "pest_he": "כְּשׁוּתִית הַגֶּפֶן", "pest_en": "Downy mildew", "pest_lat": "Plasmopara viticola", "group_he": "פִּטְרִיּוֹת", "organic_he": "תַּרְכֹּבוֹת נְחֹשֶׁת (בּוֹרְדּוֹ)", "organic_active": "COPPER" },
+        { "pest_he": "בּוֹטְרִיטִיס (עֹבֶשׁ אָפֹר)", "pest_en": "Gray mold", "pest_lat": "Botrytis cinerea", "group_he": "פִּטְרִיּוֹת", "organic_he": "Bacillus subtilis", "organic_active": "BACILLUS SUBTILIS" }
+      ]}
+    ]
+  }
+}

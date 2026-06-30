@@ -1,0 +1,75 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lith_he": "גִּיר וְדוֹלוֹמִיט",
+        "lith": "limestone",
+        "color": "#7fa8c9"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -40.05,
+              33.97
+            ],
+            [
+              -40.0,
+              33.97
+            ],
+            [
+              -40.0,
+              34.02
+            ],
+            [
+              -40.05,
+              34.02
+            ],
+            [
+              -40.05,
+              33.97
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lith_he": "חוֹל וְחַוָּר",
+        "lith": "sandstone",
+        "color": "#c79a5b"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -40.0,
+              33.97
+            ],
+            [
+              -39.95,
+              33.97
+            ],
+            [
+              -39.95,
+              34.02
+            ],
+            [
+              -40.0,
+              34.02
+            ],
+            [
+              -40.0,
+              33.97
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
