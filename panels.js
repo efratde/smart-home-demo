@@ -401,7 +401,7 @@
        (_openOverlay) as the calendar/vision pills — no new overlay system.
        Fully defensive: a missing/invalid file just hides that part; never throws. */
     // ⬇⬇ THE DEDICATION — edit this one warm line to change the gift's greeting ⬇⬇
-    const WELCOME_DEDICATION_HE = 'אֻמְרִי — הַבַּיִת שֶׁלְּךָ, הַשָּׁמַיִם שֶׁלְּךָ, הַמִּסְפָּרִים שֶׁלְּךָ. בְּמַתָּנָה. ❤️';
+    const WELCOME_DEDICATION_HE = 'אָלֶקְס — הַבַּיִת שֶׁלְּךָ, הַשָּׁמַיִם שֶׁלְּךָ, הַמִּסְפָּרִים שֶׁלְּךָ. בְּמַתָּנָה. ❤️';
     // ⬆⬆ ─────────────────────────────────────────────────────────────────── ⬆⬆
     let _welcomeShown=false;
     function maybeShowWelcome(){
