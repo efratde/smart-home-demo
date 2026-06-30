@@ -37,9 +37,10 @@
   var LEAFLET_JS  = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
   var TILE_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
   var TILE_ATTR = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a>';
-  // base-tile options (all CORS-ok, tested live). dark = current; topo = OpenTopoMap
-  // (contours + trails, a generic topographic basemap); satellite = Esri World Imagery.
+  // base-tile options. synth = default synthetic landscape (procedural, no real imagery, no
+  // network — the demo "place" is fictional); dark = CARTO dark; topo = OpenTopoMap; sat = Esri.
   var BASEMAPS = [
+    { id: 'synth', he: 'נוֹף',   emoji: '🌄', synthetic: true, attr: 'Synthetic landscape · demo' },
     { id: 'dark', he: 'כֵּהֶה',  emoji: '🌑', url: TILE_URL, opts: { subdomains: 'abcd', maxZoom: 19, detectRetina: true }, attr: TILE_ATTR },
     { id: 'topo', he: 'טוֹפּוֹ', emoji: '🗺️', url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', opts: { subdomains: 'abc', maxZoom: 17 }, attr: '© OpenStreetMap · © OpenTopoMap (SRTM)' },
     { id: 'sat',  he: 'לוֹוְיָן', emoji: '🛰️', url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', opts: { maxZoom: 19 }, attr: '© Esri, Maxar, Earthstar Geographics' }
@@ -48,6 +49,45 @@
   var HOUSE = { lat: 34.00, lon: -40.00 };
   var DATA_DIR = 'data/place_map/';
   var TL_DIR = 'data/timelapse/';
+
+  // ---- synthetic, leak-proof basemap: deterministic value-noise painted to canvas tiles
+  //      (no real imagery, no tiles fetched — the demo's "place" is a synthetic landscape) ----
+  function _ph(x, y) { var n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return n - Math.floor(n); }
+  function _pvn(x, y) {
+    var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    var a = _ph(xi, yi), b = _ph(xi + 1, yi), c = _ph(xi, yi + 1), d = _ph(xi + 1, yi + 1);
+    var u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    return a * (1 - u) * (1 - v) + b * u * (1 - v) + c * (1 - u) * v + d * u * v;
+  }
+  function _pfbm(x, y) { var s = 0, a = 0.5, f = 1; for (var i = 0; i < 5; i++) { s += a * _pvn(x * f, y * f); f *= 2; a *= 0.5; } return s; }
+  function _landRGB(e) {
+    if (e < 0.40) return [176, 158, 116];   // soil-tan
+    if (e < 0.58) return [122, 148, 90];     // meadow-green
+    if (e < 0.72) return [150, 160, 108];    // scrub
+    return [200, 194, 156];                  // pale highland
+  }
+  function makeSynthBase(L, attr) {
+    var Grid = L.GridLayer.extend({
+      createTile: function (coords) {
+        var size = this.getTileSize(), tile = document.createElement('canvas');
+        tile.width = size.x; tile.height = size.y;
+        var ctx = tile.getContext('2d'), z = coords.z, step = 4, K = 4200, denom = Math.pow(2, z);
+        for (var py = 0; py < size.y; py += step) {
+          for (var px = 0; px < size.x; px += step) {
+            var nx = (coords.x + px / size.x) / denom;
+            var ny = (coords.y + py / size.y) / denom;
+            var e = _pfbm(nx * K, ny * K);
+            var rgb = _landRGB(e);
+            var band = (Math.floor(e * 26) % 2 === 0) ? 0 : -7;   // faint contour banding
+            ctx.fillStyle = 'rgb(' + Math.max(0, rgb[0] + band) + ',' + Math.max(0, rgb[1] + band) + ',' + Math.max(0, rgb[2] + band) + ')';
+            ctx.fillRect(px, py, step, step);
+          }
+        }
+        return tile;
+      }
+    });
+    return new Grid({ maxZoom: 19, attribution: attr || 'Synthetic landscape · demo' });
+  }
 
   /* ----------------------------------------------- time-slider (צִיר זְמַן)
      The historical imagery + NDVI staged under data/timelapse/. Each step is one
@@ -639,24 +679,29 @@
     state.map = map;
 
     var tilesFailed = false;
-    var _baseLayer = null, _baseId = 'dark';
-    // swap the base tiles (🌑 dark / 🗺️ topo / 🛰️ satellite). The vector layers stay on top.
+    var _baseLayer = null, _baseId = 'synth';
+    // swap the base layer (🌄 synthetic / 🌑 dark / 🗺️ topo / 🛰️ satellite). Vector layers stay on top.
     function setBase(id) {
       var bm = BASEMAPS.filter(function (b) { return b.id === id; })[0] || BASEMAPS[0];
       _baseId = bm.id;
       if (_baseLayer) { try { map.removeLayer(_baseLayer); } catch (e) {} }
-      var o = {}; for (var k in bm.opts) o[k] = bm.opts[k]; o.attribution = bm.attr;
-      _baseLayer = L.tileLayer(bm.url, o);
-      _baseLayer.on('tileerror', function () {
-        if (tilesFailed) return; tilesFailed = true;
-        try {
-          var note = el('div', 'pm-msg');
-          note.style.position = 'absolute'; note.style.inset = '0'; note.style.background = 'rgba(11,13,24,.92)';
-          note.style.display = 'flex'; note.style.alignItems = 'center'; note.style.justifyContent = 'center'; note.style.zIndex = '500';
-          note.innerHTML = '🛰️ <b>אֲרִיחֵי הָרֶקַע לֹא נִטְעֲנוּ</b> — צָרִיךְ חִבּוּר לָאִינְטֶרְנֶט.';
-          mapDiv.appendChild(note);
-        } catch (e) {}
-      });
+      if (bm.synthetic && L.GridLayer) {
+        _baseLayer = makeSynthBase(L, bm.attr);
+      } else {
+        var rb = bm.url ? bm : (BASEMAPS.filter(function (b) { return b.id === 'dark'; })[0]);
+        var o = {}; for (var k in rb.opts) o[k] = rb.opts[k]; o.attribution = rb.attr;
+        _baseLayer = L.tileLayer(rb.url, o);
+        _baseLayer.on('tileerror', function () {
+          if (tilesFailed) return; tilesFailed = true;
+          try {
+            var note = el('div', 'pm-msg');
+            note.style.position = 'absolute'; note.style.inset = '0'; note.style.background = 'rgba(11,13,24,.92)';
+            note.style.display = 'flex'; note.style.alignItems = 'center'; note.style.justifyContent = 'center'; note.style.zIndex = '500';
+            note.innerHTML = '🛰️ <b>אֲרִיחֵי הָרֶקַע לֹא נִטְעֲנוּ</b> — צָרִיךְ חִבּוּר לָאִינְטֶרְנֶט.';
+            mapDiv.appendChild(note);
+          } catch (e) {}
+        });
+      }
       _baseLayer.addTo(map); try { _baseLayer.bringToBack(); } catch (e) {}
       var bsw = root.querySelector('.pm-basesw');
       if (bsw) { var cs = bsw.querySelectorAll('[data-base]'); for (var i = 0; i < cs.length; i++) cs[i].classList.toggle('on', cs[i].getAttribute('data-base') === bm.id); }

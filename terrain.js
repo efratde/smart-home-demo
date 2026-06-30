@@ -1,17 +1,53 @@
 /* ===================================================================
-   terrain.js — the REAL ground of Larkmont, built from geodata.
-   heightmap.png  → vertex displacement (white 913 m … black 537 m)
-   satellite.png  → draped colour texture (1:1, north = up)
-   buildings.png  → ~620 real footprints extruded as town massing
+   terrain.js — the synthetic ground for the demo. No real geodata is
+   shipped (the geo/ rasters are deliberately excluded); the relief and
+   the draped colour texture are generated procedurally so the "place"
+   renders without exposing any real location.
    World frame: +x = east, +y = up, +z = SOUTH. Extent 4.0 km × 3.9 km.
    =================================================================== */
 const Terrain = (function(){
   const EX=4000, EZ=3900;        // metres E–W, N–S
   const EXAG=1.15;               // gentle legibility exaggeration (≤1.25)
-  const MINEL=537, REL=376;      // black→537 m, relief 376 m
+  const MINEL=537, REL=376;      // synthetic vertical scale: gray 0→base, 255→base+relief
   let hm,hmW,hmH,centerElev=0;
 
-  function grayAt(px,py){ px=px<0?0:px>hmW-1?hmW-1:px|0; py=py<0?0:py>hmH-1?hmH-1:py|0;
+  // ---- procedural synthetic geodata (no real rasters are shipped) ----
+  function _h2(x,y){ const n=Math.sin(x*127.1+y*311.7)*43758.5453; return n-Math.floor(n); }
+  function _vn(x,y){ const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi;
+    const a=_h2(xi,yi),b=_h2(xi+1,yi),c=_h2(xi,yi+1),d=_h2(xi+1,yi+1);
+    const u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);
+    return a*(1-u)*(1-v)+b*u*(1-v)+c*(1-u)*v+d*u*v; }
+  function _fbm(x,y){ let s=0,a=0.5,f=1; for(let i=0;i<5;i++){ s+=a*_vn(x*f,y*f); f*=2; a*=0.5; } return s; }
+  // synthetic grayscale heightmap (gentle rolling relief) → hm buffer
+  function synthHeightmap(N){
+    const c=document.createElement('canvas'); c.width=c.height=N; const x=c.getContext('2d');
+    const im=x.createImageData(N,N), d=im.data;
+    for(let py=0;py<N;py++)for(let px=0;px<N;px++){
+      const e=_fbm(px/N*4.0, py/N*4.0);
+      const g=Math.max(0,Math.min(255, 60+e*150))|0;
+      const i=(py*N+px)*4; d[i]=d[i+1]=d[i+2]=g; d[i+3]=255;
+    }
+    x.putImageData(im,0,0);
+    return x.getImageData(0,0,N,N).data;
+  }
+  // synthetic draped colour texture (soil/meadow mosaic) → THREE.CanvasTexture
+  function synthGroundTexture(N){
+    const c=document.createElement('canvas'); c.width=c.height=N; const x=c.getContext('2d');
+    const im=x.createImageData(N,N), d=im.data;
+    for(let py=0;py<N;py++)for(let px=0;px<N;px++){
+      const e=_fbm(px/N*6.0+11.3, py/N*6.0+7.7), m=_fbm(px/N*22.0, py/N*22.0);
+      let r,g,b;
+      if(e<0.42){ r=176; g=158; b=116; } else if(e<0.6){ r=126; g=150; b=92; } else { r=196; g=190; b=150; }
+      const j=(m-0.5)*44, i=(py*N+px)*4;
+      d[i]=Math.max(0,Math.min(255,r+j))|0; d[i+1]=Math.max(0,Math.min(255,g+j))|0; d[i+2]=Math.max(0,Math.min(255,b+j*0.6))|0; d[i+3]=255;
+    }
+    x.putImageData(im,0,0);
+    const tex=new THREE.CanvasTexture(c); tex.anisotropy=8; tex.wrapS=tex.wrapT=THREE.ClampToEdgeWrapping;
+    if('SRGBColorSpace' in THREE) tex.colorSpace=THREE.SRGBColorSpace; else tex.encoding=THREE.sRGBEncoding;
+    return tex;
+  }
+
+  function grayAt(px,py){ if(!hm||!hmW) return 128; px=px<0?0:px>hmW-1?hmW-1:px|0; py=py<0?0:py>hmH-1?hmH-1:py|0;
     return hm[(py*hmW+px)*4]; }
   function elev(px,py){ return MINEL + grayAt(px,py)/255*REL; }
   // bilinear sample in world space (north = -z → image top)
@@ -38,23 +74,14 @@ const Terrain = (function(){
     col.setRGB(g(d[i]),g(d[i+1]),g(d[i+2])); return col;
   }
   function load(scene,M,onReady){
-    const img=new Image();
-    img.onload=async ()=>{
-      const c=document.createElement('canvas'); c.width=img.width; c.height=img.height;
-      const x=c.getContext('2d'); x.drawImage(img,0,0);
-      hm=x.getImageData(0,0,img.width,img.height).data; hmW=img.width; hmH=img.height;
-      centerElev=elev(hmW/2,hmH/2);
-      const a=await imgData('geo/central.png'); if(a){cenD=a.d;cenW=a.w;cenH=a.h;}
-      const b=await imgData('geo/satellite.png'); if(b){satD=b.d;satW=b.w;satH=b.h;}
-      buildTerrain(scene,M);
-      buildCentralPatch(scene,M);
-      // buildHomeBlock removed per the developer's cleanup — it was a STOPGAP semi-transparent
-      // "5-unit block" massing that read as translucent panels floating around the house.
-      // The neighbourhood is conveyed by the high-res aerial drape (central patch) instead.
-      buildTown(scene,M,()=>{ onReady(sampleHeight); });
-    };
-    img.onerror=()=>{ console.error('heightmap load failed'); onReady(sampleHeight); };
-    img.src='geo/heightmap.png';
+    // No real geodata is shipped — synthesise the heightmap so the relief is defined
+    // (and sampleHeight never reads an undefined buffer). Deterministic, no network.
+    const N=256;
+    hm=synthHeightmap(N); hmW=N; hmH=N;
+    centerElev=elev(hmW/2,hmH/2);
+    buildTerrain(scene,M);
+    buildCentralPatch(scene,M);
+    buildTown(scene,M,()=>{ onReady(sampleHeight); });
   }
 
   function buildTerrain(scene,M){
@@ -64,9 +91,7 @@ const Terrain = (function(){
     const pos=g.attributes.position;
     for(let i=0;i<pos.count;i++) pos.setY(i, sampleHeight(pos.getX(i),pos.getZ(i)));
     g.computeVertexNormals();
-    const tex=new THREE.TextureLoader().load('geo/satellite.png');
-    tex.anisotropy=8; tex.wrapS=tex.wrapT=THREE.ClampToEdgeWrapping;
-    if('SRGBColorSpace' in THREE) tex.colorSpace=THREE.SRGBColorSpace; else tex.encoding=THREE.sRGBEncoding;
+    const tex=synthGroundTexture(512);
     const mat=new THREE.MeshStandardMaterial({ map:tex, roughness:1, metalness:0 });
     const mesh=new THREE.Mesh(g,mat); mesh.receiveShadow=true; mesh.name='terrain';
     scene.add(mesh);
@@ -74,6 +99,7 @@ const Terrain = (function(){
   }
 
   function buildTown(scene,M,done){
+    done&&done(); return;   // neighbour massing disabled — no real footprints are shipped
     const img=new Image();
     img.onload=()=>{
       const c=document.createElement('canvas'); c.width=img.width; c.height=img.height;
@@ -137,9 +163,7 @@ const Terrain = (function(){
     const pos=g.attributes.position;
     for(let i=0;i<pos.count;i++) pos.setY(i, sampleHeight(pos.getX(i),pos.getZ(i))+0.2);
     g.computeVertexNormals();
-    const tex=new THREE.TextureLoader().load('geo/central_wide.png');
-    tex.anisotropy=16; tex.wrapS=tex.wrapT=THREE.ClampToEdgeWrapping;
-    if('SRGBColorSpace' in THREE) tex.colorSpace=THREE.SRGBColorSpace; else tex.encoding=THREE.sRGBEncoding;
+    const tex=synthGroundTexture(768); tex.anisotropy=16;
     const mat=new THREE.MeshStandardMaterial({ map:tex, roughness:1, metalness:0,
       polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-2 });
     const mesh=new THREE.Mesh(g,mat); mesh.receiveShadow=true; mesh.name='central'; scene.add(mesh);
