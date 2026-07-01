@@ -1,5 +1,5 @@
 /* ===================================================================
-   planning.js — "מה מותר במגרש" (what may be built on the plot).
+   planning.js — "what may be built on the plot".
    A live, NO-BACKEND lookup of the OFFICIAL planning that governs Alex's
    lot, served from a public planning registry — the same kind of GIS the
    official planning viewers read. In this demo build no external registry
@@ -10,7 +10,7 @@
    coverage, setbacks, far) live in those plan documents — NOT in the GIS
    attributes — so we link to them and never fabricate numbers here. The GIS
    *does* return a few genuinely plot-specific bits we now also surface (each
-   plan's stated PURPOSE/מטרות, its registered area, approved dwelling-units
+   plan's stated PURPOSE, its registered area, approved dwelling-units
    where non-zero) — clearly labelled plot-specific vs. the generic planning
    rules that come from the static plot_rights.json reference.
 
@@ -23,7 +23,7 @@
    ENRICHMENT API (additive — load()/get() keep their exact old shape):
      Planning.rights() → Promise resolving the static plot_rights.json
        reference (concrete renovation/extension possibilities + the
-       פטור list + official links), or null if it can't be fetched. Cached
+       exemption list + official links), or null if it can't be fetched. Cached
        in-memory. NEVER throws.
      Planning.getRights() → the in-memory rights object or null (sync).
    =================================================================== */
@@ -34,8 +34,8 @@ const Planning = (function(){
   const ENDPOINT='';   // demo build: the live planning-registry endpoint is intentionally not wired
   const CACHE_KEY='home_planning_v1';
   const TTL_MS=30*24*60*60*1000;          // ~30 days
-  const PLAN_LAYER='שכבת תכניות בניין';            // layerName carrying the governing plans
-  const LANDUSE_LAYER='יעודי קרקע';                 // layerName carrying land designation
+  const PLAN_LAYER='Building plans layer';            // layerName carrying the governing plans
+  const LANDUSE_LAYER='Land designation';                 // layerName carrying land designation
   // layerId FALLBACK — confirmed from the live identify response: plans=1, land-use=4.
   // Name match stays primary; matching by id too means a future layer-RENAME on the
   // registry side won't silently drop the data (the numeric layer ids are stable).
@@ -43,19 +43,19 @@ const Planning = (function(){
   const LANDUSE_LAYER_ID=4;
   // plan-registry placeholder code/name for "the plan does not apply here" — not a real
   // designation, so we suppress it rather than surface a misleading land-use.
-  const LANDUSE_NOISE=/אינה חלה|לא חלה/;
+  const LANDUSE_NOISE=/does not apply|not applicable/;
 
   let data=null;        // the in-memory parsed object (mirrors the cache)
   let inflight=null;    // de-dupe concurrent load() calls
 
-  // attribute reader tolerant of small key/encoding variants (e.g. 'יעוד'/'יעודי').
+  // attribute reader tolerant of small key/encoding variants in the (Hebrew) API field names.
   function attr(a,keys){
     if(!a) return '';
     for(const k of keys){ const v=a[k]; if(v!=null && v!=='' && v!=='Null') return String(v); }
     return '';
   }
 
-  // The registry 'מטרות' (plan purpose) field is plot-specific and useful — but it
+  // The registry plan-purpose field is plot-specific and useful — but it
   // is prefixed with the plan name and uses ' ^ ' as a soft separator, and the
   // GIS truncates long text mid-word. Clean it into a short, honest one-liner:
   // strip the leading echo of the plan name, collapse separators/whitespace,
@@ -101,24 +101,24 @@ const Planning = (function(){
     (results||[]).forEach(r=>{
       const ln=r&&r.layerName, lid=r&&r.layerId, a=(r&&r.attributes)||{};
       if(ln===PLAN_LAYER || lid===PLAN_LAYER_ID){
-        const number=attr(a,['מספר תכנית','מס תכנית']);
-        const name=attr(a,['שם תכנית']);
-        const planUrl=attr(a,['קישור לתכנית']);
-        const subtype=attr(a,['תת-סוג תכנית','תת סוג תכנית']);
-        const status=attr(a,['תיאור סטטוס','סטטוס']);
+        const number=attr(a,['plan number','plan no']);
+        const name=attr(a,['plan name']);
+        const planUrl=attr(a,['plan link']);
+        const subtype=attr(a,['plan subtype','plan sub-type']);
+        const status=attr(a,['status description','status']);
         if(!name && !number) return;        // nothing identifying → skip
         const key=number||name;
         if(byNum[key]) return;              // DEDUPE by plan number (then name)
         // PLOT-SPECIFIC enrichments straight from this plan's GIS attributes —
         // additive fields; the old {name,number,subtype,status,planUrl} are intact.
-        const purpose=cleanPurpose(attr(a,['מטרות']),name);     // what the plan is FOR (plot-specific)
-        const areaReg=posNum(attr(a,['שטח תכנית רשום'])); // registered plan area (its scope)
-        const homesApproved=posInt(attr(a,['מגורים מאושר יחידות דיור'])); // approved dwelling units (0 → omitted)
-        const updated=attr(a,['תאריך עדכון אחרון']);
+        const purpose=cleanPurpose(attr(a,['objectives']),name);     // what the plan is FOR (plot-specific)
+        const areaReg=posNum(attr(a,['registered plan area'])); // registered plan area (its scope)
+        const homesApproved=posInt(attr(a,['residential approved dwelling units'])); // approved dwelling units (0 → omitted)
+        const updated=attr(a,['last update date']);
         const plan={name,number,subtype,status,planUrl,purpose,areaReg,homesApproved,updated};
         byNum[key]=plan; plans.push(plan);
       } else if(ln===LANDUSE_LAYER || lid===LANDUSE_LAYER_ID){
-        const lu=attr(a,['שם ייעוד קרקע','שם יעוד קרקע','יעוד קרקע','יעודי קרקע']);
+        const lu=attr(a,['land designation name','land use name','land use','land designation']);
         if(lu && !LANDUSE_NOISE.test(lu) && !seenLU[lu]){ seenLU[lu]=1; landUse.push(lu); }
       }
     });
@@ -152,7 +152,7 @@ const Planning = (function(){
   function get(){ if(data) return data; const c=readCache(); if(c){ data=c; return c; } return null; }
 
   /* ---- static plot-rights reference (concrete renovation possibilities + the
-     פטור list + official links). This is the GENERIC-rules layer,
+     exemption list + official links). This is the GENERIC-rules layer,
      loaded from app/data/plot_rights.json once and cached in-memory. Separate
      from the live registry lookup on purpose: the card pairs the two so the reader
      sees plot-specific facts (from the registry) next to the general pathways (here),

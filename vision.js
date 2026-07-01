@@ -1,14 +1,14 @@
 /* ===========================================================================
- * vision.js · "הבית של אלכס" — לוּחַ חֲזוֹן (vision / dream board)
+ * vision.js · "Alex's House" — Vision Board (vision / dream board)
  * ---------------------------------------------------------------------------
  * A personal, aspirational PINBOARD that lives inside the dashboard (NOT a
  * data grid). Each TILE is one of:
  *   · an IMAGE tile  — an uploaded photo (canvas-downscaled to a ≤280KB
  *                      dataURL, the same budget log_store.js uses) + caption
  *                      + category.
- *   · an INTENTION tile — text-only "quote / כַּוָּנָה": a short line of intent,
+ *   · an INTENTION tile — text-only "quote / intention": a short line of intent,
  *                      no image. Reads warmer, a little bigger, gold accent.
- * Categories (chips, RTL): גִּינָה / בַּיִת / מַסָּעוֹת / יְעָדִים / הַשְׁרָאָה.
+ * Categories (chips, RTL): Garden / Home / Travels / Goals / Inspiration.
  * Filter by category; add / edit / remove tiles; everything persists to
  * localStorage 'home_vision_v1'. Masonry (CSS columns) so it feels like a
  * pinboard, not a table. Dark "#inst" brass-on-glass skin, but a touch more
@@ -31,15 +31,15 @@
 
   /* ---- categories (id → he label + emoji) -------------------------------- */
   var CATS = [
-    { k: 'garden',  he: 'גִּינָה',    emoji: '🌿' },
-    { k: 'home',    he: 'בַּיִת',     emoji: '🏠' },
-    { k: 'travel',  he: 'מַסָּעוֹת',  emoji: '🧭' },
-    { k: 'goals',   he: 'יְעָדִים',   emoji: '🎯' },
-    { k: 'inspire', he: 'הַשְׁרָאָה', emoji: '✨' }
+    { k: 'garden',  he: 'Garden',      emoji: '🌿' },
+    { k: 'home',    he: 'Home',        emoji: '🏠' },
+    { k: 'travel',  he: 'Travels',     emoji: '🧭' },
+    { k: 'goals',   he: 'Goals',       emoji: '🎯' },
+    { k: 'inspire', he: 'Inspiration', emoji: '✨' }
   ];
   var CAT_HE = {}, CAT_EMOJI = {};
   CATS.forEach(function (c) { CAT_HE[c.k] = c.he; CAT_EMOJI[c.k] = c.emoji; });
-  function catHe(k)    { return CAT_HE[k] || 'הַשְׁרָאָה'; }
+  function catHe(k)    { return CAT_HE[k] || 'Inspiration'; }
   function catEmoji(k) { return CAT_EMOJI[k] || '✨'; }
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -69,9 +69,9 @@
     try { if (localStorage.getItem(SEED_FLAG)) return arr; } catch(e){ return arr; }
     if (Array.isArray(arr) && arr.length){ try { localStorage.setItem(SEED_FLAG, '1'); } catch(e){} return arr; }
     var starters = [
-      { caption: 'חֲלוֹם לַגִּינָה',            cat: 'garden'  },
-      { caption: 'לַיְלָה שֶׁל כּוֹכָבִים בלרקמונט', cat: 'inspire' },
-      { caption: 'פְּרוֹיֶקְט לַבַּיִת',           cat: 'home'    }
+      { caption: 'A dream for the garden',     cat: 'garden'  },
+      { caption: 'A night of stars in Larkmont', cat: 'inspire' },
+      { caption: 'A project for the home',      cat: 'home'    }
     ];
     var seeded = starters.map(function(s){
       return { id: newId(), type: 'text', cat: s.cat, caption: s.caption, ts: isoNow() };
@@ -180,7 +180,7 @@
     var counts = { all: TILES.length };
     CATS.forEach(function(c){ counts[c.k] = TILES.filter(function(t){ return t && t.cat === c.k; }).length; });
     var h = '<div class="vchips">';
-    h += '<span class="vchip' + (_filter==='all'?' on':'') + '" data-vfilter="all">הַכֹּל <i>' + counts.all + '</i></span>';
+    h += '<span class="vchip' + (_filter==='all'?' on':'') + '" data-vfilter="all">All <i>' + counts.all + '</i></span>';
     CATS.forEach(function(c){
       h += '<span class="vchip' + (_filter===c.k?' on':'') + '" data-vfilter="' + c.k + '">' +
         c.emoji + ' ' + c.he + ' <i>' + (counts[c.k]||0) + '</i></span>';
@@ -194,10 +194,10 @@
     if (t.type === 'text'){
       return '<div class="vtile vtext" data-tile="' + esc(t.id) + '">' +
         '<div class="vquote-mark">”</div>' +
-        '<div class="vquote">' + (cap || '<span class="vmuted">כַּוָּנָה רֵיקָה</span>') + '</div>' +
+        '<div class="vquote">' + (cap || '<span class="vmuted">Empty intention</span>') + '</div>' +
         '<div class="vtfoot"><span class="vcat">' + catEmoji(t.cat) + ' ' + catHe(t.cat) + '</span>' +
-          '<span class="vacts"><span class="vact" data-vedit="' + esc(t.id) + '" title="עֲרֹךְ">✎</span>' +
-          '<span class="vact" data-vdel="' + esc(t.id) + '" title="הָסֵר">✕</span></span></div>' +
+          '<span class="vacts"><span class="vact" data-vedit="' + esc(t.id) + '" title="Edit">✎</span>' +
+          '<span class="vact" data-vdel="' + esc(t.id) + '" title="Remove">✕</span></span></div>' +
         '</div>';
     }
     return '<div class="vtile vimg" data-tile="' + esc(t.id) + '">' +
@@ -205,8 +205,8 @@
         '<span class="vcatpill">' + catEmoji(t.cat) + ' ' + catHe(t.cat) + '</span></div>' +
       (cap ? '<div class="vcap">' + cap + '</div>' : '') +
       '<div class="vtfoot"><span class="vsp"></span>' +
-        '<span class="vacts"><span class="vact" data-vedit="' + esc(t.id) + '" title="עֲרֹךְ">✎</span>' +
-        '<span class="vact" data-vdel="' + esc(t.id) + '" title="הָסֵר">✕</span></span></div>' +
+        '<span class="vacts"><span class="vact" data-vedit="' + esc(t.id) + '" title="Edit">✎</span>' +
+        '<span class="vact" data-vdel="' + esc(t.id) + '" title="Remove">✕</span></span></div>' +
       '</div>';
   }
 
@@ -217,23 +217,23 @@
     var isText = (_editing === '__newText__') || (t && t.type === 'text');
     var curCat = t ? t.cat : 'inspire';
     var curCap = t ? esc(t.caption||'') : '';
-    var title = t ? 'עֲרִיכַת אָרִיחַ' : (isText ? 'כַּוָּנָה חֲדָשָׁה' : 'אָרִיחַ חָדָשׁ');
+    var title = t ? 'Edit tile' : (isText ? 'New intention' : 'New tile');
 
-    var h = '<div class="vform" dir="rtl">';
-    h += '<div class="vfhd"><span>' + title + '</span><span class="vfx" data-vcancel="1" title="בַּטֵּל">✕</span></div>';
+    var h = '<div class="vform" dir="ltr">';
+    h += '<div class="vfhd"><span>' + title + '</span><span class="vfx" data-vcancel="1" title="Cancel">✕</span></div>';
 
     if (!isText){
       var hasImg = t && t.photo;
       h += '<label class="vdrop' + (hasImg?' has':'') + '" data-vdroplbl="1">' +
         (hasImg
-          ? '<img src="' + esc(t.photo) + '" alt=""><span class="vdroptxt">לַחֲצוּ לְהַחְלָפַת הַתְּמוּנָה</span>'
-          : '<span class="vdropicon">🖼️</span><span class="vdroptxt">בְּחַרוּ תְּמוּנָה מֵהַמַּכְשִׁיר</span>') +
+          ? '<img src="' + esc(t.photo) + '" alt=""><span class="vdroptxt">Click to replace the image</span>'
+          : '<span class="vdropicon">🖼️</span><span class="vdroptxt">Choose an image from your device</span>') +
         '<input type="file" accept="image/*" class="vfile" hidden></label>';
       h += '<div class="vpreviewslot"></div>';
     }
 
     h += '<textarea class="vcapin" rows="' + (isText?3:2) + '" maxlength="600" placeholder="' +
-      (isText ? 'כִּתְבוּ אֶת הַכַּוָּנָה / הַמִּשְׁפָּט…' : 'כִּתּוּב לַתְּמוּנָה (אוֹפְצִיוֹנָלִי)…') + '">' + curCap + '</textarea>';
+      (isText ? 'Write the intention / quote…' : 'Caption for the image (optional)…') + '">' + curCap + '</textarea>';
 
     h += '<div class="vcatpick">';
     CATS.forEach(function(c){
@@ -242,8 +242,8 @@
     h += '</div>';
 
     h += '<div class="vfmsg"></div>';
-    h += '<div class="vfbtns"><button class="vbtn save" data-vsave="1">' + (t?'שְׁמֹר שִׁנּוּיִים':'הוֹסֵף לַלּוּחַ') + '</button>' +
-      '<button class="vbtn ghost" data-vcancel="1">בַּטֵּל</button></div>';
+    h += '<div class="vfbtns"><button class="vbtn save" data-vsave="1">' + (t?'Save changes':'Add to board') + '</button>' +
+      '<button class="vbtn ghost" data-vcancel="1">Cancel</button></div>';
     h += '</div>';
     return h;
   }
@@ -252,14 +252,14 @@
     if (!_host) return;
     ensureCSS();
     var vis = visibleTiles();
-    var h = '<div id="visionBoard" dir="rtl">';
-    h += '<div class="vhead"><h3>לוּחַ הַחֲזוֹן</h3>' +
-      '<div class="vsub">הַתְּמוּנוֹת, הַמְּקוֹמוֹת וְהַכַּוָּנוֹת שֶׁמּוֹשְׁכוֹת אוֹתְךָ קָדִימָה. הוֹסֵף, סַדֵּר, חֲלֹם.</div></div>';
+    var h = '<div id="visionBoard" dir="ltr">';
+    h += '<div class="vhead"><h3>Vision Board</h3>' +
+      '<div class="vsub">The images, places and intentions that pull you forward. Add, arrange, dream.</div></div>';
 
     // add buttons
     h += '<div class="vaddrow">' +
-      '<button class="vbtn add" data-vadd="img">＋ אָרִיחַ תְּמוּנָה</button>' +
-      '<button class="vbtn add ghost" data-vadd="text">＋ כַּוָּנָה / צִיטוּט</button></div>';
+      '<button class="vbtn add" data-vadd="img">＋ Image tile</button>' +
+      '<button class="vbtn add ghost" data-vadd="text">＋ Intention / quote</button></div>';
 
     // category filter chips
     h += chipsHtml();
@@ -268,19 +268,19 @@
     h += '<div id="vision-form">' + (_editing ? formHtml() : '') + '</div>';
 
     if (_quotaWarn){
-      h += '<div class="vwarn">⚠️ לֹא נִשְׁמַר — אֵין מַסְפִּיק מָקוֹם בְּאֵחְסוּן הַדַּפְדְּפָן. נַסּוּ לְהָסֵר אָרִיחַ אוֹ תְּמוּנָה קְטַנָּה יוֹתֵר.</div>';
+      h += '<div class="vwarn">⚠️ Not saved — not enough room in browser storage. Try removing a tile or using a smaller image.</div>';
     }
 
     // the board
     if (!TILES.length){
-      h += '<div class="vempty">🌅<div>הַלּוּחַ עֲדַיִן רֵיק.<br>הוֹסֵף אֶת הַחֲלוֹם הָרִאשׁוֹן — תְּמוּנָה שֶׁל מָקוֹם, מַסָּע אוֹ כַּוָּנָה.</div></div>';
+      h += '<div class="vempty">🌅<div>The board is still empty.<br>Add your first dream — an image of a place, a journey or an intention.</div></div>';
     } else if (!vis.length){
-      h += '<div class="vempty">🔎<div>אֵין אֲרִיחִים בַּקָּטֵגוֹרְיָה הַזֹּאת עֲדַיִן.</div></div>';
+      h += '<div class="vempty">🔎<div>No tiles in this category yet.</div></div>';
     } else {
       h += '<div class="vmasonry">' + vis.map(tileHtml).join('') + '</div>';
     }
 
-    h += '<div class="vfoot">לוּחַ אִישִׁי — נִשְׁמָר עַל הַמַּכְשִׁיר וּמְסֻנְכְרָן בֶּעָנָן. תְּמוּנוֹת מְכֻוָּצוֹת לַחְסֹךְ מָקוֹם.</div>';
+    h += '<div class="vfoot">Personal board — saved on your device and synced to the cloud. Images are compressed to save space.</div>';
     h += '</div>';
     _host.innerHTML = h;
   }
@@ -340,21 +340,21 @@
     var isEdit = !isNewText && !isNewImg;
 
     if (isNewText){
-      if (!caption.trim()){ setFormMsg('כִּתְבוּ אֶת הַכַּוָּנָה לִפְנֵי הַשְּׁמִירָה.', 'err'); return; }
+      if (!caption.trim()){ setFormMsg('Write the intention before saving.', 'err'); return; }
       addTile({ type:'text', caption:caption, cat:cat });
       _editing = null; render(); return;
     }
     if (isNewImg){
-      if (!_pendingPhoto){ setFormMsg('בְּחַרוּ תְּמוּנָה לִפְנֵי הַהוֹסָפָה.', 'err'); return; }
+      if (!_pendingPhoto){ setFormMsg('Choose an image before adding.', 'err'); return; }
       var rec = addTile({ type:'image', photo:_pendingPhoto, caption:caption, cat:cat });
-      if (!rec){ setFormMsg('לֹא נִשְׁמַר — אֵין מַסְפִּיק מָקוֹם בָּאֵחְסוּן.', 'err'); return; }
+      if (!rec){ setFormMsg('Not saved — not enough storage space.', 'err'); return; }
       _editing = null; _pendingPhoto = null; render(); return;
     }
     if (isEdit){
       var patch = { caption:caption, cat:cat };
       if (_pendingPhoto) patch.photo = _pendingPhoto;
       var res = updateTile(_editing, patch);
-      if (!res){ setFormMsg('לֹא נִשְׁמַר — אֵין מַסְפִּיק מָקוֹם בָּאֵחְסוּן.', 'err'); return; }
+      if (!res){ setFormMsg('Not saved — not enough storage space.', 'err'); return; }
       _editing = null; _pendingPhoto = null; render(); return;
     }
   }
@@ -364,11 +364,11 @@
     if (!inp.classList || !inp.classList.contains('vfile')) return;
     var file = inp.files && inp.files[0];
     if (!file) return;
-    setFormMsg('מְכַוֵּץ תְּמוּנָה…', 'busy');
+    setFormMsg('Compressing image…', 'busy');
     fileToDataURL(file, function(url){
-      if (!url){ setFormMsg('לֹא הִצְלַחְתִּי לִקְרֹא אֶת הַתְּמוּנָה (אוֹ שֶׁהִיא גְּדוֹלָה מִדַּי).', 'err'); return; }
+      if (!url){ setFormMsg('Couldn\'t read the image (or it\'s too large).', 'err'); return; }
       _pendingPhoto = url;
-      setFormMsg('הַתְּמוּנָה מוּכָנָה ✓', 'ok');
+      setFormMsg('Image ready ✓', 'ok');
       // live preview in the form
       var slot = _host.querySelector('.vpreviewslot');
       if (slot) slot.innerHTML = '<div class="vpreview"><img src="' + esc(url) + '" alt=""></div>';
@@ -394,7 +394,7 @@
     var s = document.createElement('style');
     s.id = 'vision-css';
     s.textContent =
-      '#visionBoard{direction:rtl;font-family:Heebo,sans-serif;color:#efe6cf}' +
+      '#visionBoard{direction:ltr;font-family:Heebo,sans-serif;color:#efe6cf}' +
       '#visionBoard h3{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:18px;color:#fff7e6;margin:0 0 2px}' +
       '#visionBoard .vsub{color:#a99b78;font-size:12px;line-height:1.5;margin-bottom:10px}' +
       // add buttons
@@ -467,7 +467,7 @@
       '#visionBoard .vdropicon{font-size:26px}' +
       '#visionBoard .vpreview{margin:9px 0 0}#visionBoard .vpreview img{max-width:100%;max-height:160px;border-radius:8px;display:block}' +
       '#visionBoard .vcapin{width:100%;box-sizing:border-box;margin:10px 0 0;padding:9px 11px;border-radius:9px;resize:vertical;' +
-        'background:rgba(255,255,255,.04);border:1px solid rgba(202,161,90,.3);color:#ece6d8;font-family:Heebo;font-size:13px;direction:rtl}' +
+        'background:rgba(255,255,255,.04);border:1px solid rgba(202,161,90,.3);color:#ece6d8;font-family:Heebo;font-size:13px;direction:ltr}' +
       '#visionBoard .vcapin::placeholder{color:#7d7560}' +
       '#visionBoard .vcatpick{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}' +
       '#visionBoard .vcatopt{font-size:11.5px;font-family:Heebo;padding:5px 11px;border-radius:20px;cursor:pointer;' +

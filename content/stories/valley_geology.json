@@ -1,23 +1,23 @@
 {
-  "title_he": "הַגֵּאוֹלוֹגְיָה שֶׁל עֵמֶק לַרְקְמוֹנְט",
+  "title_he": "The Geology of Larkmont Valley",
   "read_minutes": 4,
   "sections": [
     {
-      "h": "עֵמֶק שֶׁחָצַב נָהָר",
-      "body_he": "עֵמֶק לַרְקְמוֹנְט הוּא עֵמֶק-סְחִיפָה בִּדְיוֹנִי שֶׁנּוֹצַר לְאַט: נָהָר עַתִּיק חָתַךְ בְּמֶשֶׁךְ עִדָּנִים אֶת דַּרְכּוֹ דֶּרֶךְ שִׁכְבוֹת סֶלַע מְשֻׁכָּבוֹת, הֶעֱמִיק אֶת הָעֵמֶק וְהִרְחִיב אוֹתוֹ כְּשֶׁדְּפָנוֹתָיו נִסְחֲפוּ וְנָסוֹגוּ עִם הַזְּמַן. אֵין כָּאן תַּצּוּרָה חֲרִיגָה — רַק עֲבוֹדָה אִטִּית שֶׁל מַיִם עַל סֶלַע, סִפּוּר נְפוֹץ בְּכָל אֵזוֹר צָחִיחַ וְהָרִי."
+      "h": "A Valley Carved by a River",
+      "body_he": "Larkmont Valley is a fictional erosion valley that formed slowly: an ancient river cut its way through layered rock strata over the ages, deepening the valley and widening it as its walls eroded and retreated over time. There is no unusual formation here — just the slow work of water on rock, a common story in any arid, mountainous region."
     },
     {
-      "h": "חַתָּךְ הַזְּמַן",
-      "body_he": "דְּפָנוֹת הָעֵמֶק חוֹשְׂפוֹת מֵאוֹת מִילְיוֹנֵי שָׁנִים שֶׁל שִׁכְבוֹת — חוֹלוֹת, גִּיר וְחֶבְצָר — שְׁכָבָה עַל גַּבֵּי שְׁכָבָה, מֵהַיָּשָׁן לֶחָדָשׁ."
+      "h": "A Cross-Section of Time",
+      "body_he": "The valley walls expose hundreds of millions of years of strata — sandstone, limestone, and chert — layer upon layer, from the oldest to the newest."
     },
     {
-      "h": "מָה רוֹאִים מֵהַשָּׂפָה",
-      "body_he": "מִשְּׂפַת הָעֵמֶק, בַּמָּקוֹם שֶׁבּוֹ עוֹמֵד הַבַּיִת, נִפְרָשׂ הַקַּרְקָעִית כֻּלָּהּ — אַזוֹר בִּדְיוֹנִי שֶׁנֻּסַּח לְצֹרֶךְ הַדֶּמוֹ בִּלְבַד."
+      "h": "What You See from the Rim",
+      "body_he": "From the valley rim, where the house stands, the entire floor spreads out below — a fictional area composed for the demo only."
     }
   ],
   "sources": [
     {
-      "name": "לרקמונט · אַרְכִיוֹן הַדֶּמוֹ (סִינְתֵטִי)",
+      "name": "Larkmont · Demo Archive (synthetic)",
       "url": ""
     }
   ]

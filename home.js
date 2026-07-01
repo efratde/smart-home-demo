@@ -1,29 +1,29 @@
 /* ===========================================================================
- * home.js · "הבית של אלכס" — the LIVING HOME landing (the cockpit)
+ * home.js · "Alex's Home" — the LIVING HOME landing (the cockpit)
  * ---------------------------------------------------------------------------
  * The first thing Alex sees. ONE beautiful living panel that pulls the app's
  * best gems together, in the dark gold-on-glass #inst language (RTL Hebrew):
  *
- *   • עכשיו   — live temp (Weather.state.temp) + the geometry-modeled
+ *   • Now      — live temp (Weather.state.temp) + the geometry-modeled
  *               house-vs-town delta (Derive.microclimate), plus measured
  *               dust / PM10 / UV (Weather.air).
- *   • הלילה   — tonight's stargazing verdict (Derive.goOutScore) and the next
+ *   • Tonight  — tonight's stargazing verdict (Derive.goOutScore) and the next
  *               truly dark (new-moon) night (Derive.nextDarkNight).
- *   • החודש   — what's alive in nature THIS month (Nature._data filtered),
+ *   • This month — what's alive in nature THIS month (Nature._data filtered),
  *               a few species with their photo.
- *   • מד-יקום — the COSMIC ODOMETER (was hidden): full moons / perseids /
+ *   • Cosmos meter — the COSMIC ODOMETER (was hidden): full moons / perseids /
  *               orbital-km / days / hours since birth — computed LIVE off the
  *               birth date so the seconds tick.
- *   • 3 ימים  — the 3-day hazard forecast (was hidden): Weather.hazardForecast().
- *   • התרעה   — the top alert that matters (Alerts.collect(date)[0]) or a calm
+ *   • 3 days   — the 3-day hazard forecast (was hidden): Weather.hazardForecast().
+ *   • Alert    — the top alert that matters (Alerts.collect(date)[0]) or a calm
  *               all-clear message.
- *   • העונה   — this-season REAL backyard totals over ~90 days from the
+ *   • Season   — this-season REAL backyard totals over ~90 days from the
  *               RecordStore logbook (frost nights / DLI / rain), labeled
- *               "מבוסס מדידות אמת". Degrades gracefully before data exists.
+ *               "based on real measurements". Degrades gracefully before data exists.
  *
  * HONESTY (CLAUDE.md, non-negotiable): every surfaced number is labeled as
- * MEASURED ("מבוסס מדידות אמת") for real weather, or MODELED ("מחושב לפי
- * הגיאומטריה של הבית" / "הערכה") for geometry-derived. NEVER implies a physical
+ * MEASURED ("based on real measurements") for real weather, or MODELED ("computed
+ * from the house geometry" / "estimate") for geometry-derived. NEVER implies a physical
  * sensor. If a source isn't ready, the block says so instead of faking it.
  *
  * Self-contained: owns its own DOM + scoped #homeMain CSS (ensureCSS pattern,
@@ -43,8 +43,8 @@
   function isNum(v){ return typeof v==='number' && isFinite(v); }
   function intHe(n){ try{ return Number(n).toLocaleString('he-IL'); }catch(e){ return String(n); } }
 
-  var MONTHS_HE = ['יָנוּאָר','פֶבְּרוּאָר','מֵרְץ','אַפְּרִיל','מַאי','יוּנִי','יוּלִי','אוֹגוּסְט','סֶפְּטֶמְבֶּר','אוֹקְטוֹבֶּר','נוֹבֶמְבֶּר','דֶצֶמְבֶּר'];
-  var DOW_HE = ['רִאשׁוֹן','שֵׁנִי','שְׁלִישִׁי','רְבִיעִי','חֲמִישִׁי','שִׁישִׁי','שַׁבָּת'];
+  var MONTHS_HE = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DOW_HE = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var EMOJI = { bird:'🐦', mammal:'🦌', reptile:'🦎', insect:'🦗', plant:'🌿', fungi:'🍄', other:'•' };
 
   /* ---- state for the live-ticking odometer ---- */
@@ -227,31 +227,31 @@
 
   function dustHe(d){
     if (d == null) return null;
-    if (d < 40) return 'נָקִי';
-    if (d < 90) return 'אֲבָק קַל';
-    if (d < 150) return 'אֲבָק';
-    return 'סְעָרַת אָבָק';
+    if (d < 40) return 'Clean';
+    if (d < 90) return 'Light dust';
+    if (d < 150) return 'Dusty';
+    return 'Dust storm';
   }
 
   // time-of-day greeting off the SAME date the hero already uses (in-scope /
   // scrub date if present, else now), keyed to the local hour so a night
-  // view never says "בוקר טוב". Same nikud style as the rest of the hero.
+  // view never says "good morning" at night. Same greeting style as the rest of the hero.
   function greetHe(date){
     var h = localHour(date);
-    if (h >= 5  && h < 11) return 'בֹּקֶר טוֹב';
-    if (h >= 11 && h < 16) return 'צָהֳרַיִם טוֹבִים';
-    if (h >= 16 && h < 21) return 'עֶרֶב טוֹב';
-    return 'לַיְלָה טוֹב';
+    if (h >= 5  && h < 11) return 'Good morning';
+    if (h >= 11 && h < 16) return 'Good afternoon';
+    if (h >= 16 && h < 21) return 'Good evening';
+    return 'Good night';
   }
 
   function html(date){
     var d = date || new Date();
     var dow = DOW_HE[d.getDay()], mn = MONTHS_HE[d.getMonth()];
-    var head = '<div class="ohHero"><div class="ohHi">' + greetHe(d) + ', אלכס</div>' +
-      '<div class="ohDate">יוֹם ' + dow + ' · ' + d.getDate() + ' ב' + mn + '</div>' +
-      '<div class="ohPlace">הַבַּיִת שֶׁלְּךָ · לרקמונט</div></div>';
+    var head = '<div class="ohHero"><div class="ohHi">' + greetHe(d) + ', Alex</div>' +
+      '<div class="ohDate">' + dow + ' · ' + d.getDate() + ' ' + mn + '</div>' +
+      '<div class="ohPlace">Your home · Larchmont</div></div>';
 
-    return '<div class="ohWrap" dir="rtl">' + head +
+    return '<div class="ohWrap" dir="ltr">' + head +
       '<div class="ohGrid">' +
         nowCard(d) +
         energyNowCard(d) +
@@ -261,33 +261,33 @@
         seasonCard(d) +
         newspaperCard() +
       '</div>' +
-      '<div class="ohFoot">🟢 מָדוּד — מְדִידוֹת אֱמֶת מִצְטַבְּרוֹת (הַיּוֹמָן) · 🟡 מוֹדֵל / חָזוּי — Open-Meteo אֵזוֹרִי + גֵּאוֹמֶטְרְיַת הַבַּיִת. אֵין חַיְשָׁן פִיזִי בַּשֶּׁטַח.</div>' +
+      '<div class="ohFoot">🟢 Measured — accumulating real measurements (the logbook) · 🟡 Model / forecast — Open-Meteo regional + house geometry. No physical sensor on site.</div>' +
       '</div>';
   }
 
-  /* ---- עכשיו: live temp + house delta + measured air ---- */
+  /* ---- Now: live temp + house delta + measured air ---- */
   function nowCard(date){
     var n = liveNow(date);
-    var measTag = '<span class="ohTag model">🟡 אֵזוֹרִי · מוֹדֵל</span>';
+    var measTag = '<span class="ohTag model">🟡 Regional · Model</span>';
     var body = '';
     if (n.town == null) {
-      body = '<div class="ohEmpty">מֶזֶג הָאֲוִיר נִטְעָן…</div>';
+      body = '<div class="ohEmpty">Weather loading…</div>';
     } else {
-      var sub = n.live ? 'מְדִידָה חַיָּה' : 'לֹא מְקֻוָּן — עֵרֶךְ בְּרֵירַת מֶחְדָּל';
-      body += '<div class="ohBig">' + Math.round(n.town) + '°<span class="ohBigU">בָּעִיר</span></div>';
+      var sub = n.live ? 'Live measurement' : 'Offline — default value';
+      body += '<div class="ohBig">' + Math.round(n.town) + '°<span class="ohBigU">in town</span></div>';
       var extra = [];
       if (n.desc) extra.push(esc(n.desc));
-      if (n.hum != null) extra.push('לַחוּת ' + n.hum + '%');
-      if (n.wind != null) extra.push('רוּחַ ' + n.wind + ' קמ״ש');
+      if (n.hum != null) extra.push('Humidity ' + n.hum + '%');
+      if (n.wind != null) extra.push('Wind ' + n.wind + ' km/h');
       if (extra.length) body += '<div class="ohSub">' + extra.join(' · ') + '</div>';
       // geometry-modeled house delta
       if (n.mc && isNum(n.mc.delta) && Math.abs(n.mc.delta) >= 0.1) {
         var cooler = n.mc.delta < 0;
-        body += '<div class="ohRow"><span>בַּבַּיִת שֶׁלְּךָ <span class="ohTag model">🟡 מוֹדֵל</span><span data-xpl-mc></span></span>' +
+        body += '<div class="ohRow"><span>At your home <span class="ohTag model">🟡 Model</span><span data-xpl-mc></span></span>' +
           '<b style="color:' + (cooler ? '#9fc2e0' : '#e0b070') + '">' + n.mc.temp + '° · ' +
-          (cooler ? 'קָרִיר ' : 'חַם ') + r1(Math.abs(n.mc.delta)) + '° מֵהָעִיר</b></div>';
+          (cooler ? 'cooler ' : 'warmer ') + r1(Math.abs(n.mc.delta)) + '° than town</b></div>';
       } else if (n.mc && isNum(n.mc.temp)) {
-        body += '<div class="ohRow"><span>בַּבַּיִת שֶׁלְּךָ <span class="ohTag model">🟡 מוֹדֵל</span><span data-xpl-mc></span></span><b>' + n.mc.temp + '°</b></div>';
+        body += '<div class="ohRow"><span>At your home <span class="ohTag model">🟡 Model</span><span data-xpl-mc></span></span><b>' + n.mc.temp + '°</b></div>';
       }
       // measured air quality
       if (n.air) {
@@ -296,74 +296,74 @@
         var uv = isNum(n.air.uv) ? r1(n.air.uv) : null;
         if (dustV != null || pm10 != null) {
           var lbl = dustHe(dustV != null ? dustV : pm10);
-          var val = (dustV != null ? (dustV + ' µg/m³ אָבָק') : (pm10 + ' µg/m³ PM10'));
-          body += '<div class="ohRow"><span>אֵיכוּת אֲוִיר ' + measTag + '<span data-xpl-air></span></span><b>' + (lbl ? lbl + ' · ' : '') + val + '</b></div>';
+          var val = (dustV != null ? (dustV + ' µg/m³ dust') : (pm10 + ' µg/m³ PM10'));
+          body += '<div class="ohRow"><span>Air quality ' + measTag + '<span data-xpl-air></span></span><b>' + (lbl ? lbl + ' · ' : '') + val + '</b></div>';
         }
         if (uv != null) {
-          var uvLbl = uv >= 8 ? 'גָּבוֹהַּ מְאוֹד' : uv >= 6 ? 'גָּבוֹהַּ' : uv >= 3 ? 'בֵּינוֹנִי' : 'נָמוּךְ';
-          body += '<div class="ohRow"><span>קֶרֶן UV ' + measTag + '<span data-xpl-uv></span></span><b>' + uv + ' · ' + uvLbl + '</b></div>';
+          var uvLbl = uv >= 8 ? 'Very high' : uv >= 6 ? 'High' : uv >= 3 ? 'Medium' : 'Low';
+          body += '<div class="ohRow"><span>UV index ' + measTag + '<span data-xpl-uv></span></span><b>' + uv + ' · ' + uvLbl + '</b></div>';
         }
       } else {
-        body += '<div class="ohHint">אֵיכוּת הָאֲוִיר נִטְעֶנֶת בָּרֶקַע…</div>';
+        body += '<div class="ohHint">Air quality loading in the background…</div>';
       }
     }
-    return card('☀️', 'עַכְשָׁו', body, 'env');
+    return card('☀️', 'Now', body, 'env');
   }
 
-  /* ---- הלילה: stargazing verdict + next dark night ---- */
+  /* ---- Tonight: stargazing verdict + next dark night ---- */
   function tonightCard(date){
     var t = tonight(date);
     var body = '';
     if (!t) {
-      body = '<div class="ohEmpty">מָנוֹעַ הַשָּׁמַיִם נִטְעָן…</div>';
+      body = '<div class="ohEmpty">Sky engine loading…</div>';
     } else {
       var go = t.go;
       if (go) {
         var cls = go.score >= 80 ? 'hi' : go.score >= 60 ? 'mid' : go.score >= 40 ? 'mid' : 'lo';
         body += '<div class="ohVerdict ' + cls + '">' + esc(go.verdict) + '<span data-xpl-go></span></div>';
-        body += '<div class="ohScore"><span class="ohScoreN">' + go.score + '</span><span class="ohScoreD">/100 · צִיּוּן צְפִיָּה · Bortle-3</span></div>';
-        body += '<div class="ohRow"><span>שְׁקִיפוּת שָׁמַיִם</span><b>' + Math.round((go.transparency != null ? go.transparency : 1) * 100) + '%</b></div>';
+        body += '<div class="ohScore"><span class="ohScoreN">' + go.score + '</span><span class="ohScoreD">/100 · viewing score · Bortle-3</span></div>';
+        body += '<div class="ohRow"><span>Sky transparency</span><b>' + Math.round((go.transparency != null ? go.transparency : 1) * 100) + '%</b></div>';
       } else {
-        body += '<div class="ohHint">הַצִּיּוּן יוֹפִיעַ אַחֲרֵי הַדִּמְדּוּמִים (כָּעֵת יוֹם).</div>';
+        body += '<div class="ohHint">The score will appear after dusk (currently daytime).</div>';
       }
       var illum = Math.round(t.moon.illum * 100);
-      body += '<div class="ohRow"><span>יָרֵחַ</span><b>' + esc(t.moon.name) + ' · ' + illum + '% מוּאָר</b></div>';
+      body += '<div class="ohRow"><span>Moon</span><b>' + esc(t.moon.name) + ' · ' + illum + '% lit</b></div>';
       if (t.nightCloud != null)
-        body += '<div class="ohRow"><span>עֲנָנוּת הָעֶרֶב</span><b>~' + Math.round(t.nightCloud*100) + '%</b></div>';
+        body += '<div class="ohRow"><span>Evening cloud cover</span><b>~' + Math.round(t.nightCloud*100) + '%</b></div>';
       if (t.dark) {
         var da = t.dark.daysAway;
-        var when = (da === 0) ? 'הַלַּיְלָה' : (da === 1) ? 'מָחָר בַּלַּיְלָה' : ('בְּעוֹד ' + da + ' לֵילוֹת');
-        body += '<div class="ohRow"><span>הַלַּיְלָה הֶחָשׁוּךְ הַבָּא<span data-xpl-dark></span></span><b>' + when + ' · יָרֵחַ ' + Math.round(t.dark.illum*100) + '%</b></div>';
+        var when = (da === 0) ? 'Tonight' : (da === 1) ? 'Tomorrow night' : ('In ' + da + ' nights');
+        body += '<div class="ohRow"><span>Next dark night<span data-xpl-dark></span></span><b>' + when + ' · Moon ' + Math.round(t.dark.illum*100) + '%</b></div>';
       }
-      body += '<div class="ohHint">יָרֵחַ אֶפֶמֶרִי · עֲנָנוּת חֲזוּיָה (Open-Meteo)</div>';
+      body += '<div class="ohHint">Ephemeris moon · forecast cloud cover (Open-Meteo)</div>';
     }
-    return card('🌌', 'הַלַּיְלָה · כּוֹכָבִים', body, 'sky');
+    return card('🌌', 'Tonight · Stars', body, 'sky');
   }
 
-  /* ---- 3 ימים: hazard forecast strip ---- */
+  /* ---- 3 days: hazard forecast strip ---- */
   function forecastCard(){
     var f = forecast3();
     var body = '';
     if (!f) {
-      body = '<div class="ohHint">תַּחֲזִית 3 הַיָּמִים נִטְעֶנֶת…</div>';
+      body = '<div class="ohHint">3-day forecast loading…</div>';
     } else {
       body = '<div class="ohFc">' + f.map(function(d, i){
         var dt = d.date ? new Date(d.date + 'T12:00:00') : null;
-        var lbl = (i === 0) ? 'הַיּוֹם' : (dt ? DOW_HE[dt.getDay()] : '—');
+        var lbl = (i === 0) ? 'Today' : (dt ? DOW_HE[dt.getDay()] : '—');
         var icon = wxIcon(d.code, d.snowCm, d.rainMm);
         var bits = [];
-        if (isNum(d.tmin)) bits.push('מִינ׳ ' + Math.round(d.tmin) + '°');
-        if (isNum(d.rainMm) && d.rainMm > 0) bits.push('🌧️ ' + r1(d.rainMm) + ' מ״מ');
-        else if (isNum(d.rainProb) && d.rainProb > 0) bits.push(d.rainProb + '% גֶּשֶׁם');
-        if (isNum(d.snowCm) && d.snowCm > 0) bits.push('❄️ ' + r1(d.snowCm) + ' ס״מ');
+        if (isNum(d.tmin)) bits.push('min ' + Math.round(d.tmin) + '°');
+        if (isNum(d.rainMm) && d.rainMm > 0) bits.push('🌧️ ' + r1(d.rainMm) + ' mm');
+        else if (isNum(d.rainProb) && d.rainProb > 0) bits.push(d.rainProb + '% rain');
+        if (isNum(d.snowCm) && d.snowCm > 0) bits.push('❄️ ' + r1(d.snowCm) + ' cm');
         if (isNum(d.windMax)) bits.push('💨 ' + Math.round(d.windMax));
         return '<div class="ohFcD"><div class="ohFcDow">' + lbl + '</div>' +
           '<div class="ohFcIc">' + icon + '</div>' +
           '<div class="ohFcM">' + (bits.length ? bits.join('<br>') : '—') + '</div></div>';
       }).join('') + '</div>';
-      body += '<div class="ohHint">תַּחֲזִית (Open-Meteo) · רוּחַ בְּקמ״ש</div>';
+      body += '<div class="ohHint">Forecast (Open-Meteo) · wind in km/h</div>';
     }
-    return card('📅', 'שְׁלוֹשָׁה יָמִים קָדִימָה', body, 'env');
+    return card('📅', 'Three days ahead', body, 'env');
   }
 
   function wxIcon(code, snow, rain){
@@ -380,46 +380,46 @@
     return '☀️';
   }
 
-  /* ---- התרעה: top alert (or all-clear) ---- */
+  /* ---- Alert: top alert (or all-clear) ---- */
   function alertCard(date){
     var a = topAlert(date);
     var body;
     if (a === undefined) {
-      body = '<div class="ohHint">מָנוֹעַ הַהַתְרָעוֹת נִטְעָן…</div>';
+      body = '<div class="ohHint">Alerts engine loading…</div>';
     } else if (!a) {
-      body = '<div class="ohCalm"><span class="ohCalmIc">✓</span> הַכֹּל רָגוּעַ — אֵין הַתְרָעוֹת פְּעִילוֹת.</div>' +
-        '<div class="ohHint">הַתְרָעוֹת מוֹפִיעוֹת רַק כְּשֶׁמַּשֶּׁהוּ בֶּאֱמֶת דּוֹרֵשׁ תְּשׂוּמֶת לֵב.</div>';
+      body = '<div class="ohCalm"><span class="ohCalmIc">✓</span> All calm — no active alerts.</div>' +
+        '<div class="ohHint">Alerts appear only when something truly needs your attention.</div>';
     } else {
       var sevCls = a.sev === 'cold' ? 'cold' : a.sev === 'warn' ? 'warn' : a.sev === 'good' ? 'good' : 'info';
       body = '<div class="ohAlert ' + sevCls + '"><span class="ohAlertIc">' + (a.icon || '⚠️') + '</span>' +
         '<span class="ohAlertTx">' + esc(a.he || '') + '</span></div>';
     }
-    return card('🔔', 'מַה שֶּׁחָשׁוּב עַכְשָׁו', body);
+    return card('🔔', 'What matters now', body);
   }
 
-  /* ---- מד-יקום: the COSMIC ODOMETER (live-ticking) ---- */
+  /* ---- Cosmos meter: the COSMIC ODOMETER (live-ticking) ---- */
   function odometerCard(){
     var o = odometer();
     var body;
     if (!o) {
-      body = '<div class="ohHint">מַד הַיְּקוּם נִטְעָן…</div>';
+      body = '<div class="ohHint">Cosmic odometer loading…</div>';
     } else {
       body = '<div class="ohOdoGrid">' +
-        odoCell('🌍', 'יָמִים עַל כַּדּוּר־הָאָרֶץ', intHe(o.days)) +
-        odoCell('🕐', 'שָׁעוֹת', intHe(o.hours)) +
-        odoCell('🌕', 'יָרֵחַ מָלֵא', intHe(o.fullMoons)) +
-        odoCell('🌠', 'מַטְּרוֹת פֶּרְסֵאִידִים', intHe(o.perseids)) +
+        odoCell('🌍', 'Days on Earth', intHe(o.days)) +
+        odoCell('🕐', 'Hours', intHe(o.hours)) +
+        odoCell('🌕', 'Full moons', intHe(o.fullMoons)) +
+        odoCell('🌠', 'Perseid meteors', intHe(o.perseids)) +
         '</div>';
       // the live-ticking marquee: seconds + km traveled around the Sun
-      body += '<div class="ohOdoBig"><span class="ohOdoLab">שְׁנִיּוֹת מֵאָז שֶׁנּוֹלַדְתָּ</span>' +
+      body += '<div class="ohOdoBig"><span class="ohOdoLab">Seconds since you were born</span>' +
         '<span class="ohOdoSec" id="ohOdoSec">' + intHe(o.seconds) + '</span></div>';
-      var km = o.orbitalKmHe || (isNum(o.orbitalKm) ? intHe(o.orbitalKm) + ' ק״מ' : null);
+      var km = o.orbitalKmHe || (isNum(o.orbitalKm) ? intHe(o.orbitalKm) + ' km' : null);
       if (km)
-        body += '<div class="ohRow"><span>🛰️ מֶרְחָק שֶׁנָּסַעְתָּ סְבִיב הַשֶּׁמֶשׁ</span><b id="ohOdoKm">' +
-          esc(o.orbitalKm != null ? intHe(o.orbitalKm) + ' ק״מ' : km) + '</b></div>';
+        body += '<div class="ohRow"><span>🛰️ Distance you have traveled around the Sun</span><b id="ohOdoKm">' +
+          esc(o.orbitalKm != null ? intHe(o.orbitalKm) + ' km' : km) + '</b></div>';
       if (o.footnote) body += '<div class="ohHint">' + esc(o.footnote) + '</div>';
     }
-    return card('🪐', 'מַד הַיְּקוּם שֶׁלְּךָ', body);
+    return card('🪐', 'Your cosmic odometer', body);
   }
   function odoCell(ic, lab, val){
     return '<div class="ohOdoCell"><div class="ohOdoIc">' + ic + '</div>' +
@@ -427,14 +427,14 @@
       '<div class="ohOdoCap">' + esc(lab) + '</div></div>';
   }
 
-  /* ---- החודש: in-season species ---- */
+  /* ---- This month: in-season species ---- */
   function natureCard(){
     var ms = monthSpecies(6);
     var body;
     if (ms == null) {
-      body = '<div class="ohHint">מַדְרִיךְ הַטֶּבַע נִטְעָן…</div>';
+      body = '<div class="ohHint">Nature guide loading…</div>';
     } else if (!ms.list.length) {
-      body = '<div class="ohHint">אֵין מִינִים בָּעוֹנָה הַחֹדֶשׁ.</div>';
+      body = '<div class="ohHint">No species in season this month.</div>';
     } else {
       body = '<div class="ohSpecies">' + ms.list.map(function(s){
         var thumb = (s.photo && s.photo.local)
@@ -444,42 +444,42 @@
           '<span class="ohSpN">' + esc(s.he) + '<span class="ohSpSci">' + esc(s.sci || '') + '</span></span></div>';
       }).join('') + '</div>';
       if (ms.total > ms.list.length)
-        body += '<div class="ohHint">וְעוֹד ' + (ms.total - ms.list.length) + ' מִינִים בָּעוֹנָה — בְּלָשׁוֹנִית "טֶבַע".</div>';
+        body += '<div class="ohHint">And ' + (ms.total - ms.list.length) + ' more species in season — in the "Nature" tab.</div>';
       else
-        body += '<div class="ohHint">מָה חַי סְבִיבְךָ הַחֹדֶשׁ — נְתוּנִים מְאֻמָּתִים לָאֵזוֹר.</div>';
+        body += '<div class="ohHint">What is alive around you this month — data verified for the region.</div>';
     }
-    return card('🦌', 'בַּסְּבִיבָה · ' + MONTHS_HE[curMonth()-1], body, 'wild');
+    return card('🦌', 'In the area · ' + MONTHS_HE[curMonth()-1], body, 'wild');
   }
 
-  /* ---- העונה: real backyard totals from RecordStore (~90 days) ---- */
+  /* ---- Season: real backyard totals from RecordStore (~90 days) ---- */
   function seasonCard(date){
     var s = seasonTotals(date);
     var body;
     if (s.state === 'absent') {
-      body = '<div class="ohHint">הַיּוֹמָן הָאַקְלִימִי עוֹד לֹא הֻפְעַל בַּגִּרְסָה הַזֹּאת.</div>';
+      body = '<div class="ohHint">The climate logbook has not been enabled in this version yet.</div>';
     } else if (s.state === 'building') {
       var pct = (s.status && isNum(s.status.pct)) ? Math.round(s.status.pct) : null;
-      body = '<div class="ohHint">בּוֹנֶה אֶת הַיּוֹמָן מִנְּתוּנֵי מֶזֶג אֲוִיר אֲמִתִּיִּים' +
-        (pct != null ? (' · ' + pct + '%') : '') + '… הַסִּכּוּמִים יוֹפִיעוּ בְּקָרוֹב.</div>';
+      body = '<div class="ohHint">Building the logbook from real weather data' +
+        (pct != null ? (' · ' + pct + '%') : '') + '… totals will appear soon.</div>';
     } else if (s.state === 'empty') {
-      body = '<div class="ohHint">אֵין עֲדַיִן יָמִים מֻקְלָטִים בַּיּוֹמָן.</div>';
+      body = '<div class="ohHint">No days recorded in the logbook yet.</div>';
     } else {
       var t = s.tot;
-      body = '<div class="ohTag meas">🟢 מְבֻסָּס מְדִידוֹת אֱמֶת</div><span data-xpl-rec></span>';
+      body = '<div class="ohTag meas">🟢 Based on real measurements</div><span data-xpl-rec></span>';
       body += '<div class="ohSeas">';
-      if (isNum(t.frostNights)) body += seasCell('❄️', 'לֵילוֹת כְּפוֹר', intHe(t.frostNights));
-      if (isNum(t.dliSum)) body += seasCell('☀️', 'סַךְ DLI', intHe(Math.round(t.dliSum)) + ' mol/m²');
-      if (isNum(t.rainSum)) body += seasCell('🌧️', 'גֶּשֶׁם מִצְטַבֵּר', r1(t.rainSum) + ' מ״מ');
-      if (isNum(t.sunHoursSum)) body += seasCell('🕐', 'שְׁעוֹת שֶׁמֶשׁ', intHe(Math.round(t.sunHoursSum)));
+      if (isNum(t.frostNights)) body += seasCell('❄️', 'Frost nights', intHe(t.frostNights));
+      if (isNum(t.dliSum)) body += seasCell('☀️', 'Total DLI', intHe(Math.round(t.dliSum)) + ' mol/m²');
+      if (isNum(t.rainSum)) body += seasCell('🌧️', 'Cumulative rain', r1(t.rainSum) + ' mm');
+      if (isNum(t.sunHoursSum)) body += seasCell('🕐', 'Sun hours', intHe(Math.round(t.sunHoursSum)));
       body += '</div>';
       var range = [];
-      if (isNum(t.tMinAbs)) range.push('שֵׂפֶל ' + r1(t.tMinAbs) + '°');
-      if (isNum(t.tMaxAbs)) range.push('שִׂיא ' + r1(t.tMaxAbs) + '°');
-      if (range.length) body += '<div class="ohRow"><span>קִיצוֹנֵי טֶמְפֶּרָטוּרָה</span><b>' + range.join(' · ') + '</b></div>';
-      body += '<div class="ohHint">מֶזֶג אֲוִיר מָדוּד שֶׁעָבַר דֶּרֶךְ הַצֵּל וְהַגֵּאוֹמֶטְרְיָה שֶׁל הֶחָצֵר · ' +
-        (isNum(t.days) ? t.days + ' יָמִים' : '~90 יָמִים') + ' אַחֲרוֹנִים</div>';
+      if (isNum(t.tMinAbs)) range.push('low ' + r1(t.tMinAbs) + '°');
+      if (isNum(t.tMaxAbs)) range.push('high ' + r1(t.tMaxAbs) + '°');
+      if (range.length) body += '<div class="ohRow"><span>Temperature extremes</span><b>' + range.join(' · ') + '</b></div>';
+      body += '<div class="ohHint">Measured weather, filtered through the shade and geometry of the yard · last ' +
+        (isNum(t.days) ? t.days + ' days' : '~90 days') + '</div>';
     }
-    return card('📓', 'הָעוֹנָה בֶּחָצֵר · אֱמֶת', body, 'yard');
+    return card('📓', 'The season in the yard · Real', body, 'yard');
   }
   function seasCell(ic, lab, val){
     return '<div class="ohSeasCell"><div class="ohSeasIc">' + ic + '</div>' +
@@ -487,7 +487,7 @@
       '<div class="ohSeasCap">' + esc(lab) + '</div></div>';
   }
 
-  /* ---- אנרגיה עכשיו: live PV from measured irradiance (mirrors the energy-tab lead) ---- */
+  /* ---- Energy now: live PV from measured irradiance (mirrors the energy-tab lead) ---- */
   function energyNowCard(date){
     var W = window.Weather, D = window.Derive;
     var rs = null; try { rs = (D && D.roofSolar) ? D.roofSolar() : null; } catch(e){ rs = null; }
@@ -504,21 +504,21 @@
       if (any) todayKwh = sum;
     }
     var isDay = !!(sun && sun.altDeg > 0);
-    var body = '<div class="ohTag model">🟡 לְפִי קְרִינָה מְמֻדֶּלֶת</div><span data-xpl-pv></span>';
-    body += '<div class="ohBig">' + (pvNow!=null ? pvNow.toFixed(2) : '—') + '<span class="ohBigU">kW עַכְשָׁו</span></div>';
-    body += '<div class="ohSub">' + (isDay ? ('הַשֶּׁמֶשׁ בְּגֹבַהּ ' + Math.round(sun.altDeg) + '°') : 'הַשֶּׁמֶשׁ מִתַּחַת לָאֹפֶק') + '</div>';
-    if (ghi != null && isFinite(ghi)) body += '<div class="ohRow"><span>☀️ קְרִינָה עַכְשָׁו</span><b>' + Math.round(Math.max(0,ghi)) + ' W/m²</b></div>';
-    if (todayKwh != null) body += '<div class="ohRow"><span>📈 יוֹצַר הַיּוֹם עַד כֹּה</span><b>~' + todayKwh.toFixed(1) + ' קוט״ש</b></div>';
-    body += '<div class="ohHint">מְשֹׁעָר מִקְּרִינָה × ' + kWp.toFixed(1) + ' kWp × ~0.8 — לֹא מְדִידַת מוֹנֶה יִיצּוּר.</div>';
-    return card('⚡', 'אֵנֶרְגִּיָה עַכְשָׁו', body, 'energy');
+    var body = '<div class="ohTag model">🟡 Based on modeled irradiance</div><span data-xpl-pv></span>';
+    body += '<div class="ohBig">' + (pvNow!=null ? pvNow.toFixed(2) : '—') + '<span class="ohBigU">kW now</span></div>';
+    body += '<div class="ohSub">' + (isDay ? ('Sun at altitude ' + Math.round(sun.altDeg) + '°') : 'Sun below the horizon') + '</div>';
+    if (ghi != null && isFinite(ghi)) body += '<div class="ohRow"><span>☀️ Irradiance now</span><b>' + Math.round(Math.max(0,ghi)) + ' W/m²</b></div>';
+    if (todayKwh != null) body += '<div class="ohRow"><span>📈 Generated so far today</span><b>~' + todayKwh.toFixed(1) + ' kWh</b></div>';
+    body += '<div class="ohHint">Estimated from irradiance × ' + kWp.toFixed(1) + ' kWp × ~0.8 — not a production-meter reading.</div>';
+    return card('⚡', 'Energy now', body, 'energy');
   }
-  /* ---- עיתון הגינה: opens the weekly garden magazine ---- */
+  /* ---- Garden newspaper: opens the weekly garden magazine ---- */
   function newspaperCard(){
     var g = window.__garden;
     if (!g || !g.openMag) return '';
-    var body = '<div class="ohSub">הַסִּפּוּר הַשְּׁבוּעִי שֶׁל הַגִּנָּה — קָטִיף, מְשִׂימוֹת, הַשְׁקָיָה וְצֶמַח הַשָּׁבוּעַ.</div>' +
-      '<button class="ohBtn" data-oh-mag="1" style="margin-top:8px;width:100%;cursor:pointer">📰 פְּתַח אֶת עִתּוֹן הַגִּנָּה</button>';
-    return card('📰', 'עִתּוֹן הַגִּנָּה', body);
+    var body = '<div class="ohSub">The garden\'s weekly story — harvest, tasks, irrigation, and plant of the week.</div>' +
+      '<button class="ohBtn" data-oh-mag="1" style="margin-top:8px;width:100%;cursor:pointer">📰 Open the garden newspaper</button>';
+    return card('📰', 'Garden newspaper', body);
   }
 
   /* ====================================================================
@@ -526,7 +526,7 @@
    * significant computed values, AFTER the HTML string is painted. Mirrors the
    * panels.js pattern: a <span data-xpl-…> placeholder in the HTML is replaced
    * by a real chip. Each chip auto-fills from data/explain_content.json by its
-   * metric_id (title/what/how/source/caveat), so the honesty "הערכה" badge and
+   * metric_id (title/what/how/source/caveat), so the honesty "estimate" badge and
    * model/measured framing stay consistent with the rest of the app. Fully
    * defensive: no-ops if Explain is absent or a slot isn't found (e.g. the test
    * DOM stub), so it never breaks render or the home test.
@@ -551,7 +551,7 @@
   }
 
   /* ---- one glass card ---- · pass a `tab` key to make the whole card a jump
-     into that lashonit (the delegated host.onclick emits Bus 'tab:open' on a
+     into that tab (the delegated host.onclick emits Bus 'tab:open' on a
      genuine user click — never in render, so no emit-loop). ---- */
   function card(ic, title, body, tab){
     var jump = tab ? ' data-oh-tab="' + esc(tab) + '" role="link" tabindex="0"' : '';
@@ -573,7 +573,7 @@
       var o = odometer();
       if (!o) return;
       if (secEl && o.seconds != null) secEl.textContent = intHe(o.seconds);
-      if (kmEl && o.orbitalKm != null) kmEl.textContent = intHe(o.orbitalKm) + ' ק״מ';
+      if (kmEl && o.orbitalKm != null) kmEl.textContent = intHe(o.orbitalKm) + ' km';
     } catch(e){}
   }
   function startTick(){
@@ -590,13 +590,13 @@
     ensureCSS();
     _host = host;
     _date = date || new Date();
-    host.setAttribute && host.setAttribute('dir', 'rtl');
+    host.setAttribute && host.setAttribute('dir','ltr');
     host.innerHTML = html(_date);
     mountChips(host);
     host.onclick = function(e){
       var mb = e.target.closest && e.target.closest('[data-oh-mag]');
       if (mb){ if (window.__garden && window.__garden.openMag){ try{ window.__garden.openMag(); }catch(err){} } return; }
-      // ONE-BRAIN: a card tagged with data-oh-tab jumps to its lashonit. emit
+      // ONE-BRAIN: a card tagged with data-oh-tab jumps to its tab. emit
       // only here, on a genuine user click (never inside render), so no loop.
       var tb = e.target.closest && e.target.closest('[data-oh-tab]');
       if (tb){
@@ -629,7 +629,7 @@
     var s = doc.createElement('style');
     s.id = 'alex-home-css';
     s.textContent =
-      '.ohWrap{font-family:Heebo,sans-serif;color:#efe6cf;direction:rtl;' +
+      '.ohWrap{font-family:Heebo,sans-serif;color:#efe6cf;direction:ltr;' +
         'text-shadow:0 1px 4px rgba(0,0,0,.5)}' +
       '.ohHero{margin:2px 0 16px}' +
       '.ohHero .ohHi{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:26px;color:#fff7e6;line-height:1.1}' +

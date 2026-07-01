@@ -59,7 +59,7 @@
       st.id = 'alex-predict-css';
       st.textContent =
         '.predict-basis{display:inline-block;font-size:11px;line-height:1.4;border-radius:6px;'+
-        'padding:1px 7px;margin-inline-start:6px;vertical-align:middle;direction:rtl;'+
+        'padding:1px 7px;margin-inline-start:6px;vertical-align:middle;direction:ltr;'+
         'border:1px solid rgba(216,178,90,.35);color:#d8b25a;background:rgba(216,178,90,.08)}'+
         '.predict-basis.model{color:#9fb4c7;border-color:rgba(159,180,199,.35);background:rgba(159,180,199,.08)}';
       (document.head||document.documentElement).appendChild(st);
@@ -139,7 +139,7 @@
   }
   function zoneList(){
     try{ var rs=RS(); if(rs&&rs.allZones){ var z=rs.allZones(); if(Array.isArray(z)) return z; } }catch(e){}
-    return [{id:'backyard',name_he:'החצר האחורית'},{id:'balcony',name_he:'מרפסת קומה ראשונה'},{id:'front',name_he:'חזית הבית'}];
+    return [{id:'backyard',name_he:'The backyard'},{id:'balcony',name_he:'First-floor balcony'},{id:'front',name_he:'House front'}];
   }
 
   /* ---------------- the rep cell for a zone (mirror zone_card / Derive._repCell) ----------------
@@ -312,9 +312,9 @@
         out.firstFrostEst=isoFromShifted(nextSeasonYear, firstProj);
         out.lastFrostEst =isoFromShifted(nextSeasonYear, lastProj);
         out.basis='real';
-        out.confidence_he='מבוסס '+years.length+' עונות שֶׁל מדידות אֱמת באתר שלך'+
-          (Math.abs(firstTrend)>2||Math.abs(lastTrend)>2 ? ' (כולל מגמה רב-שנתית)':'')+
-          ' · ביטחון בינוני — מעט עונות, השגיאה ±שבועיים סבירה';
+        out.confidence_he='Based on '+years.length+' seasons of real measurements at your site'+
+          (Math.abs(firstTrend)>2||Math.abs(lastTrend)>2 ? ' (including a multi-year trend)':'')+
+          ' · medium confidence — few seasons, a ±two-week error is plausible';
         return out;
       }
       if(years.length===1 && span>=300){
@@ -324,7 +324,7 @@
         out.lastFrostEst =isoFromShifted(nextSeasonYear, byYear[y0].last);
         out.basis='real';
         out.n_years=1;
-        out.confidence_he='מבוסס עונה אַחַת בלבד של מדידות אֱמת — ביטחון נמוך; שנה נוספת תחדד מאוד';
+        out.confidence_he='Based on a single season of real measurements — low confidence; another year will sharpen it considerably';
         return out;
       }
     }catch(e){ /* fall through to model */ }
@@ -340,7 +340,7 @@
     out.firstFrostEst = (nsy-1)+'-11-20';   // first autumn frost (model)
     out.lastFrostEst  = nsy+'-03-25';       // last spring frost (model)
     out.basis='model';
-    out.confidence_he='אֵין עֲדַיִן מספיק נתוני אֱמת — חלון קֶרַח לפי המודל האקלימי הכללי (לרקמונט). יתחדד כשהיֹומן יצבור עונות אֲמִתִּיוֹת.';
+    out.confidence_he='Not enough real data yet — frost window per the generic climate model (Larkmont). It will sharpen as the logbook accumulates real seasons.';
     return out;
   }
 
@@ -407,18 +407,18 @@
           var bits=[];
           if(out.gddToDate!=null && gddReq){
             var pctG=Math.min(999,Math.round(100*out.gddToDate/Math.max(1,gddReq)));
-            bits.push('צָבַר ~'+out.gddToDate+' יחידות-חום מתוך ~'+gddReq+' הדרושות לפרי (~'+pctG+'%)');
+            bits.push('Accumulated ~'+out.gddToDate+' heat units of the ~'+gddReq+' required for fruit (~'+pctG+'%)');
           } else if(out.gddToDate!=null){
-            bits.push('צָבַר ~'+out.gddToDate+' יחידות-חום מאז תחילת המחזור');
+            bits.push('Accumulated ~'+out.gddToDate+' heat units since the cycle began');
           }
           if(out.chillToDate!=null && chillReq){
             var pctC=Math.min(999,Math.round(100*out.chillToDate/Math.max(1,chillReq)));
             var enough=out.chillToDate>=chillReq;
-            bits.push('שָׁעוֹת-קֹר: ~'+out.chillToDate+' מתוך ~'+chillReq+' הדרושות לשבירת תרדמה ('+(enough?'הושג ✓':'~'+pctC+'%')+')');
+            bits.push('Chill hours: ~'+out.chillToDate+' of the ~'+chillReq+' required to break dormancy ('+(enough?'reached ✓':'~'+pctC+'%')+')');
           } else if(out.chillToDate!=null){
-            bits.push('שָׁעוֹת-קֹר שנצברו: ~'+out.chillToDate);
+            bits.push('Chill hours accumulated: ~'+out.chillToDate);
           }
-          bits.push('מבוסס מדידות אֱמת דרך הגיאומטריה של הבית — לא חיישן פיזי');
+          bits.push('Based on real measurements through the house geometry — not a physical sensor');
           out.note_he=bits.join(' · ');
           return out;
         }
@@ -430,9 +430,9 @@
     // REQUIREMENT only, clearly flagged as the curated model.
     out.basis='model';
     var fb=[];
-    if(gddReq) fb.push('הצמח דורש ~'+gddReq+' יחידות-חום (GDD) לפרי');
-    if(chillReq) fb.push('~'+chillReq+' שעות-קֹר לשבירת תרדמה');
-    fb.push('עֲדַיִן אין נתוני אֱמת מהאתר שלך לעונה זו — הנתונים לפי פרמטרי הצמח (מודל). היֹומן יתחיל למלא זאת בקרוב.');
+    if(gddReq) fb.push('The plant requires ~'+gddReq+' heat units (GDD) for fruit');
+    if(chillReq) fb.push('~'+chillReq+' chill hours to break dormancy');
+    fb.push('No real data from your site for this season yet — figures are per the plant parameters (model). The logbook will start filling this in soon.');
     out.note_he=fb.join(' · ');
     return out;
   }
@@ -448,8 +448,8 @@
      dormant-season window stands, but we can confirm it sits in the logged chill
      window. We keep it conservative and HONEST about which basis we used.
      =================================================================== */
-  var HEB_MONTHS={ 'ינואר':1,'פברואר':2,'מרץ':3,'אפריל':4,'מאי':5,'יוני':6,
-    'יולי':7,'אוגוסט':8,'ספטמבר':9,'אוקטובר':10,'נובמבר':11,'דצמבר':12 };
+  var HEB_MONTHS={ 'january':1,'february':2,'march':3,'april':4,'may':5,'june':6,
+    'july':7,'august':8,'september':9,'october':10,'november':11,'december':12 };
   function curatedMonths(p){
     var ms=(p&&p.planting_months_he)||[];
     var nums=ms.map(function(s){ return HEB_MONTHS[String(s).trim()]||null; }).filter(function(x){return x;});
@@ -510,7 +510,7 @@
         out.windowStart=winStart;
         out.windowEnd=winEnd;
         out.basis='real-history';
-        out.reason_he='רגיש לקֶרַח — לפי הקֶרַח האחרון שֶׁנמדד בְּפֹעַל באתר שלך (~'+fr.lastFrostEst+'), חלון השתילה הבטוח נפתח אחריו (+שבוע מרווח). מבוסס מדידות אֱמת.';
+        out.reason_he='Frost-tender — based on the last frost actually measured at your site (~'+fr.lastFrostEst+'), the safe planting window opens after it (+one-week buffer). Based on real measurements.';
         return out;
       }
       if(!tender && p){
@@ -523,10 +523,10 @@
           var chillRows=zoneId?zoneDaily(zoneId, cw.from, cw.to):[];
           if(chillRows.length>0){
             out.basis='real-history';
-            out.reason_he='עץ נשיר/עמיד — חלון השתילה בעונת השלכת. היֹומן שלך כבר מתעד את צבירת שעות-הקֹר בחורף הזה, מה שמאשש את החלון. מבוסס מדידות אֱמת + פרמטרי הצמח.';
+            out.reason_he='Deciduous/hardy tree — the planting window is in the leaf-fall season. Your logbook is already recording the chill-hour accumulation this winter, which confirms the window. Based on real measurements + the plant parameters.';
           } else {
             out.basis='model-fallback';
-            out.reason_he='עץ נשיר/עמיד — חלון השתילה בעונת השלכת לפי חודשי-השתילה המומלצים (מודל). עֲדַיִן אין נתוני קֹר נמדדים לעונה זו.';
+            out.reason_he='Deciduous/hardy tree — the planting window is in the leaf-fall season per the recommended planting months (model). No measured chill data for this season yet.';
           }
           return out;
         }
@@ -537,10 +537,10 @@
     if(curatedWin[0]){
       out.windowStart=curatedWin[0]; out.windowEnd=curatedWin[1];
       out.basis='model-fallback';
-      out.reason_he='חלון לפי חודשי-השתילה המומלצים לצמח (מודל מתוך הנתונים האצורים). עֲדַיִן אֵין מספיק היסטוריית אֱמת מהאתר כדי לחדד לפי הקֶרַח שלך — היֹומן יעשה זאת.';
+      out.reason_he='Window per the plant\'s recommended planting months (model, from the curated data). Not enough real history from the site yet to refine by your frost — the logbook will do that.';
     } else {
       out.basis='model-fallback';
-      out.reason_he='אֵין נתוני חלון לצמח זה. כשהיֹומן יצבור עונה, אוכל לחשב חלון לפי הקֶרַח שֶׁנמדד באתר.';
+      out.reason_he='No window data for this plant. Once the logbook accumulates a season, I can compute a window from the frost measured at the site.';
     }
     return out;
   }
@@ -583,14 +583,14 @@
       var etc, basis, etcNote;
       if(etcReal!=null){
         etc=etcReal; basis='real';
-        etcNote='ET לפי 3 שבועות אחרונים שֶׁנמדדו בְּפֹעַל באתר (~'+r1(etc)+' מ"מ/יום)';
+        etcNote='ET per the last 3 weeks actually measured at the site (~'+r1(etc)+' mm/day)';
       } else {
         var prof=modelProfile(zoneId, curSeasonKey());
         etc=(prof&&prof.ETc!=null)?prof.ETc:null;
         basis='model';
         etcNote=(etc!=null)
-          ? 'ET לפי המודל העונתי הכללי (~'+r1(etc)+' מ"מ/יום) — עֲדַיִן אין נתוני אֱמת לאזור זה'
-          : 'אֵין נתוני ET זמינים לאזור זה';
+          ? 'ET per the generic seasonal model (~'+r1(etc)+' mm/day) — no real data for this zone yet'
+          : 'No ET data available for this zone';
       }
       out.basis=basis;
 
@@ -611,14 +611,14 @@
       for(var d=0; d<horizon; d++) out.litersPerDay.push(perDay);
       out.totalLiters=r1(perDay*horizon);
 
-      var who = nPlants? (nPlants+' צמחים באזור') : 'קרקע חשופה (ייחוס 1 מ"ר)';
-      out.note_he='~'+perDay+' ל\'/יום ל'+who+' · '+etcNote+
-        ' · השקיה ≈ ETc×Kc×שטח-נוף · ' +
-        (basis==='real'?'מבוסס מדידות אֱמת':'מודל · הערכה')+
-        ' · התחזית מַרְחִיבָה את הביקוש הנמדד האחרון (לֹא חיזוי מזג-אוויר עתידי יום-ביום)';
+      var who = nPlants? (nPlants+' plants in the zone') : 'bare soil (1 m² reference)';
+      out.note_he='~'+perDay+' L/day for '+who+' · '+etcNote+
+        ' · irrigation ≈ ETc×Kc×canopy-area · ' +
+        (basis==='real'?'based on real measurements':'model · estimate')+
+        ' · the forecast extends the most recent measured demand (not a day-by-day forecast of future weather)';
       return out;
     }catch(e){
-      out.note_he='לֹא ניתן לחשב כרגע — נתונים חסרים';
+      out.note_he='Cannot compute right now — missing data';
       return out;
     }
   }
@@ -669,20 +669,20 @@
       if(out.tempBiasC!=null || out.dliBiasPct!=null){
         var parts=[];
         if(out.tempBiasC!=null){
-          var dir=out.tempBiasC>0?'חַם יותר':(out.tempBiasC<0?'קַר יותר':'זהה');
-          parts.push('האתר שלך '+dir+' ב-'+Math.abs(out.tempBiasC)+'°C מהמודל הכללי (ממוצע יומי)');
+          var dir=out.tempBiasC>0?'warmer':(out.tempBiasC<0?'colder':'identical');
+          parts.push('Your site runs '+dir+' by '+Math.abs(out.tempBiasC)+'°C vs the generic model (daily mean)');
         }
         if(out.dliBiasPct!=null){
-          var dirL=out.dliBiasPct>0?'יותר':(out.dliBiasPct<0?'פחות':'זהה');
-          parts.push('מקבל '+Math.abs(out.dliBiasPct)+'% '+dirL+' אֹור (DLI) מהמודל');
+          var dirL=out.dliBiasPct>0?'more':(out.dliBiasPct<0?'less':'the same');
+          parts.push('Receives '+Math.abs(out.dliBiasPct)+'% '+dirL+' light (DLI) than the model');
         }
-        parts.push('הוטל ('+nDays+' ימי מדידה) — תיקון-הטיה שמכוונן את התחזיות לְמיקרו-אקלים שלך. מבוסס מדידות אֱמת מול המודל.');
+        parts.push('Computed over ('+nDays+' measurement days) — a bias correction that tunes the forecasts to your microclimate. Based on real measurements against the model.');
         out.note_he=parts.join(' · ');
       } else {
-        out.note_he='עֲדַיִן אֵין מספיק ימי מדידה כדי ללמוד את הֲטָיַת האתר מול המודל. כרגע התחזיות נשענות על המודל הכללי; ההטיה תֵילָמֵד כשהיֹומן יצבור ימים.';
+        out.note_he='Not enough measurement days yet to learn the site\'s bias against the model. For now the forecasts rely on the generic model; the bias will be learned as the logbook accumulates days.';
       }
     }catch(e){
-      out.note_he='לֹא ניתן לחשב הטיה כרגע';
+      out.note_he='Cannot compute bias right now';
     }
     return out;
   }

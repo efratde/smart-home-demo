@@ -155,7 +155,7 @@ const EnvAPI = (function(){
     });
     return Object.assign(head, { time:c.time||null, tz:(j&&j.timezone)||'Etc/GMT+3', hourly });
   }
-  // seasonal-JSON fallback as the SAME pollen shape (no live → 'לוח עונתי')
+  // seasonal-JSON fallback as the SAME pollen shape (no live → 'seasonal table')
   function pollenFromSeason(date){
     const {month}=localParts(date||new Date(),'Etc/GMT+3');
     const row=seasonTable()[String(month)]||SEASON_FALLBACK[String(month)]||{};

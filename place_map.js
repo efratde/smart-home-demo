@@ -1,9 +1,9 @@
 /* =============================================================================
-   place_map.js — INTERACTIVE SPATIAL MAP for the smart-home demo (the סביבה tab).
+   place_map.js — INTERACTIVE SPATIAL MAP for the smart-home demo (the Environment tab).
    The "wow" realization of the place-data (geology, water, history):
    instead of text, you SEE it — a Leaflet map centered on Larkmont Vale /
    Larkmont, with toggleable layers from SYNTHETIC demo data, every
-   feature clickable → a curated Hebrew popup. In the app's dark/gold RTL skin.
+   feature clickable → a curated English popup. In the app's dark/gold RTL skin.
 
    PUBLIC API (exposed on window.__placeMap):
      window.__placeMap.render(host, date)
@@ -16,7 +16,7 @@
    APPROACH (no-backend static app):
      - SELF-LOADS Leaflet from CDN (injects leaflet.css + leaflet.js, then inits)
        so index.html needs no edit. If Leaflet or the tiles fail (offline),
-       shows an honest Hebrew "needs internet" message AND falls back to listing
+       shows an honest English "needs internet" message AND falls back to listing
        the layers as text (so the harvested content is never lost).
      - Reads bundled WGS84 GeoJSON from data/place_map/ (synthetic demo layers
        for the fictional place; all coordinates invented).
@@ -40,10 +40,10 @@
   // base-tile options. synth = default synthetic landscape (procedural, no real imagery, no
   // network — the demo "place" is fictional); dark = CARTO dark; topo = OpenTopoMap; sat = Esri.
   var BASEMAPS = [
-    { id: 'synth', he: 'נוֹף',   emoji: '🌄', synthetic: true, attr: 'Synthetic landscape · demo' },
-    { id: 'dark', he: 'כֵּהֶה',  emoji: '🌑', url: TILE_URL, opts: { subdomains: 'abcd', maxZoom: 19, detectRetina: true }, attr: TILE_ATTR },
-    { id: 'topo', he: 'טוֹפּוֹ', emoji: '🗺️', url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', opts: { subdomains: 'abc', maxZoom: 17 }, attr: '© OpenStreetMap · © OpenTopoMap (SRTM)' },
-    { id: 'sat',  he: 'לוֹוְיָן', emoji: '🛰️', url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', opts: { maxZoom: 19 }, attr: '© Esri, Maxar, Earthstar Geographics' }
+    { id: 'synth', he: 'Landscape', emoji: '🌄', synthetic: true, attr: 'Synthetic landscape · demo' },
+    { id: 'dark', he: 'Dark',  emoji: '🌑', url: TILE_URL, opts: { subdomains: 'abcd', maxZoom: 19, detectRetina: true }, attr: TILE_ATTR },
+    { id: 'topo', he: 'Topo', emoji: '🗺️', url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', opts: { subdomains: 'abc', maxZoom: 17 }, attr: '© OpenStreetMap · © OpenTopoMap (SRTM)' },
+    { id: 'sat',  he: 'Satellite', emoji: '🛰️', url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', opts: { maxZoom: 19 }, attr: '© Esri, Maxar, Earthstar Geographics' }
   ];
 
   var HOUSE = { lat: 34.00, lon: -40.00 };
@@ -89,7 +89,7 @@
     return new Grid({ maxZoom: 19, attribution: attr || 'Synthetic landscape · demo' });
   }
 
-  /* ----------------------------------------------- time-slider (צִיר זְמַן)
+  /* ----------------------------------------------- time-slider (timeline)
      The historical imagery + NDVI staged under data/timelapse/. Each step is one
      L.imageOverlay swapped in by the slider. `dir`/`img` are the on-disk paths;
      `bboxFile` is the WGS84 sidecar we fetch for the overlay bounds. */
@@ -100,20 +100,20 @@
     { date: '2026-05-28', year: 2026 }
   ];
 
-  // GROWTH mode (🛰️ צְמִיחַת הַיִּשּׁוּב): Wayback hi-res where available, else Landsat
+  // GROWTH mode (🛰️ settlement growth): Wayback hi-res where available, else Landsat
   // true-color. Steps ordered by year; the three Wayback dates are inserted in place.
   function buildGrowthSteps() {
     var steps = [];
     LANDSAT_YEARS.forEach(function (y) {
       steps.push({
-        kind: 'landsat', year: y, label: String(y), sub: 'Landsat ~30 מ׳',
+        kind: 'landsat', year: y, label: String(y), sub: 'Landsat ~30 m',
         dir: TL_DIR + 'aerials/' + y + '/', img: 'truecolor_' + y + '.png', bboxFile: 'bbox.json',
         slc: (y === 2020) // Landsat-7 SLC-off striping
       });
     });
     WAYBACK.forEach(function (w) {
       steps.push({
-        kind: 'wayback', year: w.year, label: String(w.year), sub: 'Wayback ~1 מ׳',
+        kind: 'wayback', year: w.year, label: String(w.year), sub: 'Wayback ~1 m',
         dir: TL_DIR + 'aerials/wayback_' + w.date + '/', img: 'mosaic_' + w.date + '.jpg', bboxFile: 'bbox.json',
         attr: '© Esri, Maxar, Earthstar Geographics', date: w.date
       });
@@ -126,11 +126,11 @@
     return out;
   }
 
-  // VEGETATION mode (🌿 צִמְחִיָּה): NDVI per Landsat year.
+  // VEGETATION mode (🌿 vegetation): NDVI per Landsat year.
   function buildNdviSteps() {
     return LANDSAT_YEARS.map(function (y) {
       return {
-        kind: 'ndvi', year: y, label: String(y), sub: 'NDVI · אָדֹם→יָרֹק',
+        kind: 'ndvi', year: y, label: String(y), sub: 'NDVI · red→green',
         dir: TL_DIR + 'ndvi/' + y + '/', img: 'ndvi_' + y + '.png', bboxFile: 'bbox.json',
         slc: (y === 2020)
       };
@@ -139,14 +139,14 @@
 
   var TL_MODES = {
     growth: {
-      id: 'growth', emoji: '🛰️', name: 'צְמִיחַת הַיִּשּׁוּב', cssClass: 'grow',
+      id: 'growth', emoji: '🛰️', name: 'Settlement growth', cssClass: 'grow',
       steps: buildGrowthSteps(),
-      caption: 'Landsat ~30 מ׳ מַרְאֶה אֶת <b>צְמִיחַת הַיִּשּׁוּב</b> — אוֹת גָּדֵל, לֹא פְּרָטֵי רְחוֹב. הֵיכָן שֶׁיֵּשׁ Wayback (2014 · 2020 · 2026) רוֹאִים רֵזוֹלוּצְיָה גְּבוֹהָה (~1 מ׳).'
+      caption: 'Landsat ~30 m shows <b>settlement growth</b> — a growing signal, not street detail. Where Wayback exists (2014 · 2020 · 2026) you see high resolution (~1 m).'
     },
     ndvi: {
-      id: 'ndvi', emoji: '🌿', name: 'צִמְחִיָּה', cssClass: 'veg',
+      id: 'ndvi', emoji: '🌿', name: 'Vegetation', cssClass: 'veg',
       steps: buildNdviSteps(),
-      caption: 'NDVI — מַדַּד צִמְחִיָּה. <b>יָרֹק = יוֹתֵר יָרוֹק</b>, אָדֹם = חָשׂוּף. תַּצְלוּם מְמֻצָּע שְׁנָתִי (median) מִלּוֹוְיָנֵי Landsat מְנֻקֵּי-עֲנָנִים, עוֹנַת הַגִּדּוּל, ~30 מ׳.'
+      caption: 'NDVI — vegetation index. <b>Green = greener</b>, red = bare. Annual median composite from cloud-free Landsat satellites, growing season, ~30 m.'
     }
   };
 
@@ -157,30 +157,30 @@
   /* ------------------------------------------------------------------ layers */
   // The bundled layer files + their visual roles. featureCount is filled after load.
   var LAYERS = [
-    { id: 'geology',  file: 'geology.geojson',  kind: 'polygon', emoji: '🪨', name: 'גֵּאוֹלוֹגְיָה',                 defaultOn: true,  featureCount: 0 },
-    { id: 'lith',     file: 'lithology.geojson',kind: 'polygon', emoji: '🪨', name: 'לִיתוֹלוֹגְיָה',                 defaultOn: false, featureCount: 0 },
-    { id: 'faults',   file: 'faults.geojson',   kind: 'line',    emoji: '⛓️', name: 'שְׁבָרִים',                      defaultOn: false, featureCount: 0 },
-    { id: 'springs',  file: 'springs.geojson',  kind: 'point',   emoji: '💧', name: 'מַעְיָנוֹת וּקְדִיחוֹת',          defaultOn: true,  featureCount: 0 },
-    { id: 'geo_sites',file: 'geo_sites.geojson',kind: 'point',   emoji: '🌋', name: 'אֲתָרִים גֵּאוֹלוֹגִיִּים',        defaultOn: true,  featureCount: 0 },
-    { id: 'history',  file: 'history.geojson',  kind: 'point',   emoji: '🏛️', name: 'אַרְכֵיאוֹלוֹגְיָה וַאֲתָרִים הִיסְטוֹרִיִּים', defaultOn: false, featureCount: 0 },
-    { id: 'reserves', file: 'reserves.geojson', kind: 'polygon', emoji: '🌿', name: 'שְׁמוּרוֹת וְגַנִּים',            defaultOn: false, featureCount: 0 },
-    { id: 'trails',   file: 'trails.geojson',   kind: 'line',    emoji: '🥾', name: 'שְׁבִילִים',                      defaultOn: false, featureCount: 0 }
+    { id: 'geology',  file: 'geology.geojson',  kind: 'polygon', emoji: '🪨', name: 'Geology',                 defaultOn: true,  featureCount: 0 },
+    { id: 'lith',     file: 'lithology.geojson',kind: 'polygon', emoji: '🪨', name: 'Lithology',                 defaultOn: false, featureCount: 0 },
+    { id: 'faults',   file: 'faults.geojson',   kind: 'line',    emoji: '⛓️', name: 'Faults',                      defaultOn: false, featureCount: 0 },
+    { id: 'springs',  file: 'springs.geojson',  kind: 'point',   emoji: '💧', name: 'Springs & boreholes',          defaultOn: true,  featureCount: 0 },
+    { id: 'geo_sites',file: 'geo_sites.geojson',kind: 'point',   emoji: '🌋', name: 'Geological sites',        defaultOn: true,  featureCount: 0 },
+    { id: 'history',  file: 'history.geojson',  kind: 'point',   emoji: '🏛️', name: 'Archaeology & historical sites', defaultOn: false, featureCount: 0 },
+    { id: 'reserves', file: 'reserves.geojson', kind: 'polygon', emoji: '🌿', name: 'Reserves & parks',            defaultOn: false, featureCount: 0 },
+    { id: 'trails',   file: 'trails.geojson',   kind: 'line',    emoji: '🥾', name: 'Trails',                      defaultOn: false, featureCount: 0 }
   ];
 
   // geology age legend (symbol → color, label). Mirrors _build.py AGE_BANDS so
   // the legend renders even before/without data. old → young (warm → cool).
   var GEO_LEGEND = [
-    { sym: 'tr1', c: '#b5651d', he: 'טריאס תחתון' },
-    { sym: 'tr2', c: '#c1772e', he: 'טריאס תיכון' },
-    { sym: 'tr3', c: '#cd8a3f', he: 'טריאס עליון' },
-    { sym: 'jl',  c: '#d99b3b', he: 'יורה תחתון' },
-    { sym: 'jm',  c: '#e8b94f', he: 'יורה תיכון' },
-    { sym: 'lck', c: '#e34a3a', he: 'כורנוב — חול (הגרעין הרך)' },
-    { sym: 'im',  c: '#9b4fb0', he: 'קוֹנְגְלוֹמֶרָט / חֲלוּקֵי נַחַל' },
-    { sym: 'c',   c: '#5b8fb0', he: 'צנומן — גיר המצוק' },
-    { sym: 't',   c: '#4f9e8c', he: 'טורון–קמפן' },
-    { sym: 'eav', c: '#a6b3ba', he: 'חבורת הצוק (אאוקן)' },
-    { sym: 'q',   c: '#d9c9a0', he: 'סחף / דיונות (הולוקן)' }
+    { sym: 'tr1', c: '#b5651d', he: 'Lower Triassic' },
+    { sym: 'tr2', c: '#c1772e', he: 'Middle Triassic' },
+    { sym: 'tr3', c: '#cd8a3f', he: 'Upper Triassic' },
+    { sym: 'jl',  c: '#d99b3b', he: 'Lower Jurassic' },
+    { sym: 'jm',  c: '#e8b94f', he: 'Middle Jurassic' },
+    { sym: 'lck', c: '#e34a3a', he: 'Core sandstone (the soft core)' },
+    { sym: 'im',  c: '#9b4fb0', he: 'Conglomerate / stream pebbles' },
+    { sym: 'c',   c: '#5b8fb0', he: 'Cenomanian — cliff limestone' },
+    { sym: 't',   c: '#4f9e8c', he: 'Turonian–Campanian' },
+    { sym: 'eav', c: '#a6b3ba', he: 'Cliff Group (Eocene)' },
+    { sym: 'q',   c: '#d9c9a0', he: 'Alluvium / dunes (Holocene)' }
   ];
 
   /* --------------------------------------------------------------- state */
@@ -226,7 +226,7 @@
     '#pmap .pm-legend .sw{width:13px;height:13px;border-radius:3px;border:1px solid rgba(0,0,0,.4);flex:0 0 auto}',
     '#pmap .pm-foot{font-size:9.5px;color:#7d7150;margin-top:9px;line-height:1.6}',
     '#pmap .pm-foot a{color:#caa15a;text-decoration:none}',
-    /* ---- time-slider (צִיר זְמַן) ---- */
+    /* ---- time-slider (timeline) ---- */
     '#pmap .pm-tl-open{display:inline-flex;align-items:center;gap:5px;font-size:11px;cursor:pointer;user-select:none;',
     '  padding:4px 11px;border-radius:20px;border:1px solid rgba(91,182,230,.4);background:rgba(91,182,230,.1);color:#bcd9ea;transition:.15s}',
     '#pmap .pm-tl-open .ct{font-size:13px;line-height:1}',
@@ -234,7 +234,7 @@
     /* panel floats over the map (top-left), hidden until opened */
     '#pmap .pm-tl{position:absolute;top:10px;left:10px;z-index:600;width:min(280px,calc(100% - 20px));',
     '  background:rgba(11,13,24,.92);border:1px solid rgba(91,182,230,.45);border-radius:11px;padding:11px 13px;',
-    '  box-shadow:0 8px 30px rgba(0,0,0,.6);backdrop-filter:blur(3px);direction:rtl;text-align:right}',
+    '  box-shadow:0 8px 30px rgba(0,0,0,.6);backdrop-filter:blur(3px);direction:ltr;text-align:left}',
     '#pmap .pm-tl[hidden]{display:none}',
     '#pmap .pm-tl .tl-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}',
     '#pmap .pm-tl .tl-title{font-family:\'Frank Ruhl Libre\',serif;font-size:13.5px;color:#dcefff;display:flex;align-items:center;gap:6px}',
@@ -261,7 +261,7 @@
     /* leaflet popup → dark/gold RTL */
     '.pm-pop .leaflet-popup-content-wrapper{background:#11131f;color:#efe6cf;border:1px solid rgba(202,161,90,.4);border-radius:9px;box-shadow:0 8px 30px rgba(0,0,0,.6)}',
     '.pm-pop .leaflet-popup-tip{background:#11131f;border:1px solid rgba(202,161,90,.4)}',
-    '.pm-pop .leaflet-popup-content{margin:11px 13px;direction:rtl;text-align:right;font-family:\'Heebo\',sans-serif;line-height:1.55}',
+    '.pm-pop .leaflet-popup-content{margin:11px 13px;direction:ltr;text-align:left;font-family:\'Heebo\',sans-serif;line-height:1.55}',
     '.pm-pop a.leaflet-popup-close-button{color:#caa15a}',
     '.pm-pop .pp-t{font-family:\'Frank Ruhl Libre\',serif;font-size:14.5px;color:#fff7e6;font-weight:500;margin-bottom:3px}',
     '.pm-pop .pp-m{font-size:10.5px;color:#caa15a;font-family:\'Bellefair\',serif;letter-spacing:.03em;margin-bottom:5px}',
@@ -353,45 +353,45 @@
 
   /* ----------------------------------------------------------- popup HTML */
   function popupHouse() {
-    return '<div class="pp-t">🏠 הַבַּיִת שֶׁל אלכס</div>' +
-      '<div class="pp-m">לרקמונט · שפת העמק</div>' +
+    return '<div class="pp-t">🏠 Alex\'s house</div>' +
+      '<div class="pp-m">Larkmont · edge of the vale</div>' +
       '<div class="pp-d">' + HOUSE.lat.toFixed(4) + '°N, ' + HOUSE.lon.toFixed(4) + '°E</div>' +
-      '<div class="pp-row">הַנְּקֻדָּה שֶׁמִּמֶּנָּה כָּל הַשְּׁכָבוֹת מִתְפָּרְשׂוֹת.</div>';
+      '<div class="pp-row">The point from which all the layers fan out.</div>';
   }
   function popupGeology(p) {
     return '<div class="pp-t">' + esc(p.name_he || '—') + '</div>' +
       '<div class="pp-m">' + esc(p.symbol || '') + (p.age_he ? ' · ' + esc(p.age_he) : '') + '</div>';
   }
   function popupLith(p) {
-    return '<div class="pp-t">🪨 ' + esc(p.lith_he || p.lith || 'סוּג סֶלַע') + '</div>' +
+    return '<div class="pp-t">🪨 ' + esc(p.lith_he || p.lith || 'Rock type') + '</div>' +
       (p.lith ? '<div class="pp-m">' + esc(p.lith) + '</div>' : '');
   }
   function popupSpring(p) {
     var rows = '';
-    if (p.aquifer_he) rows += '<div class="pp-row">אַקְוִיפֶר: <b>' + esc(p.aquifer_he) + '</b></div>';
-    if (p.elev_m != null) rows += '<div class="pp-row">רוּם הַנְּבִיעָה: <b>' + esc(p.elev_m) + ' מ׳</b></div>';
+    if (p.aquifer_he) rows += '<div class="pp-row">Aquifer: <b>' + esc(p.aquifer_he) + '</b></div>';
+    if (p.elev_m != null) rows += '<div class="pp-row">Spring elevation: <b>' + esc(p.elev_m) + ' m</b></div>';
     if (p.type_he) rows += '<div class="pp-row">' + esc(p.type_he) + '</div>';
-    return '<div class="pp-t">💧 ' + esc(p.name_he || 'מַעְיָן') + '</div>' +
+    return '<div class="pp-t">💧 ' + esc(p.name_he || 'Spring') + '</div>' +
       (p.note_he ? '<div class="pp-d">' + esc(p.note_he) + '</div>' : '') + rows;
   }
   function popupGeoSite(p) {
     return '<div class="pp-t">🌋 ' + esc(p.name_he || '') + '</div>' +
       '<div class="pp-m">' + esc(p.type_he || p.name_en || '') + '</div>' +
       (p.desc_he ? '<div class="pp-d">' + esc(p.desc_he) + '</div>' : '') +
-      (p.coord_approx ? '<div class="pp-flag">נ"צ מְקֹרָב</div>' : '');
+      (p.coord_approx ? '<div class="pp-flag">Approx. coordinates</div>' : '');
   }
   function popupHistory(p) {
-    var q = (p.coord_quality && p.coord_quality !== 'precise') ? '<div class="pp-flag">נ"צ מְקֹרָב</div>' : '';
+    var q = (p.coord_quality && p.coord_quality !== 'precise') ? '<div class="pp-flag">Approx. coordinates</div>' : '';
     return '<div class="pp-t">🏛️ ' + esc(p.name_he || '') + '</div>' +
       '<div class="pp-m">' + esc(p.category_he || p.name_en || '') + '</div>' +
       (p.note_he ? '<div class="pp-d">' + esc(p.note_he) + '</div>' : '') + q;
   }
   function popupReserve(p) {
-    return '<div class="pp-t">🌿 ' + esc(p.name_he || 'שְׁמוּרָה') + '</div>' +
+    return '<div class="pp-t">🌿 ' + esc(p.name_he || 'Reserve') + '</div>' +
       (p.type_he ? '<div class="pp-m">' + esc(p.type_he) + '</div>' : '');
   }
   function popupTrail(p) {
-    return '<div class="pp-t">🥾 ' + esc(p.name_he || 'שְׁבִיל') + '</div>' +
+    return '<div class="pp-t">🥾 ' + esc(p.name_he || 'Trail') + '</div>' +
       (p.kind_he ? '<div class="pp-m">' + esc(p.kind_he) + '</div>' : '');
   }
 
@@ -423,7 +423,7 @@
     }
     if (lay.id === 'faults') {
       return L.geoJSON(fc, { style: function () { return { color: '#c96a4a', weight: 1.2, opacity: .8, dashArray: '5 4' }; },
-        onEachFeature: function (f, layer) { layer.bindPopup('<div class="pp-t">⛓️ שֶׁבֶר גֵּאוֹלוֹגִי</div><div class="pp-m">regional geo survey 1:200k</div>', { className: 'pm-pop' }); } });
+        onEachFeature: function (f, layer) { layer.bindPopup('<div class="pp-t">⛓️ Geological fault</div><div class="pp-m">regional geo survey 1:200k</div>', { className: 'pm-pop' }); } });
     }
     if (lay.id === 'trails') {
       return L.geoJSON(fc, { style: function () { return { color: '#caa15a', weight: 1.6, opacity: .75 }; },
@@ -492,7 +492,7 @@
       var mode = TL_MODES[state.tl.mode];
       var cap = mode ? mode.caption : '';
       if (step.kind === 'wayback') cap += '';
-      if (step.slc) cap += ' <b>2020:</b> Landsat-7 — פַּסֵּי SLC-off.';
+      if (step.slc) cap += ' <b>2020:</b> Landsat-7 — SLC-off striping.';
       e.cap.innerHTML = cap;
     }
     if (e.attr) e.attr.innerHTML = step.attr ? esc(step.attr) : '';
@@ -542,14 +542,14 @@
   function buildTimeline(mapWrap, chipsRow) {
     // open chip lives in the chips row
     var openBtn = el('div', 'pm-tl-open');
-    openBtn.innerHTML = '<span class="ct">🕰️</span>צִיר זְמַן';
+    openBtn.innerHTML = '<span class="ct">🕰️</span>Timeline';
     openBtn.addEventListener('click', toggleTl);
     if (chipsRow) chipsRow.appendChild(openBtn);
 
     // floating panel (hidden until opened)
     var panel = el('div', 'pm-tl'); panel.hidden = true;
     var top = el('div', 'tl-top');
-    top.innerHTML = '<span class="tl-title">🕰️ צִיר זְמַן</span>';
+    top.innerHTML = '<span class="tl-title">🕰️ Timeline</span>';
     var xBtn = el('button', 'tl-x', '✕'); xBtn.addEventListener('click', closeTl);
     top.appendChild(xBtn);
     panel.appendChild(top);
@@ -566,7 +566,7 @@
     panel.appendChild(yr);
 
     var range = el('input'); range.type = 'range'; range.min = '0'; range.max = '1'; range.step = '1'; range.value = '0';
-    range.setAttribute('aria-label', 'שָׁנָה');
+    range.setAttribute('aria-label', 'Year');
     range.addEventListener('input', function () { showStep(parseInt(range.value, 10) || 0); });
     range.addEventListener('change', function () { showStep(parseInt(range.value, 10) || 0); });
     panel.appendChild(range);
@@ -613,7 +613,7 @@
 
   function buildLegend(host) {
     var box = el('div', 'pm-legend');
-    var inner = '<div class="lt">חַתָּךְ הַסֶּלַע · עָתִיק ← חָדָשׁ</div><div class="lg">';
+    var inner = '<div class="lt">Rock cross-section · old → new</div><div class="lg">';
     GEO_LEGEND.forEach(function (g) { inner += '<span class="li"><span class="sw" style="background:' + g.c + '"></span>' + esc(g.he) + '</span>'; });
     inner += '</div>';
     box.innerHTML = inner;
@@ -623,8 +623,8 @@
   /* ------------------------------------------------ offline / failure path */
   function renderFallback(host, reasonHe) {
     var wrap = el('div', 'pm-wrap');
-    wrap.appendChild(el('div', 'pm-msg', '🛰️ <b>צָרִיךְ חִבּוּר לָאִינְטֶרְנֶט לַמַּפָּה.</b><br>' + esc(reasonHe || '') +
-      '<br><span style="font-size:10.5px;color:#bdb091">אֲבָל הַתֹּכֶן הַמֶּרְחָבִי לֹא אָבַד — הִנֵּה הַשְּׁכָבוֹת:</span>'));
+    wrap.appendChild(el('div', 'pm-msg', '🛰️ <b>The map needs an internet connection.</b><br>' + esc(reasonHe || '') +
+      '<br><span style="font-size:10.5px;color:#bdb091">But the spatial content isn\'t lost — here are the layers:</span>'));
     host.appendChild(wrap);
     // text listing of layers + their feature counts (data is already loaded)
     var fb = el('div', 'pm-fb');
@@ -632,10 +632,10 @@
       if (lay.featureCount === 0) return;
       fb.appendChild(el('div', 'row',
         '<span class="ct">' + lay.emoji + '</span><span class="nm">' + esc(lay.name) + '</span>' +
-        '<span style="color:#a99b78;font-size:10px">' + lay.featureCount + ' פִּרִיטִים</span>'));
+        '<span style="color:#a99b78;font-size:10px">' + lay.featureCount + ' items</span>'));
     });
     host.appendChild(fb);
-    host.appendChild(el('div', 'pm-foot', 'אֲרִיחֵי הָרֶקַע: © OpenStreetMap · © CARTO (דּוֹרֵשׁ אִינְטֶרְנֶט). נְתוּנֵי הַשְּׁכָבוֹת: דֶּמוֹ סִינְתֵטִי (מָקוֹם בִּדְיוֹנִי).'));
+    host.appendChild(el('div', 'pm-foot', 'Base tiles: © OpenStreetMap · © CARTO (requires internet). Layer data: synthetic demo (fictional place).'));
   }
 
   /* --------------------------------------------------------------- render */
@@ -646,8 +646,8 @@
     var root = el('div'); root.id = 'pmap';
     host.appendChild(root);
 
-    root.appendChild(el('div', 'pm-h', '<span class="ee">🗺️</span>מַפַּת הַמָּקוֹם — עמק לרקמונט'));
-    root.appendChild(el('div', 'pm-intro', 'כָּל מַה שֶּׁאָסַפְנוּ עַל הַמָּקוֹם — גֵּאוֹלוֹגְיָה, מַיִם וְהִיסְטוֹרְיָה — עַל מַפָּה אַחַת. הַקֵּשׁ עַל פִּיצֶ\'ר לְפֵרוּט, וְהַדְלֵק/כַּבֵּה שְׁכָבוֹת.'));
+    root.appendChild(el('div', 'pm-h', '<span class="ee">🗺️</span>Place map — Larkmont Vale'));
+    root.appendChild(el('div', 'pm-intro', 'Everything we gathered about the place — geology, water and history — on a single map. Tap a feature for details, and toggle layers on/off.'));
 
     var mapWrap = el('div', 'pm-wrap');
     var mapDiv = el('div', 'pm-map'); mapDiv.id = 'pmap-canvas';
@@ -660,11 +660,11 @@
     loadAll().then(function () {
       loadLeaflet().then(function (L) {
         try { buildMap(L, mapDiv, root); }
-        catch (e) { mapWrap.parentNode.removeChild(mapWrap); renderFallback(root, 'שְׁגִיאָה בִּבְנִיַּת הַמַּפָּה.'); }
+        catch (e) { mapWrap.parentNode.removeChild(mapWrap); renderFallback(root, 'Error building the map.'); }
       }).catch(function () {
         // Leaflet itself didn't load → offline path
         mapWrap.parentNode.removeChild(mapWrap);
-        renderFallback(root, 'לֹא הִצְלַחְנוּ לִטְעֹן אֶת מַנּוֹעַ הַמַּפָּה (Leaflet).');
+        renderFallback(root, 'We couldn\'t load the map engine (Leaflet).');
       });
     });
   }
@@ -697,7 +697,7 @@
             var note = el('div', 'pm-msg');
             note.style.position = 'absolute'; note.style.inset = '0'; note.style.background = 'rgba(11,13,24,.92)';
             note.style.display = 'flex'; note.style.alignItems = 'center'; note.style.justifyContent = 'center'; note.style.zIndex = '500';
-            note.innerHTML = '🛰️ <b>אֲרִיחֵי הָרֶקַע לֹא נִטְעֲנוּ</b> — צָרִיךְ חִבּוּר לָאִינְטֶרְנֶט.';
+            note.innerHTML = '🛰️ <b>Base tiles failed to load</b> — needs an internet connection.';
             mapDiv.appendChild(note);
           } catch (e) {}
         });
@@ -733,11 +733,11 @@
       var FsCtl = L.Control.extend({
         options: { position: 'topright' },
         onAdd: function () {
-          var b = L.DomUtil.create('div', 'pm-fsbtn'); b.innerHTML = '⛶'; b.title = 'מָסָךְ מָלֵא';
+          var b = L.DomUtil.create('div', 'pm-fsbtn'); b.innerHTML = '⛶'; b.title = 'Fullscreen';
           L.DomEvent.disableClickPropagation(b);
           L.DomEvent.on(b, 'click', function () {
             var fs = root.classList.toggle('pm-fs');
-            b.innerHTML = fs ? '✕' : '⛶'; b.title = fs ? 'יְצִיאָה מִמָּסָךְ מָלֵא' : 'מָסָךְ מָלֵא';
+            b.innerHTML = fs ? '✕' : '⛶'; b.title = fs ? 'Exit fullscreen' : 'Fullscreen';
             setTimeout(function () { try { map.invalidateSize(); } catch (e) {} }, 90);
           });
           return b;
@@ -762,14 +762,14 @@
 
     // UI: chips + time-slider + legend + footer
     var chipsRow = buildChips(root);
-    // floating צִיר זְמַן panel lives over the map (mapDiv's relative .pm-wrap parent);
+    // floating timeline panel lives over the map (mapDiv's relative .pm-wrap parent);
     // its open chip sits in the chips row. Default: closed/hidden (doesn't cover the map).
     try { buildTimeline(mapDiv.parentNode || root, chipsRow); } catch (e) {}
     buildLegend(root);
     root.appendChild(el('div', 'pm-foot',
-      'בְּסִיס הַמַּפָּה: © OpenStreetMap · © CARTO (dark_all, דּוֹרֵשׁ אִינְטֶרְנֶט). ' +
-      'שִׁכְבוֹת הַנְּתוּנִים (גֵּאוֹלוֹגְיָה · מַיִם · הִיסְטוֹרְיָה · שְׁבִילִים · שְׁמוּרוֹת) הֵן נְתוּנֵי דֶּמוֹ סִינְתֵטִיִּים לְמָקוֹם בִּדְיוֹנִי — לֹא מָקוֹר אֲמִתִּי. ' +
-      'הַכֹּל WGS84.'));
+      'Map base: © OpenStreetMap · © CARTO (dark_all, requires internet). ' +
+      'The data layers (geology · water · history · trails · reserves) are synthetic demo data for a fictional place — not a real source. ' +
+      'All WGS84.'));
 
     state.built = true;
   }
@@ -779,7 +779,7 @@
     render: render,
     ready: function () { return !!(leafletPresent() && state.built); },
     layers: function () { return LAYERS.map(function (l) { return { id: l.id, file: l.file, kind: l.kind, name: l.name, featureCount: l.featureCount, defaultOn: l.defaultOn }; }); },
-    // fly the map to a place (a site/spring/trade-road stop tapped in the סביבה text) + drop a
+    // fly the map to a place (a site/spring/trade-road stop tapped in the Environment text) + drop a
     // transient highlight pin & popup. He's spatial — tapping a place SHOWS it on the map.
     focus: function (lat, lon, label) {
       var m = state.map; if (!m || !isFinite(lat) || !isFinite(lon)) return false;
@@ -794,7 +794,7 @@
         return true;
       } catch (e) { return false; }
     },
-    // time-slider (צִיר זְמַן) API — config + programmatic control (also drives tests).
+    // time-slider (timeline) API — config + programmatic control (also drives tests).
     timelapse: function () {
       return {
         modes: Object.keys(TL_MODES).map(function (id) {

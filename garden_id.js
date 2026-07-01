@@ -62,8 +62,8 @@
     let ans = null;
     try {
       ans = window.prompt(
-        'הדבק מפתח Pl@ntNet חינמי לזיהוי צמחים (my.plantnet.org).\n' +
-        'אפשר לבטל — הזיהוי פשוט יידלג.',
+        'Paste a free Pl@ntNet key to identify plants (my.plantnet.org).\n' +
+        'You can cancel — identification will simply be skipped.',
         ''
       );
     } catch(_){ ans = null; }   // no prompt() in this environment
@@ -152,7 +152,7 @@
 
       const url = ENDPOINT
         + '?api-key=' + encodeURIComponent(key)
-        + '&lang=he&nb-results=3';
+        + '&lang=en&nb-results=3';
 
       const res = await fetch(url, { method: 'POST', body: fd });
       if(!res || !res.ok) return null;      // 401 / quota / 4xx / 5xx → null

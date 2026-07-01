@@ -1,23 +1,23 @@
 {
-  "title_he": "שְׁמֵי הַחֹשֶׁךְ שֶׁל לַרְקְמוֹנְט",
+  "title_he": "The Dark Skies of Larkmont",
   "read_minutes": 3,
   "sections": [
     {
-      "h": "לָמָּה כָּל כָּךְ חָשׁוּךְ",
-      "body_he": "לַרְקְמוֹנְט הַבִּדְיוֹנִית רְחוֹקָה מֵאוֹרוֹת עִיר, וְלָכֵן הַשָּׁמַיִם שָׁם כְּמַעַט נְקִיִּים מִזִּהוּם אוֹר (Bortle 3 בַּדֶּמוֹ)."
+      "h": "Why It Is So Dark",
+      "body_he": "Fictional Larkmont lies far from city lights, so its skies are almost free of light pollution (Bortle 3 in the demo)."
     },
     {
-      "h": "מָה אֶפְשָׁר לִרְאוֹת",
-      "body_he": "בְּלֵילוֹת בְּלִי יָרֵחַ נִרְאֵית לִיבַּת שְׁבִיל הֶחָלָב כְּפַס מוּאָר, וּמֵאוֹת כּוֹכָבִים נִרְאִים בָּעַיִן. כָּל הַנְּתוּנִים כָּאן הֵם הַדְגָּמָה."
+      "h": "What You Can See",
+      "body_he": "On moonless nights the core of the Milky Way appears as a glowing band, and hundreds of stars are visible to the naked eye. All the data here is a demonstration."
     },
     {
-      "h": "עוֹנוֹת שֶׁל שָׁמַיִם",
-      "body_he": "מֵאָבִיב עַד סְתָו הַלִּיבָּה גְּבוֹהָה בַּדָּרוֹם; בַּחֹרֶף הַשָּׁמַיִם שֶׁל הָעֶרֶב צְלוּלִים וְקָרִים."
+      "h": "Seasons of the Sky",
+      "body_he": "From spring to autumn the galactic core rides high in the south; in winter the evening skies are clear and cold."
     }
   ],
   "sources": [
     {
-      "name": "לרקמונט · אַרְכִיוֹן הַדֶּמוֹ (סִינְתֵטִי)",
+      "name": "Larkmont · Demo Archive (synthetic)",
       "url": ""
     }
   ]

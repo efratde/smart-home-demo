@@ -9,7 +9,7 @@
    Alex's three yard zones, and a plant-suitability ranking ("which plant in
    which corner of which terrace in which season"). See microclimate-spec.md.
    Everything modelled is flagged estimate:true — a physically-grounded
-   ESTIMATE, not a measurement and not a CFD/ENVI-met solve ("מודל · הערכה").
+   ESTIMATE, not a measurement and not a CFD/ENVI-met solve ("model · estimate").
    =================================================================== */
 const Derive = (function(){
   const LAT=34.0000, LON=-40.0000;
@@ -36,16 +36,16 @@ const Derive = (function(){
 
   /* ---- per-zone sun/shade for a sun position ---- */
   function zoneState(z,az,alt){
-    if(alt<=-0.5) return {sunlit:false,by:'night',label:'לילה'};
-    if(!sunAboveRidge(alt,az)) return {sunlit:false,by:'terrain',label:'מאחורי הרכס'};
+    if(alt<=-0.5) return {sunlit:false,by:'night',label:'night'};
+    if(!sunAboveRidge(alt,az)) return {sunlit:false,by:'terrain',label:'behind the ridge'};
     for(const s of (z.shades||[])) if(azIn(az,s.blocked_azimuth_from,s.blocked_azimuth_to)&&alt<s.blocked_above_elev_deg)
-      return {sunlit:false,by:'wall',label:'בצל הקיר'};
-    return {sunlit:true,by:'sun',label:'בשמש'};
+      return {sunlit:false,by:'wall',label:'shaded by the wall'};
+    return {sunlit:true,by:'sun',label:'in the sun'};
   }
   function radiation(alt,sunlit,cloud){
     const s=Math.max(0,Math.sin(alt*Math.PI/180));
     let ghi=1000*s*(1-0.75*(cloud||0)); if(!sunlit) ghi*=0.12; ghi=Math.round(ghi);
-    const level=ghi>750?'קיצונית':ghi>500?'גבוהה':ghi>220?'בינונית':ghi>40?'נמוכה':'זניחה';
+    const level=ghi>750?'extreme':ghi>500?'high':ghi>220?'moderate':ghi>40?'low':'negligible';
     const uv=Math.max(0,Math.round((sunlit?1:0.25)*12*s*(1-0.6*(cloud||0))*10)/10);
     return {ghi,level,uv,frac:Math.min(1,ghi/1000)};
   }
@@ -170,7 +170,7 @@ const Derive = (function(){
     {x0:0.0, x1:BX, y0:DECK_Y, y1:PARAPET, z0:0.0, z1:GZ, role:'house_upper'},
     // UPPER enclosed-L volume — SW bedroom block (x 0..GX, z GZ..BZ) above the deck
     {x0:0.0, x1:GX, y0:DECK_Y, y1:PARAPET, z0:GZ, z1:BZ, role:'house_upper'},
-    // courtyard back-strip storage (מחסן), SE corner of the wider courtyard, against
+    // courtyard back-strip storage (storage shed), SE corner of the wider courtyard, against
     //   the BXS east edge; low shingle roof ~2.55
     {x0:BXS-2.72, x1:BXS, y0:0.0, y1:2.55, z0:BZ, z1:BZ+2.94, role:'storage'},
     // outer plot boundary walls (environment.js lowWall)
@@ -879,7 +879,7 @@ const Derive = (function(){
     indoor+=solarBump;
     indoor=Math.round(indoor*10)/10;
     const lagH=INDOOR_TAU_H;   // indicative phase lag ≈ τ
-    const note_he=`בערך ${indoor}°C בתוך הבית (ללא מיזוג) — תגובה ממוסכת ומושהית של המסה התרמית הכבדה לטמפ׳ החוץ, מפגרת ~${Math.round(lagH)} ש׳ ובאמפליטודה קטנה בהרבה. מודל · הערכה`;
+    const note_he=`about ${indoor}°C inside the house (no A/C) — a masked, delayed response of the heavy thermal mass to the outdoor temperature, lagging ~${Math.round(lagH)} h with a much smaller amplitude. model · estimate`;
     return { tempC:indoor, estimate:true, note_he, lagH };
   }
 
@@ -1257,13 +1257,13 @@ const Derive = (function(){
       const radCool=-(0.4+1.6*svf)*clearF*(0.4+0.6*calmF);
       const drain=elevated?+1.2:0;                   // balcony warmer on calm nights
       micro=radCool+drain;
-      note=elevated?'מרום — אוויר קר מתנקז מטה, מינימום גבוה יותר'
-        :(clearF*calmF>0.45?'לילה צלול ורגוע — קירור קרינתי לשמיים פתוחים':'לילה — קירור מתון');
+      note=elevated?'elevated — cold air drains downhill, higher minimum'
+        :(clearF*calmF>0.45?'clear, calm night — radiative cooling to the open sky':'night — moderate cooling');
     } else {
       // DAY: a sheltered low corner traps a little warmth; an open one tracks town.
       const lit=(sun&&sun.altDeg>horizonAt(sun.azDeg)&&(cell?shadowMask(cell,d):1)>0);
       micro=(1-expo)*1.0 + (lit?0.6:-1.2);
-      note=lit?'שמש על הפינה — חימום מקומי':'הפינה בצל — קריר מהעיר';
+      note=lit?'sun on the corner — local warming':'corner in shade — cooler than town';
     }
     const delta=+(lapse+micro).toFixed(1);
     return { delta, lapse, micro:+micro.toFixed(1), note, svf:+svf.toFixed(2),
@@ -1299,8 +1299,8 @@ const Derive = (function(){
     const ad=airDelta(cell,new Date(),{sun,cloud,wind:windKmh});
     // preserve the legacy phrasing the UI expects for the common cases
     let note=ad.note;
-    if(alt>45 && (backyard&&backyard.sunlit)) note='שמש מלאה על החצר המזרחית';
-    else if(alt>-0.5 && backyard && !backyard.sunlit) note='החצר בצל הבית (אקספוזיציה מזרחית — אחה״צ בצל)';
+    if(alt>45 && (backyard&&backyard.sunlit)) note='full sun on the east yard';
+    else if(alt>-0.5 && backyard && !backyard.sunlit) note='yard in the house shade (east exposure — afternoon shaded)';
     return { delta:ad.delta, lapse:ad.lapse, micro:ad.micro, note, estimate:true };
   }
   // back-compat wrapper: same {temp,delta,note,estimate} shape panels.js expects.
@@ -1362,10 +1362,10 @@ const Derive = (function(){
     const dryF=dp!=null?clamp01((4-dp)/8):0.5;
     const score=Math.round((0.55*tempF+0.30*radF+0.15*dryF)*100);
     let level,note;
-    if(lowHouse<=0.5 && radF>0.35){ level='גבוה'; note='צפוי כפור בכתם החשוף שלך — משטח אופקי מקרין לשמיים פתוחים ויורד מתחת לאפס'; }
-    else if(score>=55){ level='בינוני'; note='סיכוי לכפור קרקע בלילה צלול ורגוע (קירור קרינתי על שטח פתוח)'; }
-    else if(score>=30){ level='נמוך'; note='כפור לא סביר, אך משטח אופקי חשוף מתקרר מהר'; }
-    else { level='אין'; note='אין סיכון כפור'; }
+    if(lowHouse<=0.5 && radF>0.35){ level='high'; note='frost expected on your exposed patch — a horizontal surface radiating to the open sky and dropping below zero'; }
+    else if(score>=55){ level='medium'; note='chance of ground frost on a clear, calm night (radiative cooling over open ground)'; }
+    else if(score>=30){ level='low'; note='frost unlikely, but an exposed horizontal surface cools fast'; }
+    else { level='none'; note='no frost risk'; }
     return {level, score, lowHouse:+lowHouse.toFixed(1), dewPoint:dp, note, estimate:true};
   }
 
@@ -1385,7 +1385,7 @@ const Derive = (function(){
     const transparency=Math.max(0,1-humPen-dustPen);
     const score=Math.round((1-c)*60 + (1-(moonIllum||0))*28 + transparency*12);  // cloud stays the dominant killer
     return {score, cloud:c, transparency:+transparency.toFixed(2), bortle:3,
-      verdict:score>=80?'מצוין — צא החוצה':score>=60?'טוב':score>=40?'בינוני':'פחות מומלץ'};
+      verdict:score>=80?'excellent — go outside':score>=60?'good':score>=40?'fair':'not ideal'};
   }
 
   /* ---- today's per-zone sun window (scan the day) ---- */
@@ -1415,10 +1415,10 @@ const Derive = (function(){
 
   /* ---- next meteor shower visible from his dark site (2026 peaks) ---- */
   const METEORS=[
-    ['מרובעי הדרקון','2026-01-04',110],['לירידים','2026-04-22',18],['אטא-אקווארידים','2026-05-06',50],
-    ['דלתא-אקווארידים','2026-07-30',25],['פרסאידים','2026-08-12',100],['אוריונידים','2026-10-21',20],
-    ['לאונידים','2026-11-17',15],['גמינידים','2026-12-14',150],['אורסידים','2026-12-22',10],
-    ['מרובעי הדרקון','2027-01-04',110]];
+    ['Quadrantids','2026-01-04',110],['Lyrids','2026-04-22',18],['Eta Aquariids','2026-05-06',50],
+    ['Delta Aquariids','2026-07-30',25],['Perseids','2026-08-12',100],['Orionids','2026-10-21',20],
+    ['Leonids','2026-11-17',15],['Geminids','2026-12-14',150],['Ursids','2026-12-22',10],
+    ['Quadrantids','2027-01-04',110]];
   function nextMeteor(now){
     for(const [n,d,z] of METEORS){const dt=new Date(d+'T22:00:00');
       if(dt>now){return {name:n,date:dt,zhr:z,days:Math.ceil((dt-now)/864e5)};}}
@@ -1558,7 +1558,7 @@ const Derive = (function(){
   /* ---- ZODIAC chart (tropical): each body's sign+degree from its geocentric ecliptic
      longitude. Sun/moon/planets are real ephemeris; the ASCENDANT (rising sign) needs a
      birth TIME + place, computed from local sidereal time. Astrology framed as poetry. ---- */
-  const ZODIAC=['טָלֶה','שׁוֹר','תְּאוֹמִים','סַרְטָן','אַרְיֵה','בְּתוּלָה','מֹאזְנַיִם','עַקְרָב','קֶשֶׁת','גְּדִי','דְּלִי','דָּגִים'];
+  const ZODIAC=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
   function signOf(eclLonRad){ const d=((eclLonRad*180/Math.PI)%360+360)%360, i=Math.floor(d/30); return { sign:ZODIAC[i], idx:i, deg:Math.round(d-i*30) }; }
   function zodiacChart(date){
     const A=window.Astro; if(!A) return null;
@@ -1677,7 +1677,7 @@ const Derive = (function(){
     const wind=prof.exposure;                      // 0..1
     // wind penalty only for fragile species (broad-leaf/heat-sensitive). For a
     // frost-tender plant we assume it is SHELTERED at its frost-safe spot (the
-    // curated guidance literally says "מוגן מרוח"), so its wind term is softened
+    // curated guidance literally says "sheltered from wind"), so its wind term is softened
     // — frost protection, not wind, governs where it goes.
     const fragile=(plant.id==='blueberries'||plant.id==='avocado'||plant.id==='mint');
     let windPen=fragile?clamp01((wind-0.6)/0.4):0;
@@ -1692,18 +1692,18 @@ const Derive = (function(){
   }
   // build a concise Hebrew reason from the dominant scoring terms.
   function _reasonHe(plant,cell,t,season){
-    const zoneHe={ backyard:'החצר האחורית', balcony:'המרפסת', front:'חזית הבית' }[cell.zoneId]||cell.zoneId;
+    const zoneHe={ backyard:'Backyard', balcony:'Balcony', front:'Front of the house' }[cell.zoneId]||cell.zoneId;
     const bits=[];
-    bits.push(`${zoneHe}: ~${t.sunHours} ש׳ שמש/יום, DLI ~${t.DLI}`);
+    bits.push(`${zoneHe}: ~${t.sunHours} h sun/day, DLI ~${t.DLI}`);
     // dominant negative term?
-    if(t.frostPen>0.3 && t.frostTdawn!=null) bits.push(`מינימום שחר ~${t.frostTdawn}°C — סיכון קרה לרגיש${t.elevated?'':', פינה נמוכה שאוגרת אוויר קר'}`);
-    else if(t.elevated && plant.frost_hardy_c!=null && plant.frost_hardy_c>-5) bits.push(`מורם — אוויר קר מתנקז מטה, מינימום שחר ~${t.frostTdawn}°C מגן על הרגיש לקרה`);
-    else if(plant.frost_hardy_c!=null && t.frost) bits.push(`עמיד עד ${plant.frost_hardy_c}°C, עומד בכפור הלילה`);
-    if(t.heatPen>0.3 && t.heatRef!=null) bits.push(`שיא חום עלווה ~${t.heatRef}°C — מעל סף החום שלו`);
-    else if(plant.t_max_tol!=null && t.heatRef!=null && t.heatRef<=plant.t_max_tol) bits.push(`חום קיץ (~${t.heatRef}°C) בטווח הסבילות`);
-    if(plant.chill_hours_req!=null){ if(t.fChill>=0.95) bits.push(`מנות קור מספיקות (~${t.chillEst} ש׳)`); else bits.push(`קור חורף חסר (~${t.chillEst}/${plant.chill_hours_req} ש׳)`); }
-    if(t.exposure>0.75) bits.push('פינה חשופה לרוח');
-    else if(t.exposure<0.45) bits.push('פינה מוגנת מרוח');
+    if(t.frostPen>0.3 && t.frostTdawn!=null) bits.push(`dawn minimum ~${t.frostTdawn}°C — frost risk for a sensitive plant${t.elevated?'':', a low corner that pools cold air'}`);
+    else if(t.elevated && plant.frost_hardy_c!=null && plant.frost_hardy_c>-5) bits.push(`elevated — cold air drains downhill, dawn minimum ~${t.frostTdawn}°C protects the frost-sensitive plant`);
+    else if(plant.frost_hardy_c!=null && t.frost) bits.push(`hardy to ${plant.frost_hardy_c}°C, withstands the night frost`);
+    if(t.heatPen>0.3 && t.heatRef!=null) bits.push(`peak canopy heat ~${t.heatRef}°C — above its heat threshold`);
+    else if(plant.t_max_tol!=null && t.heatRef!=null && t.heatRef<=plant.t_max_tol) bits.push(`summer heat (~${t.heatRef}°C) within its tolerance range`);
+    if(plant.chill_hours_req!=null){ if(t.fChill>=0.95) bits.push(`enough chill hours (~${t.chillEst} h)`); else bits.push(`winter chill insufficient (~${t.chillEst}/${plant.chill_hours_req} h)`); }
+    if(t.exposure>0.75) bits.push('wind-exposed corner');
+    else if(t.exposure<0.45) bits.push('wind-sheltered corner');
     return bits.join('. ')+'.';
   }
   // RANK plants for a given cell (best-fit first).
@@ -1738,7 +1738,7 @@ const Derive = (function(){
   }
 
   /* ---- §4b CANDIDATE PLANTS (not yet in the garden) -------------------------
-     The "כדאי להוסיף לגינה" suggestions (garden.js) score plants Alex does NOT
+     The "worth adding to the garden" suggestions (garden.js) score plants Alex does NOT
      own against his real zones. Those candidate objects are NOT in DATA.plants,
      so rankPlantsForCell/bestCellForPlant (which iterate the owned set) can't see
      them — but _scorePlantCell + _reasonHe already operate on an ARBITRARY plant
@@ -2022,7 +2022,7 @@ const Derive = (function(){
       usable_area_m2:+usable.toFixed(1),
       gross_area_m2:+gross.toFixed(1),
       best_tilt_deg:best.tilt,
-      best_azimuth_deg:180, best_azimuth_he:'דרום',
+      best_azimuth_deg:180, best_azimuth_he:'south',
       poa_kwh_m2_yr:+poaCal.toFixed(0),
       pr, module_eff:eff,
       by_month,
@@ -2030,7 +2030,7 @@ const Derive = (function(){
       savings_nis_per_year:+(annual_kwh*tariff).toFixed(0),
       horizon_loss_pct,
       estimate:true,
-      note_he:'הערכה פיזיקלית מהמודל — לא מדידה, לא Google Solar'
+      note_he:'physics-based estimate from the model — not a measurement, not Google Solar'
     };
     return _roofSolarCache;
   }
@@ -2167,7 +2167,7 @@ const Derive = (function(){
      SHARED ROOM-WARMTH MODEL (§C.3b) — ONE source for the lean a room has
      vs the whole-house base interior temp. Previously duplicated inside
      workbench.js (warmthScore + climateSummary); now room labels, the
-     workbench אקלים card, AND the per-room history kernel all read these,
+     workbench climate card, AND the per-room history kernel all read these,
      so they can never drift apart.
 
        geom = { floor:'ground'|'upper', x0,x1,z0,z1, … }  (window.__enterMode.roomGeom)

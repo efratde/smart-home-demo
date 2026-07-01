@@ -126,7 +126,7 @@ const Astro = (function(){
     let elong = lon - s.eclLon;
     const illum = (1 - Math.cos(elong)) / 2;
     let frac = (elong/(2*Math.PI)) % 1; if (frac<0) frac+=1;
-    const names = ['מולד','מגל מתמלא','רבע ראשון','גיבן מתמלא','ירח מלא','גיבן מתמעט','רבע אחרון','מגל מתמעט'];
+    const names = ['New Moon','Waxing Crescent','First Quarter','Waxing Gibbous','Full Moon','Waning Gibbous','Last Quarter','Waning Crescent'];
     return { az, alt, altDeg: alt*deg, azDeg:((az*deg)%360+360)%360, dir: vec(az,alt),
              illum, frac, waxing: frac<0.5, name: names[Math.round(frac*8)%8],
              eclLon: lon, distKm, angDiamDeg };
@@ -170,11 +170,11 @@ const Astro = (function(){
   };
   // planet display metadata (Hebrew name + colour hint + one fact)
   const PLAN_META = {
-    Mercury:{he:'כוכב חמה',color:0xc9b48f,fact:'הקרוב לשמש — קשה לתפיסה, רק סמוך לזריחה/שקיעה.'},
-    Venus:  {he:'נוגה',     color:0xfff0c8,fact:'הגוף הבהיר בשמיים אחרי השמש והירח — "כוכב הערב/הבוקר".'},
-    Mars:   {he:'מאדים',    color:0xff7043,fact:'הכוכב האדום — צבעו מאבק תחמוצת ברזל.'},
-    Jupiter:{he:'צדק',      color:0xf3e0c0,fact:'הענק הגזי — בינוקולר חושף את ארבעת ירחי גלילאו.'},
-    Saturn: {he:'שבתאי',    color:0xead7a0,fact:'טבעותיו נראות כבר בטלסקופ קטן.'}
+    Mercury:{he:'Mercury',color:0xc9b48f,fact:'Closest to the Sun — hard to catch, only near sunrise/sunset.'},
+    Venus:  {he:'Venus',    color:0xfff0c8,fact:'The brightest body in the sky after the Sun and Moon — the "Evening/Morning Star".'},
+    Mars:   {he:'Mars',     color:0xff7043,fact:'The Red Planet — its colour comes from iron-oxide dust.'},
+    Jupiter:{he:'Jupiter',  color:0xf3e0c0,fact:'The gas giant — binoculars reveal the four Galilean moons.'},
+    Saturn: {he:'Saturn',   color:0xead7a0,fact:'Its rings are visible even in a small telescope.'}
   };
   function kepler(M, e){
     M = ((M % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI); if(M>Math.PI) M-=2*Math.PI;

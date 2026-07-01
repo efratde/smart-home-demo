@@ -7,11 +7,11 @@
 
    The garden card (window.__garden.open) is the single canonical plant card.
    Its honesty-spine sections were FOLDED IN there:
-     • "כך באמת היה עד כה" — real measured history from RecordStore.plantTotals
+     • "How it really went so far" — real measured history from RecordStore.plantTotals
        (frost nights / DLI / sun-hours / GDD / ETc water), labelled
-       "מבוסס מדידות אמת", with the model fallback labelled "מודל · הערכה"
+       "based on real measurements", with the model fallback labelled "model · estimate"
        when RecordStore.status().days===0.
-     • "תחזית קדימה" — window.Predict outlook (best window / season forecast /
+     • "The outlook ahead" — window.Predict outlook (best window / season forecast /
        frost / water), each row carrying Predict's own basis+confidence label.
    (Identity, care-this-month, pests, lifecycle, fit, Pl@ntNet ID and the
    iNaturalist nearby block already lived on the garden card.)

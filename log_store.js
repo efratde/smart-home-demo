@@ -10,8 +10,8 @@
 
    SHARED-KEY REUSE (no duplication): the collections 'readings' and
    'sightings' map onto the EXISTING panels.js stores 'home_read' and
-   'home_obs' via KEYMAP, so the אנרגיה meter-reading UI and the טבע
-   observation UI and the new מוח tab all read/write one shared store.
+   'home_obs' via KEYMAP, so the energy meter-reading UI and the nature
+   observation UI and the new brain tab all read/write one shared store.
    add() spreads caller fields AFTER the {t,d} stamps, so existing record
    shapes ({k,v,d} for readings, {t,d} for observations) are preserved
    bit-for-bit while still gaining an id.
@@ -28,7 +28,7 @@
      'airbnb','work','invoices' back the host/work/invoicing log UIs; they get
      their own 'home_log_<coll>_v1' keys (no KEYMAP entry → fresh stores).
      'app_feedback' (feedback.js) + 'materials' (materials_hub.js) are also
-     LogStore collections — listed here so the manual גיבוי export (all())
+     LogStore collections — listed here so the manual backup export (all())
      picks them up like every other store, not just cloud-sync. */
   const COLLS = ['sightings','plantcond','projects','lending','readings','visitors','neighbors','schedule','airbnb','work','invoices','app_feedback','materials'];
 
@@ -45,7 +45,7 @@
   const newId    = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
   /* optional per-record PHOTO support (#19/#27). A record may carry a `photo`
-     string = a downscaled image dataURL (the מוח add-form downscales to ~800px
+     string = a downscaled image dataURL (the brain add-form downscales to ~800px
      JPEG before calling add()). To keep the ~5MB localStorage budget sane we
      CAP a single stored photo string; anything larger (an un-downscaled paste)
      is dropped rather than risking a QuotaExceededError that would lose the

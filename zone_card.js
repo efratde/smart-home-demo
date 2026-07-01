@@ -1,8 +1,8 @@
 /* ===================================================================
-   zone_card.js — the OUTDOOR ZONE card (the חצר twin of the indoor room
+   zone_card.js — the OUTDOOR ZONE card (the yard twin of the indoor room
    workbench). The 3 yard zones (backyard / balcony / front) now get the
    SAME experience the indoor rooms already have: clicking a zone in the
-   חצר tab's zone list FLIES the camera to a top-down view of that zone AND
+   yard tab's zone list FLIES the camera to a top-down view of that zone AND
    opens a rich, tabbed floating card — mirroring workbench.js's chrome,
    tabs, gold-on-dark #inst language, and self-contained DOM overlay.
 
@@ -27,7 +27,7 @@
    dawn temp / Δ-from-town / frost gauge / sun-exposure % / ETc litres),
    today's per-zone sun window (zoneState + shadeSchedule + sunEvents), and
    the plants currently in the zone (window.__garden._doc().plants →
-   window.__garden.open(id)). Everything modelled is flagged מודל · הערכה.
+   window.__garden.open(id)). Everything modelled is flagged model · estimate.
    =================================================================== */
 (function(){
   if(window.__zoneCard) return;
@@ -47,13 +47,13 @@
      name_he comes from Derive.data.site.zones; this is a safe fallback before
      site.json has loaded (and for the facing/elevation sub-line). ---- */
   const ZMETA={
-    backyard:{ name_he:'הֶחָצֵר הָאֲחוֹרִית', facing:'east',  emoji:'🌄', sub:'מִזְרָח · שֶׁמֶשׁ בֹּקֶר' },
-    balcony :{ name_he:'מִרְפֶּסֶת קוֹמָה רִאשׁוֹנָה', facing:'east', emoji:'☀️', sub:'מוּרֶמֶת · הֲכִי הַרְבֵּה שֶׁמֶשׁ' },
-    front   :{ name_he:'חֲזִית הַבַּיִת', facing:'west', emoji:'🌅', sub:'מַעֲרָב · שֶׁמֶשׁ אַחַר־הַצָּהֳרַיִם' }
+    backyard:{ name_he:'The Backyard', facing:'east',  emoji:'🌄', sub:'East · Morning sun' },
+    balcony :{ name_he:'First-Floor Balcony', facing:'east', emoji:'☀️', sub:'Elevated · Most sun' },
+    front   :{ name_he:'House Front', facing:'west', emoji:'🌅', sub:'West · Afternoon sun' }
   };
-  const FACE_HE={ east:'מִזְרָח', west:'מַעֲרָב', north:'צָפוֹן', south:'דָּרוֹם' };
+  const FACE_HE={ east:'East', west:'West', north:'North', south:'South' };
   const seasonKey=m=>(m===11||m<2)?'winter':m<5?'spring':m<8?'summer':'autumn';
-  const SEASON_HE={ winter:'חֹרֶף', spring:'אָבִיב', summer:'קַיִץ', autumn:'סְתָו' };
+  const SEASON_HE={ winter:'Winter', spring:'Spring', summer:'Summer', autumn:'Autumn' };
 
   // the live zone object from site.json (carries shades[] + name_he). Null until loaded.
   function siteZone(id){
@@ -233,13 +233,13 @@
 
   /* ---------------- view ---------------- */
   let panel=null, bodyEl=null, tabsEl=null, cur=null, TAB='overview', _instPrev=null;
-  const TABS=[['overview','סקירה'],['climate','אקלים'],['sun','שֶׁמֶשׁ'],['plants','צמחים']];
+  const TABS=[['overview','Overview'],['climate','Climate'],['sun','Sun'],['plants','Plants']];
 
   /* ---- Explain "?" chips: a value-built-as-innerHTML can't hold a live chip
      element, so (mirroring garden.js) each chip is a placeholder <span data-xpl>
      written into the HTML and mounted as a real Explain.chip() child after the
      body innerHTML is set. metric_id auto-fills from data/explain_content.json;
-     honesty labels (מדוד/הערכה) come straight from that content's kind. Every
+     honesty labels (measured/estimate) come straight from that content's kind. Every
      id used here is present in explain_content.json. Fully defensive — if
      window.Explain isn't loaded the slots just stay empty (no throw). ---- */
   let _pendingChips=[];
@@ -262,7 +262,7 @@
   function ensure(){
     if(panel) return;
     document.head.appendChild(el('style',null,CSS));
-    panel=el('div'); panel.id='zcPanel'; panel.setAttribute('dir','rtl');
+    panel=el('div'); panel.id='zcPanel'; panel.setAttribute('dir','ltr');
     tabsEl=el('div','ztabs'); bodyEl=el('div','zbody');
     panel.appendChild(tabsEl); panel.appendChild(bodyEl);
     document.body.appendChild(panel);
@@ -279,18 +279,18 @@
   /* ---- frost gauge label (mirrors panels.frostLevel) ---- */
   function frostLevel(prof){
     if(!prof) return {txt:'—',cls:''};
-    if(prof.frost) return {txt:'גָּבוֹהַּ',cls:'frost-hi'};
+    if(prof.frost) return {txt:'High',cls:'frost-hi'};
     const td=(prof.frostTdawn!=null)?prof.frostTdawn:prof.Tdawn;
-    if(td!=null && td<=3) return {txt:'בֵּינוֹנִי',cls:'frost-mid'};
-    if(td!=null && td<=6) return {txt:'נָמוּךְ',cls:''};
-    return {txt:'אֵין',cls:''};
+    if(td!=null && td<=3) return {txt:'Medium',cls:'frost-mid'};
+    if(td!=null && td<=6) return {txt:'Low',cls:''};
+    return {txt:'None',cls:''};
   }
 
-  /* ---- HONESTY SPINE: "כך באמת היה בעונה" — the measured Living Record for the zone.
-     The modeled cellProfile is already shown (labelled מודל · הערכה); here we add the
+  /* ---- HONESTY SPINE: "how it really was this season" — the measured Living Record for the zone.
+     The modeled cellProfile is already shown (labelled model · estimate); here we add the
      REAL accumulated record from RecordStore.zoneTotals when it covers days, labelled
-     "מבוסס מדידות אמת". If status().days===0 (store absent / still building) we show the
-     SAME model snapshot, labelled "מודל · הערכה". Fully defensive — never throws. ---- */
+     "based on real measurements". If status().days===0 (store absent / still building) we show the
+     SAME model snapshot, labelled "model · estimate". Fully defensive — never throws. ---- */
   const _z0=v=>(v==null||!isFinite(v))?null:Math.round(v);
   const _z1=v=>(v==null||!isFinite(v))?null:Math.round(v*10)/10;
   function _zIsoUTC(d){ return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0'); }
@@ -305,34 +305,34 @@
       const from=st.firstDate||_zIsoDaysAgo(365), to=st.lastDate||_zIsoUTC(new Date());
       let tot=null; try{ tot=RS.zoneTotals(id,from,to); }catch(e){ tot=null; }
       if(tot && tot.days){
-        return `<div class="zcard"><div class="zct">כָּךְ בֶּאֱמֶת הָיָה עַד כֹּה${chipSlot({metric_id:'record_zoneTotals'})} <span class="zpill real">מְבֻסָּס מְדִידוֹת אֱמֶת</span></div>`+
+        return `<div class="zcard"><div class="zct">How it really was so far${chipSlot({metric_id:'record_zoneTotals'})} <span class="zpill real">Based on real measurements</span></div>`+
           `<div class="zgrid">`+
-          `<span class="k">יָמִים מְתֻעָדִים</span><b>${tot.days}</b>`+
-          `<span class="k">לֵילוֹת כְּפוֹר</span><b>${tot.frostNights}</b>`+
-          `<span class="k">סַךְ DLI</span><b>${_z0(tot.dliSum)} mol/m²</b>`+
-          `<span class="k">שְׁעוֹת שֶׁמֶשׁ</span><b>${_z0(tot.sunHoursSum)} ש׳</b>`+
-          `<span class="k">GDD מְצֻבָּר</span><b>${_z0(tot.gddSum)}</b>`+
-          `<span class="k">מַיִם (ETc)</span><b>${_z1(tot.etcSum)} מ״מ</b>`+
-          `<span class="k">גֶּשֶׁם</span><b>${_z1(tot.rainSum)} מ״מ</b>`+
-          (tot.tMinAbs!=null?`<span class="k">קֹר קִיצוֹנִי</span><b>${_z1(tot.tMinAbs)}°</b>`:'')+
+          `<span class="k">Recorded days</span><b>${tot.days}</b>`+
+          `<span class="k">Frost nights</span><b>${tot.frostNights}</b>`+
+          `<span class="k">Total DLI</span><b>${_z0(tot.dliSum)} mol/m²</b>`+
+          `<span class="k">Sun hours</span><b>${_z0(tot.sunHoursSum)} h</b>`+
+          `<span class="k">Cumulative GDD</span><b>${_z0(tot.gddSum)}</b>`+
+          `<span class="k">Water (ETc)</span><b>${_z1(tot.etcSum)} mm</b>`+
+          `<span class="k">Rain</span><b>${_z1(tot.rainSum)} mm</b>`+
+          (tot.tMinAbs!=null?`<span class="k">Extreme cold</span><b>${_z1(tot.tMinAbs)}°</b>`:'')+
           `</div>`+
-          `<div class="ztag" style="margin-top:5px">${esc(st.note_he||'מבוסס מדידות אמת (Open-Meteo) דרך הגיאומטריה של הבית — לא חיישן פיזי')}`+
+          `<div class="ztag" style="margin-top:5px">${esc(st.note_he||'Based on real measurements (Open-Meteo) via the house geometry — not a physical sensor')}`+
           (st.firstDate?` · ${_zDdmm(st.firstDate)}–${_zDdmm(st.lastDate)}`:'')+`</div></div>`;
       }
     }
     // FALLBACK — days===0: show the season's MODEL snapshot, labelled model (parallel honesty).
     const D=window.Derive, cell=repCell(id), seas=curSeason();
     const prof=(cell&&D&&D.cellProfile)?D.cellProfile(cell,seas):null;
-    let h=`<div class="zcard"><div class="zct">כָּךְ בֶּאֱמֶת הָיָה עַד כֹּה${chipSlot({metric_id:'record_status'})} <span class="zpill model">מוֹדֵל · הַעֲרָכָה</span></div>`;
-    h+=`<div class="ztag">${st.building?('בּוֹנֶה אֶת הַיּוֹמָן'+(st.pct!=null?(' · '+st.pct+'%'):'')+'… בֵּינְתַיִם — הַעֲרָכַת מוֹדֵל.'):'עֲדַיִן אֵין יָמִים מְתֻעָדִים — מֻצֶּגֶת הַעֲרָכַת מוֹדֵל עַד שֶׁיִּצְטַבֵּר תִּעוּד אֲמִתִּי.'}</div>`;
+    let h=`<div class="zcard"><div class="zct">How it really was so far${chipSlot({metric_id:'record_status'})} <span class="zpill model">Model · estimate</span></div>`;
+    h+=`<div class="ztag">${st.building?('Building the log'+(st.pct!=null?(' · '+st.pct+'%'):'')+'… meanwhile — model estimate.'):'No recorded days yet — a model estimate is shown until real records accumulate.'}</div>`;
     if(prof){
       h+=`<div class="zgrid" style="margin-top:6px">`+
-        `<span class="k">DLI יוֹמִי</span><b>~${prof.DLI} mol/m²</b>`+
-        `<span class="k">שֶׁמֶשׁ יוֹמִית</span><b>~${prof.sunHours} ש׳</b>`+
-        `<span class="k">מַיִם (ETc)</span><b>~${prof.ETc} מ״מ/יוֹם</b>`+
+        `<span class="k">Daily DLI</span><b>~${prof.DLI} mol/m²</b>`+
+        `<span class="k">Daily sun</span><b>~${prof.sunHours} h</b>`+
+        `<span class="k">Water (ETc)</span><b>~${prof.ETc} mm/day</b>`+
         `</div>`;
     }
-    h+=`<div class="ztag" style="margin-top:4px">הַעֲרָכָה מֵהַמּוֹדֵל הַפִיזִיקָלִי לַתָּא (לֹא מְדִידָה). כְּשֶׁיִּצְטַבֵּר תִּעוּד — יֻחְלָף בַּמָּדוּד.</div></div>`;
+    h+=`<div class="ztag" style="margin-top:4px">Estimate from the physical per-cell model (not a measurement). Once records accumulate — it is replaced by the measured value.</div></div>`;
     return h;
   }
 
@@ -342,25 +342,25 @@
     const seas=curSeason(), cell=repCell(id), prof=cell&&D&&D.cellProfile?D.cellProfile(cell,seas):null;
     const cells=zoneCells(id);
     let h='';
-    h+=`<div class="zcard"><div class="zct">זֶהוּת <span class="ztag">${SEASON_HE[seas]}</span></div>`+
-       `<div class="zrow"><span>כִּוּוּן</span><span>${FACE_HE[(z&&z.facing)||meta.facing]||'—'}</span></div>`+
-       `<div class="zrow"><span>גֹּבַהּ</span><span>${(z&&(z.elevation_offset_m||0)>1)?'מוּרֶמֶת מֵעַל הֶחָצֵר':'גֹּבַהּ הַקַּרְקַע'}</span></div>`+
-       `<div class="zrow"><span>שֶׁטַח מְדֻגָּם</span><b>${cells.length} תָּאִים · ~0.5 מ׳</b></div>`;
+    h+=`<div class="zcard"><div class="zct">Identity <span class="ztag">${SEASON_HE[seas]}</span></div>`+
+       `<div class="zrow"><span>Facing</span><span>${FACE_HE[(z&&z.facing)||meta.facing]||'—'}</span></div>`+
+       `<div class="zrow"><span>Elevation</span><span>${(z&&(z.elevation_offset_m||0)>1)?'Raised above the yard':'Ground level'}</span></div>`+
+       `<div class="zrow"><span>Sampled area</span><b>${cells.length} cells · ~0.5 m</b></div>`;
     if(z&&z.notes_he) h+=`<div class="znote">${esc(z.notes_he)}</div>`;
     h+=`</div>`;
     if(prof){
       const fr=frostLevel(prof);
-      h+=`<div class="zcard"><div class="zct">תַּקְצִיר מִיקְרוֹאַקְלִים <span class="zpill amber">מוֹדֵל</span></div>`+
+      h+=`<div class="zcard"><div class="zct">Microclimate summary <span class="zpill amber">Model</span></div>`+
         `<div class="zgrid">`+
-        `<span class="k">שֶׁמֶשׁ יְשִׁירָה${chipSlot({metric_id:'sunHours'})}</span><b>${prof.sunHours} ש׳</b>`+
+        `<span class="k">Direct sun${chipSlot({metric_id:'sunHours'})}</span><b>${prof.sunHours} h</b>`+
         `<span class="k">DLI${chipSlot({metric_id:'dli'})}</span><b>${prof.DLI} mol/m²</b>`+
-        `<span class="k">שִׂיא · שַׁחַר${chipSlot({metric_id:'surfaceTemp'})}</span><b>${prof.Tpeak}° / ${prof.Tdawn}°</b>`+
-        `<span class="k">כְּפוֹר${chipSlot({metric_id:'frostRisk'})}</span><b class="${fr.cls?('zpill '+fr.cls):''}">${fr.txt}</b>`+
+        `<span class="k">Peak · Dawn${chipSlot({metric_id:'surfaceTemp'})}</span><b>${prof.Tpeak}° / ${prof.Tdawn}°</b>`+
+        `<span class="k">Frost${chipSlot({metric_id:'frostRisk'})}</span><b class="${fr.cls?('zpill '+fr.cls):''}">${fr.txt}</b>`+
         `</div></div>`;
     } else {
-      h+=`<div class="zcard"><div class="ztag">הַמּוֹדֵל נִטְעָן…</div></div>`;
+      h+=`<div class="zcard"><div class="ztag">The model is loading…</div></div>`;
     }
-    h+=`<div class="znote">לִחְצוּ עַל הַטַּאבִּים לְמוֹדֵל הָאַקְלִים הַמָּלֵא, חַלּוֹן הַשֶּׁמֶשׁ הַיּוֹמִי וְהַצְּמָחִים בָּאֵזוֹר. הַמַּצְלֵמָה טָסָה לְמַבָּט־עַל עַל הָאֵזוֹר.</div>`;
+    h+=`<div class="znote">Tap the tabs for the full climate model, today's sun window and the plants in the zone. The camera flew to a top-down view of the zone.</div>`;
     return h;
   }
 
@@ -371,51 +371,51 @@
     const D=window.Derive, z=siteZone(id);
     const seas=curSeason(), cell=repCell(id);
     const prof=(cell&&D&&D.cellProfile)?D.cellProfile(cell,seas):null;
-    if(!prof) return `<div class="zcard"><div class="ztag">מוֹדֵל הָאַקְלִים נִטְעָן… (פִּתְחוּ שׁוּב בְּעוֹד רֶגַע)</div></div>`;
+    if(!prof) return `<div class="zcard"><div class="ztag">The climate model is loading… (reopen in a moment)</div></div>`;
     const fr=frostLevel(prof);
     const litresWk=r1((prof.ETc||0)*7);
     const dAirStr=(prof.dAir>=0?'+':'')+prof.dAir;
     const expoPct=Math.round((prof.exposure||0)*100), svfPct=Math.round((prof.svf||0)*100);
     let h='';
     // headline gems grid
-    h+=`<div class="zcard"><div class="zct">קְרִיאַת הָאֵזוֹר · ${SEASON_HE[seas]} <span class="zpill amber">מוֹדֵל · הַעֲרָכָה</span></div>`+
+    h+=`<div class="zcard"><div class="zct">Zone reading · ${SEASON_HE[seas]} <span class="zpill amber">Model · estimate</span></div>`+
       `<div class="zgrid">`+
-      `<span class="k">שֶׁמֶשׁ יְשִׁירָה${chipSlot({metric_id:'sunHours'})}</span><b>${prof.sunHours} ש׳/יוֹם</b>`+
-      `<span class="k">DLI${chipSlot({metric_id:'dli'})}</span><b>${prof.DLI} mol/m²/יוֹם</b>`+
-      `<span class="k">שִׂיא קַרְקַע${chipSlot({metric_id:'surfaceTemp'})}</span><b>${prof.Tpeak}°</b>`+
-      `<span class="k">שִׂיא עָלֶה (מוּרְגָּשׁ)</span><b>${prof.leafTpeak!=null?prof.leafTpeak+'°':'—'}</b>`+
-      `<span class="k">שַׁחַר (קַרְקַע)</span><b>${prof.Tdawn}°</b>`+
-      `<span class="k">Δ מֵהָעִיר${chipSlot({metric_id:'airDelta'})}</span><b>${dAirStr}°</b>`+
+      `<span class="k">Direct sun${chipSlot({metric_id:'sunHours'})}</span><b>${prof.sunHours} h/day</b>`+
+      `<span class="k">DLI${chipSlot({metric_id:'dli'})}</span><b>${prof.DLI} mol/m²/day</b>`+
+      `<span class="k">Ground peak${chipSlot({metric_id:'surfaceTemp'})}</span><b>${prof.Tpeak}°</b>`+
+      `<span class="k">Leaf peak (felt)</span><b>${prof.leafTpeak!=null?prof.leafTpeak+'°':'—'}</b>`+
+      `<span class="k">Dawn (ground)</span><b>${prof.Tdawn}°</b>`+
+      `<span class="k">Δ from town${chipSlot({metric_id:'airDelta'})}</span><b>${dAirStr}°</b>`+
       `</div></div>`;
     // HONESTY SPINE: the measured Living Record for this zone (or the model fallback, labelled)
     h+=realSeasonCard(id);
     // exposure + frost gauges
-    h+=`<div class="zcard"><div class="zct">חֲשִׂיפָה · רוּחַ · כְּפוֹר</div>`+
-      `<div class="zrow"><span>חֲשִׂיפַת שֶׁמֶשׁ (SVF)</span><b>${svfPct}%</b></div>`+
+    h+=`<div class="zcard"><div class="zct">Exposure · Wind · Frost</div>`+
+      `<div class="zrow"><span>Sun exposure (SVF)</span><b>${svfPct}%</b></div>`+
       `<div class="zbar"><i style="width:${svfPct}%;background:linear-gradient(90deg,#293866,#caa15a,#fff7cc)"></i></div>`+
-      `<div class="zrow"><span>חֲשִׂיפַת רוּחַ</span><b>${expoPct}%</b></div>`+
+      `<div class="zrow"><span>Wind exposure</span><b>${expoPct}%</b></div>`+
       `<div class="zbar"><i style="width:${expoPct}%;background:linear-gradient(90deg,#4da866,#e6bd4d,#db4d38)"></i></div>`+
-      `<div class="zrow"><span>סִכּוּן כְּפוֹר${chipSlot({metric_id:'frostRisk'})}</span><b class="${fr.cls?('zpill '+fr.cls):''}">${fr.txt}</b></div>`+
-      (prof.frostTdawn!=null?`<div class="ztag" style="margin-top:4px">לֵיל כְּפוֹר קָרִינָתִי — רִקְמָה רַכָּה חָשָׁה ~${prof.frostTdawn}°${chipSlot({metric_id:'frostTdawn'})} (נִקּוּז אֲוִיר קַר${(z&&(z.elevation_offset_m||0)>1)?' · מוּרֶמֶת = חַמָּה יוֹתֵר':' · קַרְקַע אוֹסֶפֶת קֹר'})</div>`:'')+
+      `<div class="zrow"><span>Frost risk${chipSlot({metric_id:'frostRisk'})}</span><b class="${fr.cls?('zpill '+fr.cls):''}">${fr.txt}</b></div>`+
+      (prof.frostTdawn!=null?`<div class="ztag" style="margin-top:4px">Radiative frost night — soft tissue feels ~${prof.frostTdawn}°${chipSlot({metric_id:'frostTdawn'})} (cold-air drainage${(z&&(z.elevation_offset_m||0)>1)?' · raised = warmer':' · ground collects cold'})</div>`:'')+
       `</div>`;
     // water demand gem (ETc → weekly litres on ~1 m² canopy)
-    h+=`<div class="zcard"><div class="zct">דְּרִישַׁת מַיִם <span class="zpill blue">ETc</span></div>`+
-      `<div class="zrow"><span>אִיּוּד יוֹמִי (ETc)${chipSlot({metric_id:'ETc'})}</span><b>${prof.ETc} מ״מ</b></div>`+
-      `<div class="zrow"><span>~לִיטְרִים שְׁבוּעִיִּים</span><b>~${litresWk} ל׳ · 1 מ״ר</b></div>`+
-      `<div class="ztag" style="margin-top:4px">לְכָל 1 מ״ר חוֹפַת עָלִים. 1 מ״מ עַל 1 מ״ר = 1 ל׳.</div></div>`;
+    h+=`<div class="zcard"><div class="zct">Water demand <span class="zpill blue">ETc</span></div>`+
+      `<div class="zrow"><span>Daily evapotranspiration (ETc)${chipSlot({metric_id:'ETc'})}</span><b>${prof.ETc} mm</b></div>`+
+      `<div class="zrow"><span>~Weekly litres</span><b>~${litresWk} L · 1 m²</b></div>`+
+      `<div class="ztag" style="margin-top:4px">Per 1 m² of leaf canopy. 1 mm over 1 m² = 1 L.</div></div>`;
     // valley-rim sun-hour theft: HIS ridge eats sunrise/sunset vs a flat horizon
     if(D&&D.sunEvents){
       const ev=D.sunEvents(new Date());
       if(ev){
-        h+=`<div class="zcard"><div class="zct">⛰️ גְּנֵבַת שָׁעוֹת מֵהָרֶכֶס</div>`+
-          `<div class="zrow"><span>זְרִיחָה — אֹפֶק שָׁטוּחַ</span><span>${ev.riseFlat}</span></div>`+
-          `<div class="zrow"><span>זְרִיחָה — מֵעַל הָרֶכֶס שֶׁלּוֹ</span><b>${ev.riseRidge}</b></div>`+
-          `<div class="zrow"><span>שְׁקִיעָה — מֵעַל הָרֶכֶס</span><b>${ev.setRidge}</b></div>`+
-          `<div class="zrow"><span>שְׁקִיעָה — אֹפֶק שָׁטוּחַ</span><span>${ev.setFlat}</span></div>`+
-          `<div class="ztag" style="margin-top:4px">הָרֶכֶס שֶׁל עמק לרקמונט גּוֹנֵב שָׁעוֹת שֶׁמֶשׁ בַּקְּצָווֹת — נִגְזָר מֵאֹפֶק הַשֶּׁטַח הָאֲמִתִּי.</div></div>`;
+        h+=`<div class="zcard"><div class="zct">⛰️ Hours stolen by the ridge</div>`+
+          `<div class="zrow"><span>Sunrise — flat horizon</span><span>${ev.riseFlat}</span></div>`+
+          `<div class="zrow"><span>Sunrise — over its ridge</span><b>${ev.riseRidge}</b></div>`+
+          `<div class="zrow"><span>Sunset — over the ridge</span><b>${ev.setRidge}</b></div>`+
+          `<div class="zrow"><span>Sunset — flat horizon</span><span>${ev.setFlat}</span></div>`+
+          `<div class="ztag" style="margin-top:4px">The Larkmont Valley ridge steals sun hours at the edges — derived from the real terrain horizon.</div></div>`;
       }
     }
-    h+=`<div class="znote">כָּל הַמִּסְפָּרִים נִגְזָרִים מִמַּאֲזַן־אֶנֶרְגְּיָה פִיזִיקָלִי לְכָל תָּא ~0.5 מ׳, עַל פְּנֵי הַגֵּאוֹמֶטְרְיָה וְהָאֹפֶק הָאֲמִתִּיִּים שֶׁלּוֹ. מוֹדֵל · הַעֲרָכָה — לֹא מְדִידָה.</div>`;
+    h+=`<div class="znote">All numbers are derived from a physical energy balance per ~0.5 m cell, over its real geometry and horizon. Model · estimate — not a measurement.</div>`;
     return h;
   }
 
@@ -429,26 +429,26 @@
       const st=D.zoneState(z,s.azDeg,s.altDeg);
       const rad=D.radiation?D.radiation(s.altDeg,st.sunlit,cloud):null;
       const sch=D.shadeSchedule?D.shadeSchedule(z,new Date()):null;
-      h+=`<div class="zcard"><div class="zct">עַכְשָׁו <span class="ztag">${st.sunlit?'בַּשֶּׁמֶשׁ':esc(st.label||'בְּצֵל')}</span></div>`+
-        `<div class="zrow"><span>מַצָּב</span><b>${esc(st.label||(st.sunlit?'בַּשֶּׁמֶשׁ':'בְּצֵל'))}</b></div>`+
-        (rad?`<div class="zrow"><span>קְרִינָה (GHI)</span><b>${rad.ghi} W/m² · ${esc(rad.level)}</b></div>`+
+      h+=`<div class="zcard"><div class="zct">Now <span class="ztag">${st.sunlit?'In sun':esc(st.label||'In shade')}</span></div>`+
+        `<div class="zrow"><span>Status</span><b>${esc(st.label||(st.sunlit?'In sun':'In shade'))}</b></div>`+
+        (rad?`<div class="zrow"><span>Radiation (GHI)</span><b>${rad.ghi} W/m² · ${esc(rad.level)}</b></div>`+
              `<div class="zrow"><span>UV</span><b>${rad.uv}</b></div>`:'')+
         `</div>`;
       if(sch){
-        h+=`<div class="zcard"><div class="zct">חַלּוֹן הַשֶּׁמֶשׁ הַיּוֹם</div>`+
-          `<div class="zrow"><span>שֶׁמֶשׁ רִאשׁוֹנָה</span><b>${sch.firstSun}</b></div>`+
-          `<div class="zrow"><span>שֶׁמֶשׁ אַחֲרוֹנָה</span><b>${sch.lastSun}</b></div>`+
-          `<div class="zrow"><span>סַךְ שָׁעוֹת שֶׁמֶשׁ</span><b>${sch.sunHours} ש׳</b></div></div>`;
+        h+=`<div class="zcard"><div class="zct">Sun window today</div>`+
+          `<div class="zrow"><span>First sun</span><b>${sch.firstSun}</b></div>`+
+          `<div class="zrow"><span>Last sun</span><b>${sch.lastSun}</b></div>`+
+          `<div class="zrow"><span>Total sun hours</span><b>${sch.sunHours} h</b></div></div>`;
       }
     } else {
-      h+=`<div class="zcard"><div class="ztag">נְתוּנֵי שֶׁמֶשׁ חַיִּים נִטְעָנִים…</div></div>`;
+      h+=`<div class="zcard"><div class="ztag">Live sun data loading…</div></div>`;
     }
     // top plant recs for this zone (same physics panels.js uses)
     const seas=curSeason(), cell=repCell(id);
     if(cell&&D&&D.rankPlantsForCell){
       const ranked=(D.rankPlantsForCell(cell,seas)||[]).slice(0,3);
       if(ranked.length){
-        h+=`<div class="zcard"><div class="zct">מַתְאִים לָאֵזוֹר · ${SEASON_HE[seas]}${chipSlot({metric_id:'plantScore'})} <span class="zpill green">נִגְזָר</span></div>`+
+        h+=`<div class="zcard"><div class="zct">Fits the zone · ${SEASON_HE[seas]}${chipSlot({metric_id:'plantScore'})} <span class="zpill green">Derived</span></div>`+
           ranked.map(rk=>{
             const sc=rk.score, scCls=sc>=66?'':sc>=40?'mid':'lo';
             const emo=(rk.plant&&rk.plant.emoji)||'🌱';
@@ -465,19 +465,19 @@
   function plantsHtml(id){
     const G=window.__garden, doc=(G&&G._doc)?G._doc():null;
     const mine=(doc&&Array.isArray(doc.plants))?doc.plants.filter(p=>p.zoneId===id):[];
-    let h=`<div class="zct" style="margin-bottom:6px">צְמָחִים בָּאֵזוֹר <span class="ztag">${mine.length}</span></div>`;
+    let h=`<div class="zct" style="margin-bottom:6px">Plants in the zone <span class="ztag">${mine.length}</span></div>`;
     if(!mine.length){
-      return h+`<div class="ztag">אֵין צְמָחִים מְשֻׁיָּכִים לָאֵזוֹר הַזֶּה כָּעֵת.</div>`+
-        `<div class="znote">בְּלָשׁוֹנִית "צֶמַח" אֶפְשָׁר לְשַׁיֵּךְ צֶמַח לָאֵזוֹר; הוּא יוֹפִיעַ כָּאן.</div>`;
+      return h+`<div class="ztag">No plants assigned to this zone right now.</div>`+
+        `<div class="znote">In the "Plant" tab you can assign a plant to the zone; it will appear here.</div>`;
     }
     h+=mine.map(p=>{
       const emo=p.emoji||'🌱', nm=p.name_he||p.id;
-      const placed=(p.xL!=null&&p.zL!=null)?' <span class="zpill blue">📍 נְקֻדָּה</span>':'';
+      const placed=(p.xL!=null&&p.zL!=null)?' <span class="zpill blue">📍 Pinned</span>':'';
       return `<div class="zit" data-act="plant" data-id="${esc(p.id)}">`+
         `<span><span class="ze">${emo}</span>${esc(nm)}${placed}</span>`+
-        `<span class="go">פְּתַח ↗</span></div>`;
+        `<span class="go">Open ↗</span></div>`;
     }).join('');
-    h+=`<div class="znote">לְחִיצָה עַל צֶמַח פּוֹתַחַת אֶת כַּרְטִיס הַטִּפּוּל הַמָּלֵא שֶׁלּוֹ.</div>`;
+    h+=`<div class="znote">Tapping a plant opens its full care card.</div>`;
     return h;
   }
 
@@ -494,10 +494,10 @@
     else if(TAB==='sun') html=sunHtml(cur);
     else if(TAB==='plants') html=plantsHtml(cur);
     bodyEl.innerHTML=`<div class="zhd"><h3><span class="ze">${meta.emoji||'🌿'}</span>${esc(zoneName(cur))}</h3>`+
-      `<span class="zx" data-act="close" title="סגור">✕</span></div>`+
-      `<div class="zsub"><span class="face">${faceHe}</span>${elevated?' · מוּרֶמֶת':''} · ${esc(meta.sub||'')}</div>`+
+      `<span class="zx" data-act="close" title="Close">✕</span></div>`+
+      `<div class="zsub"><span class="face">${faceHe}</span>${elevated?' · Elevated':''} · ${esc(meta.sub||'')}</div>`+
       html+
-      `<div class="zfoot">מַבָּט־עַל עַל הָאֵזוֹר · אוֹתָהּ שָׂפָה כְּמוֹ חֶדֶר · שָׁמַיִם · אֶנֶרְגְּיָה</div>`;
+      `<div class="zfoot">Top-down view of the zone · same language as Room · Sky · Energy</div>`;
     flushChips();   // mount deferred Explain "?" chips now that the body HTML is in the DOM
   }
 
@@ -514,7 +514,7 @@
     if(!ZMETA[zoneId] && !siteZone(zoneId)){ return; }   // unknown id → no-op (honest)
     ensure(); cur=zoneId; TAB='overview';
     panel.classList.add('on'); hideInst();
-    // one-brain: a user-initiated zone-card open brings the חצר tab forward (deep-link
+    // one-brain: a user-initiated zone-card open brings the yard tab forward (deep-link
     // from home/alerts lands in the yard context). Safe no-op if nobody's subscribed /
     // already on yard. Never fired inside a per-render redraw, so no emit-loop.
     if(window.Bus&&window.Bus.emit) window.Bus.emit('tab:open',{tab:'yard'});

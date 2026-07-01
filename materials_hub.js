@@ -1,41 +1,41 @@
 /* ===========================================================================
- * materials_hub.js · "הבית של אלכס" — 🔩 חֹמֶר וְקִנְיוֹת
+ * materials_hub.js · "Alex's Home" — 🔩 Materials & Purchases
  * ---------------------------------------------------------------------------
  * A CROSS-PROJECT MATERIALS hub. Alex's explicit ask: CONNECT his renovation
- * projects via SHARED materials. If he needs מוטות ברזל (iron rods) for the
- * סלון AND the מטבח, the system should already tell him:
+ * projects via SHARED materials. If he needs iron rods for the
+ * living room AND the kitchen, the system should already tell him:
  *     "🔗 you need this for both projects — get it once."
  * That shared-across-projects insight is the WHOLE POINT, so it's the marquee:
  * any material whose group spans >1 distinct project is hoisted to the TOP,
  * highlighted, with a 🔗 badge, the SUMMED quantity, and the per-project
- * breakdown ("סה״כ 8 יח׳ — סָלוֹן 5 · מִטְבָּח 3"). Below it: the single-project
+ * breakdown ("total 8 pcs — living room 5 · kitchen 3"). Below it: the single-project
  * materials, grouped by project.
  *
  * GROUPING: materials are grouped by a NORMALIZED name (trim + lowercase +
- * collapsed inner whitespace) so "מוטות ברזל" and "מוטות  ברזל " land together.
+ * collapsed inner whitespace) so "iron rods" and "iron  rods " land together.
  * A group is "shared" when its records cover ≥2 DISTINCT project names.
  *
- * Each material rec = { id, name, qty (number), unit (יח׳ / מ׳ / ק״ג / שק /
- *   מ״ר …), project (a project name), bought (bool), note }.
+ * Each material rec = { id, name, qty (number), unit (pcs / m / kg / bag /
+ *   m² …), project (a project name), bought (bool), note }.
  *
  * Persistence: window.LogStore collection 'materials' when present (shares the
  *   app's one CRUD layer); else a private 'home_materials_v1' localStorage
  *   store with the SAME record shape. Never throws — no LogStore → graceful
- *   empty state ("הוֹסֵף חֹמֶר רִאשׁוֹן").
+ *   empty state ("Add your first material").
  *
  * PROJECTS to pick from come from LogStore.list('projects') (workbench reno
  *   tasks mirror there). Each project rec's name is read defensively from
  *   .title || .t || .name. Free-text project entry is always allowed too.
  *
- * INVENTORY cross-ref ("יֵשׁ לְךָ"): read defensively from window.__inventory
+ * INVENTORY cross-ref ("You have it"): read defensively from window.__inventory
  *   (its _items()) and/or LogStore.list('inventory'). Used only to flag that he
  *   already HAS a matching item, so he doesn't re-buy.
  *
  * Self-contained: exposes window.__materials = { render(host,date), add(name,
  *   qty,unit,project), ready() }; injects its own CSS once (#omat scope, like
- *   inventory.js / community.js). RTL Hebrew, dark glass, gold #caa15a — the
+ *   inventory.js / community.js). RTL, dark glass, gold #caa15a — the
  *   #inst instrument family. No <script> tags, no tab registration (the
- *   integrator wires those: the <script>, the מוח-tab mode, the "＋ חומר" btn).
+ *   integrator wires those: the <script>, the brain-tab mode, the "＋ material" btn).
  * ======================================================================== */
 (function () {
   'use strict';
@@ -48,7 +48,7 @@
 
   /* the unit quick-pick (free text is still accepted via the <select>'s own
      options — these are just the common reno units). */
-  var UNITS = ['יח׳', 'מ׳', 'מ״ר', 'ק״ג', 'שק', 'ליטר', 'גְּלִיל', 'אַרְגָּז'];
+  var UNITS = ['pcs', 'm', 'm²', 'kg', 'bag', 'L', 'roll', 'box'];
 
   /* our OWN tiny html-escaper, defined INSIDE the IIFE (no external `esc`
      dependency — a missing helper is exactly the runtime ReferenceError the
@@ -61,7 +61,7 @@
 
   /* normalize a material name for grouping: trim, lowercase, collapse any run
      of inner whitespace to a single space. Tolerates minor spacing/casing so
-     "מוטות ברזל", "מוטות  ברזל " and "Iron Rod" / "iron rod" each cluster. */
+     "iron rods", "iron  rods " and "Iron Rod" / "iron rod" each cluster. */
   function normName(s) {
     return String(s == null ? '' : s).trim().toLowerCase().replace(/\s+/g, ' ');
   }
@@ -123,7 +123,7 @@
   /* ---- ONE-TIME DEMO SEED ──────────────────────────────────────────────
      The hub is empty on first run, so the 🔗 SHARED-material insight (the whole
      point) has nothing to show. Seed 2 realistic Larkmont-Larkmont house+garden
-     materials, EACH linked to 2 plausible projects so they surface as שֻׁתָּפִים
+     materials, EACH linked to 2 plausible projects so they surface as shared
      with the 🔗 badge. Guarded by SEED_FLAG so the user's deletes stick and it
      NEVER re-seeds. Only seeds when the flag is unset AND the store is empty
      (so it can't collide with anything the user already added). Never throws. */
@@ -138,12 +138,12 @@
       if ((listMats() || []).length) return;                 // user already has data — leave it
       // each row pair shares a NORMALIZED name across 2 projects → 🔗 shared.
       var demo = [
-        { name: 'צֶבַע חוּץ לָבָן', qty: 10, unit: 'ליטר', project: 'חֲזִית הַבַּיִת', note: 'עָמִיד לַשֶּׁמֶשׁ הַחֲזָקָה' },
-        { name: 'צֶבַע חוּץ לָבָן', qty: 6,  unit: 'ליטר', project: 'גָּדֵר הֶחָצֵר' },
-        { name: 'בְּרָגִים וְדִיבְּלִים', qty: 2, unit: 'אַרְגָּז', project: 'מִדָּף בַּמַּחְסָן' },
-        { name: 'בְּרָגִים וְדִיבְּלִים', qty: 1, unit: 'אַרְגָּז', project: 'פֶּרְגּוֹלָה בֶּחָצֵר' },
-        { name: 'אַדְמַת גִּנּוּן / קוֹמְפּוֹסְט', qty: 8, unit: 'שק', project: 'עֲרוּגוֹת יָרָק' },
-        { name: 'אַדְמַת גִּנּוּן / קוֹמְפּוֹסְט', qty: 4, unit: 'שק', project: 'גִּנַּת תַּבְלִינִים' }
+        { name: 'White Exterior Paint', qty: 10, unit: 'L', project: 'House Facade', note: 'Holds up to strong sun' },
+        { name: 'White Exterior Paint', qty: 6,  unit: 'L', project: 'Yard Fence' },
+        { name: 'Screws & Wall Plugs', qty: 2, unit: 'box', project: 'Storeroom Shelf' },
+        { name: 'Screws & Wall Plugs', qty: 1, unit: 'box', project: 'Yard Pergola' },
+        { name: 'Garden Soil / Compost', qty: 8, unit: 'bag', project: 'Vegetable Beds' },
+        { name: 'Garden Soil / Compost', qty: 4, unit: 'bag', project: 'Herb Garden' }
       ];
       demo.forEach(function (m) {
         addMat({ name: m.name, qty: num(m.qty), unit: m.unit, project: m.project, bought: false, note: m.note || '' });
@@ -175,7 +175,7 @@
 
   /* ---- INVENTORY cross-ref: what he already HAS. Read defensively from
      window.__inventory (its _items()) and/or LogStore.list('inventory').
-     Returns a Set of normalized item names. Used only for "יֵשׁ לְךָ". */
+     Returns a Set of normalized item names. Used only for "You have it". */
   function inventoryNameSet() {
     var set = {};
     function eat(arr) {
@@ -215,21 +215,21 @@
     (mats || []).forEach(function (m) {
       if (!m) return;
       var key = normName(m.name);
-      if (!key) key = '(לְלֹא שֵׁם)';
+      if (!key) key = '(no name)';
       var g = map[key];
       if (!g) {
         g = map[key] = {
           key: key,
-          name: (m.name && String(m.name).trim()) || '(לְלֹא שֵׁם)',
+          name: (m.name && String(m.name).trim()) || '(no name)',
           recs: [], projects: [], _projSeen: {}, byProject: {},
           total: 0, unit: '', allBought: true, anyUnbought: false
         };
         order.push(key);
       }
       // keep the first non-trivial display name
-      if (g.name === '(לְלֹא שֵׁם)' && m.name && String(m.name).trim()) g.name = String(m.name).trim();
+      if (g.name === '(no name)' && m.name && String(m.name).trim()) g.name = String(m.name).trim();
       g.recs.push(m);
-      var proj = (m.project == null ? '' : String(m.project).trim()) || 'לְלֹא פְּרוֹיֶקְט';
+      var proj = (m.project == null ? '' : String(m.project).trim()) || 'No project';
       if (!g._projSeen[proj]) { g._projSeen[proj] = 1; g.projects.push(proj); }
       var q = num(m.qty);
       g.byProject[proj] = (g.byProject[proj] || 0) + q;
@@ -249,11 +249,11 @@
   }
 
   /* the per-project breakdown string for a shared group:
-     "סה״כ 8 יח׳ — סָלוֹן 5 · מִטְבָּח 3" */
+     "total 8 pcs — living room 5 · kitchen 3" */
   function breakdownText(g) {
     var unit = g.unit ? (' ' + g.unit) : '';
     var parts = g.projects.map(function (p) { return esc(p) + ' ' + fmtNum(g.byProject[p] || 0); });
-    return 'סה״כ ' + fmtNum(g.total) + unit + ' — ' + parts.join(' · ');
+    return 'Total ' + fmtNum(g.total) + unit + ' — ' + parts.join(' · ');
   }
 
   /* ===========================================================================
@@ -262,42 +262,42 @@
   var _host = null, _wired = false, _filter = 'all', _formOpen = false, _editId = null;
   // shopping-list filter chips
   var FILTERS = [
-    { k: 'all',    he: 'הַכֹּל' },
-    { k: 'buy',    he: 'לִקְנוֹת' },
-    { k: 'shared', he: 'מְשֻׁתָּף' }
+    { k: 'all',    he: 'All' },
+    { k: 'buy',    he: 'To buy' },
+    { k: 'shared', he: 'Shared' }
   ];
 
   // a single material row (within a project group / shared card breakdown list).
   function matRow(m, invSet) {
     var qty = num(m.qty);
     var unit = m.unit ? (' ' + esc(String(m.unit).trim())) : '';
-    var have = invSet[normName(m.name)] ? '<span class="omat-have" title="כְּבָר בַּמַּחְסָן">יֵשׁ לְךָ</span>' : '';
+    var have = invSet[normName(m.name)] ? '<span class="omat-have" title="Already in storage">You have it</span>' : '';
     var boughtCls = m.bought ? ' omat-bought' : '';
     return '<div class="omat-row' + boughtCls + '" data-mat="' + esc(m.id) + '">' +
       '<button class="omat-check' + (m.bought ? ' on' : '') + '" data-buy="' + esc(m.id) + '" ' +
-        'title="' + (m.bought ? 'נִקְנָה' : 'סַמֵּן כְּנִקְנָה') + '" aria-label="סַמֵּן כְּנִקְנָה">' + (m.bought ? '✓' : '') + '</button>' +
-      '<span class="omat-n">' + esc(m.name || '(לְלֹא שֵׁם)') + '</span>' +
+        'title="' + (m.bought ? 'Purchased' : 'Mark as purchased') + '" aria-label="Mark as purchased">' + (m.bought ? '✓' : '') + '</button>' +
+      '<span class="omat-n">' + esc(m.name || '(no name)') + '</span>' +
       have +
       '<span class="omat-q">' + fmtNum(qty) + unit + '</span>' +
       '<input class="omat-qedit" data-qty="' + esc(m.id) + '" type="number" min="0" step="any" ' +
-        'value="' + esc(qty) + '" title="עֲרֹךְ כַּמּוּת" aria-label="כַּמּוּת">' +
-      '<button class="omat-x" data-del="' + esc(m.id) + '" title="מְחַק" aria-label="מְחַק">🗑️</button>' +
+        'value="' + esc(qty) + '" title="Edit quantity" aria-label="Quantity">' +
+      '<button class="omat-x" data-del="' + esc(m.id) + '" title="Delete" aria-label="Delete">🗑️</button>' +
       '</div>' +
       (m.note ? '<div class="omat-note" data-for="' + esc(m.id) + '">📝 ' + esc(m.note) + '</div>' : '');
   }
 
   // THE MARQUEE card for a shared (multi-project) material.
   function sharedCard(g, invSet) {
-    var have = invSet[g.key] ? '<span class="omat-have omat-have-lg">יֵשׁ לְךָ בַּמַּחְסָן</span>' : '';
+    var have = invSet[g.key] ? '<span class="omat-have omat-have-lg">You have it in storage</span>' : '';
     var body = g.recs.map(function (m) { return matRow(m, invSet); }).join('');
     return '<div class="omat-shared' + (g.allBought ? ' omat-shared-done' : '') + '">' +
       '<div class="omat-shared-hd">' +
-        '<span class="omat-link">🔗 נָחוּץ לְ-' + g.projects.length + ' פְּרוֹיֶקְטִים</span>' +
+        '<span class="omat-link">🔗 Needed for ' + g.projects.length + ' projects</span>' +
         '<span class="omat-shared-name">' + esc(g.name) + '</span>' +
         have +
       '</div>' +
       '<div class="omat-breakdown">' + breakdownText(g) + '</div>' +
-      '<div class="omat-tip">קְנֵה פַּעַם אַחַת — מְשַׁמֵּשׁ בְּכַמָּה פְּרוֹיֶקְטִים.</div>' +
+      '<div class="omat-tip">Buy once — used in several projects.</div>' +
       '<div class="omat-shared-rows">' + body + '</div>' +
       '</div>';
   }
@@ -310,12 +310,12 @@
     var invSet = inventoryNameSet();
     var groups = groupMaterials(mats);
 
-    var html = '<h3>🔩 חֹמֶר וְקִנְיוֹת</h3>' +
-      '<div class="sub">כָּל הַחֳמָרִים לַשִּׁפּוּצִים בְּמָקוֹם אֶחָד. מָה שֶׁנָּחוּץ לְכַמָּה פְּרוֹיֶקְטִים — קוֹפֵץ לְמַעְלָה, כְּדֵי לִקְנוֹת פַּעַם אַחַת.</div>';
+    var html = '<h3>🔩 Materials & Purchases</h3>' +
+      '<div class="sub">All your renovation materials in one place. Whatever is needed for several projects jumps to the top, so you can buy it once.</div>';
 
     // toolbar: add button + filter chips
     html += '<div class="omat-toolbar">' +
-      '<button class="omat-btn omat-primary" data-addopen="1">＋ הוֹסֵף חֹמֶר</button>' +
+      '<button class="omat-btn omat-primary" data-addopen="1">＋ Add material</button>' +
       '<div class="omat-chips">' +
         FILTERS.map(function (f) {
           return '<button class="omat-chip' + (_filter === f.k ? ' on' : '') + '" data-filter="' + f.k + '">' + esc(f.he) + '</button>';
@@ -325,9 +325,9 @@
     if (_formOpen) html += formHtml();
 
     if (!mats.length) {
-      html += '<div class="omat-empty omat-empty-big">🔩 עוֹד אֵין חֳמָרִים.<br>' +
-        'הוֹסֵף חֹמֶר רִאשׁוֹן — וְהַמַּעֲרֶכֶת תְּחַבֵּר אוֹתוֹ בֵּין הַפְּרוֹיֶקְטִים.</div>' +
-        '<div class="omat-foot">מְאֻחְסָן עַל הַמַּכְשִׁיר (localStorage).</div>';
+      html += '<div class="omat-empty omat-empty-big">🔩 No materials yet.<br>' +
+        'Add your first material — and the system will connect it across your projects.</div>' +
+        '<div class="omat-foot">Stored on this device (localStorage).</div>';
       _host.innerHTML = html;
       return;
     }
@@ -339,23 +339,23 @@
     // ---- MARQUEE: shared-across-projects materials (always at the very top) ----
     var showShared = (_filter !== 'buy') || shared.some(function (g) { return g.anyUnbought; });
     if (shared.length && _filter !== 'single_only_never') {
-      // under "לקנות" hide fully-bought shared cards; under "משותף" show all shared.
+      // under "To buy" hide fully-bought shared cards; under "Shared" show all shared.
       var sharedShown = shared.filter(function (g) {
         if (_filter === 'buy') return g.anyUnbought;
         return true;
       });
       if (sharedShown.length) {
-        html += '<div class="omat-sec omat-sec-marquee">🔗 נָחוּץ לְכַמָּה פְּרוֹיֶקְטִים <span class="cnt">' + sharedShown.length + '</span></div>';
+        html += '<div class="omat-sec omat-sec-marquee">🔗 Needed for several projects <span class="cnt">' + sharedShown.length + '</span></div>';
         html += sharedShown.map(function (g) { return sharedCard(g, invSet); }).join('');
       }
     }
 
-    // ---- below: single-project materials, grouped by project (skip under "משותף") ----
+    // ---- below: single-project materials, grouped by project (skip under "Shared") ----
     if (_filter !== 'shared') {
       // bucket single-project groups by their (sole) project name
       var buckets = {}, bucketOrder = [];
       single.forEach(function (g) {
-        var proj = g.projects[0] || 'לְלֹא פְּרוֹיֶקְט';
+        var proj = g.projects[0] || 'No project';
         if (!buckets[proj]) { buckets[proj] = []; bucketOrder.push(proj); }
         buckets[proj].push(g);
       });
@@ -369,60 +369,60 @@
         anySingleShown = true;
         var unbought = gs.reduce(function (n, g) { return n + (g.anyUnbought ? 1 : 0); }, 0);
         singleHtml += '<div class="omat-grp">📁 ' + esc(proj) + ' <span class="cnt">' + gs.length + '</span>' +
-          (unbought ? '<span class="omat-grp-buy">' + unbought + ' לִקְנוֹת</span>' : '') + '</div>';
+          (unbought ? '<span class="omat-grp-buy">' + unbought + ' to buy</span>' : '') + '</div>';
         gs.forEach(function (g) {
           // each single-project group can still hold >1 rec (same name, same project)
           singleHtml += g.recs.map(function (m) { return matRow(m, invSet); }).join('');
         });
       });
       if (anySingleShown) {
-        html += '<div class="omat-sec">לְפִי פְּרוֹיֶקְט</div>' + singleHtml;
+        html += '<div class="omat-sec">By project</div>' + singleHtml;
       }
     }
 
     // empty result for the active filter (but store isn't empty)
     var paintedSomething = /omat-shared|omat-row/.test(html);
     if (!paintedSomething) {
-      var msg = _filter === 'buy' ? 'הַכֹּל נִקְנָה — אֵין מָה לִקְנוֹת. 🎉'
-              : _filter === 'shared' ? 'אֵין כָּרֶגַע חֹמֶר הַנָּחוּץ לְיוֹתֵר מִפְּרוֹיֶקְט אֶחָד.'
-              : 'אֵין חֳמָרִים לְהַצִּיג.';
+      var msg = _filter === 'buy' ? 'Everything purchased — nothing to buy. 🎉'
+              : _filter === 'shared' ? 'No material is currently needed for more than one project.'
+              : 'No materials to show.';
       html += '<div class="omat-empty">' + msg + '</div>';
     }
 
     var total = mats.length, unbought = mats.filter(function (m) { return !m.bought; }).length;
-    html += '<div class="omat-foot">' + total + ' חֳמָרִים · ' + unbought + ' לִקְנוֹת · ' +
-      shared.length + ' מְשֻׁתָּפִים · מְאֻחְסָן עַל הַמַּכְשִׁיר (localStorage).</div>';
+    html += '<div class="omat-foot">' + total + ' materials · ' + unbought + ' to buy · ' +
+      shared.length + ' shared · Stored on this device (localStorage).</div>';
     _host.innerHTML = html;
   }
 
   /* ---- add FORM (inline) ------------------------------------------------- */
   function formHtml() {
     var projs = projectNames();
-    var projOpts = '<option value="">— בְּחַר פְּרוֹיֶקְט —</option>';
+    var projOpts = '<option value="">— Choose project —</option>';
     projs.forEach(function (p) { projOpts += '<option value="' + esc(p) + '">' + esc(p) + '</option>'; });
-    projOpts += '<option value="__free__">✏️ פְּרוֹיֶקְט אַחֵר (חֹפְשִׁי)…</option>';
+    projOpts += '<option value="__free__">✏️ Other project (free text)…</option>';
     var unitOpts = UNITS.map(function (u) { return '<option value="' + esc(u) + '">' + esc(u) + '</option>'; }).join('');
 
     return '<div class="omat-form" data-form="1">' +
-      '<div class="omat-formhd">＋ חֹמֶר חָדָשׁ</div>' +
-      '<label class="omat-lbl">שֵׁם הַחֹמֶר <span class="req">*</span></label>' +
-      '<input class="omat-in" data-f="name" placeholder="לְמָשָׁל: מוֹטוֹת בַּרְזֶל">' +
+      '<div class="omat-formhd">＋ New material</div>' +
+      '<label class="omat-lbl">Material name <span class="req">*</span></label>' +
+      '<input class="omat-in" data-f="name" placeholder="e.g. iron rods">' +
       '<div class="omat-frow">' +
-        '<div class="omat-fcol omat-qtycol"><label class="omat-lbl">כַּמּוּת</label>' +
+        '<div class="omat-fcol omat-qtycol"><label class="omat-lbl">Quantity</label>' +
           '<input class="omat-in" data-f="qty" type="number" min="0" step="any" placeholder="1"></div>' +
-        '<div class="omat-fcol omat-unitcol"><label class="omat-lbl">יְחִידָה</label>' +
+        '<div class="omat-fcol omat-unitcol"><label class="omat-lbl">Unit</label>' +
           '<select class="omat-in omat-sel" data-f="unit">' + unitOpts + '</select></div>' +
       '</div>' +
-      '<label class="omat-lbl">פְּרוֹיֶקְט</label>' +
+      '<label class="omat-lbl">Project</label>' +
       '<select class="omat-in omat-sel" data-f="project">' + projOpts + '</select>' +
-      '<input class="omat-in omat-freeproj" data-f="projectFree" placeholder="שֵׁם הַפְּרוֹיֶקְט" style="display:none">' +
-      '<label class="omat-lbl">הֶעָרָה</label>' +
-      '<input class="omat-in" data-f="note" placeholder="סְפֵּק / מִדָּה / מְחִיר…">' +
+      '<input class="omat-in omat-freeproj" data-f="projectFree" placeholder="Project name" style="display:none">' +
+      '<label class="omat-lbl">Note</label>' +
+      '<input class="omat-in" data-f="note" placeholder="Supplier / size / price…">' +
       '<div class="omat-formacts">' +
-        '<button class="omat-btn omat-primary" data-save="1">הוֹסֵף</button>' +
-        '<button class="omat-btn" data-cancel="1">בִּטּוּל</button>' +
+        '<button class="omat-btn omat-primary" data-save="1">Add</button>' +
+        '<button class="omat-btn" data-cancel="1">Cancel</button>' +
       '</div>' +
-      '<div class="omat-formfoot">חֹמֶר שֶׁמּוֹפִיעַ בְּכַמָּה פְּרוֹיֶקְטִים יְזֻהֶה אוֹטוֹמָטִית וְיֻצַּג לְמַעְלָה. 🔗</div>' +
+      '<div class="omat-formfoot">A material that appears in several projects is detected automatically and shown at the top. 🔗</div>' +
     '</div>';
   }
 
@@ -478,7 +478,7 @@
   function onChange(e) {
     var t = e.target;
     if (!t || !t.getAttribute) return;
-    // project <select> → reveal the free-text box when "אחר" is chosen
+    // project <select> → reveal the free-text box when "Other" is chosen
     if (t.getAttribute('data-f') === 'project') {
       var free = _host.querySelector('[data-f="projectFree"]');
       if (free) free.style.display = (t.value === '__free__') ? '' : 'none';
@@ -512,7 +512,7 @@
     var s = document.createElement('style');
     s.id = 'materials-css';
     s.textContent =
-      '#omat{direction:rtl;font-family:Heebo,sans-serif;color:#efe6cf}' +
+      '#omat{direction:ltr;font-family:Heebo,sans-serif;color:#efe6cf}' +
       '#omat h3{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:19px;color:#fff7e6;margin:0 0 2px}' +
       '#omat .sub{color:#a99b78;font-size:12px;margin-bottom:8px;line-height:1.5}' +
       // toolbar + chips
@@ -581,7 +581,7 @@
       '#omat .omat-lbl{display:block;color:#bdb091;font-size:11px;font-family:Heebo;margin:9px 0 3px}' +
       '#omat .omat-lbl .req{color:#e0b24a}' +
       '#omat .omat-in{width:100%;padding:7px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(202,161,90,.26);' +
-        'border-radius:8px;color:#f2ead8;font-family:Heebo;font-size:13px;direction:rtl;box-sizing:border-box}' +
+        'border-radius:8px;color:#f2ead8;font-family:Heebo;font-size:13px;direction:ltr;box-sizing:border-box}' +
       '#omat .omat-in:focus{outline:none;border-color:rgba(202,161,90,.6)}' +
       '#omat .omat-in.omat-err{border-color:rgba(224,120,120,.7)}' +
       '#omat .omat-sel{appearance:none;-webkit-appearance:none;cursor:pointer}' +

@@ -1,565 +1,565 @@
 {
   "_meta": {
-    "_about": "Content for the universal '?' info chips (consumed by app/explain.js → Explain.chip/attach). Each entry is keyed by a metric_id. The integrator maps each key to the explain.js model shape: title_he→title, what_he→gloss/summary lead, how_he→formula/method, data_he→data rows + drawer text, source→sources[], caveat_he→assumptions/estimate note. 'kind' is measured | modeled | ephemeris | hybrid | static — drives the 'הערכה' badge (everything except pure 'measured'/'ephemeris' should show it).",
+    "_about": "Content for the universal '?' info chips (consumed by app/explain.js → Explain.chip/attach). Each entry is keyed by a metric_id. The integrator maps each key to the explain.js model shape: title_he→title, what_he→gloss/summary lead, how_he→formula/method, data_he→data rows + drawer text, source→sources[], caveat_he→assumptions/estimate note. 'kind' is measured | modeled | ephemeris | hybrid | static — drives the 'estimate' badge (everything except pure 'measured'/'ephemeris' should show it).",
     "_today": "2026-06-09",
     "_site": "Larkmont — lat 34.0, lon -40.0, ~300 m, Bortle 3 (data/site.json)",
-    "_honesty": "Labels follow CLAUDE.md: 'מבוסס מדידות אמת' for Open-Meteo weather; 'מחושב לפי הגיאומטריה של הבית' for geometry-derived; ephemeris for sun/moon/planets is near-exact; NEVER implies a physical soil/temperature sensor."
+    "_honesty": "Labels follow CLAUDE.md: 'based on real measurements' for Open-Meteo weather; 'computed from the house geometry' for geometry-derived; ephemeris for sun/moon/planets is near-exact; NEVER implies a physical soil/temperature sensor."
   },
 
   "goOutScore": {
-    "title_he": "ציון צפייה בכוכבים הלילה",
+    "title_he": "Tonight's stargazing score",
     "kind": "hybrid",
-    "what_he": "כמה כדאי לצאת לצפות בכוכבים הלילה מהחצר שלך, 0–100.",
-    "how_he": "score = (1−ענן)·60 + (1−הארת ירח)·28 + שקיפות·12. הענן הוא ה'רוצח' הדומיננטי. שקיפות = 1 − עונש לחות − עונש אבק (לחות מעל ~40% ואבק מעל ~25µg/m³ מעמעמים כוכבים). אין עונש זיהום-אור: השמיים שלך הם Bortle 3 (שמיים כפריים חשוכים) — ולכן לילה צלול, יבש וללא ירח כאן מגיע ל'מצוין' בעוד אותו לילה מעל עיר היה רק 'בסדר'.",
+    "what_he": "How worthwhile it is to go out stargazing tonight from your yard, 0–100.",
+    "how_he": "score = (1−cloud)·60 + (1−moon illumination)·28 + transparency·12. Cloud is the dominant 'killer'. transparency = 1 − humidity penalty − dust penalty (humidity above ~40% and dust above ~25µg/m³ dim the stars). No light-pollution penalty: your sky is Bortle 3 (dark rural sky) — so a clear, dry, moonless night here reaches 'excellent', while the same night over a city would only be 'okay'.",
     "data_he": [
-      "ענן הלילה: Weather.tonightCloud — ממוצע 21:00–23:00 מתחזית Open-Meteo (מדוד/חזוי)",
-      "הארת ירח: Astro.moon — אפמריס (כמעט-מדויק)",
-      "לחות: Weather.state.hum (מדוד)",
-      "אבק: Weather.air.pm10 או הערכת state.dust (מדוד כשיש air-quality)",
-      "Bortle 3 קבוע מ-site.json"
+      "Tonight's cloud: Weather.tonightCloud — 21:00–23:00 average from the Open-Meteo forecast (measured/forecast)",
+      "Moon illumination: Astro.moon — ephemeris (near-exact)",
+      "Humidity: Weather.state.hum (measured)",
+      "Dust: Weather.air.pm10 or the state.dust estimate (measured when air-quality is available)",
+      "Bortle 3 constant from site.json"
     ],
-    "source": { "name": "Open-Meteo + מודל פנימי (derive.js goOutScore); Bortle: site.json", "url": "https://open-meteo.com/" },
-    "caveat_he": "הענן והאבק חזויים — הם יכולים להשתנות עד הלילה. השקיפות היא הערכה מלחות/אבק, לא מדידת ראות אופטית. הציון הוא כלי-הכוונה, לא הבטחה."
+    "source": { "name": "Open-Meteo + internal model (derive.js goOutScore); Bortle: site.json", "url": "https://open-meteo.com/" },
+    "caveat_he": "Cloud and dust are forecast — they can change by nightfall. Transparency is an estimate from humidity/dust, not an optical visibility measurement. The score is a guidance tool, not a promise."
   },
 
   "transparency": {
-    "title_he": "שקיפות האטמוספרה",
+    "title_he": "Atmospheric transparency",
     "kind": "modeled",
-    "what_he": "כמה 'נקיים' השמיים מהלחות והאבק שמעמעמים כוכבים, 0–1.",
-    "how_he": "transparency = max(0, 1 − עונש_לחות − עונש_אבק). עונש_לחות = clamp((RH−40)/55)·0.6, עונש_אבק = clamp((dust−25)/120)·0.7. ברירת מחדל יבשה 'טובה' כשאין נתון — לא ממציאים עונש.",
+    "what_he": "How 'clean' the sky is from the humidity and dust that dim stars, 0–1.",
+    "how_he": "transparency = max(0, 1 − humidity_penalty − dust_penalty). humidity_penalty = clamp((RH−40)/55)·0.6, dust_penalty = clamp((dust−25)/120)·0.7. A dry 'good' default when there's no data — we don't invent a penalty.",
     "data_he": [
-      "RH (%): Weather.state.hum (מדוד)",
-      "אבק (µg/m³): Weather.air.pm10 (מדוד) או הערכה"
+      "RH (%): Weather.state.hum (measured)",
+      "Dust (µg/m³): Weather.air.pm10 (measured) or an estimate"
     ],
-    "source": { "name": "מודל פנימי derive.js goOutScore", "url": "https://open-meteo.com/" },
-    "caveat_he": "פרמטריזציה אמפירית של עיכור-אור מלחות ואבק — לא מדידת ראות בפועל. הערכה."
+    "source": { "name": "Internal model derive.js goOutScore", "url": "https://open-meteo.com/" },
+    "caveat_he": "An empirical parameterization of light attenuation from humidity and dust — not an actual visibility measurement. Estimate."
   },
 
   "microclimate_temp": {
-    "title_he": "הטמפרטורה אצלך בבית (מתוקנת)",
+    "title_he": "The temperature at your house (corrected)",
     "kind": "modeled",
-    "what_he": "הטמפ' של תחנת לרקמונט 'מורדת' לחלקה שלך — הפרש מקומי קטן מהעיר.",
-    "how_he": "temp_בית = temp_עיר + Δ. Δ = lapse (תיקון גובה, כאן ~0 כי גם העיר וגם הבית על הרכס) + micro. ביום: פינה מוגנת/מוארת חמה מעט יותר; פינה בצל קרירה. בלילה צלול ורגוע: משטח פתוח (SVF גבוה) מקרין לשמיים ומתקרר; מרפסת מורמת חמה יותר כי אוויר קר מתנקז מטה.",
+    "what_he": "The Larkmont station's temperature 'brought down' to your plot — a small local offset from the town reading.",
+    "how_he": "temp_house = temp_town + Δ. Δ = lapse (elevation correction, ~0 here because both the town and the house sit on the ridge) + micro. By day: a sheltered/sunlit corner is slightly warmer; a shaded corner is cooler. On a clear, calm night: an open surface (high SVF) radiates to the sky and cools; a raised terrace is warmer because cold air drains downward.",
     "data_he": [
-      "temp_עיר: Weather.state.temp (מדוד, Open-Meteo)",
-      "גובה שמש: Astro (אפמריס)",
-      "ענן/רוח: Weather.state (מדוד)",
-      "SVF + חשיפת-רוח של תא-החצר: גיאומטריית הבית (מחושב)"
+      "temp_town: Weather.state.temp (measured, Open-Meteo)",
+      "Sun elevation: Astro (ephemeris)",
+      "Cloud/wind: Weather.state (measured)",
+      "SVF + wind exposure of the yard cell: house geometry (computed)"
     ],
     "source": { "name": "derive.js microclimate/airDelta + Open-Meteo", "url": "https://open-meteo.com/" },
-    "caveat_he": "ה-Δ נגזר מפרמטריזציה של קירור-קרינתי וניקוז-אוויר-קר לפי החשיפה והשמיים-הנראים של התא — לא סימולציית CFD ולא חיישן. הערכה (בד\"כ ±1–2°C)."
+    "caveat_he": "The Δ is derived from a parameterization of radiative cooling and cold-air drainage based on the cell's exposure and visible sky — not a CFD simulation and not a sensor. Estimate (usually ±1–2°C)."
   },
 
   "airDelta": {
-    "title_he": "הפרש הטמפ' של הפינה מהעיר",
+    "title_he": "The corner's temperature offset from the town",
     "kind": "modeled",
-    "what_he": "בכמה מעלות פינה ספציפית בחצר חמה/קרה מהקריאה ה'רשמית' של העיר.",
-    "how_he": "Δ = lapse + micro. lapse = −(גובה_בית − 300)·0.0065 (קצב ירידת טמפ' עם הגובה). micro ביום = (1−חשיפה)·1.0 + (מואר? +0.6 : −1.2); micro בלילה = קירור-קרינתי −(0.4+1.6·SVF)·גורם-בהירות·גורם-רוגע + ניקוז (מרפסת +1.2).",
+    "what_he": "By how many degrees a specific corner of the yard is warmer/colder than the town's 'official' reading.",
+    "how_he": "Δ = lapse + micro. lapse = −(house_elevation − 300)·0.0065 (temperature lapse rate with elevation). micro by day = (1−exposure)·1.0 + (sunlit? +0.6 : −1.2); micro by night = radiative cooling −(0.4+1.6·SVF)·clarity factor·calm factor + drainage (terrace +1.2).",
     "data_he": [
-      "SVF + חשיפת-רוח: מחושב מגיאומטריית הבית (קבוע לתא)",
-      "ענן ורוח: Weather.state (מדוד)",
-      "מצב שמש/צל של התא: Astro + shadowMask (מחושב)"
+      "SVF + wind exposure: computed from house geometry (constant per cell)",
+      "Cloud and wind: Weather.state (measured)",
+      "Sun/shade state of the cell: Astro + shadowMask (computed)"
     ],
     "source": { "name": "derive.js airDelta", "url": "" },
-    "caveat_he": "מקדמי הקירור והניקוז מכוילים פיזיקלית אך לא נמדדו בחלקה. הערכה."
+    "caveat_he": "The cooling and drainage coefficients are physically calibrated but were not measured on the plot. Estimate."
   },
 
   "surfaceTemp": {
-    "title_he": "טמפ' פני השטח (מפת חום)",
+    "title_he": "Surface temperature (heat map)",
     "kind": "modeled",
-    "what_he": "כמה חם המשטח עצמו (קרקע/קיר/חצץ) — לא טמפ' האוויר, אלא העור החשוף לשמש.",
-    "how_he": "מאזן אנרגיה במצב יציב, פתור צורה-סגורה: T = (α·S + h_c·T_אוויר + h_rs·T_שמיים + h_rg·T_קרקע + h_cd·T_עומק) / (h_c+h_rs+h_rg+h_cd). S = קרינה נספגת (POA: ישיר+מפוזר+מוחזר), h_c = הסעה (McAdams 5.7+3.8·V), h_rs/h_rg = קרינת-גוף-שחור ארוכת-גל לשמיים/קרקע (T_שמיים לפי אמיסיביות Brunt), h_cd = הולכה לעומק. תיקון פיגור חד-קוטבי קטן לפי המסה התרמית.",
+    "what_he": "How hot the surface itself is (soil/wall/gravel) — not the air temperature, but the skin exposed to the sun.",
+    "how_he": "Steady-state energy balance, closed-form solution: T = (α·S + h_c·T_air + h_rs·T_sky + h_rg·T_ground + h_cd·T_deep) / (h_c+h_rs+h_rg+h_cd). S = absorbed radiation (POA: direct+diffuse+reflected), h_c = convection (McAdams 5.7+3.8·V), h_rs/h_rg = long-wave black-body radiation to the sky/ground (T_sky from Brunt emissivity), h_cd = conduction to depth. A small single-pole lag correction based on the thermal mass.",
     "data_he": [
-      "טמפ'/לחות/ענן/רוח אוויר: Weather.state (מדוד)",
-      "קרינה GHI: Weather.envAt('rad') (מדוד) או מודל שמיים-בהירים",
-      "טמפ' קרקע: Weather.envAt('soilT') 0 ס\"מ (מדוד)",
-      "α (ספיגה), SVF, חשיפה, נורמל-פנים: גיאומטריה + חומר (מחושב)"
+      "Air temperature/humidity/cloud/wind: Weather.state (measured)",
+      "GHI radiation: Weather.envAt('rad') (measured) or a clear-sky model",
+      "Soil temperature: Weather.envAt('soilT') 0 cm (measured)",
+      "α (absorption), SVF, exposure, surface normal: geometry + material (computed)"
     ],
-    "source": { "name": "derive.js surfaceTemp (מאזן אנרגיה §1) + Open-Meteo", "url": "https://open-meteo.com/" },
-    "caveat_he": "הערכה פיזיקלית (מודל·הערכה), לא חיישן ולא CFD/ENVI-met. עלה אמיתי מתקרר בטרנספירציה (מעלים אותה) ולכן קריאת-החצץ חמה מהעלווה."
+    "source": { "name": "derive.js surfaceTemp (energy balance §1) + Open-Meteo", "url": "https://open-meteo.com/" },
+    "caveat_he": "A physical estimate (model·estimate), not a sensor and not CFD/ENVI-met. A real leaf cools through transpiration (which we ignore), so the gravel reading runs hotter than the foliage."
   },
 
   "indoorTemp": {
-    "title_he": "כמה חם בתוך הבית (ללא מיזוג)",
+    "title_he": "How hot it is inside the house (no air conditioning)",
     "kind": "modeled",
-    "what_he": "אומדן טמפ' האוויר בתוך הבית הכבד מאבן, ללא מיזוג — תנודה קטנה הרבה יותר מבחוץ, בשיא מאוחר בכמה שעות.",
-    "how_he": "ממוצע-נע-מעריכי (EMA, קבוע-זמן ~10 ש') של עקומת טמפ'-החוץ ה'משוחזרת': צורת היממה העונתית (מינ' ~05:30, מקס' ~15:00) מעוגנת מחדש לקריאה החיה, כך שהמסה התרמית מנמיכה ומשהה. נוסף עיגון קל (15%) לטמפ' הקרקע המדודה ותוספת קטנה לימים שטופי-שמש.",
+    "what_he": "An estimate of the air temperature inside the heavy stone house, without air conditioning — a much smaller swing than outside, peaking a few hours later.",
+    "how_he": "An exponential moving average (EMA, time constant ~10 h) of the 'reconstructed' outdoor-temperature curve: the seasonal daily shape (min ~05:30, max ~15:00) re-anchored to the live reading, so the thermal mass dampens and delays it. A slight anchoring (15%) to the measured soil temperature is added, plus a small bump for sun-drenched days.",
     "data_he": [
-      "טמפ' חוץ עכשיו: Weather.state.temp (מדוד)",
-      "טמפ' קרקע 0ס\"מ ש': Weather.envAt('soilT') (מדוד)",
-      "קרינה ש': Weather.envAt('rad') (מדוד)",
-      "צורת יממה עונתית: SEASON_CLIM (קלימטולוגיה)"
+      "Outdoor temperature now: Weather.state.temp (measured)",
+      "Soil temperature 0 cm, hourly: Weather.envAt('soilT') (measured)",
+      "Radiation, hourly: Weather.envAt('rad') (measured)",
+      "Seasonal daily shape: SEASON_CLIM (climatology)"
     ],
     "source": { "name": "derive.js indoorTemp (§1e)", "url": "" },
-    "caveat_he": "אין חיישן בבית — זו שחזור מצורת-יממה אופיינית + עיגון לחוץ ולקרקע. הערכה; השיא מפגר ~10 ש' ובאמפליטודה קטנה."
+    "caveat_he": "There's no sensor in the house — this is a reconstruction from a typical daily shape + anchoring to outside and to the soil. Estimate; the peak lags ~10 h and at a small amplitude."
   },
 
   "frostRisk": {
-    "title_he": "סיכון כפור הלילה",
+    "title_he": "Frost risk tonight",
     "kind": "modeled",
-    "what_he": "האם רקמה רגישה בחצר הפתוחה עלולה לרדת מתחת ל-0°C בלילה צלול ורגוע — תרחיש הכפור הקרינתי הגרוע.",
-    "how_he": "מחשבים את טמפ' פני-השטח של עלה אופקי בשחר בעזרת אותו מאזן-אנרגיה (ללא שמש, רק קירור לשמיים Brunt). מצליבים מול 0°C ומול נקודת-הטל. score = 0.55·קרבה-לכפור + 0.30·נטיית-קירור-קרינתי(בהירות·רוגע·SVF) + 0.15·יובש.",
+    "what_he": "Whether sensitive tissue in the open yard could drop below 0°C on a clear, calm night — the worst-case radiative frost scenario.",
+    "how_he": "We compute the surface temperature of a horizontal leaf at dawn using the same energy balance (no sun, only Brunt cooling to the sky). We cross-check it against 0°C and against the dew point. score = 0.55·frost proximity + 0.30·radiative-cooling tendency (clarity·calm·SVF) + 0.15·dryness.",
     "data_he": [
-      "מינ' לילה בעיר: Weather (מדוד/חזוי)",
-      "ענן, רוח, לחות: Weather.state (מדוד)",
-      "SVF + חשיפה של תא-חצר: גיאומטריה (מחושב)"
+      "Town's nightly minimum: Weather (measured/forecast)",
+      "Cloud, wind, humidity: Weather.state (measured)",
+      "SVF + exposure of the yard cell: geometry (computed)"
     ],
     "source": { "name": "derive.js frostRisk (§1b) + Open-Meteo", "url": "https://open-meteo.com/" },
-    "caveat_he": "תחזית פיזיקלית להחמרה (worst-case לילה צלול-רגוע), לא הבטחה. לרקמונט מקבלת כפור-קרינתי כמעט-שנתי. הערכה."
+    "caveat_he": "A physical worst-case forecast (clear, calm night), not a promise. Larkmont gets radiative frost nearly year-round. Estimate."
   },
 
   "dewPoint": {
-    "title_he": "נקודת הטל",
+    "title_he": "Dew point",
     "kind": "measured",
-    "what_he": "הטמפ' שבה האוויר רווי ומתחיל להתעבות טל/ערפל.",
-    "how_he": "נוסחת Magnus מטמפ' האוויר ולחות: γ = ln(RH/100) + 17.62·T/(243.12+T); Td = 243.12·γ/(17.62−γ).",
+    "what_he": "The temperature at which the air becomes saturated and dew/fog begins to condense.",
+    "how_he": "Magnus formula from air temperature and humidity: γ = ln(RH/100) + 17.62·T/(243.12+T); Td = 243.12·γ/(17.62−γ).",
     "data_he": [
-      "טמפ' אוויר: Weather.state.temp (מדוד)",
-      "לחות יחסית: Weather.state.hum (מדוד)"
+      "Air temperature: Weather.state.temp (measured)",
+      "Relative humidity: Weather.state.hum (measured)"
     ],
     "source": { "name": "Magnus-Tetens (derive.js dewPoint) + Open-Meteo", "url": "https://open-meteo.com/" },
-    "caveat_he": "חישוב סטנדרטי ממדידות אמת; דיוק תלוי בדיוק קריאת הלחות."
+    "caveat_he": "A standard calculation from real measurements; accuracy depends on the accuracy of the humidity reading."
   },
 
   "feelsLike": {
-    "title_he": "טמפ' מורגשת",
+    "title_he": "Feels-like temperature",
     "kind": "measured",
-    "what_he": "איך הטמפ' מורגשת בפועל בהתחשב בלחות וברוח (Steadman).",
-    "how_he": "AT = T + 0.33·e − 0.70·ws − 4.00, כאשר e = (RH/100)·6.105·exp(17.27·T/(237.7+T)) לחץ אדים (hPa) ו-ws מהירות רוח (מ'/ש').",
+    "what_he": "How the temperature actually feels given humidity and wind (Steadman).",
+    "how_he": "AT = T + 0.33·e − 0.70·ws − 4.00, where e = (RH/100)·6.105·exp(17.27·T/(237.7+T)) is the vapor pressure (hPa) and ws is the wind speed (m/s).",
     "data_he": [
-      "טמפ': Weather.state.temp (מדוד)",
-      "לחות: Weather.state.hum (מדוד)",
-      "רוח: Weather.state.wind (מדוד)"
+      "Temperature: Weather.state.temp (measured)",
+      "Humidity: Weather.state.hum (measured)",
+      "Wind: Weather.state.wind (measured)"
     ],
     "source": { "name": "Steadman Apparent Temperature (derive.js feelsLike) + Open-Meteo", "url": "https://open-meteo.com/" },
-    "caveat_he": "נוסחת AT סטנדרטית ממדידות אמת. בָּאֵזוֹר הַיָּבֵשׁ הרוח לרוב מורידה את התחושה."
+    "caveat_he": "A standard AT formula from real measurements. In the dry region the wind usually lowers the perceived temperature."
   },
 
   "dli": {
-    "title_he": "DLI — מנת אור יומית",
+    "title_he": "DLI — daily light integral",
     "kind": "modeled",
-    "what_he": "כמות הפוטונים הפעילים לפוטוסינתזה (PAR) שתא בחצר מקבל ביום, mol·m⁻²·d⁻¹ — הקובע אם צמח מקבל מספיק אור.",
-    "how_he": "DLI = Σ PPFD·Δt / 1e6, כאשר PPFD ≈ 2.02 µmol·m⁻²·s⁻¹ לכל W/m² של הקרינה הפוגעת בתא (incidentSolar: ישיר·shadowMask + מפוזר·SVF + מוחזר). בעונתי: צעידה על יום מייצג (15 בחודש) ב-10 דק'. ב-Living-Record: על הקרינה המדודה האמיתית של אותו יום.",
+    "what_he": "The amount of photosynthetically active photons (PAR) a yard cell receives per day, mol·m⁻²·d⁻¹ — what determines whether a plant gets enough light.",
+    "how_he": "DLI = Σ PPFD·Δt / 1e6, where PPFD ≈ 2.02 µmol·m⁻²·s⁻¹ per W/m² of the radiation hitting the cell (incidentSolar: direct·shadowMask + diffuse·SVF + reflected). In seasonal mode: stepping over a representative day (the 15th of the month) at 10 min. In Living-Record: over that day's actual measured radiation.",
     "data_he": [
-      "קרינה GHI: מדודה (Open-Meteo) ברשומה החיה, או מודל שמיים-בהירים בעונתי",
-      "shadowMask + SVF + POA: גיאומטריית הבית (מחושב)"
+      "GHI radiation: measured (Open-Meteo) in the live record, or a clear-sky model in seasonal mode",
+      "shadowMask + SVF + POA: house geometry (computed)"
     ],
     "source": { "name": "derive.js cellProfile/recordDay + Open-Meteo", "url": "https://open-meteo.com/" },
-    "caveat_he": "המרת broadband→PAR (2.02) היא מקדם ספרותי טיפוסי. הקרינה ברשומה החיה מדודה; הגיאומטריה מחושבת. בעונתי — הערכה מקלימטולוגיה."
+    "caveat_he": "The broadband→PAR conversion (2.02) is a typical literature coefficient. The radiation in the live record is measured; the geometry is computed. In seasonal mode — an estimate from climatology."
   },
 
   "sunHours": {
-    "title_he": "שעות שמש ישירה",
+    "title_he": "Direct sun hours",
     "kind": "modeled",
-    "what_he": "כמה שעות ביום השמש פוגעת ישירות בתא הזה — לא רק 'יום', אלא קרן-שמש בפועל אחרי הרכס, הבית והשכנים.",
-    "how_he": "סוכמים את הדקות שבהן השמש מעל האופק האמיתי של הרכס וגם הקרן מהתא פנויה מכל החוסמים (בית, מחסן, שכנים), ומחלקים ב-60. shadowMask=1 רק כשהשמש 'רואה' את התא.",
+    "what_he": "How many hours a day the sun directly hits this cell — not just 'daytime', but actual sunbeams after the ridge, the house and the neighbors.",
+    "how_he": "We sum the minutes when the sun is above the ridge's true horizon and the beam from the cell is clear of all blockers (house, shed, neighbors), and divide by 60. shadowMask=1 only when the sun 'sees' the cell.",
     "data_he": [
-      "מסלול השמש: Astro (אפמריס)",
-      "אופק-רכס אמיתי: data/horizon.json (נמדד מהשטח)",
-      "חוסמים: תיבות-גיאומטריה של הבית/מחסן/שכנים (מחושב)"
+      "The sun's path: Astro (ephemeris)",
+      "True ridge horizon: data/horizon.json (measured from the terrain)",
+      "Blockers: geometry boxes of the house/shed/neighbors (computed)"
     ],
     "source": { "name": "derive.js shadowMask + horizon.json", "url": "" },
-    "caveat_he": "הגיאומטריה של החוסמים גסה (תיבות), והקירות הנמוכים מודרים מהבסיס המאומת (zone_sun_hours.json). הערכה גיאומטרית."
+    "caveat_he": "The blockers' geometry is coarse (boxes), and the low walls are excluded from the validated baseline (zone_sun_hours.json). A geometric estimate."
   },
 
   "frostTdawn": {
-    "title_he": "מינימום שחר על רקמה רגישה",
+    "title_he": "Dawn minimum on sensitive tissue",
     "kind": "modeled",
-    "what_he": "הטמפ' שעלה רגיש בתא הזה צפוי לראות בשחר בלילה-כפור מייצג — קובע איפה לשתול רגישים-לקרה.",
-    "how_he": "frostTdawn = שיא-קור-קרינתי(Tlow_חורף−3) + ניקוז (תא מורם +3.2 / תא נמוך −1.8·SVF, אוסף בריכת-קור) + שקע-קרינתי(−2.4·SVF). זה מסביר למה אבוקדו רגיש-לקרה ממוקם דווקא למעלה על המרפסת.",
+    "what_he": "The temperature a sensitive leaf in this cell is expected to see at dawn on a representative frost night — determines where to plant frost-sensitive species.",
+    "how_he": "frostTdawn = radiative cold peak (Tlow_winter−3) + drainage (raised cell +3.2 / low cell −1.8·SVF, collects a cold pool) + radiative dip (−2.4·SVF). This explains why a frost-sensitive avocado is placed precisely up on the terrace.",
     "data_he": [
-      "קלימטולוגיית חורף: SEASON_CLIM (Tlow≈1°C)",
-      "SVF + גובה התא: גיאומטריה (מחושב)"
+      "Winter climatology: SEASON_CLIM (Tlow≈1°C)",
+      "SVF + cell elevation: geometry (computed)"
     ],
     "source": { "name": "derive.js _bakeSeason (§2) frostTdawn", "url": "" },
-    "caveat_he": "ניקוז-אוויר-קר ושקע-קרינתי מפורמטים, לא מסומלצים. הערכה — אינדיקציה יחסית בין פינות, לא מספר מוחלט."
+    "caveat_he": "Cold-air drainage and the radiative dip are parameterized, not simulated. Estimate — a relative indication between corners, not an absolute number."
   },
 
   "ETc": {
-    "title_he": "ETc — צריכת המים של הצמח",
+    "title_he": "ETc — the plant's water use",
     "kind": "hybrid",
-    "what_he": "כמה מים החלקה/הצמח מאדה ביום (אֵדוי+דיות), mm/יום — בסיס להמלצת השקיה.",
-    "how_he": "ETc = ET0 · (0.3 + 0.7·שבר-לכידה-סולרית), כשהשבר = הקרינה שהתא תופס חלקי שמיים-פתוחים. ET0 (התייחסות שדה-פתוח) מדוד מ-Open-Meteo ברשומה החיה, או קלימטולוגי בעונתי. כלומר תא מוצל מאדה פחות מתא חשוף.",
+    "what_he": "How much water the plot/plant evaporates per day (evaporation+transpiration), mm/day — the basis for an irrigation recommendation.",
+    "how_he": "ETc = ET0 · (0.3 + 0.7·solar-capture fraction), where the fraction = the radiation the cell captures divided by the open sky. ET0 (open-field reference) is measured from Open-Meteo in the live record, or climatological in seasonal mode. That is, a shaded cell evaporates less than an exposed one.",
     "data_he": [
-      "ET0: Open-Meteo et0_fao (מדוד) או קלימטולוגי בעונתי",
-      "שבר-לכידה-סולרית של התא: גיאומטריה (מחושב)"
+      "ET0: Open-Meteo et0_fao (measured) or climatological in seasonal mode",
+      "The cell's solar-capture fraction: geometry (computed)"
     ],
     "source": { "name": "FAO-56 ET0 (Open-Meteo) + derive.js cellProfile/recordDay", "url": "https://open-meteo.com/" },
-    "caveat_he": "ET0 מדוד; ההצללה לפי הגיאומטריה. אין כאן Kc ספציפי-לצמח מלא — קירוב לכידה-סולרית. הערכה."
+    "caveat_he": "ET0 is measured; the shading follows the geometry. There's no full plant-specific Kc here — a solar-capture approximation. Estimate."
   },
 
   "chillHours": {
-    "title_he": "מנות קור (חורף)",
+    "title_he": "Chill hours (winter)",
     "kind": "modeled",
-    "what_he": "כמה שעות בחורף הטמפ' בטווח 0–7.2°C — נשירי-פרי (תפוח, דובדבן) דורשים מינימום כדי לפרוח.",
-    "how_he": "סופרים מהעקומה היממתית-העונתית את השעות בטווח הקור, מכפילים במספר ימי-החורף (~90). ברשומה החיה: שעות עם טמפ'-אוויר מדודה ב-0–7°C.",
+    "what_he": "How many winter hours the temperature is in the 0–7.2°C range — deciduous fruit trees (apple, cherry) require a minimum in order to bloom.",
+    "how_he": "We count the hours in the chill range from the seasonal daily curve and multiply by the number of winter days (~90). In the live record: hours with a measured air temperature in 0–7°C.",
     "data_he": [
-      "קלימטולוגיית חורף: SEASON_CLIM (מודל)",
-      "ברשומה החיה: טמפ' מדודה (Open-Meteo)"
+      "Winter climatology: SEASON_CLIM (model)",
+      "In the live record: measured temperature (Open-Meteo)"
     ],
     "source": { "name": "derive.js siteHeatChill/_chillHours; recordDay (chillInc)", "url": "https://open-meteo.com/" },
-    "caveat_he": "האומדן העונתי קלימטולוגי (הערכה). ספירת-הקור ברשומה החיה מבוססת מדידות אמת."
+    "caveat_he": "The seasonal estimate is climatological (an estimate). The chill count in the live record is based on real measurements."
   },
 
   "gdd": {
-    "title_he": "GDD — יחידות חום לגדילה",
+    "title_he": "GDD — growing degree units",
     "kind": "modeled",
-    "what_he": "צבירת חום מעל בסיס 10°C שמניעה גדילה והבשלת-פרי — 'שעון הגדילה' של הצמח.",
-    "how_he": "GDD_יומי = max(0, min(30, T_ממוצע) − 10), נצבר על פני העונה. בסיס 10°C, תקרה 30°C. בעונתי מהקלימטולוגיה; ברשומה החיה מטמפ'-האוויר המדודה של כל יום.",
+    "what_he": "Heat accumulation above a 10°C base that drives growth and fruit ripening — the plant's 'growth clock'.",
+    "how_he": "GDD_daily = max(0, min(30, T_mean) − 10), accumulated over the season. Base 10°C, cap 30°C. In seasonal mode from climatology; in the live record from each day's measured air temperature.",
     "data_he": [
-      "T ממוצע יומי: מדוד (Open-Meteo) ברשומה החיה, קלימטולוגי בעונתי",
-      "בסיס 10°C / תקרה 30°C: קבועים אגרונומיים"
+      "Daily mean T: measured (Open-Meteo) in the live record, climatological in seasonal mode",
+      "Base 10°C / cap 30°C: agronomic constants"
     ],
     "source": { "name": "derive.js _gddSeason/siteHeatChill; recordDay (gddInc)", "url": "https://open-meteo.com/" },
-    "caveat_he": "בסיס/תקרה גנריים (לא מכויל למין ספציפי). העונתי הערכה; הרשומה החיה ממדידות אמת."
+    "caveat_he": "Generic base/cap (not calibrated to a specific species). The seasonal value is an estimate; the live record is from real measurements."
   },
 
   "plantScore": {
-    "title_he": "ציון התאמת צמח לפינה",
+    "title_he": "Plant-to-corner fit score",
     "kind": "modeled",
-    "what_he": "כמה מתאים צמח מסוים לפינה/עונה ספציפית, 0–100 — משקלל אור, חום, כפור, קור-חורף, מים ורוח.",
-    "how_he": "score = 100·(w_dli·fit(DLI) + w_sun·fit(שמש) + w_chill·fit(קור) + w_water·fit(מים)) − 100·(w_heat·עונש-חום + w_frost·עונש-כפור + w_wind·עונש-רוח). fit()=1 בתוך הטווח, יורד ל-0 מחוצה לו. לצמח רגיש-לקרה משקל-הכפור מוגבר ועונש-הרוח מורך (כי שותלים אותו במקום מוגן).",
+    "what_he": "How well a particular plant fits a specific corner/season, 0–100 — it weighs light, heat, frost, winter chill, water and wind.",
+    "how_he": "score = 100·(w_dli·fit(DLI) + w_sun·fit(sun) + w_chill·fit(chill) + w_water·fit(water)) − 100·(w_heat·heat penalty + w_frost·frost penalty + w_wind·wind penalty). fit()=1 within the range, dropping to 0 outside it. For a frost-sensitive plant the frost weight is increased and the wind penalty is softened (because it's planted in a sheltered spot).",
     "data_he": [
-      "דרישות הצמח: resident_plants.json / plant_candidates.json (dli_min/max, t_max_tol, frost_hardy_c, chill_hours_req…)",
-      "פרופיל התא: cellProfile (DLI, שמש, frostTdawn, חום-עלווה — מחושב)"
+      "Plant requirements: resident_plants.json / plant_candidates.json (dli_min/max, t_max_tol, frost_hardy_c, chill_hours_req…)",
+      "Cell profile: cellProfile (DLI, sun, frostTdawn, foliage heat — computed)"
     ],
     "source": { "name": "derive.js _scorePlantCell (§4)", "url": "" },
-    "caveat_he": "המשקלות הוריסטיים והפרופיל מודל. כלי-הכוונה אגרונומי, לא ערובה. הערכה."
+    "caveat_he": "The weights are heuristic and the profile is a model. An agronomic guidance tool, not a guarantee. Estimate."
   },
 
   "roofSolar_annual_kwh": {
-    "title_he": "ייצור חשמל שנתי מהגג (סולרי)",
+    "title_he": "Annual rooftop electricity generation (solar)",
     "kind": "modeled",
-    "what_he": "כמה kWh בשנה גג-הבית האמיתי שלך יכול לייצר ממערכת PV — אומדן פיזיקלי היפר-מקומי, לא Google Solar (שאין לו רשת תלת-ממד בלרקמונט).",
-    "how_he": "annual_kWh = POA_מכויל · שטח-שמיש · נצילות-מודול · יחס-ביצוע (PR). POA נצבר בצעידה על ה-15 בכל חודש דרך אותו מנוע incidentSolar שמטיל קרני-שמש מול אופק-הרכס האמיתי, הפרפט והשכנים. מקדם-כיול 1.30 מרים את ה-GHI ל'שמיים בהירים ויבשים' שנמדדו ב-TMY.",
+    "what_he": "How many kWh a year your actual house roof could generate from a PV system — a hyper-local physical estimate, not Google Solar (which has no 3D mesh for Larkmont).",
+    "how_he": "annual_kWh = POA_calibrated · usable area · module efficiency · performance ratio (PR). POA is accumulated by stepping over the 15th of each month through the same incidentSolar engine that casts sunbeams against the true ridge horizon, the parapet and the neighbors. A 1.30 calibration factor lifts the GHI to the 'clear, dry sky' measured in the TMY.",
     "data_he": [
-      "שטח גג ~41.7 m² (שתי מדרגות מ-building.js), שמיש ~65%",
-      "נצילות 20%, PR 80% (energy.json roof:{})",
-      "GHI שמיים-בהירים × קלימטולוגיית ענן עונתית (מודל)",
-      "אופק-רכס: horizon.json (נמדד)"
+      "Roof area ~41.7 m² (two steps, from building.js), usable ~65%",
+      "Efficiency 20%, PR 80% (energy.json roof:{})",
+      "Clear-sky GHI × seasonal cloud climatology (model)",
+      "Ridge horizon: horizon.json (measured)"
     ],
     "source": { "name": "derive.js roofSolar (§7) + energy.json roof inputs", "url": "https://open-meteo.com/" },
-    "caveat_he": "הערכה (±10–15%). שטח-שמיש הוא קירוב גיאומטרי (לא פתרון-אריזה אמיתי). מקדם-הכיול 1.30 מתועד. מודל·הערכה — לא מדידה."
+    "caveat_he": "Estimate (±10–15%). Usable area is a geometric approximation (not a real packing solution). The 1.30 calibration factor is documented. Model·estimate — not a measurement."
   },
 
   "roofSolar_horizon_loss": {
-    "title_he": "הפסד מהאופק המקומי",
+    "title_he": "Loss from the local horizon",
     "kind": "modeled",
-    "what_he": "כמה אחוז מהייצור הסולרי 'נאכל' בגלל הרכס, הפרפט והשכנים שמסתירים שמש — היתרון הייחודי של החישוב ההיפר-מקומי הזה.",
-    "how_he": "horizon_loss = 100·(1 − POA_עם_הצללה / POA_אופק-שטוח). מריצים את אותו מודל פעמיים: עם הטלת-קרניים מול הגיאומטריה האמיתית, ומול אופק-שטוח אידיאלי (mask=1), וההפרש הוא ההפסד.",
+    "what_he": "What percentage of the solar generation is 'eaten' by the ridge, the parapet and the neighbors blocking the sun — the unique advantage of this hyper-local computation.",
+    "how_he": "horizon_loss = 100·(1 − POA_with_shading / POA_flat_horizon). We run the same model twice: once with ray casting against the true geometry, and once against an ideal flat horizon (mask=1), and the difference is the loss.",
     "data_he": [
-      "אופק-רכס: horizon.json (נמדד)",
-      "פרפט/שכנים: גיאומטריית הבית (מחושב)"
+      "Ridge horizon: horizon.json (measured)",
+      "Parapet/neighbors: house geometry (computed)"
     ],
     "source": { "name": "derive.js roofSolar horizon_loss_pct", "url": "" },
-    "caveat_he": "יחס בין שני ריצות מודל — לכן אינו מושפע ממקדם-הכיול. הערכה גיאומטרית."
+    "caveat_he": "A ratio between two model runs — therefore unaffected by the calibration factor. A geometric estimate."
   },
 
   "solar_hot_water_fraction": {
-    "title_he": "כיסוי הדוד-שמש",
+    "title_he": "Solar water-heater coverage",
     "kind": "modeled",
-    "what_he": "איזה חלק מצריכת המים-החמים שלך הדוד-שמש מספק בכל חודש — מתי צריך גיבוי חשמלי.",
-    "how_he": "fraction = min(1, אנרגיה-מסופקת / ביקוש). מסופק = GHI חודשי · שטח-קולט (2.5 m²) · נצילות-מערכת; ביקוש מ-120 ל'/יום מים-חמים. דצמבר היחיד שיורד מ-1 (≈0.90) → צריך גיבוי.",
+    "what_he": "What fraction of your hot-water consumption the solar water-heater supplies each month — when electric backup is needed.",
+    "how_he": "fraction = min(1, energy supplied / demand). Supplied = monthly GHI · collector area (2.5 m²) · system efficiency; demand from 120 L/day of hot water. December is the only month that drops below 1 (≈0.90) → backup needed.",
     "data_he": [
-      "GHI חודשי קלימטולוגי, קולט 2.5 m², מיכל 150 ל', ביקוש 120 ל'/יום",
-      "טבלה ב-energy.json solar_hot_water"
+      "Monthly climatological GHI, 2.5 m² collector, 150 L tank, 120 L/day demand",
+      "Table in energy.json solar_hot_water"
     ],
-    "source": { "name": "energy.json solar_hot_water (טבלה מחושבת מראש)", "url": "" },
-    "caveat_he": "הערכה חודשית מקלימטולוגיה והנחת-ביקוש קבועה — לא קריאת-מונה. הצריכה האמיתית משתנה."
+    "source": { "name": "energy.json solar_hot_water (precomputed table)", "url": "" },
+    "caveat_he": "A monthly estimate from climatology and a fixed demand assumption — not a meter reading. Actual consumption varies."
   },
 
   "degree_days": {
-    "title_he": "ימי-מעלה (HDD/CDD)",
+    "title_he": "Degree days (HDD/CDD)",
     "kind": "modeled",
-    "what_he": "כמה 'דורש' הבית חימום (HDD) או קירור (CDD) לאורך השנה — אומדן עומס אקלימי.",
-    "how_he": "HDD = Σ max(0, 18°C − T_יומי), CDD = Σ max(0, T_יומי − 18°C), על פני השנה. שנתי: HDD ~1132, CDD ~766 — אֵזוֹר רָמָה יָבֵשׁ: חורף שדורש חימום וקיץ שדורש קירור.",
+    "what_he": "How much the house 'demands' heating (HDD) or cooling (CDD) over the year — an estimate of the climatic load.",
+    "how_he": "HDD = Σ max(0, 18°C − T_daily), CDD = Σ max(0, T_daily − 18°C), over the year. Annual: HDD ~1132, CDD ~766 — a dry plateau region: a winter that demands heating and a summer that demands cooling.",
     "data_he": [
-      "טמפ' חודשית ממוצעת: קלימטולוגיית לרקמונט",
-      "בסיס 18°C (תקן נוחות)",
-      "טבלה ב-energy.json degree_days"
+      "Monthly mean temperature: Larkmont climatology",
+      "Base 18°C (comfort standard)",
+      "Table in energy.json degree_days"
     ],
     "source": { "name": "energy.json degree_days", "url": "" },
-    "caveat_he": "מבוסס נורמלים חודשיים, לא מדידה שנתית בפועל. הערכה."
+    "caveat_he": "Based on monthly normals, not an actual annual measurement. Estimate."
   },
 
   "night_flush": {
-    "title_he": "רענון לילה (קירור פסיבי)",
+    "title_he": "Night flush (passive cooling)",
     "kind": "modeled",
-    "what_he": "חלון השעות לפתיחת חלונות בלילה כדי לקרר את הבית באוויר-לילה קריר במקום מזגן.",
-    "how_he": "open_hours = open_end − open_start, השעות שבהן טמפ' החוץ נמוכה מטמפ' היעד בפנים. בחודשים קרירים (אוק'–אפר') אין צורך כלל. מאי–ספט: חלון של 11–17 ש' מהערב עד הבוקר.",
+    "what_he": "The window of hours for opening windows at night to cool the house with cool night air instead of an air conditioner.",
+    "how_he": "open_hours = open_end − open_start, the hours when the outdoor temperature is below the target indoor temperature. In the cool months (Oct–Apr) it isn't needed at all. May–Sep: a window of 11–17 h from evening to morning.",
     "data_he": [
-      "tmin/tmax חודשיים: קלימטולוגיה",
-      "טבלה ב-energy.json night_flush"
+      "Monthly tmin/tmax: climatology",
+      "Table in energy.json night_flush"
     ],
     "source": { "name": "energy.json night_flush", "url": "" },
-    "caveat_he": "מודל חודשי-ממוצע; מניח טמפ'-חוץ < פנים בלילה. הערכה — התאם ללילה הספציפי."
+    "caveat_he": "A monthly-average model; it assumes outdoor temp < indoor at night. Estimate — adjust to the specific night."
   },
 
   "dust_aqi": {
-    "title_he": "אבק ואיכות אוויר",
+    "title_he": "Dust and air quality",
     "kind": "measured",
-    "what_he": "ריכוז חלקיקים (PM2.5/PM10), מדד איכות-אוויר, ואבק מרחף בפועל מעל החלקה.",
-    "how_he": "קריאות חיות מ-Open-Meteo Air-Quality (ללא מפתח). עוצמת האבק בסצנה התלת-ממדית = clamp(dust/250) או נגזרת מ-PM10, כך שהבאדג' וההאזה מתואמים.",
+    "what_he": "Particle concentration (PM2.5/PM10), an air-quality index, and the actual suspended dust over the plot.",
+    "how_he": "Live readings from Open-Meteo Air-Quality (no key). The dust intensity in the 3D scene = clamp(dust/250) or derived from PM10, so the badge and the haze stay in sync.",
     "data_he": [
-      "pm2_5, pm10, european_aqi, dust, uv: Weather.air (מדוד, Open-Meteo Air-Quality)"
+      "pm2_5, pm10, european_aqi, dust, uv: Weather.air (measured, Open-Meteo Air-Quality)"
     ],
     "source": { "name": "Open-Meteo Air-Quality API", "url": "https://open-meteo.com/en/docs/air-quality-api" },
-    "caveat_he": "מבוסס מדידות-מודל אזוריות (CAMS) — לא חיישן בחצר. כשאין נתון, עוצמת-האבק בסצנה נגזרת מרוח/לחות (קירוב)."
+    "caveat_he": "Based on regional model measurements (CAMS) — not a yard sensor. When there's no data, the scene's dust intensity is derived from wind/humidity (an approximation)."
   },
 
   "uv_index": {
-    "title_he": "מדד הקרינה (UV)",
+    "title_he": "Radiation index (UV)",
     "kind": "measured",
-    "what_he": "עוצמת הקרינה העל-סגולה עכשיו — בָּרָמָה הַגְּבוֹהָה היא קיצונית.",
-    "how_he": "קריאה חיה מ-Open-Meteo (uv_index ו-uv_index_clear_sky). אין כאן נוסחה פנימית — ערך מדוד/מנובא ישירות.",
+    "what_he": "The ultraviolet radiation intensity right now — up on the high plateau it is extreme.",
+    "how_he": "A live reading from Open-Meteo (uv_index and uv_index_clear_sky). There's no internal formula here — a directly measured/forecast value.",
     "data_he": [
-      "uv_index + uv_index_clear_sky: Weather.air (מדוד, Open-Meteo)"
+      "uv_index + uv_index_clear_sky: Weather.air (measured, Open-Meteo)"
     ],
     "source": { "name": "Open-Meteo Air-Quality API", "url": "https://open-meteo.com/en/docs/air-quality-api" },
-    "caveat_he": "ערך מודל/מדידה אזורי. בגובה ~300 מ' וּבָאֵזוֹר הַיָּבֵשׁ ה-UV בפועל מהגבוהים שֶׁנִּמְדָּדִים."
+    "caveat_he": "A regional model/measurement value. At ~300 m elevation and in the dry region the actual UV is among the highest measured."
   },
 
   "accumPrecip": {
-    "title_he": "משקעים מצטברים (30 יום)",
+    "title_he": "Accumulated precipitation (30 days)",
     "kind": "measured",
-    "what_he": "כמה גשם ירד בפועל מעל החלקה ב-30 הימים האחרונים, מ\"מ.",
-    "how_he": "סכימת ה-precipitation_sum היומי מ-Open-Meteo על פני 30 הימים האחרונים.",
+    "what_he": "How much rain actually fell over the plot in the last 30 days, mm.",
+    "how_he": "Summing the daily precipitation_sum from Open-Meteo over the last 30 days.",
     "data_he": [
-      "precipitation_sum יומי: Weather.env (מדוד, Open-Meteo, past_days=31)"
+      "Daily precipitation_sum: Weather.env (measured, Open-Meteo, past_days=31)"
     ],
     "source": { "name": "Open-Meteo Forecast API (past_days)", "url": "https://open-meteo.com/" },
-    "caveat_he": "מבוסס מדידות אמת אזוריות. בָּאֵזוֹר הַיָּבֵשׁ הסכום לרוב נמוך מאוד — חלק מהימים אפס."
+    "caveat_he": "Based on regional real measurements. In the dry region the total is usually very low — some days are zero."
   },
 
   "pollen": {
-    "title_he": "אבקנים (עונתי)",
+    "title_he": "Pollen (seasonal)",
     "kind": "static",
-    "what_he": "אילו אבקנים פעילים בעונה הנוכחית באזור — רלוונטי לאלרגיות.",
-    "how_he": "טבלה עונתית לאזור (לא קריאה חיה) — מצליבים את החודש הנוכחי מול עונות-הפריחה של המינים הנפוצים.",
+    "what_he": "Which pollens are active in the current season in the region — relevant to allergies.",
+    "how_he": "A seasonal table for the region (not a live reading) — cross-referencing the current month against the bloom seasons of the common species.",
     "data_he": [
-      "data/pollen_seasonal.json (סטטי, עונתי)"
+      "data/pollen_seasonal.json (static, seasonal)"
     ],
-    "source": { "name": "pollen_seasonal.json (טבלה עונתית)", "url": "" },
-    "caveat_he": "טבלה עונתית כללית לאזור — לא ספירת-אבקנים חיה ולא ספציפית ללרקמונט. אינדיקציה."
+    "source": { "name": "pollen_seasonal.json (seasonal table)", "url": "" },
+    "caveat_he": "A general seasonal table for the region — not a live pollen count and not specific to Larkmont. An indication."
   },
 
   "noonAlt": {
-    "title_he": "גובה השמש בצהריים",
+    "title_he": "Sun's elevation at noon",
     "kind": "ephemeris",
-    "what_he": "כמה גבוה השמש מגיעה בשיא היום — הקריאה הברורה ביותר של העונה (היפוך-קיץ ~79.4°, חורף ~32.6°).",
-    "how_he": "מודל השמש NOAA: נטיית-שמש (declination) דרך אורך-מילקה L שסוחף ±23.44° לאורך השנה. סורקים את היום ב-2 דק' ולוקחים את הגובה המקסימלי. מאומת מול גבהי-צהריים ידועים בקו-הרוחב הזה.",
+    "what_he": "How high the sun reaches at the day's peak — the clearest read of the season (summer solstice ~79.4°, winter ~32.6°).",
+    "how_he": "NOAA sun model: solar declination via the ecliptic longitude L that sweeps ±23.44° over the year. We scan the day at 2 min and take the maximum elevation. Validated against known noon elevations at this latitude.",
     "data_he": [
-      "תאריך + קו-רוחב 34.0°N (קבוע)",
-      "מודל NOAA solar position"
+      "Date + latitude 34.0°N (constant)",
+      "NOAA solar position model"
     ],
     "source": { "name": "Astro.noonAlt (NOAA low-precision)", "url": "https://gml.noaa.gov/grad/solcalc/" },
-    "caveat_he": "אפמריס — מדויק לשבריר מעלה. לא מושפע ממזג-אוויר."
+    "caveat_he": "Ephemeris — accurate to a fraction of a degree. Not affected by weather."
   },
 
   "twilightTimes": {
-    "title_he": "זמני דמדומים וזהב",
+    "title_he": "Twilight and golden-hour times",
     "kind": "ephemeris",
-    "what_he": "מתי השמש חוצה את רצועות-הגובה: שעת-זהב +6°, דמדומים אזרחיים −6°, ימיים −12°, אסטרונומיים −18° (חושך מלא).",
-    "how_he": "סורקים את היום ב-2 דק' עם מודל-השמש ומסמנים את הרגעים שבהם הגובה חוצה כל סף — עולה (בוקר) ויורד (ערב).",
+    "what_he": "When the sun crosses the elevation bands: golden hour +6°, civil twilight −6°, nautical −12°, astronomical −18° (full darkness).",
+    "how_he": "We scan the day at 2 min with the sun model and mark the moments when the elevation crosses each threshold — rising (morning) and falling (evening).",
     "data_he": [
-      "מסלול השמש: Astro.sun (אפמריס NOAA)",
-      "ספים: +6/−6/−12/−18°"
+      "The sun's path: Astro.sun (NOAA ephemeris)",
+      "Thresholds: +6/−6/−12/−18°"
     ],
     "source": { "name": "Astro.twilightTimes", "url": "https://gml.noaa.gov/grad/solcalc/" },
-    "caveat_he": "אפמריס מדויק לדקות. החושך בפועל לצפייה תלוי גם בענן ובירח."
+    "caveat_he": "Ephemeris accurate to the minute. The actual darkness for observing also depends on cloud and the moon."
   },
 
   "sunEvents": {
-    "title_he": "זריחה/שקיעה מעל הרכס שלך",
+    "title_he": "Sunrise/sunset over your ridge",
     "kind": "ephemeris",
-    "what_he": "מתי השמש באמת עולה מעבר לרכס האמיתי שלך ושוקעת מאחוריו — שונה מזריחת-אופק-שטוח.",
-    "how_he": "סורקים את היום ומשווים שתי חציות: מול האופק האמיתי (data/horizon.json) ומול אופק-שטוח (0°). הרכס המזרחי/מערבי מעכב/מקדים את הזריחה/שקיעה ביחס לחישוב הגנרי.",
+    "what_he": "When the sun actually rises over your true ridge and sets behind it — different from a flat-horizon sunrise.",
+    "how_he": "We scan the day and compare two crossings: against the true horizon (data/horizon.json) and against a flat horizon (0°). The eastern/western ridge delays/advances the sunrise/sunset relative to the generic calculation.",
     "data_he": [
-      "מסלול השמש: Astro (אפמריס)",
-      "אופק-רכס אמיתי: data/horizon.json (נמדד מהשטח)"
+      "The sun's path: Astro (ephemeris)",
+      "True ridge horizon: data/horizon.json (measured from the terrain)"
     ],
     "source": { "name": "derive.js sunEvents + horizon.json", "url": "" },
-    "caveat_he": "מסלול-השמש אפמריס; האופק נמדד מנתוני-שטח (DEM) — לא ערובה לדקה כשיש אובך."
+    "caveat_he": "The sun's path is ephemeris; the horizon is measured from terrain data (DEM) — not guaranteed to the minute when there's haze."
   },
 
   "nextMeteor": {
-    "title_he": "מטר המטאורים הבא",
+    "title_he": "The next meteor shower",
     "kind": "static",
-    "what_he": "מקלחת-המטאורים הקרובה שתיראה מהשמיים החשוכים שלך, עם שיא וזמן.",
-    "how_he": "לוח שיאי-2026 קבוע (פרסאידים, גמינידים…) עם ZHR (מטאורים/שעה בשיא); מחזירים את הראשון שעוד לא עבר ואת מספר הימים אליו.",
+    "what_he": "The upcoming meteor shower visible from your dark sky, with its peak and time.",
+    "how_he": "A fixed 2026 peak schedule (Perseids, Geminids…) with ZHR (meteors/hour at peak); we return the first one that hasn't yet passed and the number of days until it.",
     "data_he": [
-      "לוח שיאי-2026 מקודד (METEORS) עם תאריך ו-ZHR צפוי"
+      "Hard-coded 2026 peak schedule (METEORS) with date and expected ZHR"
     ],
-    "source": { "name": "derive.js nextMeteor (לוח IMO/AMS)", "url": "https://www.imo.net/resources/calendar/" },
-    "caveat_he": "תאריכי-השיא ידועים מראש; ה-ZHR הוא תיאורטי (שמיים מושלמים, רדיאנט בזנית) — הספירה בפועל בד\"כ נמוכה ותלויה בענן ובירח."
+    "source": { "name": "derive.js nextMeteor (IMO/AMS calendar)", "url": "https://www.imo.net/resources/calendar/" },
+    "caveat_he": "The peak dates are known in advance; the ZHR is theoretical (perfect sky, radiant at zenith) — the actual count is usually lower and depends on cloud and the moon."
   },
 
   "nextDarkNight": {
-    "title_he": "הלילה החשוך הבא (ללא ירח)",
+    "title_he": "The next dark night (no moon)",
     "kind": "hybrid",
-    "what_he": "הלילה הקרוב עם הכי פחות אור-ירח — המתכנן המעשי ביותר לצפייה בעומק-החלל.",
-    "how_he": "סורקים 30 יום קדימה ב-~01:00 ובוחרים את שקע הארת-הירח (אפמריס, ודאי). ענן משוקלל רק אם הלילה בתוך אופק-תחזית 3-הימים של Open-Meteo, אחרת null = 'רחוק מדי לחזות, אך ללא-ירח'.",
+    "what_he": "The upcoming night with the least moonlight — the most practical planner for deep-sky observing.",
+    "how_he": "We scan 30 days ahead at ~01:00 and pick the dip in moon illumination (ephemeris, certain). Cloud is factored in only if the night falls within Open-Meteo's 3-day forecast horizon, otherwise null = 'too far to forecast, but moonless'.",
     "data_he": [
-      "הארת ירח: Astro.moon (אפמריס)",
-      "ענן: Weather.tonightCloud אם בתוך 3 ימים (מדוד/חזוי)"
+      "Moon illumination: Astro.moon (ephemeris)",
+      "Cloud: Weather.tonightCloud if within 3 days (measured/forecast)"
     ],
     "source": { "name": "derive.js nextDarkNight + Open-Meteo", "url": "https://open-meteo.com/" },
-    "caveat_he": "מועד הירח ודאי (אפמריס); הענן חזוי רק לטווח קצר. הערכה משולבת."
+    "caveat_he": "The moon timing is certain (ephemeris); the cloud is forecast only for the short term. A combined estimate."
   },
 
   "galacticCore": {
-    "title_he": "ליבת שביל-החלב הלילה",
+    "title_he": "The Milky Way core tonight",
     "kind": "ephemeris",
-    "what_he": "מתי ליבת הגלקסיה (קשת, החלק הצפוף והמרשים) מעל ~12° וגם השמיים חשוכים — חלון הצילום/צפייה.",
-    "how_he": "אפמריס טהור: ממירים RA 17.76h / Dec −28.9° לגובה/אזימוט מקומיים (Astro.eqToHorizon) לאורך הלילה; מסמנים את החלון שבו הליבה ≥12° וגם השמש ≤−15°. מחזירים שיא-גובה, כיוון, והפרעת-הירח הגרועה.",
+    "what_he": "When the galactic core (Sagittarius, the dense and impressive part) is above ~12° and the sky is also dark — the photo/observing window.",
+    "how_he": "Pure ephemeris: we convert RA 17.76h / Dec −28.9° to local elevation/azimuth (Astro.eqToHorizon) over the night; we mark the window where the core is ≥12° and the sun is also ≤−15°. We return the peak elevation, the direction, and the worst moon interference.",
     "data_he": [
-      "RA/Dec של הליבה (קבוע), מסלול-שמש וירח: Astro (אפמריס)"
+      "RA/Dec of the core (constant), sun and moon paths: Astro (ephemeris)"
     ],
     "source": { "name": "derive.js galacticCore", "url": "" },
-    "caveat_he": "אפמריס מדויק. inSeason=false בחורף (הליבה לא מעל-האופק בזמן חושך). ענן/אופק-דרומי נמוך לא נכללים."
+    "caveat_he": "Accurate ephemeris. inSeason=false in winter (the core isn't above the horizon during darkness). Cloud/a low southern horizon are not included."
   },
 
   "zodiacalLight": {
-    "title_he": "אור גלגל-המזלות",
+    "title_he": "Zodiacal light",
     "kind": "ephemeris",
-    "what_he": "קונוס-האבק הבין-פלנטרי לאורך המילקה ('שחר/דמדום כוזב') — תופעת שמיים-Bortle-3 שאלכס באמת יכול לראות.",
-    "how_he": "מודדים את זווית המילקה לאופק ברגע הדמדום/שחר האסטרונומי (−18°): rise/run בין שתי נקודות-מילקה במרחק 10°. תלולה (→90°) = הקונוס עומד גבוה = טוב; שטוחה = נבלע בזוהר. בודקים גם הפרעת-ירח.",
+    "what_he": "The interplanetary dust cone along the ecliptic ('false dawn/dusk') — a Bortle-3 sky phenomenon that Alex can actually see.",
+    "how_he": "We measure the ecliptic's angle to the horizon at the moment of astronomical dusk/dawn (−18°): rise/run between two ecliptic points 10° apart. Steep (→90°) = the cone stands high = good; flat = swallowed in the glow. We also check for moon interference.",
     "data_he": [
-      "אורך-מילקה של השמש + מסלול-ירח: Astro (אפמריס)",
-      "סף-איכות: זווית ≥50° וירח לא-מפריע"
+      "The sun's ecliptic longitude + the moon's path: Astro (ephemeris)",
+      "Quality threshold: angle ≥50° and a non-interfering moon"
     ],
     "source": { "name": "derive.js zodiacalLight", "url": "" },
-    "caveat_he": "קריטריון-מילקה קלאסי (אפמריס). לא ערובה — דורש אופק נמוך נקי + השמיים החשוכים שלו. הערכה-הכוונה."
+    "caveat_he": "A classic ecliptic criterion (ephemeris). Not a guarantee — it requires a clean low horizon + his dark sky. A guidance estimate."
   },
 
   "overnightPasses": {
-    "title_he": "מה חלף מעל הבית בזמן שישנת",
+    "title_he": "What passed over the house while you slept",
     "kind": "ephemeris",
-    "what_he": "מעברי-לוויינים אמיתיים (ISS וכו') שהיו נראים-לעין-בלתי-מזוינת מעל הבית ב-14 השעות האחרונות.",
-    "how_he": "פרופגציית SGP4 אמיתית (Satellites) אחורה 14 ש': לוויין נראה רק אם הוא מואר-שמש, הצופה בחושך (שמש <−4°) והגובה >10°. לכל מעבר: שיא-גובה, כיוון ושעה.",
+    "what_he": "Real satellite passes (ISS, etc.) that would have been naked-eye visible over the house in the last 14 hours.",
+    "how_he": "Real SGP4 propagation (Satellites) backward 14 h: a satellite is visible only if it's sunlit, the observer is in darkness (sun <−4°) and the elevation >10°. For each pass: peak elevation, direction and time.",
     "data_he": [
-      "TLE + SGP4: window.Satellites (אלמנטים מסלוליים אמיתיים)",
-      "מואר-שמש: Astro.sunEciUnit (אפמריס)"
+      "TLE + SGP4: window.Satellites (real orbital elements)",
+      "Sunlit: Astro.sunEciUnit (ephemeris)"
     ],
     "source": { "name": "derive.js overnightPasses (SGP4 via Satellites)", "url": "https://celestrak.org/" },
-    "caveat_he": "מדויק אם ה-TLE עדכני; דיוק יורד ככל שה-TLE מתיישן. הזמן הוא ה-now האמיתי, לא השעון הנגלל."
+    "caveat_he": "Accurate if the TLE is current; accuracy drops as the TLE ages. The time is the real now, not the scrubbing clock."
   },
 
   "moonPhase": {
-    "title_he": "מופע ושלב הירח",
+    "title_he": "Moon phase and stage",
     "kind": "ephemeris",
-    "what_he": "אחוז ההארה, השם (מולד/מלא…) וגודלו הנראה של הירח — קובע כמה הוא 'שוטף' כוכבים חלשים.",
-    "how_he": "מודל Meeus נמוך-דיוק: הארה = (1−cos(זווית-התארכות מהשמש))/2. המרחק (km) מסדרת ELP נותן קוטר-נראה ~0.49°–0.56° (כולל 'סופר-מון').",
+    "what_he": "The illumination percentage, the name (new/full…) and the moon's apparent size — determines how much it 'washes out' faint stars.",
+    "how_he": "Low-precision Meeus model: illumination = (1−cos(elongation angle from the sun))/2. The distance (km) from the ELP series gives an apparent diameter of ~0.49°–0.56° (including a 'supermoon').",
     "data_he": [
-      "תאריך + קו-רוחב/אורך (קבוע)",
-      "מודל ירח Meeus"
+      "Date + latitude/longitude (constant)",
+      "Meeus moon model"
     ],
     "source": { "name": "Astro.moon (Meeus low-precision)", "url": "" },
-    "caveat_he": "אפמריס נמוך-דיוק — מצוין למופע ולהארה; לא לחישובי-ליקוי מדויקים."
+    "caveat_he": "Low-precision ephemeris — excellent for phase and illumination; not for precise eclipse calculations."
   },
 
   "zodiacChart": {
-    "title_he": "מפת המזלות (אסטרולוגיה)",
+    "title_he": "Zodiac chart (astrology)",
     "kind": "ephemeris",
-    "what_he": "באיזה מזל ומעלה נמצא כל גוף (שמש/ירח/כוכבי-לכת) — האפמריס אמיתי; האסטרולוגיה כשירה/פואטית.",
-    "how_he": "מאורך-המילקה הגאוצנטרי של כל גוף (אמיתי) → מזל (30° לכל אחד) ומעלה בתוכו. האופק-העולה (אסצנדנט) דורש שעת+מקום לידה ומחושב מהזמן-הכוכבי המקומי.",
+    "what_he": "Which sign and degree each body (sun/moon/planets) sits in — the ephemeris is real; the astrology is meant as poetry/for fun.",
+    "how_he": "From each body's geocentric ecliptic longitude (real) → a sign (30° each) and a degree within it. The rising horizon (ascendant) requires a birth time + place and is computed from the local sidereal time.",
     "data_he": [
-      "מיקומי שמש/ירח/כוכבי-לכת: Astro (אפמריס אמיתי)",
-      "אסצנדנט: Astro.lstRad + קו-הרוחב (אומדן למקום-הלידה)"
+      "Positions of sun/moon/planets: Astro (real ephemeris)",
+      "Ascendant: Astro.lstRad + the latitude (an estimate for the birthplace)"
     ],
     "source": { "name": "derive.js zodiacChart/ascendant", "url": "" },
-    "caveat_he": "מיקומי-הגופים אסטרונומיים-אמיתיים. הפרשנות האסטרולוגית מוצגת כפואטיקה, לא כמדע. האסצנדנט הערכה (אורך-האפליקציה כפרוקסי למקום-לידה)."
+    "caveat_he": "The bodies' positions are astronomically real. The astrological interpretation is presented as poetry, not science. The ascendant is an estimate (the app's longitude as a proxy for the birthplace)."
   },
 
   "record_dliSum": {
-    "title_he": "סך DLI שנצבר (יומן אמת)",
+    "title_he": "Total accumulated DLI (real log)",
     "kind": "hybrid",
-    "what_he": "סכום מנות-האור האמיתיות שהפינה צברה מאז תחילת היומן — מצטבר יום-אחרי-יום ממזג-אוויר אמיתי.",
-    "how_he": "Σ של ה-DLI היומי מכל יום מוקלט בטווח. כל יום: הקרינה המדודה (Open-Meteo) של אותו תאריך מוזרמת דרך ה-shadowMask/POA האמיתי של הפינה (Derive.recordDay).",
+    "what_he": "The sum of the real light doses the corner has accumulated since the log began — building up day after day from real weather.",
+    "how_he": "Σ of the daily DLI from each recorded day in the range. Each day: that date's measured radiation (Open-Meteo) is fed through the corner's real shadowMask/POA (Derive.recordDay).",
     "data_he": [
-      "קרינה יומית מדודה: RecordApi → Open-Meteo archive+forecast",
-      "גיאומטריית הצללה של הפינה: Derive (מחושב)",
-      "נצבר ב-RecordStore.zoneTotals"
+      "Daily measured radiation: RecordApi → Open-Meteo archive+forecast",
+      "The corner's shading geometry: Derive (computed)",
+      "Accumulated in RecordStore.zoneTotals"
     ],
     "source": { "name": "RecordStore.zoneTotals + Derive.recordDay (§8)", "url": "https://open-meteo.com/" },
-    "caveat_he": "מזג-האוויר מבוסס מדידות אמת; ההצללה מחושבת מהגיאומטריה. היומן מצטבר רק מהתאריך שנפתח — לא היסטוריה אינסופית."
+    "caveat_he": "The weather is based on real measurements; the shading is computed from the geometry. The log accumulates only from the date it was opened — not infinite history."
   },
 
   "record_zoneTotals": {
-    "title_he": "סיכומי הפינה (יומן אמת)",
+    "title_he": "Corner summaries (real log)",
     "kind": "hybrid",
-    "what_he": "מה הפינה/הצמח באמת חוו עד עכשיו: ימים, לילות-כפור, סך-אור (DLI), שעות-שמש, GDD, מנות-קור, אֵדוי וגשם.",
-    "how_he": "צבירה של רשומות-יום אמיתיות (Derive.recordDay) בטווח: dliSum, sunHoursSum, gddSum, chillSum, etcSum, rainSum, frostNights, וקיצוני-טמפ' (tMinAbs/tMaxAbs). מזג-אוויר מדוד × גיאומטריה מחושבת.",
+    "what_he": "What the corner/plant has actually experienced so far: days, frost nights, total light (DLI), sun hours, GDD, chill hours, evaporation and rain.",
+    "how_he": "Accumulation of real day records (Derive.recordDay) over the range: dliSum, sunHoursSum, gddSum, chillSum, etcSum, rainSum, frostNights, and temperature extremes (tMinAbs/tMaxAbs). Measured weather × computed geometry.",
     "data_he": [
-      "מזג-אוויר שעתי מדוד: Open-Meteo (archive+forecast) דרך RecordApi",
-      "הצללה/POA של הפינה: Derive (מחושב)",
+      "Hourly measured weather: Open-Meteo (archive+forecast) via RecordApi",
+      "The corner's shading/POA: Derive (computed)",
       "RecordStore.zoneTotals / plantTotals"
     ],
     "source": { "name": "RecordStore (record_store.js) + Derive.recordDay", "url": "https://open-meteo.com/" },
-    "caveat_he": "מבוסס מדידות אמת דרך הגיאומטריה של הבית — לא חיישן פיזי בקרקע. נצבר מתחילת היומן בלבד; הארכיב מכסה עד ~5 ימים אחורה (יתר מהתחזית)."
+    "caveat_he": "Based on real measurements through the house geometry — not a physical sensor in the soil. Accumulated only from the start of the log; the archive covers up to ~5 days back (the rest from the forecast)."
   },
 
   "record_status": {
-    "title_he": "מצב היומן",
+    "title_he": "Log status",
     "kind": "measured",
-    "what_he": "כמה ימים כבר נאספו ביומן-החי, מאיזה תאריך, וכמה מהמילוי-לאחור הושלם.",
-    "how_he": "days = מספר ימים בארכיב המקומי; pct = 100·ימים-שהושלמו/ימים-מתוכננים. מילוי-לאחור רץ ברקע בזמן-סרק עד שנה לאחור.",
+    "what_he": "How many days have already been collected in the live log, from what date, and how much of the backfill is complete.",
+    "how_he": "days = number of days in the local archive; pct = 100·completed days/planned days. Backfill runs in the background during idle time, up to a year back.",
     "data_he": [
       "firstDate/lastDate/days/pct/gaps: RecordStore.status",
-      "מקור הנתונים: Open-Meteo (מדוד)"
+      "Data source: Open-Meteo (measured)"
     ],
     "source": { "name": "RecordStore.status", "url": "https://open-meteo.com/" },
-    "caveat_he": "מבוסס מדידות אמת (Open-Meteo) דרך הגיאומטריה של הבית — לא חיישן. 'gaps' מציין חלונות שלא נמשכו עדיין/בהצלחה."
+    "caveat_he": "Based on real measurements (Open-Meteo) through the house geometry — not a sensor. 'gaps' indicates windows that haven't been fetched yet/successfully."
   },
 
   "record_prediction": {
-    "title_he": "תחזית מהיומן (השלכה)",
+    "title_he": "Forecast from the log (extrapolation)",
     "kind": "modeled",
-    "what_he": "הערכה לאן הסכום-העונתי או הבשלת-הפרי מועדים, מהקצב שנמדד עד כה ביומן.",
-    "how_he": "השלכה לינארית פשוטה: לוקחים את הצבירה עד היום (למשל GDD שנצבר) וממשיכים בקצב הנוכחי, או מצליבים מול היעד של הצמח (gdd_to_fruit / chill_hours_req) כדי לאמוד מתי יושג. הבסיס: מדידות-עבר; ההמשך: הנחה שהקצב יימשך.",
+    "what_he": "An estimate of where the seasonal total or fruit ripening is headed, from the rate measured in the log so far.",
+    "how_he": "A simple linear extrapolation: we take the accumulation to date (e.g. accumulated GDD) and continue at the current rate, or cross-reference it against the plant's target (gdd_to_fruit / chill_hours_req) to estimate when it will be reached. The basis: past measurements; the continuation: the assumption that the rate persists.",
     "data_he": [
-      "צבירה עד היום: RecordStore.zoneTotals/plantTotals (מבוסס-מדידות)",
-      "יעדי הצמח: resident_plants.json (gdd_to_fruit, chill_hours_req)"
+      "Accumulation to date: RecordStore.zoneTotals/plantTotals (measurement-based)",
+      "Plant targets: resident_plants.json (gdd_to_fruit, chill_hours_req)"
     ],
-    "source": { "name": "השלכה מעל RecordStore + resident_plants.json", "url": "https://open-meteo.com/" },
-    "caveat_he": "תחזית, לא עובדה: השלכה לינארית מהקצב-עד-כה — רגישה לשונות-מזג-אוויר ולעונתיות. ביטחון נמוך-בינוני, גדל ככל שהיומן ארוך יותר. הערכה."
+    "source": { "name": "Extrapolation over RecordStore + resident_plants.json", "url": "https://open-meteo.com/" },
+    "caveat_he": "A forecast, not a fact: a linear extrapolation from the rate so far — sensitive to weather variability and to seasonality. Low-to-medium confidence, growing as the log gets longer. Estimate."
   },
 
   "cosmic_odometer": {
-    "title_he": "מד-המרחק הקוסמי שלך",
+    "title_he": "Your cosmic odometer",
     "kind": "modeled",
-    "what_he": "כמה ימים/שעות/הקפות-שמש/ירחים-מלאים/פרסאידים חווית מאז שנולדת — ה'מד-קוסמי'.",
-    "how_he": "מחושב מתאריך-הלידה המשוער ועד היום: ימים=הפרש-ימים, הקפה=ימים·~107M ק\"מ/יום סביב השמש, ירחים-מלאים≈ימים/29.53, פרסאידים=מספר-השנים. ערכים מוקפאים ב-resident_numbers.json נכון ל-1.1.2026.",
+    "what_he": "How many days/hours/solar orbits/full moons/Perseids you've experienced since you were born — the 'cosmic odometer'.",
+    "how_he": "Computed from the estimated birth date up to today: days=day difference, orbit=days·~107M km/day around the sun, full moons≈days/29.53, Perseids=number of years. Values frozen in resident_numbers.json as of 1.1.2026.",
     "data_he": [
-      "תאריך-לידה משוער 1.1.2000 (resident_numbers.json)",
-      "קבועים אסטרונומיים (אורך-שנה, מחזור-ירח, היקף-מסלול)"
+      "Estimated birth date 1.1.2000 (resident_numbers.json)",
+      "Astronomical constants (year length, lunar cycle, orbital circumference)"
     ],
     "source": { "name": "data/resident_numbers.json", "url": "" },
-    "caveat_he": "מבוסס תאריך-לידה משוער (1.1.2000) — תקני אם צריך. הערכים מוקפאים לתאריך הייחוס; הם 'מתבגרים' רק כשמרעננים את הקובץ."
+    "caveat_he": "Based on an estimated birth date (1.1.2000) — adjust it if needed. The values are frozen to the reference date; they only 'age' when the file is refreshed."
   },
 
   "milestones_counter": {
-    "title_he": "ספירת אבני-הדרך",
+    "title_he": "Milestone counter",
     "kind": "static",
-    "what_he": "כמה זמן עבר מאז אירועי-החיים שלך: המעבר ללרקמונט, הכניסה לבית, המשכנתא.",
-    "how_he": "הפרש-ימים פשוט בין תאריך-האירוע (milestones.json / site.json) להיום.",
+    "what_he": "How much time has passed since your life events: the move to Larkmont, moving into the house, the mortgage.",
+    "how_he": "A simple day difference between the event date (milestones.json / site.json) and today.",
     "data_he": [
-      "תאריכי-אירועים: data/milestones.json + site.json milestones"
+      "Event dates: data/milestones.json + site.json milestones"
     ],
     "source": { "name": "data/milestones.json", "url": "" },
-    "caveat_he": "מבוסס תאריכים שהוזנו ידנית — מדויק כמותם."
+    "caveat_he": "Based on manually entered dates — as accurate as those are."
   },
 
   "iNaturalist_sightings": {
-    "title_he": "תצפיות-טבע חיות בסביבה",
+    "title_he": "Live nature observations nearby",
     "kind": "measured",
-    "what_he": "מינים (צמחים/בעלי-חיים) שתועדו לאחרונה ברדיוס ~15 ק\"מ מהבית — נתוני-קהילה אמיתיים.",
-    "how_he": "קריאה חיה ל-API של iNaturalist סביב הקואורדינטות שלך, מסונן לתצפיות 'research-grade' עם תמונה, ממוין מהחדש. לפי-מין/עונה כשמבקשים.",
+    "what_he": "Species (plants/animals) recently documented within a ~15 km radius of the house — real community data.",
+    "how_he": "A live call to the iNaturalist API around your coordinates, filtered to 'research-grade' observations that have a photo, sorted newest-first. By species/season on request.",
     "data_he": [
-      "תצפיות: iNaturalist API (lat/lng רדיוס 15ק\"מ, research_grade)",
-      "ללא מפתח, CORS-תקין"
+      "Observations: iNaturalist API (lat/lng radius 15 km, research_grade)",
+      "No key, CORS-valid"
     ],
     "source": { "name": "iNaturalist API", "url": "https://api.inaturalist.org/v1/observations" },
-    "caveat_he": "מבוסס תצפיות-קהילה אמיתיות — אך תלוי בכיסוי המתעדים באזור (ייתכנו הטיות ודלילות). לא סקר-שיטתי."
+    "caveat_he": "Based on real community observations — but it depends on observer coverage in the region (biases and sparsity are possible). Not a systematic survey."
   }
 }

@@ -1,192 +1,192 @@
 {
   "_meta": {
-    "purpose": "Static reference for the 'מה מותר במגרש' planning card — concrete renovation/extension possibilities for Alex's plot, in clear Hebrew. NO numbers are fabricated as plot-specific; everything here is either (a) a documented plot FACT, or (b) a GENERAL planning rule explicitly labelled generic. The plot-specific building figures (ground coverage, built-area ratio, height, boundary setbacks) live in his applicable plan and are surfaced live by planning.js from the planning registry where the GIS returns them.",
-    "honesty": "נתוני המגרש (מגרש/שטח/רשות) בדויים לצורך דמו בלבד. Every item carries a 'scope' of either 'plot' (a verified fact about this lot), 'generic' (a general planning rule that applies unless his specific applicable plan says otherwise), or 'plan' (a number that exists only inside the governing plan document — read it via the plans-archive link).",
+    "purpose": "Static reference for the 'What's allowed on the plot' planning card — concrete renovation/extension possibilities for Alex's plot, in plain English. NO numbers are fabricated as plot-specific; everything here is either (a) a documented plot FACT, or (b) a GENERAL planning rule explicitly labelled generic. The plot-specific building figures (ground coverage, built-area ratio, height, boundary setbacks) live in his applicable plan and are surfaced live by planning.js from the planning registry where the GIS returns them.",
+    "honesty": "The plot data (lot / area / authority) is fictional, for demo purposes only. Every item carries a 'scope' of either 'plot' (a verified fact about this lot), 'generic' (a general planning rule that applies unless his specific applicable plan says otherwise), or 'plan' (a number that exists only inside the governing plan document — read it via the plans-archive link).",
     "compiled": "2026-06",
     "compiledNote": "General rules reflect generic regional planning regulations and a local permit-exemption scheme as of compile date; rules and the plot's plans can change — always confirm at the local planning authority before building."
   },
   "plot": {
-    "town": "לרקמונט",
+    "town": "Larkmont",
     "block": "10042",
     "parcel": "17",
     "areaSqm": 500,
-    "type": "בית צמוד-קרקע (חד-משפחתי)",
-    "committee": "רָשׁוּת הַתִּכְנוּן הַמְּקוֹמִית לרקמונט",
-    "committeeNote": "לרקמונט מצויה בתחום התכנון של הרשות המקומית לרקמונט — אליהם מגישים בקשה להיתר ומולם בודקים את הזכויות המדויקות.",
-    "note": "נתוני מגרש בדויים לחלוטין (דמו) — מספרי המגרש/השטח אינם אמיתיים."
+    "type": "Detached single-family house",
+    "committee": "Larkmont Local Planning Authority",
+    "committeeNote": "Larkmont falls within the planning jurisdiction of the Larkmont local authority — that's where you submit a permit application and verify the exact building rights.",
+    "note": "Plot data is entirely fictional (demo) — the lot/area figures are not real."
   },
   "intro": {
-    "he": "מה אפשר לבנות או להוסיף במגרש — תוספת בנייה, חדר מָגֵן מחוזק, קומה, ובנייה בחצר. המספרים המדויקים (כמה אחוזי כיסוי, איזה גובה, מרחק מהגבול) נקבעים בתכנית הבנייה החלה על המגרש; כאן מוסבר מה מותר באופן עקרוני ואיך לקרוא את המספר האמיתי מהתכנית.",
+    "he": "What you can build or add on the plot — a building extension, a reinforced safe room, an extra floor, and yard construction. The exact figures (how much coverage, what height, distance from the boundary) are set by the building plan that applies to the plot; here we explain what is allowed in principle and how to read the real number from the plan.",
     "scope": "generic"
   },
   "possibilities": [
     {
       "id": "addition",
       "icon": "🏗️",
-      "title": "תוספת בנייה / הרחבה",
+      "title": "Building extension / expansion",
       "scope": "generic",
-      "lead": "הגדלת שטח הבית — בקומת הקרקע או בקומה — עד גבול זכויות הבנייה של המגרש.",
+      "lead": "Enlarging the house — on the ground floor or an upper floor — up to the limit of the plot's building rights.",
       "points": [
         {
-          "he": "כל מגרש מוגדר ב-<b>אחוז כיסוי הקרקע</b> (חלק הקרקע שמותר לכסות בבנייה — למשל 30%–40% מ-500 מ\"ר) וב-<b>יחס שטח בנוי</b> (סך המ\"ר הבנוי המותר בכל הקומות).",
+          "he": "Every plot is defined by a <b>ground-coverage percentage</b> (the share of the land that may be built on — e.g. 30%–40% of 500 m²) and by a <b>built-area ratio</b> (the total built m² allowed across all floors).",
           "scope": "generic"
         },
         {
-          "he": "ההפרש בין מה שבנוי היום לבין המותר בתכנית הבנייה = פוטנציאל ההרחבה. תוספת מעבר לכך דורשת <b>הקלה</b> או שינוי תכנית הבנייה.",
+          "he": "The gap between what is built today and what the building plan allows = the expansion potential. Adding beyond that requires a <b>variance</b> or an amendment to the building plan.",
           "scope": "generic"
         },
         {
-          "he": "ההרחבה חייבת לשמור על <b>מרווחי הבנייה מהגבול</b> — המרחק המזערי המותר מכל גבול מגרש (קדמי/צדדי/אחורי). בנייה קרוב יותר לגבול דורשת הקלה ולעיתים הסכמת שכן.",
+          "he": "The expansion must respect the <b>building setbacks from the boundary</b> — the minimum distance allowed from each plot boundary (front/side/rear). Building closer to the boundary requires a variance and sometimes a neighbor's consent.",
           "scope": "generic"
         }
       ],
       "readNumber": {
-        "he": "איך קוראים את אחוז הכיסוי מתכנית הבנייה: פותחים את התכנית במאגר התכניות המקומי (הקישור שליד כל תכנית למעלה) → טבלת זכויות הבנייה / הוראות הבינוי → השורה 'כיסוי קרקע' ו-'שטח בנוי מותר'. שם המספר המדויק של המגרש.",
+        "he": "How to read the coverage percentage from the building plan: open the plan in the local plans archive (the link next to each plan above) → the building-rights table / construction provisions → the 'ground coverage' and 'permitted built area' rows. That's where the plot's exact number is.",
         "scope": "generic"
       },
       "estimateNote": {
-        "he": "לדוגמה בלבד (לא מספר רשמי): אם תכנית הבנייה מתירה כיסוי 35% על מגרש 500 מ\"ר, זה כ-175 מ\"ר טביעת-רגל מותרת לקומה. המספר האמיתי — רק מתכנית הבנייה.",
+        "he": "Illustrative only (not an official number): if the building plan allows 35% coverage on a 500 m² plot, that's about 175 m² of permitted footprint per floor. The real number — only from the building plan.",
         "scope": "illustrative"
       }
     },
     {
       "id": "shelter_room",
       "icon": "🛡️",
-      "title": "חדר מָגֵן מחוזק — הוספה או שדרוג",
+      "title": "Reinforced safe room — adding or upgrading",
       "scope": "generic",
-      "lead": "חדר מָגֵן מחוזק לבית — הוספה לבית קיים, או שדרוג/הגדלה של חדר מָגֵן קיים.",
+      "lead": "A reinforced safe room for the house — adding one to an existing house, or upgrading/enlarging an existing safe room.",
       "points": [
         {
-          "he": "חדר מָגֵן מחוזק נבנה לפי תקן חדרי-המגן (קירות ותקרת בטון, דלת וחלון מחוזקים, אוורור). הוא חלק מבקשת ההיתר.",
+          "he": "A reinforced safe room is built to the safe-room standard (concrete walls and ceiling, reinforced door and window, ventilation). It is part of the permit application.",
           "scope": "generic"
         },
         {
-          "he": "בדרך כלל זוכה ל<b>הקלה בזכויות הבנייה</b>: שטח חדר המָגֵן (עד ~9 מ\"ר נטו) פטור או נספר חלקית, כך שבנייתו לרוב אינה 'אוכלת' את זכויות ההרחבה הרגילות.",
+          "he": "It usually qualifies for a <b>building-rights concession</b>: the safe room's area (up to ~9 m² net) is exempt or only partly counted, so building it usually doesn't 'eat into' the regular expansion rights.",
           "scope": "generic"
         },
         {
-          "he": "אם אין חדר מָגֵן בבית הקיים — זו לרוב התוספת הראשונה שכדאי לשלב בכל שיפוץ מהותי.",
+          "he": "If the existing house has no safe room — that's usually the first addition worth folding into any substantial renovation.",
           "scope": "generic"
         }
       ],
       "readNumber": {
-        "he": "תקן חדרי-המגן מפרסם את המידות והדרישות המעודכנות; הרשות התכנון המקומית מאשרת את המיקום ביחס למרווחי הבנייה.",
+        "he": "The safe-room standard publishes the current dimensions and requirements; the local planning authority approves the location relative to the building setbacks.",
         "scope": "generic"
       }
     },
     {
       "id": "floor",
       "icon": "🏢",
-      "title": "תוספת קומה",
+      "title": "Adding a floor",
       "scope": "generic",
-      "lead": "הוספת קומה מעל הקיים — כפוף לגובה ולמספר הקומות שתכנית הבנייה מתירה.",
+      "lead": "Adding a floor above the existing structure — subject to the height and the number of floors the building plan permits.",
       "points": [
         {
-          "he": "תכנית הבנייה קובעת <b>מספר קומות</b> מותר ו<b>גובה מרבי</b> (במטרים, או מספר מפלסים). אם הבית נמוך מהמותר — ייתכן מקום לקומה נוספת.",
+          "he": "The building plan sets the permitted <b>number of floors</b> and a <b>maximum height</b> (in meters, or a number of levels). If the house is lower than allowed — there may be room for an additional floor.",
           "scope": "generic"
         },
         {
-          "he": "תוספת קומה תלויה גם ביכולת המבנה הקיים לשאת אותה (בדיקת קונסטרוקטור) — לא רק בזכויות.",
+          "he": "Adding a floor also depends on the existing structure's ability to carry it (a structural engineer's assessment) — not only on the rights.",
           "scope": "plot"
         },
         {
-          "he": "גם בתוספת קומה צריך להישאר בתוך יחס השטח הבנוי הכולל ובמרווחי הבנייה.",
+          "he": "Even when adding a floor you must stay within the overall built-area ratio and the building setbacks.",
           "scope": "generic"
         }
       ],
       "readNumber": {
-        "he": "בתכנית הבנייה: השורות 'מספר קומות מרבי' ו-'גובה מבנה מרבי'. השוו למצב הקיים כדי לראות אם נשאר 'גובה פנוי'.",
+        "he": "In the building plan: the 'maximum number of floors' and 'maximum building height' rows. Compare them with the existing state to see whether any 'spare height' remains.",
         "scope": "generic"
       }
     },
     {
       "id": "yard",
       "icon": "🌳",
-      "title": "בנייה בחצר",
+      "title": "Yard construction",
       "scope": "generic",
-      "lead": "פרגולה, מחסן, ויחידת דיור עצמאית (יחידת דיור / 'דירה שנייה') בחצר.",
+      "lead": "A pergola, a shed, and an independent dwelling unit (a housing unit / 'second apartment') in the yard.",
       "points": [
         {
-          "he": "<b>פרגולה</b> — בגודל מוגבל ובכפוף לתנאי הפטור (ראו 'פטור מהיתר' למטה) — לרוב ללא היתר.",
+          "he": "<b>Pergola</b> — of limited size and subject to the exemption conditions (see 'permit exemption' below) — usually without a permit.",
           "scope": "generic"
         },
         {
-          "he": "<b>מחסן</b> — מבנה אחסון קל עד שטח/גובה מוגבל לרוב פטור מהיתר; מעבר לכך נדרש היתר.",
+          "he": "<b>Shed</b> — a light storage structure up to a limited area/height is usually exempt from a permit; beyond that a permit is required.",
           "scope": "generic"
         },
         {
-          "he": "<b>יחידת דיור נוספת (פיצול דירה)</b> — חלוקת בית פרטי ליחידה עצמאית מתאפשרת לפי <b>הוראות פיצול יחידות הדיור</b> (תוספת יחידות דיור), בכפוף לתנאי תכנית הבנייה המקומית, חניה ותשתיות. דורש היתר.",
+          "he": "<b>Additional dwelling unit (apartment split)</b> — splitting a private house into an independent unit is possible under the <b>dwelling-unit split provisions</b> (adding housing units), subject to the local building plan's conditions, parking and infrastructure. Requires a permit.",
           "scope": "generic"
         }
       ],
       "readNumber": {
-        "he": "החלוקה ליחידת דיור נוספת מותנית באישור רשות התכנון המקומית ובכך שתכנית הבנייה אינה אוסרת זאת — לבדוק מולם לפני תכנון.",
+        "he": "Splitting into an additional dwelling unit is conditional on the local planning authority's approval and on the building plan not prohibiting it — check with them before planning.",
         "scope": "generic"
       }
     }
   ],
   "exemptions": {
-    "title": "מה לא דורש היתר — רשימת הפטור (כְּלָלֵי הַפְּטוֹר הַמְּקוֹמִיִּים)",
+    "title": "What doesn't require a permit — the exemption list (local exemption rules)",
     "icon": "✅",
     "intro": {
-      "he": "כְּלָלֵי הַפְּטוֹר מֵהֶיתֵּר הַמְּקוֹמִיִּים מַתִּירִים סדרת עבודות קטנות ללא היתר בנייה, בתנאי שעומדים במגבלות הגודל ובדרישות הבטיחות, ושמודיעים על כך לרשות המקומית כנדרש. פטור מהיתר אינו פטור מאחריות מקצועית ומעמידה בתכנית הבנייה.",
+      "he": "The local permit-exemption rules allow a series of small works without a building permit, provided you stay within the size limits and meet the safety requirements, and notify the local authority as required. Exemption from a permit is not exemption from professional responsibility or from compliance with the building plan.",
       "scope": "generic"
     },
     "items": [
       {
-        "he": "פרגולה — עד שטח וגובה מוגבלים, פתוחה בחלקה העליון.",
+        "he": "Pergola — up to limited area and height, open at its top.",
         "scope": "generic"
       },
       {
-        "he": "מחסן / מבנה יביל קל — עד שטח וגובה מוגבלים.",
+        "he": "Shed / light portable structure — up to limited area and height.",
         "scope": "generic"
       },
       {
-        "he": "שינויים פנימיים שאינם נוגעים באלמנטים קונסטרוקטיביים (הזזת קיר גבס, חידוש מטבח/אמבטיה ללא נגיעה ביציבות).",
+        "he": "Internal changes that don't touch structural elements (moving a drywall partition, renovating a kitchen/bathroom without affecting stability).",
         "scope": "generic"
       },
       {
-        "he": "מערכת סולארית / קולטי שמש / דוד שמש על הגג.",
+        "he": "Solar system / solar collectors / solar water heater on the roof.",
         "scope": "generic"
       },
       {
-        "he": "גדר / קיר תומך עד גובה מוגבל, ומשטח מרוצף בגובה נמוך מפני הקרקע.",
+        "he": "Fence / retaining wall up to a limited height, and a paved surface low to the ground.",
         "scope": "generic"
       },
       {
-        "he": "סוכך / סככה לרכב (קל ומותקן לפי התנאים), ומתקני גינון/מצללה קלים.",
+        "he": "Awning / carport canopy (lightweight and installed per the conditions), and light gardening/shade structures.",
         "scope": "generic"
       }
     ],
     "caveat": {
-      "he": "המגבלות המספריות המדויקות (כמה מ\"ר, איזה גובה, מרחק מגבול) מופיעות בכללי הפטור עצמם וחלות בכפוף לתכנית הבנייה החלה על המגרש. גם עבודה פטורה מהיתר חייבת לעמוד במרווחי הבנייה ובהוראות התכנית.",
+      "he": "The exact numeric limits (how many m², what height, distance from the boundary) appear in the exemption rules themselves and apply subject to the building plan in force for the plot. Even work that is exempt from a permit must comply with the building setbacks and the plan's provisions.",
       "scope": "generic"
     }
   },
   "links": [
     {
-      "label": "כְּלָלֵי הַפְּטוֹר מֵהֶיתֵּר — מִנְהַל הַתִּכְנוּן הַמְּקוֹמִי",
+      "label": "Permit-exemption rules — Local Planning Administration",
       "url": "",
       "scope": "official"
     },
     {
-      "label": "חדר מָגֵן מחוזק — תקן ומידות",
+      "label": "Reinforced safe room — standard and dimensions",
       "url": "",
       "scope": "official"
     },
     {
-      "label": "מִנְהַל הַתִּכְנוּן הַמְּקוֹמִי — מידע תכנוני ותכניות בנייה",
+      "label": "Local Planning Administration — planning information and building plans",
       "url": "",
       "scope": "official"
     },
     {
-      "label": "פיצול דירה / יחידת דיור נוספת (פיצול יחידות דיור) — מִנְהַל הַתִּכְנוּן הַמְּקוֹמִי",
+      "label": "Apartment split / additional dwelling unit (dwelling-unit split) — Local Planning Administration",
       "url": "",
       "scope": "official"
     }
   ],
   "footer": {
-    "he": "הכללים הכלליים נכונים לרמה האזורית; המספרים המדויקים של המגרש (אחוז כיסוי, גובה, מרווחי בנייה, יחס שטח בנוי) נקבעים בתכנית הבנייה ובהחלטות רשות התכנון המקומית לרקמונט. לפני כל תכנון — לאמת מולם.",
+    "he": "The general rules hold at the regional level; the plot's exact figures (coverage percentage, height, building setbacks, built-area ratio) are set by the building plan and by the decisions of the Larkmont local planning authority. Before any planning — verify with them.",
     "scope": "generic"
   }
 }

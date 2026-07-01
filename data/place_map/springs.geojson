@@ -4,11 +4,11 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "מַעְיַן הָעֵמֶק",
-        "aquifer_he": "אַקְוִיפֶר הָעֶלְיוֹן (דֶּמוֹ)",
+        "name_he": "Valley Spring",
+        "aquifer_he": "Upper Aquifer (demo)",
         "elev_m": 280,
-        "type_he": "נְבִיעָה עוֹנָתִית",
-        "note_he": "מַעְיָן בִּדְיוֹנִי לְהַדְגָּמָה."
+        "type_he": "Seasonal seep",
+        "note_he": "A fictional demo spring."
       },
       "geometry": {
         "type": "Point",
@@ -21,11 +21,11 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "מַעְיַן הַמָּצוֹק",
-        "aquifer_he": "אַקְוִיפֶר הַגִּיר (דֶּמוֹ)",
+        "name_he": "Cliff Spring",
+        "aquifer_he": "Limestone Aquifer (demo)",
         "elev_m": 240,
-        "type_he": "מַעְיַן מַגָּע",
-        "note_he": "נְקֻדָּה סִינְתֵטִית."
+        "type_he": "Contact spring",
+        "note_he": "A synthetic point."
       },
       "geometry": {
         "type": "Point",
@@ -38,11 +38,11 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "קְדִיחַת נִסּוּי 1",
-        "aquifer_he": "אַקְוִיפֶר עָמֹק (דֶּמוֹ)",
+        "name_he": "Test Borehole 1",
+        "aquifer_he": "Deep Aquifer (demo)",
         "elev_m": 300,
-        "type_he": "קְדִיחָה",
-        "note_he": "קְדִיחָה בְּדוּיָה."
+        "type_he": "Borehole",
+        "note_he": "A fictional borehole."
       },
       "geometry": {
         "type": "Point",

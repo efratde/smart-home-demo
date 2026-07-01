@@ -34,13 +34,13 @@ const Satellites = (function(){
   // see the staleness note at the top of this file. NORAD ids: ISS 25544,
   // CSS/Tiangong 48274, Starlink-1019 (a representative bright Starlink) 44724.
   const FALLBACK = [
-    { id:25544, he:'תחנת החלל הבינלאומית', short:'ISS', color:0xffe9b0,
+    { id:25544, he:'International Space Station', short:'ISS', color:0xffe9b0,
       l1:'1 25544U 98067A   26157.22459382  .00054840  00000+0  97346-3 0  9998',
       l2:'2 25544  51.6331 354.3683 0007056 137.0383 223.1158 15.49647679570604' },
-    { id:48274, he:'תחנת החלל הסינית', short:'CSS', color:0xc8d8ff,
+    { id:48274, he:'Chinese Space Station', short:'CSS', color:0xc8d8ff,
       l1:'1 48274U 21035A   26157.09777053  .00028689  00000+0  34274-3 0  9990',
       l2:'2 48274  41.4693  29.4663 0009357 351.5849   8.4832 15.60328974291432' },
-    { id:44724, he:'סטארלינק', short:'Starlink', color:0xbfe0ff,
+    { id:44724, he:'Starlink', short:'Starlink', color:0xbfe0ff,
       l1:'1 44724U 19074M   26157.17801880  .00057912  00000+0  18898-2 0  9994',
       l2:'2 44724  53.0475 120.8383 0005187  32.7405 327.3915 15.31238234362499' }
   ];
@@ -201,15 +201,15 @@ const Satellites = (function(){
     return { samples, rise:riseT, set:setT, peakAlt, peakAz, peakT, anyVisible };
   }
 
-  // compass direction (Hebrew) from azimuth degrees
-  const DIRS=['צפון','צ-מז','מזרח','ד-מז','דרום','ד-מע','מערב','צ-מע'];
+  // compass direction from azimuth degrees
+  const DIRS=['N','NE','E','SE','S','SW','W','NW'];
   function dirHe(azDeg){ return DIRS[Math.round((azDeg%360)/45)%8]; }
 
   function isReady(){ return ready; }
   function getSource(){ return source; }
   function epochNote(){
     // human note for the active TLE set
-    return source==='live' ? 'TLE חי (CelesTrak)' : 'TLE שמור (06/06/2026)';
+    return source==='live' ? 'Live TLE (CelesTrak)' : 'Cached TLE (06/06/2026)';
   }
 
   return { init, isReady, getSource, epochNote, lookAngles, nextPass, dirHe,

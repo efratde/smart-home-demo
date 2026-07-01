@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<title>הבית של אלכס · הבית החי</title>
+<title>Alex's Home · The Living Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Heebo:wght@300;400;500;700&family=Bellefair&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
 <body>
 <canvas id="c"></canvas>
 <div id="err"></div>
-<div id="splash">בּוֹנֶה אֶת הַבַּיִת…</div>
+<div id="splash">Building the home…</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -48,24 +48,24 @@
 <script src="garden_id.js"></script>
 <script src="panels.js"></script>
 <script src="log_store.js"></script>
-<!-- In-world room workbench (גישה א׳): opens a room's data panel in the instrument skin
+<!-- In-world room workbench (Approach A): opens a room's data panel in the instrument skin
      when a room is selected in EnterMode (by pill or by clicking the room on the 3D model).
      Self-contained DOM overlay; does NOT touch the WebGL scene. (Replaces the old 2D twin.js.) -->
 <!-- Plot planning lookup (planning registry, keyless, offline demo): window.Planning,
-     consumed by the שיפוץ tab in the workbench. MUST load before workbench.js. -->
+     consumed by the renovation tab in the workbench. MUST load before workbench.js. -->
 <script src="planning.js"></script>
 <script src="workbench.js"></script>
-<!-- In-world plant tracking (גישה א׳, Phase 2): plant markers on the real garden in 3D
+<!-- In-world plant tracking (Approach A, Phase 2): plant markers on the real garden in 3D
      (scene layer = GardenPins in app.js); clicking one opens a tracking card in the
      instrument skin, made smart by the microclimate engine. (Replaces twin.js __homeGarden.) -->
 <script src="care.js"></script>
 <script src="garden.js"></script>
 <!-- outdoor zone "workbench": click a yard zone → fly top-down + a tabbed info card (mirrors the room cards) -->
 <script src="zone_card.js"></script>
-<!-- טבע tab: curated OFFLINE field guide (58 verified Larkmont-Larkmont species); species row → floating card -->
+<!-- Nature tab: curated OFFLINE field guide (58 verified Larkmont-Larkmont species); species row → floating card -->
 <script src="nature.js"></script>
 <!-- Personal natal sky + tonight's transits (astrology as poetic framing, real positions);
-     self-contained panel, opened from a button in the שמיים tab. -->
+     self-contained panel, opened from a button in the Sky tab. -->
 <script src="natal.js"></script>
 <script src="alerts.js"></script>
 <!-- v2: universal "?" deep-info chips + smooth drag/resize for the floating panels.
@@ -87,16 +87,16 @@
 <script src="inventory.js"></script>
 <script src="vision.js"></script>
 <script src="backup.js"></script>
-<!-- cross-project materials hub (window.__materials — shared-material intelligence) + Alex's app-feedback (window.__feedback) → both surface as מוח modes -->
+<!-- cross-project materials hub (window.__materials — shared-material intelligence) + Alex's app-feedback (window.__feedback) → both surface as Brain modes -->
 <script src="materials_hub.js"></script>
 <script src="feedback.js"></script>
-<!-- v3.1: surface the harvested data — astronomy catalogs (→שמיים), agronomy/soil (→חצר), environment extras geology/water/history (→סביבה) -->
+<!-- v3.1: surface the harvested data — astronomy catalogs (→Sky), agronomy/soil (→Yard), environment extras geology/water/history (→Environment) -->
 <script src="sky_extras.js"></script>
 <script src="agro.js"></script>
 <script src="env_extras.js"></script>
-<!-- interactive spatial map (Leaflet, self-loaded) of the larkmont-vale — geology/springs/archaeology/trails + ציר-זמן.
-     Surfaced as the full-screen "map face" of the app (🗺️ מפה pill flips the whole background to it; #mapbg)
-     and via a launcher in the סביבה tab. (The crude GIS-draped-on-3D hybrid, terrain_layers.js, was retired.) -->
+<!-- interactive spatial map (Leaflet, self-loaded) of the larkmont-vale — geology/springs/archaeology/trails + timeline.
+     Surfaced as the full-screen "map face" of the app (🗺️ Map pill flips the whole background to it; #mapbg)
+     and via a launcher in the Environment tab. (The crude GIS-draped-on-3D hybrid, terrain_layers.js, was retired.) -->
 <script src="place_map.js"></script>
 <!-- CLOUD SYNC (loads last so its setItem wrapper is in place for app writes): mirrors his
      home_* localStorage to /api/state (Cloudflare KV) so his edits survive device changes and

@@ -18,11 +18,11 @@ const Weather = (function(){
   let hazard=null; // {days:[{date,rainMm,rainProb,windMax,gustMax,snowCm,code,tmin}], tz}
 
   function wmo(code){
-    const m={0:'שמיים בהירים',1:'בהיר ברובו',2:'מעונן חלקית',3:'מעונן',
-      45:'ערפל',48:'ערפל מתנקש',51:'טפטוף קל',53:'טפטוף',55:'טפטוף כבד',
-      61:'גשם קל',63:'גשם',65:'גשם כבד',66:'גשם קופא',67:'גשם קופא',
-      71:'שלג קל',73:'שלג',75:'שלג כבד',77:'גרגרי שלג',
-      80:'ממטרים קלים',81:'ממטרים',82:'ממטרים עזים',95:'סופת רעמים',96:'סופת רעמים',99:'סופת רעמים'};
+    const m={0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',
+      45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
+      61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',
+      71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',
+      80:'Light showers',81:'Showers',82:'Violent showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
     return m[code]||'—';
   }
 
@@ -43,7 +43,7 @@ const Weather = (function(){
         tz:j.timezone, time:c.time };
       return state;
     }catch(e){
-      state={ temp:24, code:0, desc:'שמיים בהירים (לא מקוון)', cloud:0.05, rain:0, dust:0.04,
+      state={ temp:24, code:0, desc:'Clear sky (offline)', cloud:0.05, rain:0, dust:0.04,
         wind:8, windDir:300, hum:28, isDay:true, live:false };
       return state;
     }

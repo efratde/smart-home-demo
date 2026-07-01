@@ -1,27 +1,27 @@
 /* ===================================================================
-   agro.js — "אֲגְרוֹנוֹמְיָה לֶחָצֵר" — surfaces the harvested AGRICULTURE /
+   agro.js — "Yard Agronomy" — surfaces the harvested AGRICULTURE /
    agronomy data that the gift had gathered but never showed. Four
    curated cards, tailored to HIS five fruit crops at Larkmont
    (~300 m, dry highland), in the existing #inst dark/gold RTL Hebrew
    skin (the same brass-on-glass language as zone_card.js / workbench.js):
 
-     🪨 הַקַּרְקַע שֶׁלְּךָ      — his exact site soil (group X1 / USDA
+     🪨 Your Soil            — his exact site soil (group X1 / USDA
                                Aridisols-Cambids, shallow calcareous
                                loessial serozem over rock; ~1700–1800 mm/yr
                                evaporation; aridic regime) + what it means
                                for planting (deep holes, organic amendment,
                                mulch, frequent metered drip).
-     💧 הַשְׁקָיָה אֲמִתִּית (Kc) — FAO-56 crop coefficients → readable
+     💧 Real Irrigation (Kc) — FAO-56 crop coefficients → readable
                                per-crop irrigation guidance; if the app's
                                live ET₀ is up (window.Weather.envAt('et0') or
                                dailyToday('dEt0')) it turns Kc into a real
                                ETc mm/day figure for today.
-     🌳 שָׁעוֹת קֹר וּ-GDD      — his dry-highland winter gives real chill
+     🌳 Chill Hours & GDD    — his dry-highland winter gives real chill
                                (rare for this climate); compares site chill/GDD vs
                                each fruit tree's requirement and flags fit
                                (fig/pomegranate/olive excellent; almond/grape
                                good with care; citrus/date marginal).
-     🐛 מַזִּיקִים וּמַחֲלוֹת    — quick reference of each crop's key pests +
+     🐛 Pests & Diseases     — quick reference of each crop's key pests +
                                an organic-allowed option (e.g. fig → black
                                fig fly → neem), curated from the ~1813-row
                                ministry-of-agriculture pesticide DB (NOT dumped).
@@ -32,7 +32,7 @@
    sensor reading. Sources cited (agri-ministry / pomology research / FAO).
 
    PUBLIC API (the human wires this in — adds the <script> + calls render
-   from the חצר/garden area): window.__agro.render(host, date) renders the
+   from the yard/garden area): window.__agro.render(host, date) renders the
    cards into `host` (an element or an id string). Also: isReady(),
    onReady(fn), load(). Fully self-contained: owns its own CSS, never
    touches panels.js / garden.js / index.html or the WebGL scene.
@@ -78,7 +78,7 @@
      Mirrors zone_card.js / workbench.js so the agronomy cards read as the same
      instrument family. Self-contained: no shared selectors, injected once. */
   var CSS=''+
-  '#agroWrap{font-family:\'Heebo\',sans-serif;color:#efe6cf;direction:rtl;text-align:right}'+
+  '#agroWrap{font-family:\'Heebo\',sans-serif;color:#efe6cf;direction:ltr;text-align:left}'+
   '#agroWrap .agcard{background:linear-gradient(160deg,rgba(12,14,26,.93),rgba(6,7,15,.95));'+
     'border:1px solid rgba(202,161,90,.22);border-radius:12px;padding:14px 15px;margin-bottom:13px;'+
     'box-shadow:0 12px 34px rgba(0,0,0,.4)}'+
@@ -108,7 +108,7 @@
   '#agroWrap .agpill.warm{background:rgba(210,120,120,.16);color:#e8b0b0;border:1px solid rgba(210,120,120,.42)}'+
   '#agroWrap .agtag{font-size:10px;color:#a99b78}'+
   '#agroWrap .agtable{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}'+
-  '#agroWrap .agtable th{font-size:10px;color:#a99b78;font-weight:500;text-align:right;padding:4px 6px;'+
+  '#agroWrap .agtable th{font-size:10px;color:#a99b78;font-weight:500;text-align:left;padding:4px 6px;'+
     'border-bottom:1px solid rgba(202,161,90,.22)}'+
   '#agroWrap .agtable td{padding:6px 6px;border-top:1px solid rgba(202,161,90,.1);color:#d6ccb2;vertical-align:top}'+
   '#agroWrap .agtable td b{color:#fff7e6;font-weight:600}'+
@@ -160,26 +160,26 @@
     var s=(DATA&&DATA.site)||{};
     var sg=s.soil_group_DanRaz||{}, tx=s.soil_taxonomy_USDA||{};
     var traits=s.soil_traits_he||[], impl=s.planting_implications_he||[];
-    var h='<div class="agcard"><div class="aghd"><span class="age">🪨</span>הַקַּרְקַע שֶׁלְּךָ</div>'+
-      '<div class="agsub">'+esc(s.name_he||'לרקמונט')+' · ~'+esc(s.elev_m||300)+' מ׳ · '+
+    var h='<div class="agcard"><div class="aghd"><span class="age">🪨</span>Your Soil</div>'+
+      '<div class="agsub">'+esc(s.name_he||'Larkmont')+' · ~'+esc(s.elev_m||300)+' m · '+
         esc(s.climate_he||'')+'</div>';
-    h+='<div class="agct">זֶהוּת הַקַּרְקַע <span class="agpill amber">MoAG · GIS</span></div>';
-    h+='<div class="agrow"><span class="k">קְבוּצַת קַרְקַע (דן ורז)</span>'+
+    h+='<div class="agct">Soil Identity <span class="agpill amber">MoAG · GIS</span></div>';
+    h+='<div class="agrow"><span class="k">Soil Group (Dan & Raz)</span>'+
         '<b>'+esc(sg.type||'X1')+' · '+esc(sg.desc_he||'')+'</b></div>';
-    h+='<div class="agrow"><span class="k">טַקְסוֹנוֹמְיָה (USDA)</span>'+
+    h+='<div class="agrow"><span class="k">Taxonomy (USDA)</span>'+
         '<b>'+esc(tx.order_he||'')+(tx.suborder?(' / '+esc(tx.suborder)):'')+'</b></div>';
-    if(tx.association_he) h+='<div class="agrow"><span class="k">שִׁיּוּךְ קַרְקָעִי</span><b>'+esc(tx.association_he)+'</b></div>';
+    if(tx.association_he) h+='<div class="agrow"><span class="k">Soil Association</span><b>'+esc(tx.association_he)+'</b></div>';
     if(traits.length){
       h+='<ul class="aglist">'+traits.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('')+'</ul>';
     }
-    h+='<div class="agct">אִיּוּד וּמַיִם <span class="agpill blue">דְּרִישַׁת הַשְׁקָיָה</span></div>';
-    if(s.annual_evaporation_mm!=null) h+='<div class="agrow"><span class="k">אִיּוּד שְׁנָתִי</span><b>~'+esc(s.annual_evaporation_mm)+' מ״מ/שָׁנָה</b></div>';
-    if(s.moisture_regime_he) h+='<div class="agrow"><span class="k">מִשְׁטַר רְטִיבוּת</span><b>'+esc(s.moisture_regime_he)+'</b></div>';
+    h+='<div class="agct">Evaporation & Water <span class="agpill blue">Irrigation Demand</span></div>';
+    if(s.annual_evaporation_mm!=null) h+='<div class="agrow"><span class="k">Annual Evaporation</span><b>~'+esc(s.annual_evaporation_mm)+' mm/year</b></div>';
+    if(s.moisture_regime_he) h+='<div class="agrow"><span class="k">Moisture Regime</span><b>'+esc(s.moisture_regime_he)+'</b></div>';
     if(impl.length){
-      h+='<div class="agct">מַשְׁמָעוּת לִנְטִיעָה</div>';
+      h+='<div class="agct">Planting Implications</div>';
       h+='<ul class="aglist">'+impl.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('')+'</ul>';
     }
-    h+='<div class="agfoot">מָקוֹר: שִׁכְבוֹת GIS שֶׁל מִשְׂרַד הַחַקְלָאוּת (קְבוּצוֹת קַרְקַע דן ורז 1970, טקסונומיית USDA, אִיּוּד, מִשְׁטָרֵי קַרְקַע). נֻקְדַּת אֲחִיזָה: לרקמונט. עֶרֶךְ מַפָּה — לֹא דְּגִימָה בַּחָצֵר.</div>';
+    h+='<div class="agfoot">Source: Ministry of Agriculture GIS layers (Dan &amp; Raz 1970 soil groups, USDA taxonomy, evaporation, soil regimes). Anchor point: Larkmont. A map value — not a yard sample.</div>';
     h+='</div>';
     return h;
   }
@@ -188,18 +188,18 @@
   function kcCard(date){
     var k=(DATA&&DATA.kc)||{}, crops=k.crops||[];
     var et0=et0Today(date);
-    var h='<div class="agcard"><div class="aghd"><span class="age">💧</span>הַשְׁקָיָה אֲמִתִּית (Kc)</div>'+
+    var h='<div class="agcard"><div class="aghd"><span class="age">💧</span>Real Irrigation (Kc)</div>'+
       '<div class="agsub">'+esc(k.note_he||'')+'</div>';
     if(et0!=null){
-      h+='<div class="agct">ET₀ הַיּוֹם <span class="agpill green">חַי · Open-Meteo</span></div>'+
-        '<div class="agrow"><span class="k">אִדּוּי יִחוּסִי (ET₀)</span><b>'+esc(et0)+' מ״מ/יוֹם</b></div>'+
-        '<div class="agtag" style="margin:3px 0 6px">ETc = Kc × ET₀ (לְכָל 1 מ״ר חוֹפָה · 1 מ״מ = 1 לִיטֶר).</div>';
+      h+='<div class="agct">ET₀ Today <span class="agpill green">Live · Open-Meteo</span></div>'+
+        '<div class="agrow"><span class="k">Reference Evapotranspiration (ET₀)</span><b>'+esc(et0)+' mm/day</b></div>'+
+        '<div class="agtag" style="margin:3px 0 6px">ETc = Kc × ET₀ (per 1 m² of canopy · 1 mm = 1 litre).</div>';
     } else {
-      h+='<div class="agtag" style="margin:6px 0">ET₀ חַי לֹא זָמִין כָּעֵת — מֻצָּג Kc בִּלְבַד; כְּשֶׁהַמֶּזֶג מִתְעַדְכֵּן ETc יְחֻשַּׁב.</div>';
+      h+='<div class="agtag" style="margin:6px 0">Live ET₀ unavailable right now — showing Kc only; ETc will be computed once the weather updates.</div>';
     }
     h+='<table class="agtable"><thead><tr>'+
-      '<th>גִּדּוּל</th><th>Kc תְּחִלָּה</th><th>Kc שִׂיא</th><th>Kc סוֹף</th>'+
-      (et0!=null?'<th>ETc הַיּוֹם*</th>':'')+
+      '<th>Crop</th><th>Kc initial</th><th>Kc peak</th><th>Kc end</th>'+
+      (et0!=null?'<th>ETc Today*</th>':'')+
       '</tr></thead><tbody>';
     crops.forEach(function(c){
       var etcMid=(et0!=null&&c.kc_mid!=null)?r1(c.kc_mid*et0):null;
@@ -207,31 +207,31 @@
         '<td>'+esc(c.kc_ini!=null?c.kc_ini:'—')+'</td>'+
         '<td><b>'+esc(c.kc_mid!=null?c.kc_mid:'—')+'</b></td>'+
         '<td>'+esc(c.kc_end!=null?c.kc_end:'—')+'</td>'+
-        (et0!=null?('<td>'+(etcMid!=null?('~'+etcMid+' מ״מ'):'—')+'</td>'):'')+
+        (et0!=null?('<td>'+(etcMid!=null?('~'+etcMid+' mm'):'—')+'</td>'):'')+
         '</tr>';
     });
     h+='</tbody></table>';
-    if(et0!=null) h+='<div class="agtag" style="margin-top:5px">* ETc בִּשְׁלַב הַשִּׂיא (Kc_mid × ET₀ הַיּוֹם). לְעֵץ צָעִיר/קָטָן — לְהַקְטִין לְפִי אֲחוּז כִּסּוּי. נְשִׁירִים בַּחֹרֶף ≈ 0.</div>';
-    h+='<div class="agnote">'+esc(k.stages_he?('שְׁלָבִים: '+k.stages_he.ini+' · '+k.stages_he.mid+' · '+k.stages_he.end+'.'):'')+'</div>';
-    h+='<div class="agfoot">מָקוֹר: FAO-56 (טַבְלָה 12) + סִפְרוּת מַטָּעִים (Pereira 2024 לִתְאֵנָה/רִמּוֹן). עֶרְכֵי יִחוּס — לֹא מְדִידָה בַּחָצֵר.</div>';
+    if(et0!=null) h+='<div class="agtag" style="margin-top:5px">* ETc at the peak stage (Kc_mid × ET₀ today). For a young/small tree — reduce by canopy-cover percentage. Deciduous trees in winter ≈ 0.</div>';
+    h+='<div class="agnote">'+esc(k.stages_he?('Stages: '+k.stages_he.ini+' · '+k.stages_he.mid+' · '+k.stages_he.end+'.'):'')+'</div>';
+    h+='<div class="agfoot">Source: FAO-56 (Table 12) + orchard literature (Pereira 2024 for fig/pomegranate). Reference values — not a yard measurement.</div>';
     h+='</div>';
     return h;
   }
 
   /* ============================== CARD: CHILL / GDD ============================== */
   var FIT_PILL={ excellent:'green', good:'green', good_care:'amber', marginal:'warm' };
-  var FIT_TXT={ excellent:'מְצֻיָּן', good:'טוֹב', good_care:'טוֹב בִּזְהִירוּת', marginal:'שׁוּלִי' };
+  var FIT_TXT={ excellent:'excellent', good:'good', good_care:'good with care', marginal:'marginal' };
   function chillCard(){
     var c=(DATA&&DATA.chill_gdd)||{}, trees=c.trees||[];
-    var h='<div class="agcard"><div class="aghd"><span class="age">🌳</span>שָׁעוֹת קֹר וּ-GDD</div>'+
+    var h='<div class="agcard"><div class="aghd"><span class="age">🌳</span>Chill Hours & GDD</div>'+
       '<div class="agsub">'+esc(c.context_he||'')+'</div>';
     h+='<table class="agtable"><thead><tr>'+
-      '<th>עֵץ</th><th>שְׁעוֹת קֹר</th><th>Tbase</th><th>הַתְאָמָה</th>'+
+      '<th>Tree</th><th>Chill Hours</th><th>Tbase</th><th>Fit</th>'+
       '</tr></thead><tbody>';
     trees.forEach(function(t){
       var fit=t.fit||'good', pill=FIT_PILL[fit]||'gray', ft=FIT_TXT[fit]||(t.chill_class_he||'');
       var chillRange=(t.chill_low!=null&&t.chill_high!=null)?
-        ((t.chill_low===0&&t.chill_high===0)?'אֵין':(t.chill_low+'–'+t.chill_high)):'—';
+        ((t.chill_low===0&&t.chill_high===0)?'none':(t.chill_low+'–'+t.chill_high)):'—';
       h+='<tr><td class="crop"><span class="age">'+esc(t.emoji||'🌳')+'</span><b>'+esc(t.tree_he||t.tree)+'</b></td>'+
         '<td>'+esc(chillRange)+'</td>'+
         '<td>'+esc(t.gdd_base_c!=null?(t.gdd_base_c+'°'):'—')+'</td>'+
@@ -242,11 +242,11 @@
     // a couple of plain-language fit lines for HIS crops (excellent/good_care first)
     var hisFits=trees.filter(function(t){ return t.his_plant!==false && t.fit_he; });
     if(hisFits.length){
-      h+='<div class="agct">לַגִּדּוּלִים שֶׁלְּךָ</div><ul class="aglist">'+
+      h+='<div class="agct">For Your Crops</div><ul class="aglist">'+
         hisFits.map(function(t){ return '<li><b style="color:#fff7e6">'+esc(t.tree_he||t.tree)+':</b> '+esc(t.fit_he)+'</li>'; }).join('')+
         '</ul>';
     }
-    h+='<div class="agfoot">מָקוֹר: מֶחְקָר חַקְלָאִי (שְׁבִירַת תַּרְדֵּמָה בְּקֹר-חֹרֶף לָקוּי) + טַבְלוֹת קֹר/GDD מְקֻבָּצוֹת. הַיִּתְרוֹן הַנָּדִיר שֶׁל לרקמונט: קֹר-חֹרֶף אֲמִתִּי. עֶרְכֵי דְּרִישָׁה — קֶצֶב הַצְּבִירָה בְּפֹעַל תָּלוּי-שָׁנָה.</div>';
+    h+='<div class="agfoot">Source: agricultural research (dormancy break under poor winter chill) + grouped chill/GDD tables. Larkmont&#39;s rare advantage: genuine winter chill. Requirement values — the actual accumulation rate is year-dependent.</div>';
     h+='</div>';
     return h;
   }
@@ -254,7 +254,7 @@
   /* ============================== CARD: PESTS ============================== */
   function pestCard(){
     var p=(DATA&&DATA.pests)||{}, crops=p.crops||[];
-    var h='<div class="agcard"><div class="aghd"><span class="age">🐛</span>מַזִּיקִים וּמַחֲלוֹת</div>'+
+    var h='<div class="agcard"><div class="aghd"><span class="age">🐛</span>Pests & Diseases</div>'+
       '<div class="agsub">'+esc(p.note_he||'')+'</div>';
     crops.forEach(function(c){
       h+='<div class="agcrop"><div class="ch"><span class="age">'+esc(c.emoji||'🌱')+'</span>'+esc(c.crop_he||c.crop)+'</div>';
@@ -269,7 +269,7 @@
       });
       h+='</div>';
     });
-    h+='<div class="agfoot">מָקוֹר: מָאֲגָר תַּכְשִׁירֵי הַגֲנַת הַצֹּמַח שֶׁל מִשְׂרַד הַחַקְלָאוּת (~1813 שׁוּרוֹת לַגִּדּוּלִים שֶׁלּוֹ — מְזֻקָּקוֹת לַמֶּרְכָּזִיּוֹת). תָּמִיד לַעֲבֹר עַל הַתָּוִית הָרִשְׁמִית: מִינוּן, תְּקוּפַת הַמְתָּנָה לִפְנֵי קָטִיף וּכְנִיסָה מֵחָדָשׁ.</div>';
+    h+='<div class="agfoot">Source: the Ministry of Agriculture plant-protection pesticide database (~1813 rows for his crops — distilled to the key ones). Always check the official label: dosage, pre-harvest waiting period, and re-entry interval.</div>';
     h+='</div>';
     return h;
   }
@@ -285,7 +285,7 @@
   function paint(host){
     ensureCss();
     if(!DATA){
-      host.innerHTML='<div id="agroWrap"><div class="agcard"><div class="agempty">טוֹעֵן נְתוּנֵי אֲגְרוֹנוֹמְיָה…</div></div></div>';
+      host.innerHTML='<div id="agroWrap"><div class="agcard"><div class="agempty">Loading agronomy data…</div></div></div>';
       return;
     }
     var meta=(DATA._meta)||{};
@@ -295,8 +295,8 @@
       kcCard(date)+
       chillCard()+
       pestCard()+
-      '<div class="agfoot" style="margin-top:2px">'+esc(meta.honesty_he||'כל המספרים הם ערכי מודל/ייחוס — לא מדידה באתר.')+'</div>';
-    host.innerHTML='<div id="agroWrap" dir="rtl">'+inner+'</div>';
+      '<div class="agfoot" style="margin-top:2px">'+esc(meta.honesty_he||'All figures are model/reference values — not an on-site measurement.')+'</div>';
+    host.innerHTML='<div id="agroWrap" dir="ltr">'+inner+'</div>';
   }
 
   /* ---------- public render ---------- */
@@ -315,6 +315,6 @@
                   _setData:_setData, _data:function(){ return DATA; } };
 
   // kick off the data load eagerly so it's usually ready by the time the human
-  // mounts the חצר tab and calls render().
+  // mounts the yard tab and calls render().
   try{ load(); }catch(e){}
 })();

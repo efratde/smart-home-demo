@@ -5,15 +5,15 @@
    Pure data — NO DOM, NO network beyond the one JSON, NO keys. Loads
    AFTER building.js and BEFORE workbench.js (per index.html order).
 
-   workbench.js's 'מבנה' (structure) tab calls HouseBuildup.get(roomId)
+   workbench.js's 'structure' tab calls HouseBuildup.get(roomId)
    to render verified build-up rows; every fact carries `verified` so the
-   view can stamp a «משוער» pill on what the drawings don't actually prove.
+   view can stamp a «Estimated» pill on what the drawings don't actually prove.
 
    HONESTY (gotcha #2): only facts directly readable in building.js are
    verified:true (wall 0.20/0.12, slab 0.20, roof slab 0.16, levels,
    areas). Concrete-belt / columns / wall-layer build-up / MEP routing are
    NOT in the byte-identical scanned permit PDFs (no structural sheet), so
-   they ship verified:false + 'לא משורטט' and BLANK-AND-EDITABLE — never
+   they ship verified:false + 'not drawn' and BLANK-AND-EDITABLE — never
    fabricated. A hard-coded fallback mirrors the JSON so file:// works even
    when fetch() is blocked (the project's other loaders do the same).
    =================================================================== */
@@ -27,21 +27,21 @@
   const FALLBACK = {
     schema: 1,
     meta: {
-      disclaimer_he: "נתוני המבנה נגזרים ממודל תלת-ממדי סינתטי. שורות «משוער · לא משורטט» ניתנות לעריכה.",
-      verified_src_he: "מודל תלת-ממד סינתטי"
+      disclaimer_he: "Structure data is derived from a synthetic 3D model. «Estimated · not drawn» rows are editable.",
+      verified_src_he: "Synthetic 3D model"
     },
     sources: [
-      { id:"building.js", he:"מודל תלת-ממד סינתטי" },
-      { id:"plan", he:"מודל סינתטי (דמו)" },
-      { id:"permit", he:"טבלת שטחים בהיתר" },
-      { id:"derived", he:"הסקה הנדסית — לא משורטט" }
+      { id:"building.js", he:"Synthetic 3D model" },
+      { id:"plan", he:"Synthetic model (demo)" },
+      { id:"permit", he:"Permit area schedule" },
+      { id:"derived", he:"Engineering inference — not drawn" }
     ],
     assemblies: {
-      extWall:  { label:"קיר חוץ", thickness_m:0.20, thickness_note_he:"20 ס\"מ במודל · בתוכנית מסומן 18", finish_he:"סיח ברור", layers:[{n:"בלוק",t:"",verified:false}], src:"building.js", verified:true, layers_verified:false, note_he:"העובי מאומת; הרכב השכבות (סוג בלוק · בידוד · גמר) לא מצוין — משוער" },
-      partition:{ label:"מחיצה פנים", thickness_m:0.12, src:"building.js", verified:true, note_he:"מחיצת חדרים פנימית ~12 ס\"מ לפי תוכניות הקומה" },
-      slab:     { label:"רצפת בטון", thickness_m:0.20, src:"building.js", verified:true },
-      roofSlab: { label:"תקרת גג", thickness_m:0.16, src:"building.js", verified:true },
-      parapet:  { label:"קיר אקרוטריון", thickness_m:0.20, height_m:0.40, src:"building.js", verified:true, note_he:"מעקה גג 0.40 מ' מעל מפלס הגג (5.30 → 5.70)" }
+      extWall:  { label:"Exterior wall", thickness_m:0.20, thickness_note_he:"20 cm in the model · marked 18 in the plan", finish_he:"Light stucco", layers:[{n:"Block",t:"",verified:false}], src:"building.js", verified:true, layers_verified:false, note_he:"Thickness verified; the layer make-up (block type · insulation · finish) is not specified — estimated" },
+      partition:{ label:"Interior partition", thickness_m:0.12, src:"building.js", verified:true, note_he:"Interior room partition ~12 cm per the floor plans" },
+      slab:     { label:"Concrete slab", thickness_m:0.20, src:"building.js", verified:true },
+      roofSlab: { label:"Roof slab", thickness_m:0.16, src:"building.js", verified:true },
+      parapet:  { label:"Parapet wall", thickness_m:0.20, height_m:0.40, src:"building.js", verified:true, note_he:"Roof parapet 0.40 m above the roof level (5.30 → 5.70)" }
     },
     levels: { ground_m:0.00, firstFloor_m:2.80, roofSlab_m:5.30, parapet_m:5.70, terraceRail_m:3.88, storageRidge_m:2.30, storageParapet_m:2.55, groundStoreyH_m:2.80, upperStoreyH_m:2.50, src:"building.js", verified:true },
     areas_permit: { ground_m2:60.73, firstFloor_m2:37.19, storage_m2:9.00, shelter_m2:5.18, src:"permit", verified:true },
@@ -60,16 +60,16 @@
     .catch(() => { _resolved=true; return DATA; });
 
   /* default deep-row scaffold for a room not (yet) in the JSON — BLANK +
-     verified:false so the view shows «משוער · לא משורטט», honest by
+     verified:false so the view shows «Estimated · not drawn», honest by
      construction. terrace gets walls:[parapet] (it's the roof terrace). */
   function defaultRoom(floor){
     return {
       floor: floor || 'ground',
       walls: ['extWall','partition'],
-      floorFinish:  { he:'', src:'derived',  verified:false, note_he:'גמר ריצוף לא מצוין בתוכנית — משוער' },
-      concreteBelt: { present:null, he:'', src:'derived', verified:false, note_he:'חגורת בטון לא משורטטת (אין דף קונסטרוקציה)' },
-      columns:      { count:null, he:'', src:'derived', verified:false, note_he:'לא מופיעים סימני עמודים בתוכנית' },
-      circuit:      { he:'', src:'derived', verified:false, note_he:'מיפוי מעגלים לא משורטט — מלא לפי לוח החשמל' }
+      floorFinish:  { he:'', src:'derived',  verified:false, note_he:'Floor finish not specified in the plan — estimated' },
+      concreteBelt: { present:null, he:'', src:'derived', verified:false, note_he:'Concrete ring-beam not drawn (no structural sheet)' },
+      columns:      { count:null, he:'', src:'derived', verified:false, note_he:'No column markings appear in the plan' },
+      circuit:      { he:'', src:'derived', verified:false, note_he:'Circuit mapping not drawn — fill in from the electrical panel' }
     };
   }
 

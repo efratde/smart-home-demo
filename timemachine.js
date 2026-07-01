@@ -1,5 +1,5 @@
 /* ===========================================================================
- * timemachine.js · "הבית של אלכס" — מכונת הזמן (Time Machine)
+ * timemachine.js · "Alex's House" — Time Machine
  * ---------------------------------------------------------------------------
  * A SELF-MOUNTED floating control that drives the EXISTING time-scrub engine
  * (app.js ~1549-1583). The render loop reads currentDate(dt) every frame from
@@ -10,20 +10,20 @@
  * easing control.
  *
  * Three plays:
- *   ▶ יום   — sunrise→sunset over ~8 s wall-clock (easeInOutQuad). Watch HIS
+ *   ▶ Day   — sunrise→sunset over ~8 s wall-clock (easeInOutQuad). Watch HIS
  *             house cast a shadow that sweeps across the yard.
- *   ▶ שנה   — Jan 1 → Dec 31 over ~20 s. The noon sun arc climbs then falls,
+ *   ▶ Year  — Jan 1 → Dec 31 over ~20 s. The noon sun arc climbs then falls,
  *             days lengthen then shorten; as the date crosses a season boundary
  *             we call window.__microclimate.setSeason(season) so the heatmap
  *             shifts with the year (only if the heatmap is already ON).
- *   ▶ השנה שלי — steps through his ACTUALLY-RECORDED days from RecordStore
+ *   ▶ My Year — steps through his ACTUALLY-RECORDED days from RecordStore
  *             (real measured weather, real local geometry). Before any data
  *             exists it falls back to the model year-sweep and SAYS SO.
  *
  * HONEST (CLAUDE.md): the 3D vegetation is disabled — nothing here implies that
  * plants visibly grow. The payoff is the sun arc / shadow sweep / daylight
- * length / heatmap. "השנה שלי" is labelled "מדידות אמת" only when RecordStore
- * actually has days; otherwise it is labelled "מודל" honestly. On finish we
+ * length / heatmap. "My Year" is labelled "real measurements" only when RecordStore
+ * actually has days; otherwise it is labelled "model" honestly. On finish we
  * restore window.__live() so the world returns to the real present.
  *
  * Owns ONLY this file + its own #tmPanel DOM + #tm-css <style>. Never edits
@@ -86,7 +86,7 @@
 
   /* ---- season helpers (match zone_card.js / derive.js month banding) ------- */
   function seasonOfMonth(m){ return (m===12 || m<=2) ? 'winter' : m<=5 ? 'spring' : m<=8 ? 'summer' : 'autumn'; }
-  var SEASON_HE = { winter:'חֹרֶף', spring:'אָבִיב', summer:'קַיִץ', autumn:'סְתָו', live:'חַי' };
+  var SEASON_HE = { winter:'Winter', spring:'Spring', summer:'Summer', autumn:'Autumn', live:'Live' };
 
   // only nudge the heatmap if it's already ON (don't surprise-toggle it). Returns
   // the season we set (or null). Honest: this shifts the MODELLED seasonal heatmap.
@@ -210,7 +210,7 @@
   }
 
   /* =========================================================================
-   * "השנה שלי" — read the ACTUAL recorded days from RecordStore if present.
+   * "My Year" — read the ACTUAL recorded days from RecordStore if present.
    * Defensive: RecordStore is built by a parallel agent and may be absent or
    * still backfilling; we never throw, and we label the result honestly.
    * ====================================================================== */
@@ -247,14 +247,14 @@
   function playMyYear(){
     var got = gatherMyYear();
     if (got.real && got.days.length){
-      setNote('▶ מריץ אֶת הַשָּׁנָה שֶׁלְּךָ — ' + got.days.length + ' יָמִים שֶׁנִּמְדְּדוּ בֶּאֱמֶת.', 'real');
+      setNote('▶ Running your year — ' + got.days.length + ' days actually measured.', 'real');
       startMode('myyear', { days: got.days, real: true });
     } else {
       // honest fallback: no recorded days yet → run the MODEL year, say so plainly
-      var why = got.reason === 'no-store' ? 'הַיּוֹמָן עֲדַיִן נִטְעָן' :
-                got.reason === 'no-data'  ? 'הַיּוֹמָן עֲדַיִן רֵיק (נֶאֱסָף בָּרֶקַע)' :
-                                            'אֵין עֲדַיִן יָמִים שֶׁנִּשְׁמְרוּ';
-      setNote('עֲדַיִן אֵין מְדִידוֹת אֲמִתִּיּוֹת (' + why + ') — מַרִיץ אֶת מוֹדֵל הַשָּׁנָה בִּמְקוֹם זֶה.', 'model');
+      var why = got.reason === 'no-store' ? 'the logbook is still loading' :
+                got.reason === 'no-data'  ? 'the logbook is still empty (being gathered in the background)' :
+                                            'no days have been saved yet';
+      setNote('No real measurements yet (' + why + ') — running the model year instead.', 'model');
       startMode('year');
     }
   }
@@ -272,7 +272,7 @@
     s.id = 'tm-css';
     s.textContent =
       '#tmPanel{position:absolute;left:18px;bottom:78px;width:212px;z-index:11;display:flex;flex-direction:column;gap:7px;' +
-        'font-family:Heebo,sans-serif;color:#efe6cf;direction:rtl;' +
+        'font-family:Heebo,sans-serif;color:#efe6cf;direction:ltr;' +
         'padding:12px 13px 11px;border-radius:12px;' +
         'background:linear-gradient(160deg,rgba(12,14,26,.93),rgba(6,7,15,.95));' +
         'backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);' +
@@ -316,20 +316,20 @@
   function ensurePanel(){
     if (panel) return;
     ensureCSS();
-    panel = el('div'); panel.id = 'tmPanel'; panel.setAttribute('dir', 'rtl');
-    panel.appendChild(el('div', 'tmtitle', '<span><span class="tme">⏳</span> מְכוֹנַת זְמַן</span>'));
+    panel = el('div'); panel.id = 'tmPanel'; panel.setAttribute('dir','ltr');
+    panel.appendChild(el('div', 'tmtitle', '<span><span class="tme">⏳</span> Time Machine</span>'));
 
     var row1 = el('div', 'tmrow');
-    var bDay  = el('div', 'tmbtn', '▶ יוֹם');   bDay.dataset.act  = 'day';
-    var bYear = el('div', 'tmbtn', '▶ שָׁנָה');  bYear.dataset.act = 'year';
+    var bDay  = el('div', 'tmbtn', '▶ Day');   bDay.dataset.act  = 'day';
+    var bYear = el('div', 'tmbtn', '▶ Year');  bYear.dataset.act = 'year';
     row1.appendChild(bDay); row1.appendChild(bYear);
     panel.appendChild(row1);
 
-    var bMy = el('div', 'tmbtn wide my', '▶ הַשָּׁנָה שֶׁלִּי');  bMy.dataset.act = 'myyear';
+    var bMy = el('div', 'tmbtn wide my', '▶ My Year');  bMy.dataset.act = 'myyear';
     panel.appendChild(bMy);
 
     var ctl = el('div', 'tmctl');
-    ppBtn = el('div', 'tmpp live', 'חַי'); ppBtn.dataset.act = 'pp';
+    ppBtn = el('div', 'tmpp live', 'Live'); ppBtn.dataset.act = 'pp';
     var speed = el('div', 'tmspeed');
     [['0.5','½'],['1','×1'],['2','×2'],['4','×4']].forEach(function(sp){
       var b = el('div', 'tmsp' + (sp[0] === '1' ? ' on' : ''), sp[1]);
@@ -346,7 +346,7 @@
     panel.appendChild(noteEl);
 
     panel.appendChild(el('div', 'tmfoot',
-      'הַשֶּׁמֶשׁ, הַצְּלָלִים וְאֹרֶךְ הַיּוֹם נָעִים בֶּאֱמֶת. הַצְּמָחִים אֵינָם גְּדֵלִים בָּתְּלַת־מֵמַד.'));
+      'The sun, shadows and day length move for real. The plants do not grow in 3D.'));
 
     panel.addEventListener('click', onClick);
     document.body.appendChild(panel);
@@ -356,12 +356,12 @@
     var t = e.target.closest ? e.target.closest('[data-act]') : null;
     if (!t) return;
     var act = t.dataset.act;
-    if (act === 'day')      { setNote('▶ יוֹם — הַצֵּל מְטַאֲטֵא אֶת הֶחָצֵר מִזְּרִיחָה לִשְׁקִיעָה.', ''); startMode('day'); }
-    else if (act === 'year'){ setNote('▶ שָׁנָה — קֶשֶׁת הַשֶּׁמֶשׁ עוֹלָה וְיוֹרֶדֶת; הַיָּמִים מִתְאָרְכִים.', ''); startMode('year'); }
+    if (act === 'day')      { setNote('▶ Day — the shadow sweeps across the yard from sunrise to sunset.', ''); startMode('day'); }
+    else if (act === 'year'){ setNote('▶ Year — the sun arc rises and falls; the days grow longer.', ''); startMode('year'); }
     else if (act === 'myyear'){ playMyYear(); }
     else if (act === 'pp'){
       if (_running) pauseResume();
-      else stopRaf(/*restoreLive=*/true);   // not playing → "חי": ensure live
+      else stopRaf(/*restoreLive=*/true);   // not playing → "Live": ensure live
     }
     else if (act === 'speed'){
       _speed = parseFloat(t.dataset.speed) || 1;
@@ -376,8 +376,8 @@
   function syncReadout(k){
     if (barEl){ var i = barEl.firstChild; if (i) i.style.width = Math.round((k || 0) * 100) + '%'; }
     if (_running && _running.mode === 'myyear' && _myYearLabel){
-      setNote('▶ הַשָּׁנָה שֶׁלִּי · ' + _myYearLabel + ' · יוֹם ' + ((_running.idx|0)+1) + '/' + _running.days.length +
-              ' (מְדִידוֹת אֲמֶת)', 'real');
+      setNote('▶ My Year · ' + _myYearLabel + ' · day ' + ((_running.idx|0)+1) + '/' + _running.days.length +
+              ' (real measurements)', 'real');
     }
   }
   function paintSpeed(){
@@ -389,10 +389,10 @@
   function paint(){
     if (!ppBtn) return;
     if (_running){
-      ppBtn.textContent = _paused ? '▶ הַמְשֵׁךְ' : '⏸ הַשְׁהֵה';
+      ppBtn.textContent = _paused ? '▶ Resume' : '⏸ Pause';
       ppBtn.classList.remove('live');
     } else {
-      ppBtn.textContent = 'חַי';
+      ppBtn.textContent = 'Live';
       ppBtn.classList.add('live');
       if (barEl){ var i = barEl.firstChild; if (i) i.style.width = '0%'; }
     }

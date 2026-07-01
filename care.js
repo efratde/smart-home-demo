@@ -4,7 +4,7 @@
    keyed by name_latin (the same join key garden.js obsName()/plantMeta
    use). Pure data — NO DOM, NO network beyond the one JSON, NO intervals.
    Loads before garden.js; garden.js boot() awaits loadCare() so the
-   "טיפול החודש" card has data on first open.
+   "this month's care" card has data on first open.
 
    Mirrors garden.js loadCurated(): fetch the JSON once with a hard-coded
    inline FALLBACK so it still works on file:// where fetch can fail.
@@ -19,13 +19,13 @@
      in data/plant_care.json; this is a tiny safety net, not a duplicate. */
   const FALLBACK={
     schema:1,
-    meta:{ disclaimer_he:'הנחיה כללית, לא מרשם',
-           source_he:'ידע גינון כללי — לא מותאם לזן הספציפי' },
+    meta:{ disclaimer_he:'General guidance, not a prescription',
+           source_he:'General gardening knowledge — not tailored to the specific variety' },
     kinds:{
-      fertilize:{emoji:'🌱',he:'דישון'}, prune:{emoji:'✂️',he:'גיזום'},
-      thin:{emoji:'🍈',he:'דילול / כיוס'}, plant:{emoji:'🪴',he:'שתילה'},
-      harvest:{emoji:'🧺',he:'קטיף'}, protect:{emoji:'🛡️',he:'הגנה'},
-      water_check:{emoji:'💧',he:'בדיקת השקיה'}, propagate:{emoji:'🌿',he:'ריבוי'}
+      fertilize:{emoji:'🌱',he:'Fertilize'}, prune:{emoji:'✂️',he:'Prune'},
+      thin:{emoji:'🍈',he:'Thinning'}, plant:{emoji:'🪴',he:'Planting'},
+      harvest:{emoji:'🧺',he:'Harvest'}, protect:{emoji:'🛡️',he:'Protection'},
+      water_check:{emoji:'💧',he:'Irrigation check'}, propagate:{emoji:'🌿',he:'Propagation'}
     },
     plants:{}
   };

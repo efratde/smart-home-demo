@@ -98,9 +98,9 @@
         return zs.map(function(z){ return { id:z.id, name_he:z.name_he||z.id }; });
     }catch(e){}
     return [
-      { id:'backyard', name_he:'החצר האחורית' },
-      { id:'balcony',  name_he:'מרפסת קומה ראשונה' },
-      { id:'front',    name_he:'חזית הבית' }
+      { id:'backyard', name_he:'Backyard' },
+      { id:'balcony',  name_he:'First-floor balcony' },
+      { id:'front',    name_he:'House front' }
     ];
   }
   function plantList(){
@@ -129,17 +129,17 @@
   //   so a backfill that runs pre-mount still logs the modeled base-house indoor
   //   curve and the lean refines on a later pass. ----
   var ROOM_FALLBACK = [
-    { id:'kitchen',   name_he:'מטבח' },
-    { id:'living',    name_he:'סלון' },
-    { id:'bedroomG',  name_he:'חדר שינה (קרקע)' },
-    { id:'bathG',     name_he:'חדר רחצה (קרקע)' },
-    { id:'pantry',    name_he:'מזווה' },
-    { id:'stairsG',   name_he:'מדרגות (קרקע)' },
-    { id:'bedroomNE', name_he:'חדר שינה (צפון)' },
-    { id:'bedroomSW', name_he:'חדר שינה (דרום)' },
-    { id:'bathU',     name_he:'חדר רחצה (עליונה)' },
-    { id:'terrace',   name_he:'מרפסת' },
-    { id:'landing',   name_he:'גרם המדרגות' }
+    { id:'kitchen',   name_he:'Kitchen' },
+    { id:'living',    name_he:'Living room' },
+    { id:'bedroomG',  name_he:'Bedroom (ground)' },
+    { id:'bathG',     name_he:'Bathroom (ground)' },
+    { id:'pantry',    name_he:'Pantry' },
+    { id:'stairsG',   name_he:'Stairs (ground)' },
+    { id:'bedroomNE', name_he:'Bedroom (north)' },
+    { id:'bedroomSW', name_he:'Bedroom (south)' },
+    { id:'bathU',     name_he:'Bathroom (upper)' },
+    { id:'terrace',   name_he:'Terrace' },
+    { id:'landing',   name_he:'Staircase' }
   ];
   function roomList(){
     // prefer the workbench's room doc (carries the user's own Hebrew names) when present
@@ -423,7 +423,7 @@
       pct: pct,
       gaps: DB.gaps.slice(),
       measured: true,
-      note_he: 'מבוסס מדידות אמת (Open-Meteo) דרך הגיאומטריה של הבית — לא חיישן פיזי'
+      note_he: 'Based on real measurements (Open-Meteo) through the house geometry — not a physical sensor'
     };
   }
 

@@ -33,7 +33,7 @@
   const LS=k=>{try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return[]}}, save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
   const uvColor=uv=>uv>=8?'#e8804a':uv>=6?'#e0b24a':uv>=3?'#8fc99a':'#9fb0c9';
   const seasonKey=m=>(m===11||m<2)?'winter':m<5?'spring':m<8?'summer':'autumn';
-  const seasonHe={winter:'חורף',spring:'אביב',summer:'קיץ',autumn:'סתיו'};
+  const seasonHe={winter:'Winter',spring:'Spring',summer:'Summer',autumn:'Autumn'};
 
   const css=`
   #inst{position:absolute;top:18px;right:22px;width:300px;max-height:calc(100vh - 40px);display:flex;flex-direction:column;
@@ -61,7 +61,7 @@
   #inst .row.clk:hover{background:rgba(202,161,90,.12);box-shadow:inset 0 0 0 1px rgba(202,161,90,.3)}
   #inst .row.clk:hover b,#inst .row.clk:hover .nm{color:#fff7e6}
   #inst .row.clk .nm::before{content:'⌖ ';color:#caa15a;opacity:.55;font-size:11px}
-  /* satellite pass cards in the שמיים tab (replaces the old floating #satInfo panel) */
+  /* satellite pass cards in the sky tab (replaces the old floating #satInfo panel) */
   #inst .satrow{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;
     font-size:12px;color:#d6ccb2;padding:7px 0;border-top:1px solid rgba(202,161,90,.13);cursor:pointer;
     border-radius:6px;margin:0 -6px;padding-left:6px;padding-right:6px;transition:background .15s,box-shadow .15s}
@@ -75,9 +75,9 @@
   #inst .big{font-family:'Frank Ruhl Libre',serif;font-size:26px;color:#f3ead2;line-height:1}
   #inst .est{font-size:9px;color:#8a7a52;margin-top:3px}
   #inst .card{background:rgba(255,255,255,.04);border:1px solid rgba(202,161,90,.15);border-radius:8px;padding:8px 10px;margin-top:8px}
-  /* merged MOON block at the top of the שמיים tab (consolidates the old bottom-left
+  /* merged MOON block at the top of the sky tab (consolidates the old bottom-left
      moon card: phase name, illum %, above/below-horizon, the direction arrow +
-     "מתחת לאופק · זריחה HH:MM", plus rise/set). Same dark/gold card aesthetic. */
+     "below horizon · rise HH:MM", plus rise/set). Same dark/gold card aesthetic. */
   #inst .moonblk{background:rgba(255,255,255,.045);border:1px solid rgba(202,161,90,.18);
     border-radius:8px;padding:9px 11px;margin-top:8px}
   #inst .moonblk.clk{cursor:pointer;transition:background .15s,box-shadow .15s}
@@ -87,7 +87,7 @@
   #inst .moonblk .mn{font-family:'Frank Ruhl Libre',serif;font-size:16px;color:#fff7e6}
   #inst .moonblk .mi{font-size:11px;color:#a99b78;margin-top:1px}
   #inst .moonblk.clk:hover .mn{color:#fff}
-  /* moon-direction row: arrow → "כיוון הירח" → live state, like the old card. The
+  /* moon-direction row: arrow → "moon direction" → live state, like the old card. The
      arrow's SVG glyph points UP at rotate(0deg); CSS rotate is clockwise (same sense
      as the compass bearing), so up = straight ahead and it swings toward the moon. */
   #inst .moonblk .mdir{display:flex;align-items:center;gap:7px;margin-top:8px;
@@ -104,7 +104,7 @@
   #inst .moonblk .mrs{display:flex;justify-content:space-between;gap:8px;font-size:11px;
     color:#a99b78;margin-top:7px;padding-top:7px;border-top:1px solid rgba(202,161,90,.14)}
   #inst .moonblk .mrs b{color:#d6ccb2;font-weight:600}
-  /* consolidated "🔭 מתי כדאי להסתכל למעלה" summary at the top of the שמיים tab —
+  /* consolidated "🔭 When to look up" summary at the top of the sky tab —
      one card, four rows (meteor / planets / ISS / moon+verdict), dark-gold skin. */
   #inst .lookup{background:linear-gradient(160deg,rgba(202,161,90,.10),rgba(255,255,255,.035));
     border:1px solid rgba(202,161,90,.28);border-radius:9px;padding:9px 11px;margin-top:8px}
@@ -139,7 +139,7 @@
   #inst .btn{background:#16223c;border:1px solid rgba(202,161,90,.35);color:#e7dcc0;border-radius:7px;padding:6px 10px;font-size:12px;cursor:pointer;white-space:nowrap}
   #inst .sight{display:flex;gap:8px;align-items:center;padding:6px 0;border-top:1px solid rgba(202,161,90,.1)}
   #inst .sight img{width:34px;height:34px;border-radius:6px;object-fit:cover;background:#16203a}
-  /* clickable טבע sighting rows → fly the 3D camera to the sighting's real
+  /* clickable nature sighting rows → fly the 3D camera to the sighting's real
      location (window.__flyToGround). Same affordance as the clickable sky rows. */
   #inst .sight.clk{cursor:pointer;border-radius:6px;margin:0 -6px;padding-left:6px;padding-right:6px;
     transition:background .15s,box-shadow .15s}
@@ -148,18 +148,18 @@
   #inst .sight.clk .n::before{content:'⌖ ';color:#8fce8f;opacity:.6;font-size:11px}
   #inst .sight.on{background:rgba(120,180,130,.16);box-shadow:inset 0 0 0 1px rgba(120,180,130,.4)}
   #inst .foot{font-size:9.5px;color:#7d7150;margin-top:10px}
-  /* ---- consumption anomaly badge + IEC import box (אנרגיה tab) ---- */
+  /* ---- consumption anomaly badge + IEC import box (energy tab) ---- */
   #inst .cz-badge{font-size:9px;padding:1px 6px;border-radius:20px;margin-right:5px;white-space:nowrap;font-weight:600}
   #inst .cz-badge.hi{background:rgba(232,128,74,.18);color:#e8a06a;border:1px solid rgba(232,128,74,.4)}
   #inst .cz-badge.lo{background:rgba(120,180,130,.16);color:#9fce9f;border:1px solid rgba(120,180,130,.4)}
-  /* ---- 📖 סיפור הבית timeline (מוח tab) — a slim gold spine with dated nodes ---- */
+  /* ---- 📖 home story timeline (brain tab) — a slim gold spine with dated nodes ---- */
   #inst .tl{margin-top:6px;padding-right:6px;border-right:2px solid rgba(202,161,90,.3)}
   #inst .tl .tle{position:relative;padding:5px 12px 5px 0;font-size:11.5px;color:#d6ccb2}
   #inst .tl .tle::before{content:'';position:absolute;right:-7px;top:9px;width:8px;height:8px;border-radius:50%;
     background:#caa15a;box-shadow:0 0 0 2px rgba(12,14,26,.9)}
   #inst .tl .tle .te{margin-left:5px} #inst .tl .tle b{color:#fff7e6}
   #inst .tl .tle .td{font-size:9.5px;color:#a99b78;margin-top:1px}
-  /* photo thumbnail on a memory row + the 📷 attach button (מוח tab) */
+  /* photo thumbnail on a memory row + the 📷 attach button (brain tab) */
   #inst .brow{display:flex;gap:8px;align-items:center;padding:7px 0;border-top:1px solid rgba(202,161,90,.13)}
   #inst .brow:first-child{border-top:none}
   #inst .brow img{width:38px;height:38px;border-radius:6px;object-fit:cover;background:#16203a;flex:0 0 auto;cursor:pointer}
@@ -175,7 +175,7 @@
   #inst input[type=file]{padding:5px 4px;font-size:10.5px}
   #inst input[type=file]::file-selector-button{background:#16223c;border:1px solid rgba(202,161,90,.35);
     color:#e7dcc0;border-radius:6px;padding:3px 8px;font-size:10.5px;cursor:pointer;margin-left:6px;font-family:inherit}
-  /* ---- MICROCLIMATE control + readout (אנרגיה tab) ---- */
+  /* ---- MICROCLIMATE control + readout (energy tab) ---- */
   #inst .mc-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;margin-bottom:6px}
   #inst .mc-hd .mt{font-family:'Bellefair',serif;letter-spacing:.1em;font-size:11px;color:#caa15a}
   #inst .mc-model{font-family:'Heebo';font-size:8.5px;color:#7e8aa6;border:1px solid rgba(126,138,166,.4);
@@ -251,7 +251,7 @@
   #inst.inst-embed, #inst2.inst-embed{position:static;top:auto;right:auto;width:auto;max-height:none;margin-bottom:14px}
   #inst.inst-embed .tabs, #inst2.inst-embed .tabs{display:none}   /* the shell's rail replaces the inner tab strip */
   `;
-  /* ---- STAGE-2: #inst2 skin shim (merged טבע וסביבה tab) ---------------------
+  /* ---- STAGE-2: #inst2 skin shim (merged nature & environment tab) ---------------------
      The whole stylesheet above is scoped under "#inst". The merged tab renders
      the env panel into a SECOND wrapper "#inst2" so wild AND env are BOTH visible
      and independently live. To reuse the identical dark/gold skin verbatim with
@@ -271,14 +271,14 @@
     document.head.appendChild(el('style',null,css));
     document.head.appendChild(el('style',null,css2));   // STAGE-2: secondary #inst2 skin for the merged tab
     const wrap=el('div'); wrap.id='inst';
-    const TABS=[['home','היום'],['house','הבית'],['yard','חצר'],['sky','שמיים'],['energy','אנרגיה'],['wild','טבע'],['env','סביבה'],['brain','מוח']];
+    const TABS=[['home','Today'],['house','House'],['yard','Yard'],['sky','Sky'],['energy','Energy'],['wild','Nature'],['env','Environment'],['brain','Brain']];
     wrap.appendChild(el('div','tabs',TABS.map(([k,l],i)=>`<div class="tab${i===0?' on':''}" data-t="${k}">${l}</div>`).join('')));
-    let body=el('div','body panel'); wrap.appendChild(body); document.body.appendChild(wrap);   // `let`: the STAGE-2 merged tab (טבע וסביבה) retargets `body` per host
+    let body=el('div','body panel'); wrap.appendChild(body); document.body.appendChild(wrap);   // `let`: the STAGE-2 merged tab (nature & environment) retargets `body` per host
     // Delegated click → focus the 3D camera on a sky object (Task: clickable sky
     // objects). Any element carrying data-az/data-alt (sky-object rows + satellite
-    // rows in the שמיים tab) calls window.__lookAtSky(azDeg,altDeg). Attached once;
+    // rows in the sky tab) calls window.__lookAtSky(azDeg,altDeg). Attached once;
     // survives the per-second innerHTML re-renders of renderSky.
-    const _skyLayers={constellations:true,milkyway:true,paths:true,satellites:true};   // sky-layer ON/OFF switches — live ONLY in the שמיים tab now
+    const _skyLayers={constellations:true,milkyway:true,paths:true,satellites:true};   // sky-layer ON/OFF switches — live ONLY in the sky tab now
     if(typeof document!=='undefined' && !document.getElementById('skysw-css')){ const _ss=document.createElement('style'); _ss.id='skysw-css'; _ss.textContent='.skylrow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 2px;border-top:1px solid rgba(202,161,90,.13);font-size:12.5px;color:#d6ccb2}.skysw{position:relative;width:40px;height:21px;border-radius:11px;cursor:pointer;flex:0 0 auto;background:rgba(255,255,255,.13);border:1px solid rgba(202,161,90,.4);transition:background .18s}.skysw.on{background:linear-gradient(90deg,#a07c38,#caa15a)}.skysw::after{content:"";position:absolute;top:2px;right:2px;width:15px;height:15px;border-radius:50%;background:#fff7e6;transition:right .18s;box-shadow:0 1px 3px rgba(0,0,0,.4)}.skysw.on::after{right:21px}'; (document.head||document.documentElement).appendChild(_ss); }
     body.addEventListener('click',e=>{
       const nb=e.target.closest('[data-natal]'); if(nb){ if(window.__natal) window.__natal.open(); return; }
@@ -295,7 +295,7 @@
       // on a phone, tapping a tab while the panel is minimized re-opens it (showing that tab)
       document.documentElement.classList.remove('inst-min'); var _imb=document.getElementById('instMin'); if(_imb)_imb.textContent='▾';
       wrap.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t)); render(true);
-      // בית/חצר → auto top-down "from above" overview of the house+yard
+      // house/yard → auto top-down "from above" overview of the house+yard
       if((active==='home'||active==='yard')&&window.__flyTopHome) window.__flyTopHome();});
     // cross-link foundation: modules emit bus events, the shell activates the target tab
     function openTab(k){ const tb=wrap.querySelector('.tab[data-t="'+k+'"]'); if(tb){ tb.click(); return true; } return false; }
@@ -306,16 +306,16 @@
     // vision + calendar promoted to prominent TOP pills (separate from the tab bar, away from the
     // crowded left column) — quick access, like the old enter-house pill sat apart from the tabs.
     (function(){
-      const tp=el('div'); tp.id='topPills'; tp.setAttribute('dir','rtl');
-      tp.innerHTML='<span class="tpill tpill-map" data-tp="map">🗺️ מַפָּה</span><span class="tpill" data-tp="cal">📅 לוּחַ שָׁנָה</span><span class="tpill" data-tp="vision">✨ לוּחַ חָזוֹן</span>';
+      const tp=el('div'); tp.id='topPills'; tp.setAttribute('dir','ltr');
+      tp.innerHTML='<span class="tpill tpill-map" data-tp="map">🗺️ Map</span><span class="tpill" data-tp="cal">📅 Calendar</span><span class="tpill" data-tp="vision">✨ Vision Board</span>';
       document.head.appendChild(el('style',null,
-        '#topPills{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:40;display:flex;gap:8px;direction:rtl}'+
+        '#topPills{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:40;display:flex;gap:8px;direction:ltr}'+
         '#topPills .tpill{cursor:pointer;font-family:"Frank Ruhl Libre",serif;font-size:14px;color:#e9dcbb;background:linear-gradient(160deg,rgba(12,14,26,.92),rgba(6,7,15,.95));border:1px solid rgba(202,161,90,.4);border-radius:22px;padding:7px 16px;box-shadow:0 8px 24px rgba(0,0,0,.45);backdrop-filter:blur(8px)}'+
         '#topPills .tpill:hover{border-color:rgba(202,161,90,.7);color:#fff7e6;background:linear-gradient(160deg,rgba(202,161,90,.2),rgba(202,161,90,.06))}'+
         '#topPills .tpill.on{border-color:rgba(202,161,90,.95);color:#1a1606;background:linear-gradient(160deg,#caa15a,#a07c38);font-weight:600}'+
         '#mapbg{position:fixed;inset:0;z-index:2;display:none;background:#0b0d18}'+
         // full-screen map face: make #pmap a flex COLUMN so the Leaflet map flexes to fill and the
-        // layer-toggle chips + ציר-זמן button (.pm-toggles) sit as an in-flow control bar at the BOTTOM.
+        // layer-toggle chips + timeline button (.pm-toggles) sit as an in-flow control bar at the BOTTOM.
         // (Before: a 100vh map shoved that row off-screen → "where are the layers?".)
         '#mapbg #pmap{height:100vh;display:flex;flex-direction:column;margin:0;padding:0}'+
         '#mapbg .pm-h,#mapbg .pm-intro,#mapbg .pm-foot{display:none}'+
@@ -329,7 +329,7 @@
       // it (hide its body) and see the 3D/map. Toggles .inst-min on <html>; hidden on desktop.
       (function(){
         if(document.getElementById('instMin')) return;
-        var mb=el('button'); mb.id='instMin'; mb.type='button'; mb.textContent='▾'; mb.title='הַסְתֵּר / הַצֵּג אֶת הַלּוּחַ';
+        var mb=el('button'); mb.id='instMin'; mb.type='button'; mb.textContent='▾'; mb.title='Hide / show the panel';
         document.head.appendChild(el('style',null,
           '#instMin{display:none}'+
           '@media(max-width:760px),(max-height:540px){'+
@@ -357,10 +357,10 @@
         } else {
           _mbEl.style.display='none'; if(c) c.style.display='block';
           window.__worldPaused=false;
-          if(active==='env') render(true);   // re-render the סביבה card (its map launcher button)
+          if(active==='env') render(true);   // re-render the environment card (its map launcher button)
         }
         // the lit map pill IS the exit: its label flips so it's obvious you tap it to return to the 3D home.
-        const mp=tp.querySelector('[data-tp="map"]'); if(mp){ mp.classList.toggle('on',_mbOn); mp.textContent=_mbOn?'✕ סְגֹר מַפָּה':'🗺️ מַפָּה'; }
+        const mp=tp.querySelector('[data-tp="map"]'); if(mp){ mp.classList.toggle('on',_mbOn); mp.textContent=_mbOn?'✕ Close map':'🗺️ Map'; }
       }
       window.__mapBg={ toggle:toggleMapBg, isOn:()=>_mbOn };
       // big CENTERED modal — the calendar + vision pills open here ("big and centered", NOT the
@@ -376,11 +376,11 @@
             '#bigOverlay .ovl-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(202,161,90,.18);flex:0 0 auto}'+
             '#bigOverlay .ovl-t{font-family:"Frank Ruhl Libre",serif;font-size:19px;color:#fff7e6}'+
             '#bigOverlay .ovl-x{cursor:pointer;font-size:20px;color:#caa15a;background:none;border:none;line-height:1}'+
-            '#bigOverlay .ovl-body{flex:1;overflow:auto;padding:16px 18px;direction:rtl}'));
+            '#bigOverlay .ovl-body{flex:1;overflow:auto;padding:16px 18px;direction:ltr}'));
           document.body.appendChild(_ovl);
           _ovl.addEventListener('click',ev=>{ if(ev.target===_ovl||(ev.target.closest&&ev.target.closest('.ovl-x'))) _ovl.classList.remove('on'); });
         }
-        _ovl.innerHTML='<div class="ovl-card"><div class="ovl-hd"><span class="ovl-t">'+titleHe+'</span><button class="ovl-x" title="סְגֹר">✕</button></div><div class="ovl-body" id="ovl-body"></div></div>';
+        _ovl.innerHTML='<div class="ovl-card"><div class="ovl-hd"><span class="ovl-t">'+titleHe+'</span><button class="ovl-x" title="Close">✕</button></div><div class="ovl-body" id="ovl-body"></div></div>';
         _ovl.classList.add('on');
         const b2=_ovl.querySelector('#ovl-body'); try{ renderFn(b2); }catch(e){}
       }
@@ -388,20 +388,20 @@
       tp.addEventListener('click',e=>{ const p=e.target.closest&&e.target.closest('[data-tp]'); if(!p) return;
         const k=p.getAttribute('data-tp');
         if(k==='map'){ toggleMapBg(); }
-        else if(k==='cal'){ openOverlay('לוּחַ שָׁנָה', el2=>{ if(window.__calendar&&window.__calendar.render) window.__calendar.render(el2, nowDate()); }); }
-        else if(k==='vision'){ openOverlay('לוּחַ חָזוֹן', el2=>{ if(window.__vision&&window.__vision.render) window.__vision.render(el2, nowDate()); }); }
+        else if(k==='cal'){ openOverlay('Calendar', el2=>{ if(window.__calendar&&window.__calendar.render) window.__calendar.render(el2, nowDate()); }); }
+        else if(k==='vision'){ openOverlay('Vision Board', el2=>{ if(window.__vision&&window.__vision.render) window.__vision.render(el2, nowDate()); }); }
       });
     })();
 
     /* ---------- ❤️ first-run WELCOME / DEDICATION modal (home_welcomed_v1) ----------
        On the very first open (the flag absent) we greet Alex with a warm dedication,
        the "cosmic odometer" from data/resident_numbers.json animating up, and live
-       counters for the personal milestones from data/milestones.json. "בּוֹא נַתְחִיל"
+       counters for the personal milestones from data/milestones.json. "Let's begin"
        sets the flag and closes. Reuses the SAME big-centered overlay helper
        (_openOverlay) as the calendar/vision pills — no new overlay system.
        Fully defensive: a missing/invalid file just hides that part; never throws. */
     // ⬇⬇ THE DEDICATION — edit this one warm line to change the gift's greeting ⬇⬇
-    const WELCOME_DEDICATION_HE = 'אָלֶקְס — הַבַּיִת שֶׁלְּךָ, הַשָּׁמַיִם שֶׁלְּךָ, הַמִּסְפָּרִים שֶׁלְּךָ. בְּמַתָּנָה. ❤️';
+    const WELCOME_DEDICATION_HE = 'Alex — your house, your sky, your numbers. A gift. ❤️';
     // ⬆⬆ ─────────────────────────────────────────────────────────────────── ⬆⬆
     let _welcomeShown=false;
     function maybeShowWelcome(){
@@ -413,7 +413,7 @@
       // one-time skin for the welcome contents (scoped under #welcome inside the overlay body)
       if(!document.getElementById('welcome-css')){
         document.head.appendChild(el('style',null,
-          '#welcome{direction:rtl;text-align:center;font-family:Heebo,sans-serif;color:#efe6cf}'+
+          '#welcome{direction:ltr;text-align:center;font-family:Heebo,sans-serif;color:#efe6cf}'+
           '#welcome .wDed{font-family:"Frank Ruhl Libre",serif;font-size:23px;line-height:1.5;color:#fff7e6;margin:6px auto 18px;max-width:540px}'+
           '#welcome .wOdo{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0 auto 6px;max-width:620px}'+
           '#welcome .wo{flex:1 1 150px;min-width:130px;background:rgba(255,255,255,.045);border:1px solid rgba(202,161,90,.22);'+
@@ -426,7 +426,7 @@
             'padding:8px 4px;border-top:1px solid rgba(202,161,90,.14);font-size:13.5px;color:#d6ccb2}'+
           '#welcome .wMrow:first-child{border-top:none} #welcome .wMrow b{color:#fff7e6;font-weight:600}'+
           '#welcome .wMrow .wMe{font-size:18px;flex:0 0 auto}'+
-          '#welcome .wMrow .wMt{flex:1;text-align:right}'+
+          '#welcome .wMrow .wMt{flex:1;text-align:left}'+
           '#welcome .wGo{margin:22px auto 4px;display:inline-block;cursor:pointer;font-family:"Frank Ruhl Libre",serif;'+
             'font-size:17px;color:#1a1606;background:linear-gradient(160deg,#caa15a,#a07c38);border:none;'+
             'border-radius:24px;padding:11px 34px;box-shadow:0 8px 22px rgba(0,0,0,.45)}'+
@@ -457,13 +457,13 @@
         const w=host.querySelector('#welcome');
         nums=nums||{}; ms=ms||{};
         // odometer cards: days · full moons · orbital km. The big NUMBER animates; the
-        // unit/label stays. orbital uses the json's pre-formatted he string ("40.4 מיליארד").
+        // unit/label stays. orbital uses the json's pre-formatted he string ("40.4 billion").
         const orbitHe=nums.orbital_km_he?esc(nums.orbital_km_he):'';
         const odo=
-          `<div class="wo"><div class="wn" data-odo="days">0</div><div class="wl">יָמִים מֵאָז שֶׁנּוֹלַדְתָּ</div></div>`+
-          `<div class="wo"><div class="wn" data-odo="moons">0</div><div class="wl">יְרָחִים מְלֵאִים</div></div>`+
-          `<div class="wo"><div class="wn" data-odo="orbit">${orbitHe||'—'}</div><div class="wl">ק״מ סְבִיב הַשֶּׁמֶשׁ</div></div>`;
-        // milestone live counters: each event → "N שנים ו-M חודשים" from its date to today.
+          `<div class="wo"><div class="wn" data-odo="days">0</div><div class="wl">Days since you were born</div></div>`+
+          `<div class="wo"><div class="wn" data-odo="moons">0</div><div class="wl">Full moons</div></div>`+
+          `<div class="wo"><div class="wn" data-odo="orbit">${orbitHe||'—'}</div><div class="wl">km around the sun</div></div>`;
+        // milestone live counters: each event → "N years and M months" from its date to today.
         const now=nowDate();
         const evs=(Array.isArray(ms.events)?ms.events:[])
           .map(e=>({...e,_d:parseISO(e&&e.date)})).filter(e=>e._d).sort((a,b)=>a._d-b._d);
@@ -474,7 +474,7 @@
           `<div class="wDed">${esc(WELCOME_DEDICATION_HE)}</div>`+
           `<div class="wOdo">${odo}</div>`+foot+
           (msRows?`<div class="wMs">${msRows}</div>`:'')+
-          `<button type="button" class="wGo">בּוֹא נַתְחִיל</button>`;
+          `<button type="button" class="wGo">Let's begin</button>`;
         // animate the two numeric odometer cells (orbital is shown as the pre-formatted he string)
         countUp(w.querySelector('[data-odo="days"]'), nums.days, '');
         countUp(w.querySelector('[data-odo="moons"]'), nums.full_moons, '');
@@ -486,7 +486,7 @@
       };
       // open the overlay immediately (so it never feels laggy), then fill in once the
       // two static JSON files resolve. Both fetches are independently optional.
-      _openOverlay('בָּרוּךְ הַבָּא', host=>{
+      _openOverlay('Welcome', host=>{
         renderWelcome(host,null,null);   // dedication + button paint instantly
         let _nums=null,_ms=null,_done=0;
         const tryFill=()=>{ if(_done>=2) renderWelcome(host,_nums,_ms); };
@@ -497,8 +497,8 @@
 
     /* ---------- ☁️ cloud-sync STATUS chip (in the #inst header, above the tabs) ----------
        Driven by window.__cloudSync.status() → {state:'init'|'ok'|'disabled',…}. We map
-       'ok' → "מְסֻנְכְרָן בֶּעָנָן ✓" (green dot); anything else (init / local-only / disabled)
-       → "מְקוֹמִי בִּלְבַד" (grey dot). If __cloudSync is absent the chip stays hidden.
+       'ok' → "Synced to cloud ✓" (green dot); anything else (init / local-only / disabled)
+       → "Local only" (grey dot). If __cloudSync is absent the chip stays hidden.
        Tiny + non-intrusive; refreshed opportunistically from render(). */
     if(!document.getElementById('csync-css')){
       document.head.appendChild(el('style',null,
@@ -520,7 +520,7 @@
       _csChip.classList.add('show');
       _csChip.classList.toggle('ok',ok);
       const lbl=_csChip.querySelector('.cst');
-      if(lbl) lbl.textContent=ok?'מְסֻנְכְרָן בֶּעָנָן ✓':'מְקוֹמִי בִּלְבַד';
+      if(lbl) lbl.textContent=ok?'Synced to cloud ✓':'Local only';
     }
     refreshCloudChip();
 
@@ -544,16 +544,16 @@
 
     /* ---------- 📖 place stories (curated Hebrew, woven into the topic tabs) ---------- */
     const STORIES={
-      geology:{file:'valley_geology', t:'הַגֵּאוֹלוֹגְיָה שֶׁל העמק'},
-      darksky:{file:'dark_sky', t:'שְׁמֵי הַחֹשֶׁךְ'},
-      desert:{file:'desert_nature', t:'הַטֶּבַע הַמְּקוֹמִי'},
-      town:{file:'town_story', t:'הַסִּפּוּר שֶׁל לרקמונט'},
-      trade:{file:'trade_road', t:'הַדֶּרֶךְ הַיְשָׁנָה'}
+      geology:{file:'valley_geology', t:'The geology of the valley'},
+      darksky:{file:'dark_sky', t:'The dark skies'},
+      desert:{file:'desert_nature', t:'The local nature'},
+      town:{file:'town_story', t:'The story of Larkmont'},
+      trade:{file:'trade_road', t:'The old road'}
     };
     const _storyCache={}; let _storyEl=null;
     function ensureStoryEl(){
       if(_storyEl) return;
-      _storyEl=el('div'); _storyEl.id='storyCard'; _storyEl.setAttribute('dir','rtl');
+      _storyEl=el('div'); _storyEl.id='storyCard'; _storyEl.setAttribute('dir','ltr');
       _storyEl.appendChild(el('div','sc-body'));
       document.body.appendChild(_storyEl);
       document.head.appendChild(el('style',null,
@@ -573,8 +573,8 @@
     function renderStory(s){
       ensureStoryEl();
       const secs=(s.sections||[]).map(x=>`<h3>${esc(x.h||'')}</h3><p>${esc(x.body_he||'').split('\n').join('<br>')}</p>`).join('');
-      const src=(s.sources&&s.sources.length)?`<div class="sc-src">מְקוֹרוֹת: ${s.sources.map(o=>o.url?`<a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.name||o.url)}</a>`:esc(o.name||'')).join(' · ')}</div>`:'';
-      _storyEl.querySelector('.sc-body').innerHTML=`<div class="sc-inner"><span class="sc-x" data-sc-close="1">✕</span><h2>${esc(s.title_he||'')}</h2>`+(s.read_minutes?`<div class="sc-min">${s.read_minutes} דַּקּוֹת קְרִיאָה</div>`:'')+secs+src+`</div>`;
+      const src=(s.sources&&s.sources.length)?`<div class="sc-src">Sources: ${s.sources.map(o=>o.url?`<a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.name||o.url)}</a>`:esc(o.name||'')).join(' · ')}</div>`:'';
+      _storyEl.querySelector('.sc-body').innerHTML=`<div class="sc-inner"><span class="sc-x" data-sc-close="1">✕</span><h2>${esc(s.title_he||'')}</h2>`+(s.read_minutes?`<div class="sc-min">${s.read_minutes} min read</div>`:'')+secs+src+`</div>`;
       _storyEl.classList.add('on');
     }
     function openStory(key){
@@ -586,12 +586,12 @@
     function storyBtns(keys){ return `<div class="storyBtns">`+keys.map(k=>STORIES[k]?`<span class="storyBtn" data-story="${k}" role="button" tabindex="0">📖 ${STORIES[k].t}</span>`:'').join('')+`</div>`; }
     body.addEventListener('click',e=>{ const sb=e.target.closest&&e.target.closest('[data-story]'); if(sb) openStory(sb.getAttribute('data-story')); });
 
-    /* ---------- חצר ---------- */
-    // The חצר tab is now the ONE yard+garden hub: the live MICROCLIMATE (sun/shade/
-    // UV/frost per zone + the "X° בבית שלך" estimate) on TOP, and the full GARDEN
-    // OVERVIEW (garden.js — plant table, 📖 magazine, search, "כדאי להוסיף" recs)
-    // below it. The old simple "🌿 הצמחים שלך" cards are gone (replaced by the rich
-    // table), and the floating "🌿 הגינה" panel/button are retired.
+    /* ---------- yard ---------- */
+    // The yard tab is now the ONE yard+garden hub: the live MICROCLIMATE (sun/shade/
+    // UV/frost per zone + the "X° at your house" estimate) on TOP, and the full GARDEN
+    // OVERVIEW (garden.js — plant table, 📖 magazine, search, "worth adding" recs)
+    // below it. The old simple "🌿 your plants" cards are gone (replaced by the rich
+    // table), and the floating "🌿 the garden" panel/button are retired.
     //
     // LIVENESS without wiping the search box: the microclimate re-renders every
     // second (render(false)→renderYard(date,false)), but that tick only rewrites the
@@ -615,13 +615,13 @@
       }
       if(g&&g.onReady&&!_yardGardenOnReadyHooked){
         _yardGardenOnReadyHooked=true;
-        host.innerHTML='<div class="sub" style="margin-top:2px">טוֹעֵן אֶת הַגִּנָּה…</div>';
+        host.innerHTML='<div class="sub" style="margin-top:2px">Loading the garden…</div>';
         g.onReady(()=>{ _yardGardenOnReadyHooked=false; if(active==='yard'&&!_yardGardenMounted) mountYardGarden(); });
         return;
       }
       if(!(g&&g.renderOverviewInto) && _yardGardenRetry<150){
         _yardGardenRetry++;
-        if(_yardGardenRetry===1) host.innerHTML='<div class="sub" style="margin-top:2px">טוֹעֵן אֶת הַגִּנָּה…</div>';
+        if(_yardGardenRetry===1) host.innerHTML='<div class="sub" style="margin-top:2px">Loading the garden…</div>';
         setTimeout(()=>{ if(active==='yard') mountYardGarden(); },40);
       }
     }
@@ -632,13 +632,13 @@
       zones.forEach(z=>{const st=Derive.zoneState(z,s.azDeg,s.altDeg),rad=Derive.radiation(s.altDeg,st.sunlit,cloud);
         if(z.id==='backyard')backyard=st;
         const sch=Derive.shadeSchedule(z,date);
-        rows+=`<div class="row zcrow" data-zc="${z.id}" role="button" tabindex="0" title="פְּתַח כַּרְטִיס אֵזוֹר" style="cursor:pointer"><span>${z.name_he}<div class="est" style="color:#8b97b4">${st.sunlit?('קרינה '+rad.level+' · UV ')+'<span style="color:'+uvColor(rad.uv)+'">'+rad.uv+'</span>':'מוצל'} · שמש היום ${sch?sch.firstSun+'–'+sch.lastSun:'—'}</div></span>`+
+        rows+=`<div class="row zcrow" data-zc="${z.id}" role="button" tabindex="0" title="Open zone card" style="cursor:pointer"><span>${z.name_he}<div class="est" style="color:#8b97b4">${st.sunlit?('radiation '+rad.level+' · UV ')+'<span style="color:'+uvColor(rad.uv)+'">'+rad.uv+'</span>':'shaded'} · sun today ${sch?sch.firstSun+'–'+sch.lastSun:'—'}</div></span>`+
           `<span style="display:flex;align-items:center;gap:7px"><span class="chip ${st.sunlit?'sun':'shade'}">${st.sunlit?'☀':'◑'} ${st.label}</span><span class="zcgo" style="color:#caa15a;opacity:.55;font-size:14px">→</span></span></div>`;});
       const town=(window.Weather&&Weather.state)?Weather.state.temp:null, mc=Derive.microclimate(town,backyard||{sunlit:false},s.altDeg);
-      return `<h3>הֶחָצֵר שֶׁלְּךָ · עַכְשָׁו</h3><div class="sub">שמש · צל · קרינה — נגזר מהגאומטריה האמיתית של הבית והרכס</div>${rows}`+
-        (mc?`<div class="card"><div class="big">${mc.temp}°${xplSlot('microclimate_temp')}</div><div class="m" style="color:#a99b78">בבית שלך${town!=null?' · בעיר '+town+'° ('+(mc.delta>=0?'+':'')+mc.delta+'°)':''} · ${mc.note}</div><div class="est">הערכה מחושבת (לא מדידה)</div></div>`:'')+
-        `<div class="foot">משתנה עם הזמן — גלגל את הסליידר וראה את הצל זז</div>`+
-        `<div class="sub" style="margin-top:14px">🌿 הַגִּנָּה שֶׁלְּךָ</div>`;
+      return `<h3>Your yard · now</h3><div class="sub">Sun · shade · radiation — derived from the real geometry of the house and the ridge</div>${rows}`+
+        (mc?`<div class="card"><div class="big">${mc.temp}°${xplSlot('microclimate_temp')}</div><div class="m" style="color:#a99b78">at your house${town!=null?' · in town '+town+'° ('+(mc.delta>=0?'+':'')+mc.delta+'°)':''} · ${mc.note}</div><div class="est">Calculated estimate (not a measurement)</div></div>`:'')+
+        `<div class="foot">Changes over time — roll the slider and watch the shadow move</div>`+
+        `<div class="sub" style="margin-top:14px">🌿 Your garden</div>`;
     }
     function renderYard(date,force){
       if(!window.Astro) return;
@@ -660,37 +660,37 @@
       }
     }
 
-    /* ---------- בית (dashboard / living cockpit — home.js) ---------- */
+    /* ---------- home (dashboard / living cockpit — home.js) ---------- */
     function renderHome(date){
-      if(window.__home&&window.__home.render){ try{ window.__home.render(body,date); }catch(e){ body.innerHTML='<h3>הַבַּיִת הַחַי</h3><div class="sub">שְׁגִיאָה בִּטְעִינַת הַלּוּחַ.</div>'; } return; }
-      body.innerHTML='<h3>הַבַּיִת הַחַי</h3><div class="sub">טוֹעֵן…</div>';
+      if(window.__home&&window.__home.render){ try{ window.__home.render(body,date); }catch(e){ body.innerHTML='<h3>The living house</h3><div class="sub">Error loading the panel.</div>'; } return; }
+      body.innerHTML='<h3>The living house</h3><div class="sub">Loading…</div>';
       setTimeout(()=>{ if(active==='home') renderHome(nowDate()); },140);
     }
-    /* ---------- הבית (the physical house: enter 3D + rooms + zoning) ---------- */
+    /* ---------- house (the physical house: enter 3D + rooms + zoning) ---------- */
     function renderHouse(date){
       const inside=!!(window.__enterMode&&window.__enterMode.on);
-      const SEAS=[['live','עַכְשָׁו'],['winter','חֹרֶף'],['spring','אָבִיב'],['summer','קַיִץ'],['autumn','סְתָו']];
+      const SEAS=[['live','Now'],['winter','Winter'],['spring','Spring'],['summer','Summer'],['autumn','Autumn']];
       body.innerHTML=
-        `<h3>הַבַּיִת שֶׁלְּךָ</h3>`+
-        `<div class="sub">הִכָּנֵס פְּנִימָה בִּתְלַת־מֵמַד — הַחֲדָרִים, הַבְּנִיָּה וְהַתַּחֲזוּקָה</div>`+
-        `<div class="row" id="house-enter" role="button" tabindex="0" title="חֲשִׂיפַת הַחֲדָרִים" style="cursor:pointer">`+
-          `<span><span class="hg" style="color:#caa15a">🚪</span> ${inside?'יְצִיאָה מֵהַבַּיִת':'הִכָּנֵס לַבַּיִת · תְּלַת־מֵמַד'}</span>`+
+        `<h3>Your house</h3>`+
+        `<div class="sub">Step inside in 3D — the rooms, the construction and the maintenance</div>`+
+        `<div class="row" id="house-enter" role="button" tabindex="0" title="Reveal the rooms" style="cursor:pointer">`+
+          `<span><span class="hg" style="color:#caa15a">🚪</span> ${inside?'Exit the house':'Enter the house · 3D'}</span>`+
           `<span class="zcgo" style="color:#caa15a;opacity:.6">→</span></div>`+
-        `<div class="row" id="house-recenter" role="button" tabindex="0" title="מַרְכּוּז הַמַּצְלֵמָה עַל הַבַּיִת" style="cursor:pointer">`+
-          `<span><span class="hg" style="color:#caa15a">⌂</span> מַרְכֵּז אֶת הַבַּיִת</span>`+
+        `<div class="row" id="house-recenter" role="button" tabindex="0" title="Center the camera on the house" style="cursor:pointer">`+
+          `<span><span class="hg" style="color:#caa15a">⌂</span> Center the house</span>`+
           `<span class="zcgo" style="color:#caa15a;opacity:.6">→</span></div>`+
-        `<div class="foot">לְחִיצָה עַל חֶדֶר בַּמּוֹדֵל פּוֹתַחַת אֶת כַּרְטִיס הַחֶדֶר — בְּנִיָּה, חֲלָקִים, תַּחְזוּקָה וְשִׁפּוּצִים.</div>`+
-        `<div class="sub" style="margin-top:14px">🌡️ הַמּוֹדֵל הַתֶּרְמִי · תַּחֲזִית לְפִי עוֹנָה</div>`+
+        `<div class="foot">Clicking a room in the model opens the room card — construction, parts, maintenance and renovations.</div>`+
+        `<div class="sub" style="margin-top:14px">🌡️ The thermal model · forecast by season</div>`+
         `<div id="house-it"></div>`+
-        `<div class="sub" style="font-size:11px">בְּחַר עוֹנָה — הַשֶּׁמֶשׁ, הַצְּלָלִים וְטֶמְפֶּרָטוּרוֹת הַחֲדָרִים יִתְעַדְכְּנוּ לַתַּחֲזִית שֶׁלָּהּ</div>`+
+        `<div class="sub" style="font-size:11px">Choose a season — the sun, the shadows and the room temperatures will update to its forecast</div>`+
         `<div class="mc-chips" id="house-seasons">`+SEAS.map(([k,he])=>`<span class="mc-chip" data-hs="${k}">${he}</span>`).join('')+`</div>`+
-        `<div class="sub" style="margin-top:16px">🌡️ טֶמְפֶּרָטוּרוֹת בַּחֲדָרִים · עַכְשָׁו</div>`+
-        `<div id="house-rooms"><div class="est">נִטְעָן…</div></div>`+
-        `<div class="sub" style="margin-top:14px">🌿 הַצְלָלָה בַּגִּנָּה · עַכְשָׁו</div>`+
+        `<div class="sub" style="margin-top:16px">🌡️ Room temperatures · now</div>`+
+        `<div id="house-rooms"><div class="est">Loading…</div></div>`+
+        `<div class="sub" style="margin-top:14px">🌿 Garden shading · now</div>`+
         `<div id="house-yardnow"></div>`+
-        `<div class="sub" style="margin-top:14px">🌤️ מֶזֶג אֲוִיר בַּבַּיִת שֶׁלְּךָ · עַכְשָׁו</div>`+
+        `<div class="sub" style="margin-top:14px">🌤️ Weather at your house · now</div>`+
         `<div id="house-weather"></div>`+
-        `<div class="sub" style="margin-top:16px">🗺️ מַפַּת הַחֹם · מוֹדֵל הַמִּיקְרוֹאַקְלִים</div>`+
+        `<div class="sub" style="margin-top:16px">🗺️ Heat map · microclimate model</div>`+
         `<div id="house-model">${microclimateBlock(date)}</div>`;
       mountXplChips(body);   // "?" chips on the #house-model microclimate per-zone readout (dli/sun/etc/frost)
       const eb=$('house-enter'); if(eb){ eb.onclick=()=>{ if(window.__enterMode) window.__enterMode.toggle(); renderHouse(nowDate()); }; eb.onkeydown=(ev)=>{ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); eb.onclick(); } }; }
@@ -701,7 +701,7 @@
         else { const m={winter:15,spring:105,summer:196,autumn:288}[k]; if(m!=null&&window.__setDay) window.__setDay(m); }
         renderHouse(nowDate());
       });
-      wireMicroclimate(date);   // heat-map model control (toggle + variable + season) now in הבית too
+      wireMicroclimate(date);   // heat-map model control (toggle + variable + season) now in house too
       // DEFER the heavy computes (indoor-temp EMA, per-room thermal) off the click so the tab
       // paints instantly, then fill the "house now" readouts in.
       setTimeout(()=>{
@@ -710,7 +710,7 @@
         // base interior temp
         let it=null; try{ it=(window.Derive&&Derive.indoorTemp)?Derive.indoorTemp(d):null; }catch(e){}
         const ih=$('house-it'); if(ih&&it){ const ins=!!(window.__enterMode&&window.__enterMode.on);
-          ih.innerHTML=`<div class="card"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div class="big">~${Math.round(it.tempC*10)/10}°${xplSlot('indoorTemp')}</div><span class="mc-model">מוֹדֵל</span></div><div class="m" style="color:#a99b78">טֶמְפֶּרָטוּרַת בָּסִיס בַּבַּיִת${ins?'':' · הִכָּנֵס לִרְאוֹת אֶת הַחֲדָרִים'}</div></div>`;
+          ih.innerHTML=`<div class="card"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div class="big">~${Math.round(it.tempC*10)/10}°${xplSlot('indoorTemp')}</div><span class="mc-model">Model</span></div><div class="m" style="color:#a99b78">Base temperature in the house${ins?'':' · Enter to see the rooms'}</div></div>`;
           mountXplChips(ih); }
         // per-room temperatures (modeled interior thermal per room)
         const rh=$('house-rooms');
@@ -718,14 +718,14 @@
           // STATIC room table (the dollhouse rooms) so the readout works in the tab BEFORE
           // entering the house — __workbench.allRooms() is empty until EnterMode initialises,
           // but climateSummary(id,date) works off the static room geometry right away.
-          const ROOMS_HE=[['kitchen','מִטְבָּח'],['living','סָלוֹן'],['bedroomG','חֲדַר שֵׁנָה'],['bathG','חֲדַר רַחְצָה'],['bedroomNE','חֲדַר שֵׁנָה · צָפוֹן'],['bedroomSW','חֲדַר שֵׁנָה · דָּרוֹם'],['bathU','חֲדַר רַחְצָה · עֶלְיוֹן'],['terrace','מִרְפֶּסֶת']];
+          const ROOMS_HE=[['kitchen','Kitchen'],['living','Living room'],['bedroomG','Bedroom'],['bathG','Bathroom'],['bedroomNE','Bedroom · North'],['bedroomSW','Bedroom · South'],['bathU','Bathroom · Upper'],['terrace','Terrace']];
           const WB=window.__workbench; let rows=[];
           if(WB&&WB.climateSummary){ rows=ROOMS_HE.map(([id,he])=>{ let cs=null; try{ cs=WB.climateSummary(id,d); }catch(e){}
             const t=(cs&&cs.tempC!=null)?('~'+(Math.round(cs.tempC*10)/10)+'°'):null;
             return t?`<div class="row"><span>${esc(he)}</span><b>${t}</b></div>`:''; }).filter(Boolean); }
           rh.innerHTML = rows.length
-            ? rows.join('')+`<div class="est">מוֹדֵל תֶּרְמִי · נִגְזָר מֵהַחוּץ דֶּרֶךְ הַמָּסָה וְהַכִּוּוּן שֶׁל כָּל חֶדֶר · 🟡 מוֹדֵל · ״הִכָּנֵס לַבַּיִת״ לְמַפַּת חֹם רִצְפָּתִית</div>`
-            : `<div class="est">מוֹדֵל הַחֲדָרִים נִטְעָן…</div>`;
+            ? rows.join('')+`<div class="est">Thermal model · derived from the outside through the mass and orientation of each room · 🟡 Model · "Enter the house" for a floor heat map</div>`
+            : `<div class="est">The room model is loading…</div>`;
         }
         // yard shading right now (per-zone sun/shade)
         const yh=$('house-yardnow');
@@ -737,28 +737,28 @@
         const wh=$('house-weather');
         if(wh){ let html=''; try{ html=weatherBlockHTML(d); }catch(e){}
           const air=(window.Weather&&Weather.air)||null;
-          if(air){ html+=`<div class="row"><span>🌫 אֵיכוּת אֲוִיר <span class="mc-model" style="font-size:9px">אֵזוֹרִי</span></span><b>AQI ${air.aqi!=null&&isFinite(air.aqi)?Math.round(air.aqi):'—'}${air.dust!=null&&isFinite(air.dust)?' · אָבָק '+Math.round(air.dust):''}${air.uv!=null&&isFinite(air.uv)?' · UV '+Math.round(air.uv):''}</b></div>`; }
+          if(air){ html+=`<div class="row"><span>🌫 Air quality <span class="mc-model" style="font-size:9px">Regional</span></span><b>AQI ${air.aqi!=null&&isFinite(air.aqi)?Math.round(air.aqi):'—'}${air.dust!=null&&isFinite(air.dust)?' · Dust '+Math.round(air.dust):''}${air.uv!=null&&isFinite(air.uv)?' · UV '+Math.round(air.uv):''}</b></div>`; }
           wh.innerHTML=html;
         }
       }, 0);
     }
-    /* ---------- לוח שנה (calendar.js) ---------- */
+    /* ---------- calendar (calendar.js) ---------- */
     function renderCal(date){
-      if(window.__calendar&&window.__calendar.render){ try{ window.__calendar.render(body,date); }catch(e){ body.innerHTML='<h3>לוּחַ שָׁנָה</h3><div class="sub">שְׁגִיאָה בִּטְעִינַת הַלּוּחַ.</div>'; } return; }
-      body.innerHTML='<h3>לוּחַ שָׁנָה</h3><div class="sub">טוֹעֵן…</div>';
+      if(window.__calendar&&window.__calendar.render){ try{ window.__calendar.render(body,date); }catch(e){ body.innerHTML='<h3>Calendar</h3><div class="sub">Error loading the panel.</div>'; } return; }
+      body.innerHTML='<h3>Calendar</h3><div class="sub">Loading…</div>';
       setTimeout(()=>{ if(active==='cal') renderCal(nowDate()); },140);
     }
 
-    /* ---------- שמיים ---------- */
+    /* ---------- sky ---------- */
     // marquee bright stars (RA hours, Dec deg) — used for a live "what's up now"
     // readout that matches the visible starfield (same Astro horizon transform).
     const SKY_MARQUEE=[
-      ['סיריוס',6.7525,-16.716],['קנופוס',6.399,-52.696],['ארקטורוס',14.261,19.182],
-      ['וגה',18.616,38.78],['קאפלה',5.278,45.998],['ריגל',5.242,-8.202],
-      ['פרוקיון',7.655,5.225],['בטלגז',5.919,7.407],['אלטאיר',19.846,8.868],
-      ['אלדברן',4.599,16.509],['אנטארס',16.490,-26.432],['ספיקה',13.420,-11.161],
-      ['דנב',20.690,45.280],['פומלהאוט',22.961,-29.622],['רגולוס',10.139,11.967],
-      ['פולוקס',7.755,28.026],['פולאריס',2.530,89.264]
+      ['Sirius',6.7525,-16.716],['Canopus',6.399,-52.696],['Arcturus',14.261,19.182],
+      ['Vega',18.616,38.78],['Capella',5.278,45.998],['Rigel',5.242,-8.202],
+      ['Procyon',7.655,5.225],['Betelgeuse',5.919,7.407],['Altair',19.846,8.868],
+      ['Aldebaran',4.599,16.509],['Antares',16.490,-26.432],['Spica',13.420,-11.161],
+      ['Deneb',20.690,45.280],['Fomalhaut',22.961,-29.622],['Regulus',10.139,11.967],
+      ['Pollux',7.755,28.026],['Polaris',2.530,89.264]
     ];
     // moon rise/set for the civil day of `date` — scans Astro.moon altitude
     // (no derive helper exists), mirroring Astro.events() for the sun. Returns
@@ -775,7 +775,7 @@
       }
       return {rise:fmt(rise),set:fmt(set)};
     }
-    const dirHe=az=>{const d=['צפון','צ-מז','מזרח','ד-מז','דרום','ד-מע','מערב','צ-מע'];return d[Math.round((((az%360)+360)%360)/45)%8];};
+    const dirHe=az=>{const d=['N','NE','E','SE','S','SW','W','NW'];return d[Math.round((((az%360)+360)%360)/45)%8];};
     // ---- moon helpers for the merged moon block (was the bottom-left moon card) --
     // forward scan for the NEXT moonrise from `date` (up to 48h, so it still finds a
     // rise after midnight) → "HH:MM" local time, or null. Mirrors the old card's
@@ -816,7 +816,7 @@
       if(f<0.5) return waxing?'🌒':'🌘';
       return waxing?'🌔':'🌖';
     }
-    // ---- "tonight" anchor for the consolidated "מתי כדאי להסתכל למעלה" summary ----
+    // ---- "tonight" anchor for the consolidated "when to look up" summary ----
     // The summary describes the UPCOMING DARK WINDOW, not the scrubbed instant, so its
     // verdict/planets/ISS are computed at ~21:00 local of the relevant night.
     // Rule (mirrors Weather.tonightCloud): before ~06:00 local, "tonight" is the
@@ -845,7 +845,7 @@
       try{ const s=(window.Satellites&&Satellites.list||[]).find(x=>x.id===25544); return s?s.satrec:null; }
       catch(e){ return null; }
     }
-    // ---- BUILD the consolidated "🔭 מתי כדאי להסתכל למעלה" block (top of שמיים) ----
+    // ---- BUILD the consolidated "🔭 when to look up" block (top of sky) ----
     // Four tidy rows in the #inst skin, all for TONIGHT's dark window: next meteor
     // shower (+ moon-wash caveat), planets up after dark, next visible ISS pass, and
     // the moon-phase + stargazing verdict. Self-contained (uses real Astro/Satellites
@@ -862,16 +862,16 @@
         let wash='';
         try{
           const moAtPeak=window.Astro.moon(met.date);
-          if(moAtPeak && moAtPeak.illum>0.55) wash=` · ירח ${Math.round(moAtPeak.illum*100)}% מבהיר את הרקע`;
-          else wash=' · ירח חלש — שמיים חשוכים';
+          if(moAtPeak && moAtPeak.illum>0.55) wash=` · Moon ${Math.round(moAtPeak.illum*100)}% brightens the background`;
+          else wash=' · Faint moon — dark skies';
         }catch(e){}
         const soon=met.days<=1;
         rows+=`<div class="luRow"><span class="luIc">🌠</span><div class="luTx">`+
-          `<div class="luT">${met.name}${xplSlot('nextMeteor')}${soon?' <span class="luTag">הלילה!</span>':''}</div>`+
-          `<div class="luS">שיא בעוד ${met.days} ימים · ${met.date.toLocaleDateString('he-IL')} · ZHR ~${met.zhr}${wash}</div>`+
+          `<div class="luT">${met.name}${xplSlot('nextMeteor')}${soon?' <span class="luTag">Tonight!</span>':''}</div>`+
+          `<div class="luS">Peak in ${met.days} days · ${met.date.toLocaleDateString('he-IL')} · ZHR ~${met.zhr}${wash}</div>`+
           `</div></div>`;
       }
-      // (planets up tonight live in the detailed "🪐 כוכבי לכת עכשיו" list below — not repeated in the digest)
+      // (planets up tonight live in the detailed "🪐 planets now" list below — not repeated in the digest)
       // (3) 🛰️ next visible ISS pass — only if genuinely naked-eye visible.
       const rec=issRec();
       if(rec && window.Astro.sunEciUnit && window.Satellites){
@@ -881,8 +881,8 @@
           if(pass && pass.anyVisible){
             const dir=window.Satellites.dirHe(pass.peakAz);
             rows+=`<div class="luRow clkable" ${clkT(pass.peakAz,pass.peakAlt)}><span class="luIc">🛰️</span><div class="luTx">`+
-              `<div class="luT">תחנת החלל (ISS) — מעבר נראה לעין</div>`+
-              `<div class="luS">${fmtClock(pass.rise)} · שיא ${dir} בגובה ${Math.round(pass.peakAlt)}°</div>`+
+              `<div class="luT">Space Station (ISS) — visible pass</div>`+
+              `<div class="luS">${fmtClock(pass.rise)} · Peak ${dir} at ${Math.round(pass.peakAlt)}° elevation</div>`+
               `</div></div>`;
           }
         }catch(e){}
@@ -893,19 +893,19 @@
       const goT=Derive.goOutScore(cloud,moT.illum,sT.altDeg,nc,{hum:(window.Weather&&Weather.state)?Weather.state.hum:null, dust:(window.Weather&&Weather.air&&Weather.air.pm10!=null)?Weather.air.pm10:((window.Weather&&Weather.state&&Weather.state.dust!=null)?Weather.state.dust*200:null)});
       const illumPct=Math.round(moT.illum*100);
       let verdict, vCls;
-      if(nc!=null && nc>0.5){ verdict='מעונן — פחות טוב'; vCls='lo'; }
-      else if(moT.illum>0.75){ verdict='ירח כמעט מלא — מבהיר את הרקע'; vCls='mid'; }
-      else if(goT && goT.score>=70){ verdict='לילה מצוין לכוכבים'; vCls='hi'; }
-      else if(goT && goT.score>=45){ verdict='לילה סביר לכוכבים'; vCls='mid'; }
-      else { verdict='פחות מומלץ הלילה'; vCls='lo'; }
+      if(nc!=null && nc>0.5){ verdict='Cloudy — less good'; vCls='lo'; }
+      else if(moT.illum>0.75){ verdict='Moon almost full — brightens the background'; vCls='mid'; }
+      else if(goT && goT.score>=70){ verdict='Excellent night for stargazing'; vCls='hi'; }
+      else if(goT && goT.score>=45){ verdict='Decent night for stargazing'; vCls='mid'; }
+      else { verdict='Less recommended tonight'; vCls='lo'; }
       rows+=`<div class="luRow"><span class="luIc">${moonGlyph(moT.frac,moT.waxing)}</span><div class="luTx">`+
-        `<div class="luT">${moT.name}${xplSlot('moonPhase')} · ${illumPct}% מואר <span class="luV ${vCls}">${verdict}</span></div>`+
-        `<div class="luS">${goT?('ציון צפייה '+goT.score+'/100'+xplSlot('goOutScore')+' · Bortle-3 · שְׁקִיפוּת '+Math.round((goT.transparency!=null?goT.transparency:1)*100)+'%'+xplSlot('transparency')):'הציון יופיע אחרי דמדומים'}${nc!=null?' · ~'+Math.round(nc*100)+'% עננות הערב':''}</div>`+
+        `<div class="luT">${moT.name}${xplSlot('moonPhase')} · ${illumPct}% lit <span class="luV ${vCls}">${verdict}</span></div>`+
+        `<div class="luS">${goT?('Viewing score '+goT.score+'/100'+xplSlot('goOutScore')+' · Bortle-3 · Transparency '+Math.round((goT.transparency!=null?goT.transparency:1)*100)+'%'+xplSlot('transparency')):'The score will appear after dusk'}${nc!=null?' · ~'+Math.round(nc*100)+'% cloud cover this evening':''}</div>`+
         `</div></div>`;
       if(!rows) return '';
       const when=fmtClock(T.getTime());
-      return `<div class="lookup"><div class="luHd">🔭 מתי כדאי להסתכל למעלה <span class="luWhen">הלילה · ~${when}</span></div>${rows}`+
-        `<div class="luFoot">מחושב לחלון החשוך הקרוב (לא לזמן שעל הסליידר) · לחצו על שורה למקד את המבט</div></div>`;
+      return `<div class="lookup"><div class="luHd">🔭 When to look up <span class="luWhen">Tonight · ~${when}</span></div>${rows}`+
+        `<div class="luFoot">Calculated for the upcoming dark window (not the time on the slider) · click a row to focus the view</div></div>`;
     }
     let _skyExtEl=null;   // persistent host for sky_extras (moved into body each tick, not re-rendered)
     function renderSky(date){
@@ -927,8 +927,8 @@
       if(window.Astro.planets){
         const up=window.Astro.planets(date).filter(p=>p.altDeg>2).sort((a,b)=>a.mag-b.mag);
         if(up.length){
-          planHtml=`<div class="sub" style="margin-top:12px">🪐 כוכבי לכת עכשיו</div>`+
-            up.map(p=>`<div ${clk(p.azDeg,p.altDeg)}><span class="nm">${p.he}</span><span style="color:#a99b78">${Math.round(p.altDeg)}° · ${dirHe(p.azDeg)} · בהירות ${p.mag.toFixed(1)}</span></div>`).join('');
+          planHtml=`<div class="sub" style="margin-top:12px">🪐 Planets now</div>`+
+            up.map(p=>`<div ${clk(p.azDeg,p.altDeg)}><span class="nm">${p.he}</span><span style="color:#a99b78">${Math.round(p.altDeg)}° · ${dirHe(p.azDeg)} · Magnitude ${p.mag.toFixed(1)}</span></div>`).join('');
         }
       }
       // what's up now: brightest marquee stars currently above the horizon (dark enough)
@@ -937,25 +937,25 @@
         const up=SKY_MARQUEE.map(([nm,ra,dec])=>({nm,a:window.Astro.eqToHorizon(ra,dec,date)}))
           .filter(o=>o.a.altDeg>8).sort((x,y)=>y.a.altDeg-x.a.altDeg).slice(0,4);
         if(up.length){
-          upHtml=`<div class="sub" style="margin-top:12px">✨ כוכבים בהירים מעל הראש</div>`+
+          upHtml=`<div class="sub" style="margin-top:12px">✨ Bright stars overhead</div>`+
             up.map(o=>`<div ${clk(o.a.azDeg,o.a.altDeg)}><span class="nm">${o.nm}</span><span style="color:#a99b78">${Math.round(o.a.altDeg)}° · ${dirHe(o.a.azDeg)}</span></div>`).join('');
         }
       }
-      // ☀️ SUN altitude — always shown (was on the old moon card: "גובה השמש N°"),
+      // ☀️ SUN altitude — always shown (was on the old moon card: "sun altitude N°"),
       // so you can read how far below the horizon the sun is (how dark it is). When
       // the sun is actually up (via scrubbing) the row also becomes a clickable
       // focus target with its azimuth/direction.
       let sunHtml='';
       if(s.altDeg>0){
-        sunHtml=`<div ${clk(s.azDeg,s.altDeg)}><span class="nm">☀️ שמש</span>`+
-          `<span style="color:#a99b78">גובה ${Math.round(s.altDeg)}° · ${dirHe(s.azDeg)}</span></div>`;
+        sunHtml=`<div ${clk(s.azDeg,s.altDeg)}><span class="nm">☀️ Sun</span>`+
+          `<span style="color:#a99b78">Altitude ${Math.round(s.altDeg)}° · ${dirHe(s.azDeg)}</span></div>`;
       } else {
-        sunHtml=`<div class="row"><span>☀️ גובה השמש</span>`+
-          `<span style="color:#a99b78">${Math.round(s.altDeg)}° (מתחת לאופק)</span></div>`;
+        sunHtml=`<div class="row"><span>☀️ Sun altitude</span>`+
+          `<span style="color:#a99b78">${Math.round(s.altDeg)}° (below horizon)</span></div>`;
       }
       // 🛰 SATELLITE PASSES — surfaced from sky.js (SkyRig.satPasses()), replacing
       // the old floating bottom-left #satInfo panel. Each sat: name, rise time,
-      // peak direction (Hebrew) + max elevation, and a "נראה לעין" tag when the
+      // peak direction (Hebrew) + max elevation, and a "visible to the eye" tag when the
       // pass is genuinely naked-eye visible. Rows are clickable → focus the camera
       // on the sat's CURRENT az/alt if it's up now, otherwise on its peak az/alt.
       // Updates with the scrubbed time (renderSky re-runs every second).
@@ -963,21 +963,21 @@
       const passes=(window.SkyRig&&SkyRig.satPasses)?SkyRig.satPasses():(window.__satPasses||[]);
       if(passes&&passes.length){
         const note=window.__satEpochNote||'';
-        satHtml=`<div class="sub" style="margin-top:12px">🛰 לוויינים · מעברים</div>`+
+        satHtml=`<div class="sub" style="margin-top:12px">🛰 Satellites · passes</div>`+
           passes.map(p=>{
             const focAz=(p.up&&p.curAzDeg!=null)?p.curAzDeg:p.peakAz;
             const focAlt=(p.up&&p.curAltDeg!=null)?p.curAltDeg:p.peakAlt;
-            const when = p.up ? 'עכשיו מעל האופק' : ('זריחה '+p.riseHM);
-            const visTag = p.visible ? ' · <span class="satvis">נראה לעין</span>' : '';
+            const when = p.up ? 'Now above the horizon' : ('Rise '+p.riseHM);
+            const visTag = p.visible ? ' · <span class="satvis">Visible to the eye</span>' : '';
             return `<div class="satrow" data-az="${(+focAz).toFixed(2)}" data-alt="${(+focAlt).toFixed(2)}">`+
               `<span><span style="color:${p.color}">●</span> <span class="sn">${p.he}</span> <span class="ss">${p.short}</span></span>`+
-              `<span class="sm">${when}<br>${p.peakAzHe} · שיא ${p.peakAlt}°${visTag}</span></div>`;
+              `<span class="sm">${when}<br>${p.peakAzHe} · Peak ${p.peakAlt}°${visTag}</span></div>`;
           }).join('')+
           (note?`<div class="foot" style="margin-top:4px">${note}</div>`:'');
       }
       // ---- MERGED MOON BLOCK (consolidates the removed bottom-left moon card) ----
-      // One clean block at the top of שמיים: phase glyph + name, illum % +
-      // above/below-horizon, the direction arrow + live state ("מתחת לאופק · זריחה
+      // One clean block at the top of sky: phase glyph + name, illum % +
+      // above/below-horizon, the direction arrow + live state ("below horizon · rise
       // HH:MM" when down, else cardinal · azimuth), and moon rise/set for the day.
       // Clickable (→ focus the 3D view on the moon) only when it's above the horizon
       // — focusing a below-horizon body would aim the camera into the ground.
@@ -988,7 +988,7 @@
       let mdState, mdCls;
       if(!moonUp){
         const r=nextMoonriseHM(date);
-        mdState='מתחת לאופק'+(r?' · זריחה '+r:''); mdCls='down';
+        mdState='Below horizon'+(r?' · Rise '+r:''); mdCls='down';
       } else {
         mdState=dirHe(mo.azDeg)+' · '+Math.round(mo.azDeg)+'°'; mdCls='up';
       }
@@ -997,43 +997,43 @@
         `<div ${moonUp?`class="moonblk clk" data-az="${mo.azDeg.toFixed(2)}" data-alt="${mo.altDeg.toFixed(2)}"`:'class="moonblk"'}>`+
           `<div class="top"><span class="gl">${moonGl}</span>`+
             `<div><div class="mn">🌙 ${mo.name}</div>`+
-            `<div class="mi">${Math.round(mo.illum*100)}% מואר · ${moonUp?Math.round(mo.altDeg)+'° מעל האופק':'מתחת לאופק'}</div></div></div>`+
+            `<div class="mi">${Math.round(mo.illum*100)}% lit · ${moonUp?Math.round(mo.altDeg)+'° above the horizon':'below horizon'}</div></div></div>`+
           `<div class="mdir"><span class="mdArrow ${mdCls}" style="transform:rotate(${relAz.toFixed(0)}deg)">`+
             `<svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2 L18 17 L12 13 L6 17 Z"/></svg></span>`+
-            `<span class="mdLbl">כיוון הירח</span><span class="mdState ${mdCls}">${mdState}</span></div>`+
-          `<div class="mrs"><span>🌙 זריחה <b>${mrs.rise}</b></span><span>שקיעה <b>${mrs.set}</b></span></div>`+
+            `<span class="mdLbl">Moon direction</span><span class="mdState ${mdCls}">${mdState}</span></div>`+
+          `<div class="mrs"><span>🌙 Rise <b>${mrs.rise}</b></span><span>Set <b>${mrs.set}</b></span></div>`+
         `</div>`;
       const _nv=!!(window.SkyRig&&window.SkyRig.isNightView&&window.SkyRig.isNightView());
-      body.innerHTML=`<h3>הַשָּׁמַיִם שֶׁלְּךָ · הַלַּיְלָה</h3><div class="sub">אזור כפרי חשוך · Bortle 3 · הכול לקואורדינטות ולאופק שלך</div>`+storyBtns(['darksky'])+
-        `<div id="sky-layers" style="margin-top:4px">`+[['constellations','✦ קְבוּצוֹת כּוֹכָבִים'],['milkyway','🌌 שְׁבִיל הֶחָלָב'],['paths','☀ מַסְלוּלֵי שֶׁמֶשׁ/יָרֵחַ'],['satellites','🛰 לַוְיָנִים']].map(([k,he])=>`<div class="skylrow"><span>${he}</span><span class="skysw${_skyLayers[k]?' on':''}" data-skl="${k}" role="switch" aria-checked="${_skyLayers[k]?'true':'false'}"></span></div>`).join('')+`</div>`+
+      body.innerHTML=`<h3>Your sky · tonight</h3><div class="sub">Dark rural area · Bortle 3 · all for your coordinates and horizon</div>`+storyBtns(['darksky'])+
+        `<div id="sky-layers" style="margin-top:4px">`+[['constellations','✦ Constellations'],['milkyway','🌌 Milky Way'],['paths','☀ Sun/Moon paths'],['satellites','🛰 Satellites']].map(([k,he])=>`<div class="skylrow"><span>${he}</span><span class="skysw${_skyLayers[k]?' on':''}" data-skl="${k}" role="switch" aria-checked="${_skyLayers[k]?'true':'false'}"></span></div>`).join('')+`</div>`+
         `<div style="display:flex;gap:8px;margin:8px 0 4px;flex-wrap:wrap">`+
-          `<span data-nightview role="button" tabindex="0" style="padding:6px 12px;border-radius:9px;cursor:pointer;font-family:Heebo;font-size:12px;color:#caa15a;border:1px solid rgba(202,161,90,${_nv?'.7':'.4'});background:rgba(202,161,90,${_nv?'.26':'.10'})">${_nv?'🌙 בַּטֵּל הַחְשָׁכָה':'🌌 הַחְשֵׁךְ לִרְאוֹת כּוֹכָבִים'}</span>`+
+          `<span data-nightview role="button" tabindex="0" style="padding:6px 12px;border-radius:9px;cursor:pointer;font-family:Heebo;font-size:12px;color:#caa15a;border:1px solid rgba(202,161,90,${_nv?'.7':'.4'});background:rgba(202,161,90,${_nv?'.26':'.10'})">${_nv?'🌙 Cancel darkening':'🌌 Darken to see stars'}</span>`+
         `</div>`+
         lookUpSummary(date)+
         moonBlk+
-        `<div class="row"><span>🌅 זריחה מאחורי הרכס${xplSlot('sunEvents')}</span><b>${ev?ev.riseRidge:'—'}</b></div>`+
-        `<div class="row"><span>🌇 שקיעה מאחורי הרכס</span><b>${ev?ev.setRidge:'—'}</b></div>`+
-        `<div class="row"><span>אופק שטוח (להשוואה)</span><span style="color:#a99b78">${ev?ev.riseFlat+' / '+ev.setFlat:'—'}</span></div>`+
-        (function(){ let na=null; try{ na=window.Astro&&Astro.noonAlt?Astro.noonAlt(date):null; }catch(e){} return na!=null&&isFinite(na)?`<div class="row"><span>☀️ גֹּבַהּ הַשֶּׁמֶשׁ בַּצָּהֳרַיִם${xplSlot('noonAlt')}</span><b>${Math.round(na)}°</b></div>`:''; })()+
-        (tw?`<div class="row"><span>🌇 שָׁעַת זָהָב · דִּמְדּוּמִים (עֶרֶב)${xplSlot('twilightTimes')}</span><span style="color:#a99b78">זָהָב ${tw.golden.eve} · אֶזְרָחִי ${tw.civil.eve} · חֹשֶׁךְ מָלֵא ${tw.astro.eve}</span></div>`:'')+
+        `<div class="row"><span>🌅 Sunrise behind the ridge${xplSlot('sunEvents')}</span><b>${ev?ev.riseRidge:'—'}</b></div>`+
+        `<div class="row"><span>🌇 Sunset behind the ridge</span><b>${ev?ev.setRidge:'—'}</b></div>`+
+        `<div class="row"><span>Flat horizon (for comparison)</span><span style="color:#a99b78">${ev?ev.riseFlat+' / '+ev.setFlat:'—'}</span></div>`+
+        (function(){ let na=null; try{ na=window.Astro&&Astro.noonAlt?Astro.noonAlt(date):null; }catch(e){} return na!=null&&isFinite(na)?`<div class="row"><span>☀️ Sun altitude at noon${xplSlot('noonAlt')}</span><b>${Math.round(na)}°</b></div>`:''; })()+
+        (tw?`<div class="row"><span>🌇 Golden hour · twilight (evening)${xplSlot('twilightTimes')}</span><span style="color:#a99b78">Golden ${tw.golden.eve} · Civil ${tw.civil.eve} · Full dark ${tw.astro.eve}</span></div>`:'')+
         (gc?(gc.inSeason
-          ?`<div class="row"><span>🌌 לִבַּת שְׁבִיל הֶחָלָב${xplSlot('galacticCore')}</span><span style="color:#a99b78">${gc.fromHM}–${gc.toHM} · שִׂיא ${gc.peakAlt}° ${dirHe(gc.peakAz)}${gc.moonIllum>0.5?` · יָרֵחַ ${Math.round(gc.moonIllum*100)}% מַפְרִיעַ`:''}</span></div>`
-          :`<div class="row"><span>🌌 לִבַּת שְׁבִיל הֶחָלָב${xplSlot('galacticCore')}</span><span style="color:#a99b78">מִתַּחַת לָאֹפֶק בַּלַּיְלָה · שִׂיא הָעוֹנָה מַאי–סֶפְּטֶמְבֶּר</span></div>`):'')+
-        (dn?`<div class="row clk-no"><span>🌑 הַלַּיְלָה הֶחָשׁוּךְ הַבָּא${xplSlot('nextDarkNight')}</span><span style="color:#a99b78">${dn.daysAway<=0?'הַלַּיְלָה':dn.date.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'})+` · בְּעוֹד ${dn.daysAway} י׳`} · יָרֵחַ ${Math.round(dn.illum*100)}%${dn.cloud!=null?` · עֲנָנוּת ~${Math.round(dn.cloud*100)}%`:''}</span></div>`:'')+
+          ?`<div class="row"><span>🌌 Milky Way core${xplSlot('galacticCore')}</span><span style="color:#a99b78">${gc.fromHM}–${gc.toHM} · Peak ${gc.peakAlt}° ${dirHe(gc.peakAz)}${gc.moonIllum>0.5?` · Moon ${Math.round(gc.moonIllum*100)}% interfering`:''}</span></div>`
+          :`<div class="row"><span>🌌 Milky Way core${xplSlot('galacticCore')}</span><span style="color:#a99b78">Below the horizon at night · Peak season May–September</span></div>`):'')+
+        (dn?`<div class="row clk-no"><span>🌑 Next dark night${xplSlot('nextDarkNight')}</span><span style="color:#a99b78">${dn.daysAway<=0?'Tonight':dn.date.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'})+` · in ${dn.daysAway} d`} · Moon ${Math.round(dn.illum*100)}%${dn.cloud!=null?` · Cloud cover ~${Math.round(dn.cloud*100)}%`:''}</span></div>`:'')+
         (zl?(()=>{ const e=zl.evening,m=zl.morning;
-          if(e&&e.good) return `<div class="row"><span>🔺 אוֹר גַּלְגַּל הַמַּזָּלוֹת${xplSlot('zodiacalLight')}</span><span style="color:#a99b78">שְׁקִיעָה כּוֹזֶבֶת · מַעֲרָב · אַחֲרֵי ${e.hm} · זָוִית הָאֶקְלִיפְּטִיקָה ~${e.angleDeg}°</span></div>`;
-          if(m&&m.good) return `<div class="row"><span>🔺 אוֹר גַּלְגַּל הַמַּזָּלוֹת${xplSlot('zodiacalLight')}</span><span style="color:#a99b78">זְרִיחָה כּוֹזֶבֶת · מִזְרָח · לִפְנֵי ${m.hm} · זָוִית הָאֶקְלִיפְּטִיקָה ~${m.angleDeg}°</span></div>`;
+          if(e&&e.good) return `<div class="row"><span>🔺 Zodiacal light${xplSlot('zodiacalLight')}</span><span style="color:#a99b78">False sunset · West · after ${e.hm} · Ecliptic angle ~${e.angleDeg}°</span></div>`;
+          if(m&&m.good) return `<div class="row"><span>🔺 Zodiacal light${xplSlot('zodiacalLight')}</span><span style="color:#a99b78">False sunrise · East · before ${m.hm} · Ecliptic angle ~${m.angleDeg}°</span></div>`;
           const mb=(e&&e.moonBad)||(m&&m.moonBad);
-          return `<div class="row"><span>🔺 אוֹר גַּלְגַּל הַמַּזָּלוֹת${xplSlot('zodiacalLight')}</span><span style="color:#a99b78">חָרוּט שָׁטוּחַ כָּעֵת · שִׂיא: עֶרֶב בָּאָבִיב · בֹּקֶר בַּסְּתָו${mb?' · הַיָּרֵחַ מַפְרִיעַ':''}</span></div>`;
+          return `<div class="row"><span>🔺 Zodiacal light${xplSlot('zodiacalLight')}</span><span style="color:#a99b78">Cone is flat right now · Peak: evening in spring · morning in autumn${mb?' · The moon interferes':''}</span></div>`;
         })():'')+
         sunHtml+
         planHtml+
         upHtml+
         satHtml+
-        (op&&op.length?`<div class="sub" style="margin-top:12px">🛰 מַה חָלַף מֵעַל הַבַּיִת הַלַּיְלָה${xplSlot('overnightPasses')}</div>`+
-          op.map(x=>`<div class="row"><span>🛰 ${x.he}</span><span style="color:#a99b78">${x.hm} · שִׂיא ${x.peakAlt}° ${x.peakAzHe} · נִרְאֶה לָעַיִן</span></div>`).join(''):'')+
-        `<div data-natal style="margin-top:12px;padding:9px 12px;border-radius:8px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:14px;color:#fff7e6;background:linear-gradient(150deg,rgba(202,161,90,.2),rgba(202,161,90,.06));border:1px solid rgba(202,161,90,.4)">✨ מַפַּת הַשָּׁמַיִם הָאִישִׁית שֶׁלְּךָ</div>`+
-        `<div class="foot">מפת כוכבים חיה — כוכבים, כוכבי לכת, ירח ושמש בזמן אמת לפי זמן כוכבים מקומי. לחצו על שם כדי למקד את המבט · ריחפו מעל גרם שמיים לפרטים</div>`;
+        (op&&op.length?`<div class="sub" style="margin-top:12px">🛰 What passed over the house tonight${xplSlot('overnightPasses')}</div>`+
+          op.map(x=>`<div class="row"><span>🛰 ${x.he}</span><span style="color:#a99b78">${x.hm} · Peak ${x.peakAlt}° ${x.peakAzHe} · Visible to the eye</span></div>`).join(''):'')+
+        `<div data-natal style="margin-top:12px;padding:9px 12px;border-radius:8px;cursor:pointer;font-family:'Frank Ruhl Libre',serif;font-size:14px;color:#fff7e6;background:linear-gradient(150deg,rgba(202,161,90,.2),rgba(202,161,90,.06));border:1px solid rgba(202,161,90,.4)">✨ Your personal sky map</div>`+
+        `<div class="foot">Live star map — stars, planets, moon and sun in real time by local sidereal time. Click a name to focus the view · hover over a celestial body for details</div>`;
       mountXplChips(body);   // "?" explain chips on every computed sky value (re-mounts each tick)
       // mount sky_extras (harvested catalogs — bright stars up now, Messier, comets, meteor
       // calendar, events almanac) into a PERSISTENT node moved into the freshly-rebuilt body
@@ -1047,14 +1047,14 @@
       }
     }
 
-    /* ---------- אנרגיה ---------- */
+    /* ---------- energy ---------- */
     // ====== MICROCLIMATE control + per-zone readout + plant recs (spec §5b) ======
     // The microclimate ENGINE lives in derive.js; the 3-D heatmap + the
     // window.__microclimate API live in app.js. Here we render the CONTROL
     // (on/off + variable + season), a per-zone READOUT (sun-hours, DLI, peak/dawn
     // temp, Δ vs town, frost, ETc + weekly litres, wind), and the TOP PLANT
     // recommendations per zone, all for the selected season. Everything is an
-    // estimate ("מודל · הערכה").
+    // estimate ("model · estimate").
     const MC=()=>window.__microclimate;
     // a representative central cell per zone (cached) — derive.js aggregates a
     // zone's cells onto one profile; the central cell is the fair representative.
@@ -1079,11 +1079,11 @@
     }
     function frostLevel(prof){
       if(!prof) return {txt:'—',cls:''};
-      if(prof.frost) return {txt:'גבוה',cls:'frost-hi'};
+      if(prof.frost) return {txt:'High',cls:'frost-hi'};
       const td=(prof.frostTdawn!=null)?prof.frostTdawn:prof.Tdawn;
-      if(td!=null && td<=3) return {txt:'בינוני',cls:'frost-mid'};
-      if(td!=null && td<=6) return {txt:'נמוך',cls:''};
-      return {txt:'אין',cls:''};
+      if(td!=null && td<=3) return {txt:'Medium',cls:'frost-mid'};
+      if(td!=null && td<=6) return {txt:'Low',cls:''};
+      return {txt:'None',cls:''};
     }
     // CSS gradient string for the legend bar of the active variable.
     function legendGradient(varKey){
@@ -1105,15 +1105,15 @@
       const on=mc.isOn(), curVar=mc.getVariable(), curSeason=mc.getSeason();
       const seas=profSeason(curSeason,date);
       // control header + on/off
-      let html=`<div class="mc-hd"><span class="mt">מִיקְרוֹאַקְלִים · מַפַּת חוֹם</span>`+
-        `<span style="display:flex;align-items:center;gap:7px"><span class="mc-model">מוֹדֶל · הַעֲרָכָה</span>`+
+      let html=`<div class="mc-hd"><span class="mt">Microclimate · heat map</span>`+
+        `<span style="display:flex;align-items:center;gap:7px"><span class="mc-model">Model · estimate</span>`+
         `<span class="mc-sw${on?' on':''}" id="mc-onoff" role="switch" aria-checked="${on?'true':'false'}"></span></span></div>`+
-        `<div class="sub" style="margin-top:0">מפת חום תלת-ממדית על החצר — נגזרת ממאזן אנרגיה פיזיקלי לכל ~0.5 מ׳</div>`;
+        `<div class="sub" style="margin-top:0">3D heat map over the yard — derived from a physical energy balance for every ~0.5 m</div>`;
       // variable + season chip selectors (greyed when OFF)
       const dim=on?'':' mc-off';
-      html+=`<div class="mc-lbl">מֶשְׁתַּנֶּה</div><div class="mc-chips${dim}" id="mc-vars">`+
+      html+=`<div class="mc-lbl">Variable</div><div class="mc-chips${dim}" id="mc-vars">`+
         mc.VARIABLES.map(v=>`<span class="mc-chip${v.key===curVar?' on':''}" data-v="${v.key}">${v.label_he}</span>`).join('')+`</div>`;
-      html+=`<div class="mc-lbl">עוֹנָה</div><div class="mc-chips${dim}" id="mc-seasons">`+
+      html+=`<div class="mc-lbl">Season</div><div class="mc-chips${dim}" id="mc-seasons">`+
         mc.SEASONS.map(s=>`<span class="mc-chip${s.key===curSeason?' on':''}" data-s="${s.key}">${s.label_he}</span>`).join('')+`</div>`;
       // legend for the active variable
       const lg=mc.legend();
@@ -1128,7 +1128,7 @@
         `<div class="sc"><span>${loTxt}</span><span>${hiTxt}</span></div></div>`;
       // per-zone readout cards (all 3 zones) + top plant recs per zone
       const seasHe=seasonHe[seas]||seas;
-      html+=`<div class="mc-lbl" style="margin-top:8px">קְרִיאָה לְפִי אֵזוֹר · ${seasHe}</div>`;
+      html+=`<div class="mc-lbl" style="margin-top:8px">Reading by zone · ${seasHe}</div>`;
       zones.forEach(z=>{
         const cell=repCell(z.id);
         const prof=cell?Derive.cellProfile(cell,seas):null;
@@ -1140,16 +1140,16 @@
           const litresWk=Math.round((prof.ETc||0)*1.0*7*10)/10;
           const dAirStr=(prof.dAir>=0?'+':'')+prof.dAir;
           grid=`<div class="zg">`+
-            `<span class="k">שמש ישירה${xplSlot('sunHours')}</span><b>${prof.sunHours} ש׳</b>`+
+            `<span class="k">Direct sun${xplSlot('sunHours')}</span><b>${prof.sunHours} h</b>`+
             `<span class="k">DLI${xplSlot('dli')}</span><b>${prof.DLI} <span style="font-weight:400;color:#a99b78">mol/m²</span></b>`+
-            `<span class="k">שיא · שחר${xplSlot('surfaceTemp')}</span><b>${prof.Tpeak}° / ${prof.Tdawn}°</b>`+
-            `<span class="k">Δ מהעיר${xplSlot('airDelta')}</span><b>${dAirStr}°</b>`+
-            `<span class="k">כפור${xplSlot('frostRisk')}</span><b class="${fr.cls}">${fr.txt}</b>`+
-            `<span class="k">רוח</span><b>${Math.round((prof.exposure||0)*100)}%</b>`+
-            `<span class="k">מים (ETc)${xplSlot('ETc')}</span><b>${prof.ETc} מ״מ · ~${litresWk} ל׳/שב׳</b>`+
+            `<span class="k">Peak · dawn${xplSlot('surfaceTemp')}</span><b>${prof.Tpeak}° / ${prof.Tdawn}°</b>`+
+            `<span class="k">Δ from town${xplSlot('airDelta')}</span><b>${dAirStr}°</b>`+
+            `<span class="k">Frost${xplSlot('frostRisk')}</span><b class="${fr.cls}">${fr.txt}</b>`+
+            `<span class="k">Wind</span><b>${Math.round((prof.exposure||0)*100)}%</b>`+
+            `<span class="k">Water (ETc)${xplSlot('ETc')}</span><b>${prof.ETc} mm · ~${litresWk} L/wk</b>`+
             `</div>`;
         } else {
-          grid=`<div class="zf">המודל נטען…</div>`;
+          grid=`<div class="zf">The model is loading…</div>`;
         }
         // top plant recs for THIS zone/season (best-fit first, top 3)
         let recHtml='';
@@ -1167,7 +1167,7 @@
           }
         }
         html+=`<div class="zc"><div class="zt"><span class="zn">${z.name_he}</span>`+
-          `<span class="zf">${z.facing==='east'?'מזרח':z.facing==='west'?'מערב':''}${(z.elevation_offset_m||0)>1?' · מורם':''}</span></div>`+
+          `<span class="zf">${z.facing==='east'?'East':z.facing==='west'?'West':''}${(z.elevation_offset_m||0)>1?' · raised':''}</span></div>`+
           grid+recHtml+`</div>`;
       });
       return html;
@@ -1188,7 +1188,7 @@
        Readings are CUMULATIVE meter values stored as {k,v:'<num> kWh'|'<num> m³',
        d:'d.m.yyyy' he-IL, t?:<ms>}. We parse the number out of v and prefer the
        real timestamp t for diffing (legacy rows have only d → parse the he-IL
-       'd.m.yyyy' dotted date, GUARDING bad parses). All math is a labeled הערכה. */
+       'd.m.yyyy' dotted date, GUARDING bad parses). All math is a labeled estimate. */
     function readNum(r){ const m=String(r&&r.v||'').match(/-?\d+(?:[.,]\d+)?/); return m?parseFloat(m[0].replace(',','.')):NaN; }
     // legacy he-IL date 'd.m.yyyy' (dots) → ms; tolerate '/' and '-' too. NaN on junk.
     function parseHeDate(d){
@@ -1271,11 +1271,11 @@
     // by the caller instead). assumes CUMULATIVE meter values; skips Δval<0 pairs.
     function consumptionCard(kind, reads){
       const tar=tariffs();
-      const unit = kind==='elec' ? 'קוט״ש' : 'מ״ק';
-      const perDay = kind==='elec' ? 'קוט״ש/יום' : 'מ״ק/יום';
+      const unit = kind==='elec' ? 'kWh' : 'm³';
+      const perDay = kind==='elec' ? 'kWh/day' : 'm³/day';
       const price = kind==='elec' ? tar.elec : tar.water;
       const icon = kind==='elec' ? '⚡' : '💧';
-      const title = kind==='elec' ? 'צריכת חשמל' : 'צריכת מים';
+      const title = kind==='elec' ? 'Electricity consumption' : 'Water consumption';
       // collect {t,val} with a valid time + number, sort ascending by time.
       let pts=reads.filter(r=>r&&r.k===kind).map(r=>({t:readTime(r),val:readNum(r)}))
         .filter(p=>isFinite(p.t)&&isFinite(p.val)).sort((a,b)=>a.t-b.t);
@@ -1303,8 +1303,8 @@
         const prior=rates.slice(0,-1).map(r=>r.rate), med=median(prior);
         if(isFinite(med)&&med>0){
           const dev=(latest-med)/med;
-          if(dev>0.25) badge=`<span class="cz-badge hi">↑ גבוה מהרגיל</span>`;
-          else if(dev<-0.25) badge=`<span class="cz-badge lo">↓ נמוך מהרגיל</span>`;
+          if(dev>0.25) badge=`<span class="cz-badge hi">↑ Higher than usual</span>`;
+          else if(dev<-0.25) badge=`<span class="cz-badge lo">↓ Lower than usual</span>`;
         }
       }
       // tiny inline sparkline of recent daily rates (last ≤8)
@@ -1329,8 +1329,8 @@
         if(events.length){
           const last=rates[rates.length-1];
           const guestDays=occupancyInWindow(events, last.t0, last.t);
-          occHtml=`<div class="row"><span>בתקופה זו</span>`+
-            `<span style="color:#a99b78">~${guestDays} אירועי אורחים · ${fmt(last.rate)} ${perDay}</span></div>`;
+          occHtml=`<div class="row"><span>In this period</span>`+
+            `<span style="color:#a99b78">~${guestDays} guest events · ${fmt(last.rate)} ${perDay}</span></div>`;
           // soft "higher with guests" note: compare the mean daily rate of periods
           // WITH ≥1 occupancy event vs periods WITHOUT, if there's enough of each.
           if(rates.length>=4){
@@ -1341,7 +1341,7 @@
               const mw=mean(withG), mn0=mean(noG);
               if(isFinite(mw)&&isFinite(mn0)&&mn0>0){
                 const pct=Math.round((mw/mn0-1)*100);
-                if(pct>=12) occHtml+=`<div class="est" style="color:#e8a06a">↑ צריכה גבוהה יותר בתקופות עם אורחים (~+${pct}%, הערכה)</div>`;
+                if(pct>=12) occHtml+=`<div class="est" style="color:#e8a06a">↑ Higher consumption in periods with guests (~+${pct}%, estimate)</div>`;
               }
             }
           }
@@ -1350,13 +1350,13 @@
       return `<div class="card">`+
         `<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">`+
           `<div class="big">${fmt(latest)}<span style="font-size:12px;color:#a99b78"> ${perDay}</span></div>`+
-          `<span class="mc-model">הַעֲרָכָה</span></div>`+
-        `<div class="m" style="color:#a99b78;margin-top:2px">${icon} ${title} · קצב יומי אחרון מתוך ${pts.length} קריאות</div>`+
-        `<div class="row" style="margin-top:6px"><span>חודשי (×30.4)</span><b>~${fmt(monthly)} ${unit} ${badge}</b></div>`+
-        `<div class="row"><span>עלות חודשית</span><span style="color:#a99b78">~$${fmt(cost)}</span></div>`+
+          `<span class="mc-model">Estimate</span></div>`+
+        `<div class="m" style="color:#a99b78;margin-top:2px">${icon} ${title} · latest daily rate from ${pts.length} readings</div>`+
+        `<div class="row" style="margin-top:6px"><span>Monthly (×30.4)</span><b>~${fmt(monthly)} ${unit} ${badge}</b></div>`+
+        `<div class="row"><span>Monthly cost</span><span style="color:#a99b78">~$${fmt(cost)}</span></div>`+
         occHtml+
         spark+
-        `<div class="est">הערכה לפי קריאות מצטברות · תעריף ~$${price}/${unit} (הערכה)</div></div>`;
+        `<div class="est">Estimate from cumulative meter readings · tariff ~$${price}/${unit} (estimate)</div></div>`;
     }
     function renderEnergy(date){
       const E=Derive.energyNow(date); const reads=LS('home_read');
@@ -1368,8 +1368,8 @@
       if(rs){
         const fmt=n=>Math.round(n).toLocaleString('en-US');
         const shadeLine = rs.horizon_loss_pct>1.5
-          ? `אובדן הצללה ~${rs.horizon_loss_pct}% (אופק/מעקה/שכנים)`
-          : `אופק פתוח · ~0% הצללה על הגג`;
+          ? `Shading loss ~${rs.horizon_loss_pct}% (horizon/railing/neighbors)`
+          : `Open horizon · ~0% shading on the roof`;
         // ⚡ MONTHLY PV PRODUCTION CURVE — turn the single annual number into a shape:
         // a 12-bar chart of kWh/month from the live roofSolar() model. Sits inside the
         // PV card, right beside the annual headline.
@@ -1379,34 +1379,34 @@
           const vals = bm.map(m=>+m.kwh||0);
           const peakMo = vals.indexOf(Math.max(...vals));
           const lowMo  = vals.indexOf(Math.min(...vals));
-          const MON_FULL=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+          const MON_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
           pvMonthHtml =
             `<div style="display:flex;justify-content:space-between;font-size:9.5px;color:#a99b78;margin:8px 2px 2px">`+
-              `<span><span style="color:#caa15a">▮</span> ייצור חודשי (קוט״ש)<span data-xpl-pv></span></span>`+
-              `<span>שיא ${MON_FULL[peakMo]} · שפל ${MON_FULL[lowMo]}</span></div>`+
+              `<span><span style="color:#caa15a">▮</span> Monthly production (kWh)<span data-xpl-pv></span></span>`+
+              `<span>Peak ${MON_FULL[peakMo]} · Low ${MON_FULL[lowMo]}</span></div>`+
             monthBarsSVG(vals);
           if(rs.usable_area_m2!=null && rs.gross_area_m2!=null){
-            pvMonthHtml += `<div class="est" style="margin-top:2px">~${Math.round(rs.usable_area_m2)} מתוך ${Math.round(rs.gross_area_m2)} מ״ר גג שמישים לפאנלים</div>`;
+            pvMonthHtml += `<div class="est" style="margin-top:2px">~${Math.round(rs.usable_area_m2)} of ${Math.round(rs.gross_area_m2)} m² of roof usable for panels</div>`;
           }
         }
         pvHtml=`<div class="card">`+
           `<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">`+
             `<div class="big">${fmt(rs.annual_kwh)}${xplSlot('roofSolar_annual_kwh')}</div>`+
-            `<span class="mc-model">מוֹדֶל · הַעֲרָכָה</span></div>`+
-          `<div class="m" style="color:#a99b78">קוט״ש/שנה מהגג · ~${rs.peak_kw.toFixed(1)} kWp על ~${rs.usable_area_m2} מ״ר · חיסכון ~$${fmt(rs.savings_nis_per_year)} · ${rs.co2_t_per_year} טון CO₂ נחסך</div>`+
-          `<div class="row" style="margin-top:6px"><span>☀️ הטיה מיטבית</span><b>~${rs.best_tilt_deg}° לכיוון ${rs.best_azimuth_he}</b></div>`+
-          `<div class="row"><span>קרינה על המישור</span><span style="color:#a99b78">${fmt(rs.poa_kwh_m2_yr)} קוט״ש/מ״ר/שנה</span></div>`+
+            `<span class="mc-model">Model · estimate</span></div>`+
+          `<div class="m" style="color:#a99b78">kWh/year from the roof · ~${rs.peak_kw.toFixed(1)} kWp on ~${rs.usable_area_m2} m² · savings ~$${fmt(rs.savings_nis_per_year)} · ${rs.co2_t_per_year} tons CO₂ saved</div>`+
+          `<div class="row" style="margin-top:6px"><span>☀️ Optimal tilt</span><b>~${rs.best_tilt_deg}° facing ${rs.best_azimuth_he}</b></div>`+
+          `<div class="row"><span>Irradiance on the plane</span><span style="color:#a99b78">${fmt(rs.poa_kwh_m2_yr)} kWh/m²/year</span></div>`+
           pvMonthHtml+
           `<div class="est">${shadeLine}${rs.horizon_loss_pct>1.5?xplSlot('roofSolar_horizon_loss'):''} · ${rs.note_he}</div></div>`;
       } else {
         // HONEST fallback: the live physical model isn't ready yet (house/horizon data
         // still loading). Do NOT surface the legacy static 9,618 — it was a placeholder,
         // not a measurement. Show an honest loading state instead.
-        pvHtml=`<div class="card"><div class="m" style="color:#a99b78">☀️ פוטנציאל סולארי לגג — נטען מהמודל…</div><div class="est">המודל הפיזיקלי עדיין לא מוכן (נדרשים נתוני הבית והאופק). נסה שוב בעוד רגע.</div></div>`;}
+        pvHtml=`<div class="card"><div class="m" style="color:#a99b78">☀️ Solar potential for the roof — loading from the model…</div><div class="est">The physical model isn't ready yet (house and horizon data required). Try again in a moment.</div></div>`;}
       if(E&&E.nightFlush){const nf=E.nightFlush;
-        nfHtml=nf.needs_cooling&&nf.open_start?`<div class="row"><span>🪟 רענון לילה הלילה<span data-xpl-nf></span></span><b>${nf.open_start}–${nf.open_end}</b></div><div class="sub">פתח חלונות לקירור פסיבי (~${nf.open_hours} שעות)</div>`
-          :`<div class="row"><span>🪟 רענון לילה<span data-xpl-nf></span></span><span style="color:#a99b78">${nf.note_he||'לא נחוץ החודש'}</span></div>`;}
-      // ☀️ דוד שמש (solar hot-water) — annual solar fraction, December electric-backup
+        nfHtml=nf.needs_cooling&&nf.open_start?`<div class="row"><span>🪟 Night flush tonight<span data-xpl-nf></span></span><b>${nf.open_start}–${nf.open_end}</b></div><div class="sub">Open windows for passive cooling (~${nf.open_hours} hours)</div>`
+          :`<div class="row"><span>🪟 Night flush<span data-xpl-nf></span></span><span style="color:#a99b78">${nf.note_he||'Not needed this month'}</span></div>`;}
+      // ☀️ solar water heater (solar hot-water) — annual solar fraction, December electric-backup
       // callout, and a 12-month delivered-vs-demand mini bar chart, all from the
       // already-computed solar_hot_water table (Derive.energyNow().shw). The dashed
       // blue baseline marks daily demand; bars are daily delivered heat.
@@ -1423,30 +1423,30 @@
         const delivered = rows.map(r=>+r.delivered_kwh_day||0);
         const demandBase = rows[0] ? +rows[0].demand_kwh_day : null; // constant 4.19
         const backupHe = shw.backup_months_he || (Array.isArray(shw.backup_months)&&shw.backup_months.length
-          ? shw.backup_months.map(m=>['','ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'][m]).join(', ')
+          ? shw.backup_months.map(m=>['','January','February','March','April','May','June','July','August','September','October','November','December'][m]).join(', ')
           : '');
         const backupLine = backupHe
-          ? `<div class="row"><span>🔌 גיבוי חשמלי</span><b style="color:#e8a06a">${backupHe}</b></div>`+
-            `<div class="sub">בחורף קצר העמסת השמש לא מספיקה — הדוד משלים בחשמל בחודש זה</div>`
-          : `<div class="row"><span>🔌 גיבוי חשמלי</span><span style="color:#a99b78">לא נדרש כל השנה</span></div>`;
+          ? `<div class="row"><span>🔌 Electric backup</span><b style="color:#e8a06a">${backupHe}</b></div>`+
+            `<div class="sub">In short winter days the solar input isn't enough — the heater tops up with electricity this month</div>`
+          : `<div class="row"><span>🔌 Electric backup</span><span style="color:#a99b78">Not needed all year</span></div>`;
         shwHtml=`<div class="card">`+
           `<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">`+
             `<div class="big">${fracPct}%<span data-xpl-shw></span></div>`+
-            `<span class="mc-model">מוֹדֶל · הַעֲרָכָה</span></div>`+
-          `<div class="m" style="color:#a99b78">☀️ דוד שמש · נתח חימום מים שנתי מהשמש · מאגר ${shw.tank_l||150} ל׳ · קולט ${shw.collector_area_m2||2.5} מ״ר · ביקוש ${shw.demand_l_day||120} ל׳/יום</div>`+
+            `<span class="mc-model">Model · estimate</span></div>`+
+          `<div class="m" style="color:#a99b78">☀️ Solar water heater · annual share of water heating from the sun · tank ${shw.tank_l||150} L · collector ${shw.collector_area_m2||2.5} m² · demand ${shw.demand_l_day||120} L/day</div>`+
           backupLine+
           `<div style="display:flex;justify-content:space-between;font-size:9.5px;color:#a99b78;margin:8px 2px 2px">`+
-            `<span><span style="color:#caa15a">▮</span> חום מסופק (קוט״ש/יום)</span>`+
-            `<span><span style="color:#7fb0ff">┄</span> ביקוש יומי</span></div>`+
+            `<span><span style="color:#caa15a">▮</span> Delivered heat (kWh/day)</span>`+
+            `<span><span style="color:#7fb0ff">┄</span> Daily demand</span></div>`+
           monthBarsSVG(delivered, demandBase)+
-          `<div class="est">חום מהשמש לעומת ביקוש — 12 חודשים · הערכה פיזיקלית</div></div>`;
+          `<div class="est">Solar heat vs demand — 12 months · physical estimate</div></div>`;
       }
       // 📊 CONSUMPTION ANALYSIS per kind (needs ≥2 dated, cumulative readings).
       // If neither kind has enough dated history, show one honest hint instead.
       const elecCard=consumptionCard('elec',reads), waterCard=consumptionCard('water',reads);
       let consHtml=elecCard+waterCard;
       if(!consHtml){
-        consHtml=`<div class="est" style="margin-top:8px">הוסף עוד קריאה (בתאריך אחר) כדי לראות צריכה — חישוב הקצב דורש שתי קריאות מונה לפחות, בימים שונים.</div>`;
+        consHtml=`<div class="est" style="margin-top:8px">Add another reading (on a different date) to see consumption — calculating the rate requires at least two meter readings on different days.</div>`;
       }
       // ☀️ LIVE NOW — real measured irradiance → estimated instantaneous PV. LEADS the tab;
       // the annual potential model (8,351 kWh) is demoted below. (the developer: live data > annual summaries.)
@@ -1466,56 +1466,56 @@
         liveHtml=`<div class="card">`+
           `<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">`+
             `<div class="big">${pvNow!=null?pvNow.toFixed(2):'—'}<span style="font-size:13px;color:#a99b78"> kW</span></div>`+
-            `<span class="mc-model">לְפִי קְרִינָה מְמֻדֶּלֶת</span></div>`+
-          `<div class="m" style="color:#a99b78">⚡ יִיצּוּר סוֹלָארִי מְשֹׁעָר עַכְשָׁו · ${isDay?('הַשֶּׁמֶשׁ בְּגֹבַהּ '+Math.round(sunL.altDeg)+'°'):'הַשֶּׁמֶשׁ מִתַּחַת לָאֹפֶק'}</div>`+
-          (ghiNow!=null?`<div class="row"><span>☀️ קְרִינָה עַכְשָׁו</span><b>${Math.round(Math.max(0,ghiNow))} W/m²</b></div>`:'')+
-          (todayKwh!=null?`<div class="row"><span>📈 יוֹצַר הַיּוֹם עַד כֹּה</span><b>~${todayKwh.toFixed(1)} קוט״ש</b></div>`:'')+
-          `<div class="est">מְשֹׁעָר מִקְּרִינָה אֳפֳקִית מְמֻדֶּלֶת (Open-Meteo, ~11 ק״מ) × ${kWp!=null?kWp.toFixed(1):'?'} kWp × יַחַס בִּיצּוּעִים ~0.8 — לֹא מְדִידַת מוֹנֶה יִיצּוּר</div></div>`;
+            `<span class="mc-model">By modeled irradiance</span></div>`+
+          `<div class="m" style="color:#a99b78">⚡ Estimated solar production now · ${isDay?('Sun at altitude '+Math.round(sunL.altDeg)+'°'):'Sun below the horizon'}</div>`+
+          (ghiNow!=null?`<div class="row"><span>☀️ Irradiance now</span><b>${Math.round(Math.max(0,ghiNow))} W/m²</b></div>`:'')+
+          (todayKwh!=null?`<div class="row"><span>📈 Produced today so far</span><b>~${todayKwh.toFixed(1)} kWh</b></div>`:'')+
+          `<div class="est">Estimated from modeled horizontal irradiance (Open-Meteo, ~11 km) × ${kWp!=null?kWp.toFixed(1):'?'} kWp × performance ratio ~0.8 — not a production-meter measurement</div></div>`;
       }catch(e){ liveHtml=''; }
-      body.innerHTML=`<h3>אֵנֶרְגִּיָה · הַבַּיִת שֶׁלְּךָ</h3><div class="sub">מַה קוֹרֶה עַכְשָׁו — וְהַפּוֹטֶנְצִיאָל הַשְּׁנָתִי מִתַּחַת</div>`+
+      body.innerHTML=`<h3>Energy · your house</h3><div class="sub">What's happening now — and the annual potential below</div>`+
         liveHtml+
-        `<div class="sub" style="margin-top:14px">📅 הַפּוֹטֶנְצִיאָל הַשְּׁנָתִי (מוֹדֶל)</div>`+
+        `<div class="sub" style="margin-top:14px">📅 The annual potential (model)</div>`+
         pvHtml+shwHtml+nfHtml+
-        (E?`<div class="row"><span>חימום/קירור שנתי${xplSlot('degree_days')}</span><span>HDD ${Math.round(E.hdd||0)} · CDD ${Math.round(E.cdd||0)}</span></div>`:'')+
+        (E?`<div class="row"><span>Heating/cooling per year${xplSlot('degree_days')}</span><span>HDD ${Math.round(E.hdd||0)} · CDD ${Math.round(E.cdd||0)}</span></div>`:'')+
         microclimateBlock(date)+
-        `<div class="sub" style="margin-top:14px">📊 צריכה — מתוך הקריאות שלך</div>`+
+        `<div class="sub" style="margin-top:14px">📊 Consumption — from your readings</div>`+
         consHtml+
-        `<div class="sub" style="margin-top:14px">קריאות מונה (נשמר)</div>`+
-        `<div style="display:flex;gap:6px;margin-bottom:6px"><input id="r-elec" placeholder="חשמל kWh"><button class="btn" id="add-elec">+</button></div>`+
-        `<div style="display:flex;gap:6px"><input id="r-water" placeholder="מים m³"><button class="btn" id="add-water">+</button></div>`+
-        `<div id="readlist">${reads.slice(0,5).map(r=>`<div class="row"><span>${r.k==='elec'?'⚡':'💧'} ${r.v}</span><span style="color:#a99b78">${r.d}</span></div>`).join('')||'<div class="est">אין קריאות עדיין</div>'}</div>`+
+        `<div class="sub" style="margin-top:14px">Meter readings (saved)</div>`+
+        `<div style="display:flex;gap:6px;margin-bottom:6px"><input id="r-elec" placeholder="Electricity kWh"><button class="btn" id="add-elec">+</button></div>`+
+        `<div style="display:flex;gap:6px"><input id="r-water" placeholder="Water m³"><button class="btn" id="add-water">+</button></div>`+
+        `<div id="readlist">${reads.slice(0,5).map(r=>`<div class="row"><span>${r.k==='elec'?'⚡':'💧'} ${r.v}</span><span style="color:#a99b78">${r.d}</span></div>`).join('')||'<div class="est">No readings yet</div>'}</div>`+
         // 📥 IEC IMPORT (replaces the old footer TODO): reveal a paste box + file picker.
-        `<button class="btn" id="imp-toggle" style="width:100%;margin-top:8px">📥 ייבא צריכה מחח״י</button>`+
+        `<button class="btn" id="imp-toggle" style="width:100%;margin-top:8px">📥 Import consumption from the utility</button>`+
         `<div id="imp-box" style="display:none;margin-top:6px">`+
-          `<div class="imp-hint">הדבק שורות מקובץ הצריכה של חח״י (אזור אישי → "נתוני הצריכה שלי" → אקסל) — כל שורה: תאריך ומספר קוט״ש. תומך ב-31.05.2026, 31/5/2026, 2026-05-31.</div>`+
+          `<div class="imp-hint">Paste rows from your utility's consumption file (personal area → "My consumption data" → Excel) — each row: a date and a kWh number. Supports 31.05.2026, 31/5/2026, 2026-05-31.</div>`+
           `<textarea id="imp-text" placeholder="31.05.2026  142&#10;30.04.2026  118&#10;..."></textarea>`+
           `<div style="display:flex;gap:6px;margin-top:6px;align-items:center">`+
             `<input id="imp-file" type="file" accept=".csv,.txt" style="flex:1">`+
-            `<button class="btn" id="imp-run">ייבא</button></div>`+
+            `<button class="btn" id="imp-run">Import</button></div>`+
           `<div id="imp-msg" class="imp-msg"></div></div>`+
-        `<div class="foot">חישוב צריכה מהקריאות שלך + ייבוא מקובץ חח״י — הערכה, לא חיבור ישיר ל-IEC.</div>`;
+        `<div class="foot">Consumption calculated from your readings + import from a utility file — an estimate, not a direct connection to the utility.</div>`;
       // --- mount the universal "?" chip on the night-cooling window (explain.js) ---
       (function(){
         const slot=body.querySelector('[data-xpl-nf]'); if(!slot||!window.Explain) return;
         const nf=(E&&E.nightFlush)?E.nightFlush:null; if(!nf) return;
         const data=[];
         if(nf.needs_cooling&&nf.open_start){
-          data.push({k:'פתיחת חלונות',v:nf.open_start+'–'+nf.open_end});
-          if(nf.open_hours!=null) data.push({k:'משך מומלץ',v:'~'+nf.open_hours+' שעות'});
+          data.push({k:'Windows open',v:nf.open_start+'–'+nf.open_end});
+          if(nf.open_hours!=null) data.push({k:'Recommended duration',v:'~'+nf.open_hours+' hours'});
         }
-        data.push({k:'צריך קירור החודש',v:nf.needs_cooling?'כן':'לא'});
-        if(nf.note_he) data.push({k:'הערה',v:nf.note_he});
+        data.push({k:'Cooling needed this month',v:nf.needs_cooling?'Yes':'No'});
+        if(nf.note_he) data.push({k:'Note',v:nf.note_he});
         const chip=window.Explain.chip({
-          title:'רֶעֲנוּן לַיְלָה (קֵרוּר פָּסִיבִי)',
-          summary:'חלון הזמן הלילי שבו כדאי לפתוח חלונות כדי לשטוף את חום היום מהבית באוויר חוץ קריר — מודל חודשי לבית שלך.',
+          title:'Night flush (passive cooling)',
+          summary:'The nighttime window when it\'s worth opening windows to flush the day\'s heat from the house with cool outside air — a monthly model for your house.',
           estimate:true,
-          gloss:'מתי לפתוח חלונות הלילה כדי לקרר את הבית בלי מזגן',
+          gloss:'When to open windows at night to cool the house without an air conditioner',
           data:data,
-          formula:'open_hours = שעות שבהן  T_חוץ < T_פנים  בחלון  open_start→open_end',
+          formula:'open_hours = hours when  T_out < T_in  within the window  open_start→open_end',
           assumptions:[
-            'מודל חודשי ממוצע (לא תחזית לְיום מסוים)',
-            'מניח שאוויר הלילה החיצוני קריר מהפנים והבית מאוורר היטב',
-            'מבוסס על מסת הבית והפרשי טמפ׳ עיר־בית — הערכה, לא מדידה'
+            'Monthly average model (not a forecast for a specific day)',
+            'Assumes the outside night air is cooler than indoors and the house is well ventilated',
+            'Based on the house\'s mass and city-house temperature differences — an estimate, not a measurement'
           ],
           sources:[{label:'energy.json · night_flush', url:'data/energy.json'}]
         });
@@ -1529,22 +1529,22 @@
         let cov=0, dem=0; rows.forEach(r=>{ cov+=Math.min(r.delivered_kwh_day,r.demand_kwh_day); dem+=r.demand_kwh_day; });
         const fracPct=dem>0?Math.round(100*cov/dem):0;
         const chip=window.Explain.chip({
-          title:'דּוּד שֶׁמֶשׁ · נֵתַח שִׁמְשִׁי שְׁנָתִי',
-          summary:'איזה חלק מחימום המים בבית מסופק על־ידי השמש לאורך השנה, לפי קולט שטוח על הגג — מודל חודשי לבית שלך.',
+          title:'Solar water heater · annual solar share',
+          summary:'What share of the house\'s water heating is supplied by the sun over the year, using a flat-plate collector on the roof — a monthly model for your house.',
           estimate:true,
-          gloss:'כמה אחוז מחימום המים נעשה בחינם מהשמש',
+          gloss:'What percentage of water heating is done for free by the sun',
           data:[
-            {k:'נתח שמש שנתי', v:'~'+fracPct+'%'},
-            {k:'מאגר', v:(s.tank_l||150)+' ליטר'},
-            {k:'שטח קולט', v:(s.collector_area_m2||2.5)+' מ״ר'},
-            {k:'ביקוש יומי', v:(s.demand_l_day||120)+' ל׳/יום (~'+(rows[0]?rows[0].demand_kwh_day:'')+' קוט״ש)'},
-            {k:'גיבוי חשמלי', v:(s.backup_months_he||'—')}
+            {k:'Annual solar share', v:'~'+fracPct+'%'},
+            {k:'Tank', v:(s.tank_l||150)+' liters'},
+            {k:'Collector area', v:(s.collector_area_m2||2.5)+' m²'},
+            {k:'Daily demand', v:(s.demand_l_day||120)+' L/day (~'+(rows[0]?rows[0].demand_kwh_day:'')+' kWh)'},
+            {k:'Electric backup', v:(s.backup_months_he||'—')}
           ],
-          formula:'נתח שמש = Σ min(חום מסופק, ביקוש) ÷ Σ ביקוש  (12 חודשים)',
+          formula:'solar share = Σ min(delivered heat, demand) ÷ Σ demand  (12 months)',
           assumptions:[
-            'קולט שטוח 2.5 מ״ר עם נצילות תרמית טיפוסית, מאגר 150 ל׳',
-            'ביקוש קבוע 120 ל׳/יום (~4.19 קוט״ש) לאורך השנה',
-            'מבוסס על GHI חודשי בלרקמונט — הערכה, לא מדידה'
+            'Flat-plate collector 2.5 m² with typical thermal efficiency, 150 L tank',
+            'Constant demand 120 L/day (~4.19 kWh) throughout the year',
+            'Based on monthly GHI in Larkmont — an estimate, not a measurement'
           ],
           sources:[{label:'energy.json · solar_hot_water', url:'data/energy.json'}]
         });
@@ -1554,23 +1554,23 @@
       (function(){
         const slot=body.querySelector('[data-xpl-pv]'); if(!slot||!window.Explain||!rs) return;
         const chip=window.Explain.chip({
-          title:'יִיצוּר חַשְׁמַל סוֹלָארִי · עֲקֻמָּה חוֹדְשִׁית',
-          summary:'כמה חשמל הגג היה מייצר בכל חודש ממערכת PV בהטיה מיטבית — מודל פיזיקלי לפי הקרינה והאופק של הבית שלך.',
+          title:'Solar electricity production · monthly curve',
+          summary:'How much electricity the roof would produce each month from a PV system at optimal tilt — a physical model based on your house\'s irradiance and horizon.',
           estimate:true,
-          gloss:'תחזית ייצור חשמל מהשמש, חודש אחר חודש',
+          gloss:'Forecast of electricity production from the sun, month by month',
           data:[
-            {k:'ייצור שנתי', v:'~'+Math.round(rs.annual_kwh).toLocaleString('en-US')+' קוט״ש'},
-            {k:'הספק שיא', v:'~'+rs.peak_kw.toFixed(1)+' kWp'},
-            {k:'שטח שמיש', v:'~'+Math.round(rs.usable_area_m2)+' מתוך '+Math.round(rs.gross_area_m2)+' מ״ר'},
-            {k:'נצילות מודול', v:Math.round(rs.module_eff*100)+'%'},
-            {k:'יחס ביצוע (PR)', v:Math.round(rs.pr*100)+'%'},
-            {k:'הטיה מיטבית', v:'~'+rs.best_tilt_deg+'° לכיוון '+rs.best_azimuth_he}
+            {k:'Annual production', v:'~'+Math.round(rs.annual_kwh).toLocaleString('en-US')+' kWh'},
+            {k:'Peak power', v:'~'+rs.peak_kw.toFixed(1)+' kWp'},
+            {k:'Usable area', v:'~'+Math.round(rs.usable_area_m2)+' of '+Math.round(rs.gross_area_m2)+' m²'},
+            {k:'Module efficiency', v:Math.round(rs.module_eff*100)+'%'},
+            {k:'Performance ratio (PR)', v:Math.round(rs.pr*100)+'%'},
+            {k:'Optimal tilt', v:'~'+rs.best_tilt_deg+'° facing '+rs.best_azimuth_he}
           ],
-          formula:'ייצור_חודש = POA_חודש × שטח_שמיש × נצילות × PR',
+          formula:'production_month = POA_month × usable_area × efficiency × PR',
           assumptions:[
-            'מודל קרינה צלול־שמיים עם עננות עונתית + הצללת אופק/מעקה',
-            'שטח שמיש = '+Math.round(100*(rs.usable_area_m2/rs.gross_area_m2))+'% מהגג (נסיגת מעקה, מרווחי שורות, מקום לדוד השמש)',
-            'הערכה פיזיקלית — לא מדידה ולא Google Solar'
+            'Clear-sky irradiance model with seasonal cloud cover + horizon/railing shading',
+            'Usable area = '+Math.round(100*(rs.usable_area_m2/rs.gross_area_m2))+'% of the roof (railing setback, row spacing, room for the solar water heater)',
+            'A physical estimate — not a measurement and not Google Solar'
           ],
           sources:[{label:'energy.json · roof', url:'data/energy.json'}]
         });
@@ -1592,11 +1592,11 @@
         const lines=String(text||'').split(/\r?\n/);
         const parsed=lines.map(parseImportLine).filter(Boolean);
         const msg=$('imp-msg');
-        if(!parsed.length){ if(msg) msg.textContent='לא נמצאו שורות תקינות (תאריך + מספר בכל שורה).'; return; }
+        if(!parsed.length){ if(msg) msg.textContent='No valid rows found (a date + a number in each row).'; return; }
         const a=LS('home_read');
         parsed.forEach(p=>a.unshift({k:'elec',v:p.val+' kWh',d:new Date(p.t).toLocaleDateString('he-IL'),t:p.t}));
         save('home_read',a);
-        if(msg) msg.textContent=`יובאו ${parsed.length} קריאות חשמל ✓`;
+        if(msg) msg.textContent=`Imported ${parsed.length} electricity readings ✓`;
         renderEnergy(date); // re-render so the new history feeds the consumption card
       };
       const tog=$('imp-toggle'); if(tog) tog.onclick=()=>{ const b=$('imp-box');
@@ -1609,8 +1609,8 @@
         else doImport($('imp-text')&&$('imp-text').value); };
     }
 
-    /* ---------- טבע (curated offline field guide — nature.js) ---------- */
-    // The old live-iNaturalist feed was too sparse in the the highlands; the טבע tab is now a
+    /* ---------- nature (curated offline field guide — nature.js) ---------- */
+    // The old live-iNaturalist feed was too sparse in the the highlands; the nature tab is now a
     // CURATED, OFFLINE guide (window.Nature, data/nature_species.json — 58 verified
     // species). Mounted into a #wild-guide host (its CSS is scoped to #wild-guide); a
     // species row opens its OWN floating card. Mount promptly via Nature.isReady/onReady.
@@ -1620,10 +1620,10 @@
       const N=window.Nature;
       if(N&&N.renderGuideInto&&(!N.isReady||N.isReady())){ N.renderGuideInto(host); _wildMounted=true; _wildRetry=0; return; }
       if(N&&N.onReady&&!_wildOnReadyHooked){ _wildOnReadyHooked=true;
-        host.innerHTML='<div class="est">טוֹעֵן מַדְרִיךְ טֶבַע…</div>';
+        host.innerHTML='<div class="est">Loading nature guide…</div>';
         N.onReady(()=>{ _wildOnReadyHooked=false; if(active==='wild'&&!_wildMounted) mountWildGuide(); }); return; }
       if(!(N&&N.renderGuideInto) && _wildRetry<150){ _wildRetry++;
-        if(_wildRetry===1) host.innerHTML='<div class="est">טוֹעֵן מַדְרִיךְ טֶבַע…</div>';
+        if(_wildRetry===1) host.innerHTML='<div class="est">Loading nature guide…</div>';
         setTimeout(()=>{ if(active==='wild') mountWildGuide(); },40); }
     }
     function renderWild(force){
@@ -1631,54 +1631,54 @@
       if(force || !host){ body.innerHTML=storyBtns(['desert'])+'<div id="wild-guide"></div>'; _wildMounted=false; mountWildGuide(); }
       else if(!_wildMounted){ mountWildGuide(); }
     }
-    // a 3D iNaturalist sighting pin (if any still exist) just surfaces the טבע tab.
+    // a 3D iNaturalist sighting pin (if any still exist) just surfaces the nature tab.
     window.__onSightingPicked=function(s){
       if(!s) return;
       if(active!=='wild'){ const tabEl=wrap.querySelector('.tab[data-t="wild"]');
         if(tabEl){ active='wild'; wrap.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===tabEl)); render(true); } }
     };
 
-    /* ---------- סביבה (Feature A: live air-quality + pollen) ---------- */
+    /* ---------- environment (Feature A: live air-quality + pollen) ---------- */
     // Reads Weather.air (keyless Open-Meteo: {pm25,pm10,aqi,dust,uv}) and
     // EnvAPI.pollen ({grass,tree,weed,olive,ragweed,mugwort,index,...}). Repaints
     // on tab-switch and when app.js calls window.__renderEnv after a ~12-min
     // refresh — NOT per-second (air/pollen are location facts, not a live mood).
-    // Honest source label: 'Open-Meteo · ללא מפתח' by default, flips to
-    // 'Google · מפתח' once a Google key is pasted (localStorage home_env_keys_v1).
+    // Honest source label: 'Open-Meteo · no key' by default, flips to
+    // 'Google · key' once a Google key is pasted (localStorage home_env_keys_v1).
     const ENVKEYS='home_env_keys_v1';
     function envKeys(){ try{ return JSON.parse(localStorage.getItem(ENVKEYS))||{}; }catch(e){ return {}; } }
     function hasGoogleKey(){ const k=envKeys(); return !!(k&&(k.googleKey||k.google||k.key)); }
-    // numeric AQI → Hebrew band + colour (mirrors the app.js aqiBadge bands).
+    // numeric AQI → band label + colour (mirrors the app.js aqiBadge bands).
     function aqiTone(aqi){
       if(aqi==null||!isFinite(aqi)) return {he:'—',col:'#a99b78'};
-      if(aqi<=20) return {he:'מצוין',col:'#a3e635'};
-      if(aqi<=40) return {he:'טוב',col:'#9fce8f'};
-      if(aqi<=60) return {he:'בינוני',col:'#e0b24a'};
-      if(aqi<=80) return {he:'ירוד',col:'#e8804a'};
-      if(aqi<=100) return {he:'גרוע',col:'#e0653f'};
-      return {he:'מסוכן',col:'#d8526a'};
+      if(aqi<=20) return {he:'Excellent',col:'#a3e635'};
+      if(aqi<=40) return {he:'Good',col:'#9fce8f'};
+      if(aqi<=60) return {he:'Moderate',col:'#e0b24a'};
+      if(aqi<=80) return {he:'Poor',col:'#e8804a'};
+      if(aqi<=100) return {he:'Bad',col:'#e0653f'};
+      return {he:'Hazardous',col:'#d8526a'};
     }
-    // 0..(~4-5) pollen level → Hebrew label + colour for the per-type rows.
+    // 0..(~4-5) pollen level → band label + colour for the per-type rows.
     function pollenTone(v){
       if(v==null||!isFinite(v)) return {he:'—',col:'#a99b78'};
-      if(v<=0.2) return {he:'אין',col:'#a99b78'};
-      if(v<1.5) return {he:'נמוך',col:'#9fce8f'};
-      if(v<3) return {he:'בינוני',col:'#e0b24a'};
-      if(v<4) return {he:'גבוה',col:'#e8804a'};
-      return {he:'גבוה מאוד',col:'#d8526a'};
+      if(v<=0.2) return {he:'None',col:'#a99b78'};
+      if(v<1.5) return {he:'Low',col:'#9fce8f'};
+      if(v<3) return {he:'Moderate',col:'#e0b24a'};
+      if(v<4) return {he:'High',col:'#e8804a'};
+      return {he:'Very high',col:'#d8526a'};
     }
     // --- WEATHER block (consolidated from the retired floating #wx card) -------
-    // Mirrors app.js updateWeatherUI's HEADLINE + "אֲוִיר עַכְשָׁו" grid, using the
+    // Mirrors app.js updateWeatherUI's HEADLINE + "air now" grid, using the
     // SAME real source (window.Weather.state + Derive downscaling + Weather.air.uv),
-    // rendered in the #inst dark/gold skin. Lives at the TOP of the סביבה tab (above
+    // rendered in the #inst dark/gold skin. Lives at the TOP of the environment tab (above
     // air-quality). It moves with the scrubbed time like the card did: the per-second
     // tick + app.js's updateWeatherUI both call updateEnvWeather, which rewrites ONLY
     // the #env-wx sub-container (so the Google-key input below is never disturbed).
-    const _uvHe=u=>(u==null||!isFinite(u))?'—':u<3?'נמוך':u<6?'בינוני':u<8?'גבוה':u<11?'גבוה מאוד':'קיצוני';
-    const _windHe=az=>{const d=['צפון','צפון-מזרח','מזרח','דרום-מזרח','דרום','דרום-מערב','מערב','צפון-מערב'];return d[Math.round((((az%360)+360)%360)/45)%8];};
+    const _uvHe=u=>(u==null||!isFinite(u))?'—':u<3?'Low':u<6?'Moderate':u<8?'High':u<11?'Very high':'Extreme';
+    const _windHe=az=>{const d=['N','NE','E','SE','S','SW','W','NW'];return d[Math.round((((az%360)+360)%360)/45)%8];};
     function weatherBlockHTML(date){
       const st=(window.Weather&&Weather.state)||null;
-      if(!st) return `<div class="card"><div class="m">נתוני מזג אוויר נטענים…</div></div>`;
+      if(!st) return `<div class="card"><div class="m">Weather data loading…</div></div>`;
       const air=(window.Weather&&Weather.air)||null;
       const sun=(window.Astro&&Astro.sun)?Astro.sun(date):null;
       const alt=sun?sun.altDeg:25, isNight=alt<0;
@@ -1700,28 +1700,28 @@
       let deltaLine='';
       if(mc&&town!=null&&Math.abs(mc.delta)>=0.1){
         const cooler=mc.delta<0;
-        deltaLine=`<div class="m" style="color:${cooler?'#9fc2e0':'#e0b070'}">~${Math.abs(mc.delta).toFixed(1)}° ${cooler?'קריר':'חם'} מהעיר (${town}° בלרקמונט) · הערכה</div>`;
+        deltaLine=`<div class="m" style="color:${cooler?'#9fc2e0':'#e0b070'}">~${Math.abs(mc.delta).toFixed(1)}° ${cooler?'cooler':'warmer'} than town (${town}° in Larkmont) · estimate</div>`;
       } else if(town!=null){
-        deltaLine=`<div class="m" style="color:#a99b78">כמו בלרקמונט (${town}°)</div>`;
+        deltaLine=`<div class="m" style="color:#a99b78">Same as Larkmont (${town}°)</div>`;
       }
-      const feelsLine=(feels!=null)?`<div class="est" style="color:#cdbd92">מרגיש כמו ${feels}° · הערכה</div>`:'';
+      const feelsLine=(feels!=null)?`<div class="est" style="color:#cdbd92">Feels like ${feels}° · estimate</div>`:'';
       const descLine=st.desc?`<div class="m" style="color:#e7dcc0;margin-top:3px">${String(st.desc)}</div>`:'';
       // mini stat-tile grid in the #inst skin (clouds / dew / humidity / wind / UV)
       const cell=(v,l)=>`<div style="background:rgba(255,255,255,.04);border:1px solid rgba(202,161,90,.16);border-radius:6px;padding:7px 4px;text-align:center"><div style="font-size:14px;color:#f3ead2">${v}</div><div style="font-size:9.5px;color:#a99b78;letter-spacing:.04em;margin-top:2px">${l}</div></div>`;
       const grid3=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:8px">`+
-          cell(cloudPct!=null?cloudPct+'%':'—','ענ ננות')+
-          cell(dew!=null?dew+'°':'—','נק׳ טל')+
-          cell(hum!=null?hum+'%':'—','לחות')+
+          cell(cloudPct!=null?cloudPct+'%':'—','Cloud cover')+
+          cell(dew!=null?dew+'°':'—','Dew point')+
+          cell(hum!=null?hum+'%':'—','Humidity')+
         `</div>`;
       const grid2=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px">`+
-          cell(windKmh!=null?Math.round(windKmh)+'<small style="font-size:10px;color:#bcae8a"> קמ״ש</small>':'—','רוח')+
+          cell(windKmh!=null?Math.round(windKmh)+'<small style="font-size:10px;color:#bcae8a"> km/h</small>':'—','Wind')+
           cell(uvNow!=null?uvNow+'<small style="font-size:10px;color:#bcae8a"> '+_uvHe(uvNow)+'</small>':'—','UV')+
         `</div>`;
       return `<div class="card" style="margin-top:0">`+
           `<div class="big">${houseTemp!=null?houseTemp+'°':(town!=null?town+'°':'—')}</div>`+
           deltaLine+feelsLine+descLine+
         `</div>`+
-        `<div class="sub" style="margin-top:12px">אֲוִיר עַכְשָׁו</div>`+
+        `<div class="sub" style="margin-top:12px">Air now</div>`+
         grid3+grid2;
     }
     // repaint ONLY the weather sub-container (live, with the scrubbed time). Called
@@ -1736,7 +1736,7 @@
       const air=(window.Weather&&Weather.air)||null;
       const pol=(window.EnvAPI&&EnvAPI.pollen)||null;
       const goog=hasGoogleKey();
-      const srcHe=goog?'Google · מפתח':'Open-Meteo · ללא מפתח';
+      const srcHe=goog?'Google · key':'Open-Meteo · no key';
       const num=(v,u)=>(v==null||!isFinite(v))?'—':(Math.round(v*10)/10)+(u||'');
       // --- air-quality block (real measured particulates) ---
       let airHtml;
@@ -1744,13 +1744,13 @@
         const aq=aqiTone(air.aqi);
         airHtml=`<div class="card"><div class="big" style="color:${aq.col}">${air.aqi!=null&&isFinite(air.aqi)?Math.round(air.aqi):'—'}`+
             `<span style="font-size:13px;color:#a99b78"> AQI</span>${xplSlot('dust_aqi')}</div>`+
-          `<div class="m" style="color:#a99b78">${aq.he} · אירופאי</div></div>`+
-          `<div class="row"><span>חלקיקים PM2.5</span><b>${num(air.pm25,' µg/m³')}</b></div>`+
-          `<div class="row"><span>חלקיקים PM10</span><b>${num(air.pm10,' µg/m³')}</b></div>`+
-          `<div class="row"><span>אבק מרחף</span><b>${num(air.dust,' µg/m³')}</b></div>`+
-          `<div class="row"><span>קרינת UV${xplSlot('uv_index')}</span><b style="color:${uvColor(air.uv)}">${air.uv==null||!isFinite(air.uv)?'—':Math.round(air.uv)}</b></div>`;
+          `<div class="m" style="color:#a99b78">${aq.he} · European</div></div>`+
+          `<div class="row"><span>Particulates PM2.5</span><b>${num(air.pm25,' µg/m³')}</b></div>`+
+          `<div class="row"><span>Particulates PM10</span><b>${num(air.pm10,' µg/m³')}</b></div>`+
+          `<div class="row"><span>Suspended dust</span><b>${num(air.dust,' µg/m³')}</b></div>`+
+          `<div class="row"><span>UV radiation${xplSlot('uv_index')}</span><b style="color:${uvColor(air.uv)}">${air.uv==null||!isFinite(air.uv)?'—':Math.round(air.uv)}</b></div>`;
       } else {
-        airHtml=`<div class="card"><div class="m">נתוני איכות אוויר נטענים…</div></div>`;
+        airHtml=`<div class="card"><div class="m">Air-quality data loading…</div></div>`;
       }
       // --- rain block (#10): 30-day accumulated precip + next-day forecast ---
       // Weather.accumPrecip(30) returns mm over the last 30 days (or null until
@@ -1763,44 +1763,44 @@
         if(window.Weather&&Weather.dailyToday){
           const tmr=new Date((date||new Date()).getTime()+86400000);
           const nx=Weather.dailyToday('dPrecip',tmr);
-          if(nx!=null&&isFinite(nx)&&nx>=0.1) fcHtml=` · מחר ~${Math.round(nx*10)/10} מ״מ`;
+          if(nx!=null&&isFinite(nx)&&nx>=0.1) fcHtml=` · tomorrow ~${Math.round(nx*10)/10} mm`;
         }
-        rainHtml=`<div class="row"><span>🌧 ירד ב-30 יום${xplSlot('accumPrecip')}</span><b>~${accum} מ״מ${fcHtml}</b></div>`;
+        rainHtml=`<div class="row"><span>🌧 Fell in 30 days${xplSlot('accumPrecip')}</span><b>~${accum} mm${fcHtml}</b></div>`;
       }
       // --- pollen / allergen block (per type) ---
-      const POL=[['olive','זית'],['grass','דגניים'],['tree','עצים'],['weed','עשבים'],['ragweed','אמברוזיה'],['mugwort','לענה']];
+      const POL=[['olive','Olive'],['grass','Grasses'],['tree','Trees'],['weed','Weeds'],['ragweed','Ragweed'],['mugwort','Mugwort']];
       let polRows='';
       if(pol){
         polRows=POL.map(([k,he])=>{ const v=pol[k]; const t=pollenTone(v);
           return `<div class="row"><span>${he}</span><b style="color:${t.col}">${t.he}${(v!=null&&isFinite(v))?' · '+(Math.round(v*10)/10):''}</b></div>`;
         }).join('');
       } else {
-        polRows=`<div class="est">נתוני אבקנים נטענים…</div>`;
+        polRows=`<div class="est">Pollen data loading…</div>`;
       }
       // --- optional Google-key upgrade input ---
-      const keyHtml=`<div class="sub" style="margin-top:14px">דיוק מוגבר (אופציונלי)</div>`+
-        `<div style="display:flex;gap:6px"><input id="env-gkey" placeholder="הדבק מפתח Google (אופציונלי)" value="${goog?(envKeys().googleKey||envKeys().google||envKeys().key||''):''}"><button class="btn" id="env-gsave">שמור</button></div>`;
-      body.innerHTML=`<h3>הַסְּבִיבָה שֶׁלְּךָ · עַכְשָׁו</h3>`+
-        `<div class="sub">מזג אוויר, איכות אוויר ואבקנים — בבית שלך, נמדד אזורית (${srcHe})</div>`+
+      const keyHtml=`<div class="sub" style="margin-top:14px">Enhanced accuracy (optional)</div>`+
+        `<div style="display:flex;gap:6px"><input id="env-gkey" placeholder="Paste a Google key (optional)" value="${goog?(envKeys().googleKey||envKeys().google||envKeys().key||''):''}"><button class="btn" id="env-gsave">Save</button></div>`;
+      body.innerHTML=`<h3>Your environment · now</h3>`+
+        `<div class="sub">Weather, air quality and pollen — at your house, measured regionally (${srcHe})</div>`+
         `<div id="env-wx">${weatherBlockHTML(date||nowDate())}</div>`+
-        `<div class="sub" style="margin-top:14px">🌫 אֵיכוּת אֲוִיר</div>`+
+        `<div class="sub" style="margin-top:14px">🌫 Air quality</div>`+
         airHtml+
         rainHtml+
-        `<div class="sub" style="margin-top:14px">🤧 אבקנים · אלרגנים${xplSlot('pollen')}</div>`+
+        `<div class="sub" style="margin-top:14px">🤧 Pollen · allergens${xplSlot('pollen')}</div>`+
         polRows+
         keyHtml+
-        `<div class="sub" style="margin-top:16px">🗺️ מַפַּת הַמָּקוֹם · גֵּאוֹלוֹגְיָה · מַעְיָנוֹת · אַרְכֵיאוֹלוֹגְיָה · שְׁבִילִים</div>`+
-        `<button id="env-map-open" style="width:100%;margin-top:6px;padding:14px;border-radius:10px;border:1px solid rgba(202,161,90,.5);background:linear-gradient(160deg,rgba(202,161,90,.2),rgba(202,161,90,.05));color:#f0e3c0;font-family:'Frank Ruhl Libre',serif;font-size:15px;cursor:pointer">🗺️ פְּתַח אֶת הַמַּפָּה הַמְּלֵאָה — שְׁכָבוֹת · זוּם · צִיר זְמַן</button>`+
-        `<div class="sub" style="margin-top:16px">📋 פֵּרוּט · גֵּאוֹלוֹגְיָה · מַיִם · הִיסְטוֹרְיָה</div>`+
+        `<div class="sub" style="margin-top:16px">🗺️ Local map · geology · springs · archaeology · trails</div>`+
+        `<button id="env-map-open" style="width:100%;margin-top:6px;padding:14px;border-radius:10px;border:1px solid rgba(202,161,90,.5);background:linear-gradient(160deg,rgba(202,161,90,.2),rgba(202,161,90,.05));color:#f0e3c0;font-family:'Frank Ruhl Libre',serif;font-size:15px;cursor:pointer">🗺️ Open the full map — layers · zoom · timeline</button>`+
+        `<div class="sub" style="margin-top:16px">📋 Details · geology · water · history</div>`+
         `<div id="env-extras"></div>`+
-        `<div class="sub" style="margin-top:16px">📜 הִיסְטוֹרְיָה אַקְלִימִית · ~65 שָׁנָה</div>`+storyBtns(['town','trade'])+
+        `<div class="sub" style="margin-top:16px">📜 Climate history · ~65 years</div>`+storyBtns(['town','trade'])+
         `<div id="env-hist"></div>`+
-        `<div class="foot">ערכים ממודלים לתא-רשת אזורי (הערכה, לא חיישן על החלקה) · מתעדכן כל ~12 דק׳${pol&&pol.time?' · אבקנים '+pol.time:''}</div>`;
+        `<div class="foot">Values modeled for a regional grid cell (an estimate, not a sensor on the plot) · updates every ~12 min${pol&&pol.time?' · pollen '+pol.time:''}</div>`;
       mountXplChips(body);   // "?" chips on AQI/dust, UV, 30-day rain, and the pollen header
       // spatial place-map (Leaflet, self-loaded) LEADS the place section; the text extras are the detail
       const _mo=$('env-map-open'); if(_mo) _mo.onclick=()=>{ if(window.__mapBg&&window.__mapBg.toggle) window.__mapBg.toggle(true); };   // launcher → flips the whole background to the full map
       const _ex=$('env-extras'); if(_ex&&window.__envExtras&&window.__envExtras.render){ try{ window.__envExtras.render(_ex,date); }catch(e){} }
-      const _eh=$('env-hist'); if(_eh) fillHist(_eh);   // climate history folded into סביבה (היסטוריה tab merged in)
+      const _eh=$('env-hist'); if(_eh) fillHist(_eh);   // climate history folded into environment (history tab merged in)
       // re-wire AFTER the destructive innerHTML= (the :524 wireMicroclimate pattern):
       const save_=$('env-gsave');
       if(save_) save_.onclick=()=>{
@@ -1811,10 +1811,10 @@
         renderEnv(nowDate());
       };
     }
-    // app.js post-refresh hook: repaint the סביבה tab if it's the active one.
+    // app.js post-refresh hook: repaint the environment tab if it's the active one.
     window.__renderEnv=()=>{ if(active==='env') renderEnv(nowDate()); };
 
-    /* ---------- היסטוריה (climate-history of his exact grid cell) ---------- */
+    /* ---------- history (climate-history of his exact grid cell) ---------- */
     // Static ERA5-reanalysis climate record for Alex's coordinates, baked into
     // data/history.json by the DATA agent. Shape (FIXED):
     //   { meta:{source,lat,lon,range,generated_note,frost_note_he},
@@ -1854,13 +1854,13 @@
       return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" preserveAspectRatio="none" style="display:block">`+
         axis+bars+line+lbls+`</svg>`;
     }
-    // 📊 generic 12-month gold bar chart (reused by the אנרגיה gems: solar-hot-water
+    // 📊 generic 12-month gold bar chart (reused by the energy gems: solar-hot-water
     // delivered-vs-demand and monthly PV production). Same visual language as
     // histChartSVG — gold bars + faint baseline. `vals` = 12 numbers (Jan→Dec, left
     // to right, like the climate chart). Optional `baseline` = a single value drawn
     // as a dashed reference line (e.g. daily hot-water demand). Month initials are
     // drawn under every other bar to stay legible at this width.
-    const MON_HE1 = ['י','פ','מ','א','מ','י','י','א','ס','א','נ','ד'];
+    const MON_HE1 = ['J','F','M','A','M','J','J','A','S','O','N','D'];
     function monthBarsSVG(vals, baseline){
       const W=270, H=78, padL=4, padR=4, padT=8, padB=14;
       const n=vals.length; if(!n) return '';
@@ -1887,20 +1887,20 @@
       return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" preserveAspectRatio="none" style="display:block">`+
         axis+bars+ref+lbls+`</svg>`;
     }
-    // climate history was its own היסטוריה tab; it's now MERGED INTO סביבה (renderEnv fills
-    // #env-hist via fillHist). histInnerHtml builds just the content (no h3/sub — סביבה owns
+    // climate history was its own history tab; it's now MERGED INTO environment (renderEnv fills
+    // #env-hist via fillHist). histInnerHtml builds just the content (no h3/sub — environment owns
     // the section header); fillHist handles the one-time data/history.json load.
     function fillHist(el){
       if(!el) return;
       if(_hist){ el.innerHTML=histInnerHtml(_hist); return; }
       el.innerHTML = _histErr
-        ? `<div class="card"><div class="m">לא ניתן לטעון את נתוני ההיסטוריה.</div></div>`
-        : `<div class="card"><div class="m" style="color:#a99b78">נתוני אקלים נטענים…</div></div>`;
+        ? `<div class="card"><div class="m">Could not load the history data.</div></div>`
+        : `<div class="card"><div class="m" style="color:#a99b78">Climate data loading…</div></div>`;
       if(!_histLoading && !_histErr){
         _histLoading=true;
         fetch('data/history.json').then(r=>{ if(!r.ok) throw 0; return r.json(); })
           .then(j=>{ _hist=j; _histLoading=false; const e2=$('env-hist'); if(e2&&active==='env') e2.innerHTML=histInnerHtml(_hist); })
-          .catch(()=>{ _histErr=true; _histLoading=false; const e2=$('env-hist'); if(e2&&active==='env') e2.innerHTML=`<div class="card"><div class="m">לא ניתן לטעון את נתוני ההיסטוריה.</div></div>`; });
+          .catch(()=>{ _histErr=true; _histLoading=false; const e2=$('env-hist'); if(e2&&active==='env') e2.innerHTML=`<div class="card"><div class="m">Could not load the history data.</div></div>`; });
       }
     }
     function histInnerHtml(h){
@@ -1916,33 +1916,33 @@
       // warming headline card (the signal that matters): +X°C over the span
       const warmCard = warm!=null
         ? `<div class="card"><div class="big" style="color:${warm>=0?'#e8804a':'#7fb0ff'}">${warm>=0?'+':''}${(Math.round(warm*10)/10)}°<span style="font-size:13px;color:#a99b78">C</span></div>`+
-            `<div class="m" style="color:#a99b78">התחממות ב-${yrsSpan} שנה${perDec!=null?' · ~'+(warm>=0?'+':'')+(Math.round(perDec*100)/100)+'° לעשור':''}</div>`+
-            `<div class="est">מגמת טמפ׳ מקסימום שנתית</div></div>`
+            `<div class="m" style="color:#a99b78">Warming over ${yrsSpan} years${perDec!=null?' · ~'+(warm>=0?'+':'')+(Math.round(perDec*100)/100)+'° per decade':''}</div>`+
+            `<div class="est">Annual maximum-temperature trend</div></div>`
         : '';
       // headline rows
       const rows=
-        `<div class="row"><span>טווח התיעוד</span><b>${rng}</b></div>`+
-        `<div class="row"><span>לילות קרים (≤ ~3°) בשנה</span><b>${avgCold!=null?Math.round(avgCold):'—'}</b></div>`+
-        `<div class="row"><span>גשם ממוצע בשנה</span><b>${avgRain!=null?Math.round(avgRain)+' מ״מ':'—'}</b></div>`+
-        (avgHot!=null?`<div class="row"><span>ימים חמים (>35°) בשנה</span><b>${Math.round(avgHot)}</b></div>`:'');
+        `<div class="row"><span>Record range</span><b>${rng}</b></div>`+
+        `<div class="row"><span>Cold nights (≤ ~3°) per year</span><b>${avgCold!=null?Math.round(avgCold):'—'}</b></div>`+
+        `<div class="row"><span>Average rain per year</span><b>${avgRain!=null?Math.round(avgRain)+' mm':'—'}</b></div>`+
+        (avgHot!=null?`<div class="row"><span>Hot days (>35°) per year</span><b>${Math.round(avgHot)}</b></div>`:'');
       // mini-chart card with a tiny legend
       const chartCard = years.length
         ? `<div class="card" style="padding:8px 8px 4px">`+
             `<div style="display:flex;justify-content:space-between;font-size:9.5px;color:#a99b78;margin-bottom:2px;padding:0 2px">`+
-              `<span><span style="color:#caa15a">▮</span> גשם (מ״מ)</span>`+
-              `<span><span style="color:#7fb0ff">▬</span> לילות קרים</span></div>`+
+              `<span><span style="color:#caa15a">▮</span> Rain (mm)</span>`+
+              `<span><span style="color:#7fb0ff">▬</span> Cold nights</span></div>`+
             histChartSVG(years)+`</div>`
         : '';
       const frostNote = meta.frost_note_he ||
-        'לילות קרים = ספירת Tmin ≤ ~3° (טמפ׳ אוויר ב-2 מ׳). כפור קרקע קורנת בלרקמונט תכוף יותר ממה שמדד הרשת מראה.';
+        'Cold nights = count of Tmin ≤ ~3° (air temp at 2 m). Radiative ground frost in Larkmont is more frequent than the grid measurement shows.';
       return warmCard+chartCard+rows+
-        `<div class="foot">ERA5 reanalysis (Open-Meteo) · הערכה אזורית (תא-רשת ~11 ק״מ), לא חיישן על החלקה · ${frostNote}</div>`;
+        `<div class="foot">ERA5 reanalysis (Open-Meteo) · regional estimate (grid cell ~11 km), not a sensor on the plot · ${frostNote}</div>`;
     }
 
-    /* ---------- 📖 סיפור הבית (home-story timeline, #36-38) ----------
+    /* ---------- 📖 The home story (home-story timeline, #36-38) ----------
        Reads data/milestones.json (Agent A) with shape {events:[{date,he,emoji}]}
        (date = ISO 'YYYY-MM-DD'). Renders the events as a small dated timeline and
-       a LIVE "N שנים ו-M חודשים בבית / בלרקמונט" computed from today against the two
+       a LIVE "N years and M months in the house / in Larkmont" computed from today against the two
        anchor dates ('moved into the house' / 'moved to Larkmont'). Static data →
        fetched once and cached; degrades silently if the file is missing. */
     let _ms=null, _msLoading=false, _msErr=false;
@@ -1951,18 +1951,18 @@
       if(!m) return null;
       const d=new Date(+m[1],+m[2]-1,+m[3]); return isFinite(d.getTime())?d:null;
     }
-    // whole years + remaining months between two dates → "N שנים ו-M חודשים"
-    // (gracefully drops a zero part; "פחות מחודש" for <1 month). from must be ≤ to.
+    // whole years + remaining months between two dates → "N years and M months"
+    // (gracefully drops a zero part; "less than a month" for <1 month). from must be ≤ to.
     function elapsedHe(from, to){
       if(!from||!to||to<from) return null;
       let months=(to.getFullYear()-from.getFullYear())*12 + (to.getMonth()-from.getMonth());
       if(to.getDate()<from.getDate()) months--;          // not a full month yet
       if(months<0) months=0;
       const y=Math.floor(months/12), mo=months%12;
-      const yHe = y>0 ? (y===1?'שנה':y===2?'שנתיים':y+' שנים') : '';
-      const moHe = mo>0 ? (mo===1?'חודש':mo===2?'חודשיים':mo+' חודשים') : '';
-      if(!yHe && !moHe) return 'פחות מחודש';
-      return [yHe,moHe].filter(Boolean).join(' ו-');
+      const yHe = y>0 ? (y===1?'1 year':y+' years') : '';
+      const moHe = mo>0 ? (mo===1?'1 month':mo+' months') : '';
+      if(!yHe && !moHe) return 'less than a month';
+      return [yHe,moHe].filter(Boolean).join(' and ');
     }
     // map a milestone's Hebrew label / date to a "live counter" anchor. We key off
     // the well-known dates from the wishlist so the counters are robust even if the
@@ -1976,7 +1976,7 @@
             .then(j=>{ _ms=j||{}; _msLoading=false; if(active==='brain') renderBrain(nowDate()); })
             .catch(()=>{ _msErr=true; _msLoading=false; });   // missing/invalid → silent
         }
-        return `<div class="card"><div class="m" style="color:#a99b78">📖 סיפור הבית נטען…</div></div>`;
+        return `<div class="card"><div class="m" style="color:#a99b78">📖 The home story is loading…</div></div>`;
       }
       const evs=(Array.isArray(_ms.events)?_ms.events:[])
         .map(e=>({...e, _d:parseISO(e&&e.date)}))
@@ -1988,41 +1988,41 @@
       const findBy=iso=>evs.find(e=>String(e.date||'').slice(0,10)===iso);
       const house=findBy('2021-08-01'), larkmont=findBy('2020-03-05');
       let counters='';
-      if(house){ const el=elapsedHe(house._d,now); if(el) counters+=`<div class="row"><span>🏠 בבית</span><b>${el}</b></div>`; }
-      if(larkmont){ const el=elapsedHe(larkmont._d,now); if(el) counters+=`<div class="row"><span>🏜️ בלרקמונט</span><b>${el}</b></div>`; }
+      if(house){ const el=elapsedHe(house._d,now); if(el) counters+=`<div class="row"><span>🏠 At home</span><b>${el}</b></div>`; }
+      if(larkmont){ const el=elapsedHe(larkmont._d,now); if(el) counters+=`<div class="row"><span>🏜️ In Larkmont</span><b>${el}</b></div>`; }
       const fmtD=d=>d.toLocaleDateString('he-IL',{day:'numeric',month:'numeric',year:'numeric'});
       const tl=evs.map(e=>`<div class="tle"><div><span class="te">${e.emoji||'•'}</span><b>${e.he||''}</b></div>`+
         `<div class="td">${fmtD(e._d)}</div></div>`).join('');
-      return `<div class="card"><div class="m" style="color:#fff7e6;font-family:'Frank Ruhl Libre',serif;font-size:14px">📖 סִפּוּר הַבַּיִת</div>`+
+      return `<div class="card"><div class="m" style="color:#fff7e6;font-family:'Frank Ruhl Libre',serif;font-size:14px">📖 The home story</div>`+
         counters+
         `<div class="tl">${tl}</div>`+
-        `<div class="est">אבני דרך אישיות · הספירה מחושבת מהיום</div></div>`;
+        `<div class="est">Personal milestones · the count is calculated from today</div></div>`;
     }
 
-    /* ---------- מוח (Feature C: "second brain" memory store) ---------- */
+    /* ---------- brain (Feature C: "second brain" memory store) ---------- */
     // A collection chip-picker + add-form + newest-first list backed by the FIXED
     // window.LogStore interface (list(coll)/add(coll,rec)). LogStore stamps each
     // record {id,t,d,...fields} and keeps the list newest-first, so we render
     // LogStore.list(coll) as-is. Force-guarded (forms, not per-second). All #inst
     // skin classes reused — no new visual style.
     const BRAIN_COLLS=[
-      ['sightings','תצפיות'],['plantcond','מצב צמח'],['projects','פרויקטים'],
-      ['lending','השאלות'],['visitors','מבקרים'],
-      ['neighbors','שכנים'],['schedule','תזכורות'],
-      ['airbnb','Airbnb'],['work','עבודה'],['invoices','חשבוניות']
+      ['sightings','Sightings'],['plantcond','Plant condition'],['projects','Projects'],
+      ['lending','Lending'],['visitors','Visitors'],
+      ['neighbors','Neighbors'],['schedule','Reminders'],
+      ['airbnb','Airbnb'],['work','Work'],['invoices','Invoices']
     ];
     // per-collection input hint + whether the entry carries a due-date field.
-    const BRAIN_HINT={ sightings:'מה ראית? איפה?', plantcond:'איזה צמח? מה מצבו?',
-      projects:'איזה פרויקט / חדר?', lending:'מה השאלת? למי?',
-      visitors:'מי ביקר?', neighbors:'שם השכן / הערה', schedule:'תזכורת (למשל מזון לחתול)',
-      airbnb:'אורח / תאריכים / הערה', work:'מטלת עבודה / פגישה', invoices:'חשבונית — סכום / לקוח' };
+    const BRAIN_HINT={ sightings:'What did you see? Where?', plantcond:'Which plant? What\'s its condition?',
+      projects:'Which project / room?', lending:'What did you lend? To whom?',
+      visitors:'Who visited?', neighbors:'Neighbor\'s name / note', schedule:'Reminder (e.g. cat food)',
+      airbnb:'Guest / dates / note', work:'Work task / meeting', invoices:'Invoice — amount / client' };
     const BRAIN_DUE={ schedule:true, lending:true, airbnb:true, invoices:true };
     let brainColl='sightings';
-    let brainMode='lists';   // מוח sub-nav: lists | community | inventory | vision
+    let brainMode='lists';   // brain sub-nav: lists | community | inventory | vision
     function brainRow(r){
       const txt=(r&&(r.text||r.t||r.note||r.title||r.name))||'';
       const when=(r&&(r.d||r.due))||'';
-      const dueTag=(r&&r.due)?` · עד ${r.due.slice?r.due.slice(0,10):r.due}`:'';
+      const dueTag=(r&&r.due)?` · due ${r.due.slice?r.due.slice(0,10):r.due}`:'';
       const whenHtml=`${when}${r.d&&dueTag?dueTag:''}`;
       // a memory entry can carry an attached `photo` dataURL (#19/#27) → small
       // thumbnail (click → open full-size in a new tab). Keeps the .brow flex row.
@@ -2060,8 +2060,8 @@
       });
     }
     function renderBrain(date){
-      // מוח sub-nav: the personal cluster — lists (second brain) + people/community + inventory + vision board
-      const MODES=[['lists','📋 רשימות'],['community','👥 אנשים'],['inventory','📦 מלאי'],['materials','🔩 חֹמֶר'],['feedback','💬 הַצָּעוֹת'],['backup','💾 גיבוי']];
+      // brain sub-nav: the personal cluster — lists (second brain) + people/community + inventory + vision board
+      const MODES=[['lists','📋 Lists'],['community','👥 People'],['inventory','📦 Inventory'],['materials','🔩 Materials'],['feedback','💬 Suggestions'],['backup','💾 Backup']];
       const modeNav=`<div class="mc-chips" id="brain-modes" style="margin-bottom:8px">`+MODES.map(([k,he])=>`<span class="mc-chip${k===brainMode?' on':''}" data-m="${k}">${he}</span>`).join('')+`</div>`;
       const wireModes=()=>{ const mb=$('brain-modes'); if(mb) mb.querySelectorAll('.mc-chip').forEach(ch=>ch.onclick=()=>{ brainMode=ch.dataset.m; renderBrain(nowDate()); }); };
       if(brainMode!=='lists'){
@@ -2069,8 +2069,8 @@
         body.innerHTML=modeNav+`<div id="brain-mod"></div>`;
         wireModes();
         const mh=$('brain-mod');
-        if(mod&&mod.render&&mh){ try{ mod.render(mh,date); }catch(e){ if(mh) mh.innerHTML='<div class="est">שְׁגִיאָה בִּטְעִינָה.</div>'; } }
-        else if(mh){ mh.innerHTML='<div class="sub">טוֹעֵן…</div>'; setTimeout(()=>{ if(active==='brain'&&brainMode!=='lists') renderBrain(nowDate()); },150); }
+        if(mod&&mod.render&&mh){ try{ mod.render(mh,date); }catch(e){ if(mh) mh.innerHTML='<div class="est">Error loading.</div>'; } }
+        else if(mh){ mh.innerHTML='<div class="sub">Loading…</div>'; setTimeout(()=>{ if(active==='brain'&&brainMode!=='lists') renderBrain(nowDate()); },150); }
         return;
       }
       const has=!!window.LogStore;
@@ -2079,25 +2079,25 @@
       const wantDue=!!BRAIN_DUE[brainColl];
       const listHtml = list.length
         ? list.map(brainRow).join('')
-        : '<div class="est">אין רשומות עדיין</div>';
+        : '<div class="est">No records yet</div>';
       const dueInput = wantDue ? `<input id="brain-due" type="date" style="width:auto;flex:0 0 auto">` : '';
       // 📷 photo-attach: a small button that fires a hidden capture-capable file
       // input; the chosen image is downscaled and staged in _brainPhoto, then
       // saved onto the next entry. Button flips to a "set" state when staged.
-      const photoBtn=`<button class="photo-btn${_brainPhoto?' set':''}" id="brain-photo" title="צרף תמונה">📷</button>`+
+      const photoBtn=`<button class="photo-btn${_brainPhoto?' set':''}" id="brain-photo" title="Attach a photo">📷</button>`+
         `<input id="brain-file" type="file" accept="image/*" capture="environment" style="display:none">`;
-      body.innerHTML=modeNav+`<h3>הַמּוֹחַ שֶׁלְּךָ · זִכָּרוֹן</h3>`+
-        `<div class="sub">הזיכרון של הבית — תצפיות, מצב צמחים, פרויקטים, השאלות, מונים, מבקרים, שכנים ותזכורות. נשמר מקומית בלבד.</div>`+
+      body.innerHTML=modeNav+`<h3>Your brain · memory</h3>`+
+        `<div class="sub">The house's memory — sightings, plant condition, projects, lending, meters, visitors, neighbors and reminders. Saved locally only.</div>`+
         homeStoryCard(date)+
         `<div class="mc-chips" id="brain-chips">${chips}</div>`+
         (has
           ? `<div style="display:flex;gap:6px;margin-top:8px;align-items:center">`+
-              `<input id="brain-in" placeholder="${BRAIN_HINT[brainColl]||'רשומה חדשה'}">`+dueInput+photoBtn+
-              `<button class="btn" id="brain-add">הוסף</button></div>`+
-            (_brainPhoto?`<div class="est" style="color:#9fce9f">תמונה מצורפת ✓ — תישמר עם הרשומה הבאה</div>`:'')+
+              `<input id="brain-in" placeholder="${BRAIN_HINT[brainColl]||'New record'}">`+dueInput+photoBtn+
+              `<button class="btn" id="brain-add">Add</button></div>`+
+            (_brainPhoto?`<div class="est" style="color:#9fce9f">Photo attached ✓ — it will be saved with the next record</div>`:'')+
             `<div id="brainlist" style="margin-top:6px">${listHtml}</div>`
-          : `<div class="card"><div class="m">מאגר הזיכרון נטען…</div></div>`)+
-        `<div class="foot">בלי שרת ובלי דחיפה — הכול נשמר במכשיר הזה (localStorage)</div>`;
+          : `<div class="card"><div class="m">The memory store is loading…</div></div>`)+
+        `<div class="foot">No server and no push — everything is saved on this device (localStorage)</div>`;
       // re-wire AFTER the destructive innerHTML= (the :524 wireMicroclimate pattern):
       const cbox=$('brain-chips');
       if(cbox) cbox.querySelectorAll('.mc-chip').forEach(ch=>ch.onclick=()=>{
@@ -2162,14 +2162,14 @@
       render(true);                                  // build that panel's content now
     };
 
-    // ---- MERGED 'טבע וסביבה' tab: wild + env BOTH visible & both live ------------
+    // ---- MERGED 'nature & environment' tab: wild + env BOTH visible & both live ------------
     // Because there is ONE shared `body` and render() REPLACES its content (verified:
     // every builder does body.innerHTML=…), two panels cannot share one body. So we
     // build TWO #inst-skinned hosts inside `container` — #inst (wild) and #inst2 (env,
     // styled by the css2 shim) — each with its OWN dedicated body element, and render
     // each panel into its own body. To keep BOTH fully interactive (each panel's $()
-    // re-wiring AND its own re-renders, e.g. renderWild() after "תעד" / renderEnv()
-    // after the Google-key "שמור", plus the body-level delegated handlers attached at
+    // re-wiring AND its own re-renders, e.g. renderWild() after "log" / renderEnv()
+    // after the Google-key "Save", plus the body-level delegated handlers attached at
     // line 987), we point the mutable closure `body`/`active` at the right host on EVERY
     // interaction via a CAPTURE-phase listener on each host: capture runs before the
     // inner .onclick/delegated handlers, so any subsequent renderX() writes back into
@@ -2215,7 +2215,7 @@
     maybeShowWelcome();   // ❤️ greet Alex on the very first open (no-op once home_welcomed_v1 is set)
     // deep-link: opening the app with #map jumps straight to the full-screen environment map.
     try{ if(location.hash==='#map') setTimeout(()=>{ if(window.__mapBg&&window.__mapBg.toggle) window.__mapBg.toggle(true); }, 600); }catch(e){}
-    // per-second tick: yard/sky fully re-render; the סביבה weather block moves with
+    // per-second tick: yard/sky fully re-render; the environment weather block moves with
     // the scrubbed time too (only its #env-wx sub-container repaints — air/pollen stay).
     setInterval(()=>{ if(active==='yard'||active==='sky') render(false); else if(active==='env') updateEnvWeather(nowDate()); },1000);
   }).catch(e=>console.error('panels',e));

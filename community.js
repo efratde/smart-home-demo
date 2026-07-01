@@ -1,23 +1,23 @@
 /* ===========================================================================
- * community.js · "הבית של אלכס" — אֲנָשִׁים, שְׁכֵנִים וְקֶשֶׁר (community hub)
+ * community.js · "Alex's Home" — People, Neighbors & Connections (community hub)
  * ---------------------------------------------------------------------------
- * The קְהִילָה tab: a self-contained people / neighbors / connections /
+ * The Community tab: a self-contained people / neighbors / connections /
  * community board, rendered INTO a host element (no floating card — the
  * integrator mounts this whole module as a dashboard tab).
  *
  *   window.__community.render(hostEl, date)
  *
  * Three sub-views (chip-switched, like panels.js's "second brain"):
- *   1) אֲנָשִׁים  — a people DIRECTORY (name · relation/role · phone · notes
+ *   1) People  — a people DIRECTORY (name · relation/role · phone · notes
  *                  · optional photo). Backed by LogStore collections
  *                  'contacts' + 'neighbors' (unified into one list; each row
  *                  remembers which collection it lives in so edit/delete hit
  *                  the right store). 'contacts' is a NEW collection key —
  *                  LogStore.add/list/update/remove create it on first use.
- *   2) פְּרוֹיֶקְטִים — social / community PROJECTS tracker (collection 'projects',
- *                  reused) with a status (רַעְיוֹן/פָּעִיל/הֻשְׁלַם/מֻשְׁהֶה) and a
- *                  free-text collaborators field ("מי איתי").
- *   3) קֶשֶׁר     — a simple relationship / notes view that connects people:
+ *   2) Projects — social / community PROJECTS tracker (collection 'projects',
+ *                  reused) with a status (idea / active / done / paused) and a
+ *                  free-text collaborators field ("who's with me").
+ *   3) Connections — a simple relationship / notes view that connects people:
  *                  pick a person, jot a short note about who-knows-whom or a
  *                  shared thread; notes are tagged with the person's name so
  *                  the directory and the connection notes stay linked.
@@ -46,19 +46,19 @@
   function LS(){ return window.LogStore || null; }
 
   /* the directory unifies these two collections. 'contacts' is created on
-     first add(); 'neighbors' already exists (shared in the מוח tab). */
+     first add(); 'neighbors' already exists (shared in the Brain tab). */
   var DIR_COLLS = ['contacts','neighbors'];
-  var COLL_HE   = { contacts:'אִישׁ קֶשֶׁר', neighbors:'שָׁכֵן' };
+  var COLL_HE   = { contacts:'Contact', neighbors:'Neighbor' };
 
   /* relation presets for the people add-form (free text still allowed). */
-  var RELATIONS = ['שָׁכֵן','חָבֵר','מִשְׁפָּחָה','עֲבוֹדָה','שֵׁרוּת / בַּעַל מִקְצוֹעַ','קְהִילָה','אַחֵר'];
+  var RELATIONS = ['Neighbor','Friend','Family','Work','Service / Professional','Community','Other'];
 
   /* project status vocabulary + pill colour class. */
   var STATUSES = [
-    { k:'idea',   he:'רַעְיוֹן',  cls:'blue'  },
-    { k:'active', he:'פָּעִיל',   cls:'green' },
-    { k:'paused', he:'מֻשְׁהֶה',  cls:'amber' },
-    { k:'done',   he:'הֻשְׁלַם',  cls:'gold'  }
+    { k:'idea',   he:'Idea',    cls:'blue'  },
+    { k:'active', he:'Active',  cls:'green' },
+    { k:'paused', he:'Paused',  cls:'amber' },
+    { k:'done',   he:'Done',    cls:'gold'  }
   ];
   function statusMeta(k){ for(var i=0;i<STATUSES.length;i++) if(STATUSES[i].k===k) return STATUSES[i]; return STATUSES[0]; }
 
@@ -67,7 +67,7 @@
   var VIEW = 'people';                 // people | projects | links
   var _photo = null;                   // staged dataURL for the next person add
   var _editId = null, _editColl = null;// person currently being edited (inline)
-  var _linksPerson = '';               // selected person name for the קשר note form
+  var _linksPerson = '';               // selected person name for the Connection note form
 
   /* =====================================================================
    * photo downscale → ~800px JPEG dataURL (self-contained canvas fallback;
@@ -148,15 +148,15 @@
       ? '<span class="cm-av"><img src="'+p.photo+'" alt=""></span>'
       : '<span class="cm-av cm-av-e">'+(p._coll==='neighbors'?'🏠':'👤')+'</span>';
     var phoneHtml = phone
-      ? '<a class="cm-tel" href="tel:'+esc(phone.replace(/[^\d+]/g,''))+'" title="חִיּוּג">📞 '+esc(phone)+'</a>'
+      ? '<a class="cm-tel" href="tel:'+esc(phone.replace(/[^\d+]/g,''))+'" title="Call">📞 '+esc(phone)+'</a>'
       : '';
     return '<div class="cm-card" data-pid="'+esc(p.id)+'" data-coll="'+esc(p._coll)+'">'+
         '<div class="cm-top">'+thumb+
           '<div class="cm-id"><div class="cm-name">'+name+'</div>'+
             '<div class="cm-rel"><span class="cm-pill '+(p._coll==='neighbors'?'green':'blue')+'">'+rel+'</span></div></div>'+
           '<div class="cm-acts">'+
-            '<span class="cm-mini" data-act="edit-person" title="עֲרֹךְ">✎</span>'+
-            '<span class="cm-mini danger" data-act="del-person" title="מְחַק">🗑</span>'+
+            '<span class="cm-mini" data-act="edit-person" title="Edit">✎</span>'+
+            '<span class="cm-mini danger" data-act="del-person" title="Delete">🗑</span>'+
           '</div>'+
         '</div>'+
         (phoneHtml||notes ? '<div class="cm-body">'+phoneHtml+(notes?'<div class="cm-notes">'+esc(notes)+'</div>':'')+'</div>' : '')+
@@ -165,43 +165,43 @@
 
   function peopleHtml(){
     var dir = listDir();
-    var staged = _photo ? '<div class="cm-staged">תְּמוּנָה מְצֹרֶפֶת ✓ — תִּשָּׁמֵר עִם הָרְשׁוּמָה הַבָּאָה</div>' : '';
-    var photoBtn = '<button class="cm-photo'+(_photo?' set':'')+'" data-act="pick-photo" title="צָרֵף תְּמוּנָה">📷</button>'+
+    var staged = _photo ? '<div class="cm-staged">Photo attached ✓ — will be saved with the next entry</div>' : '';
+    var photoBtn = '<button class="cm-photo'+(_photo?' set':'')+'" data-act="pick-photo" title="Attach photo">📷</button>'+
                    '<input class="cm-file" type="file" accept="image/*" style="display:none">';
     var form =
       '<div class="cm-form">'+
-        '<div class="cm-frow"><input class="cm-in" data-f="name" placeholder="שֵׁם"></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-f="name" placeholder="Name"></div>'+
         '<div class="cm-frow">'+
-          '<select class="cm-sel" data-f="relation">'+relationOptions('שָׁכֵן')+'</select>'+
+          '<select class="cm-sel" data-f="relation">'+relationOptions('Neighbor')+'</select>'+
           '<select class="cm-sel" data-f="coll">'+collOptions('neighbors')+'</select>'+
         '</div>'+
-        '<div class="cm-frow"><input class="cm-in" data-f="phone" inputmode="tel" placeholder="מִסְפַּר טֵלֵפוֹן (לֹא חוֹבָה)"></div>'+
-        '<div class="cm-frow"><input class="cm-in" data-f="notes" placeholder="הֶעָרָה (אֵיךְ מַכִּירִים, מָה חָשׁוּב)"></div>'+
-        '<div class="cm-frow cm-frow-end">'+photoBtn+'<button class="cm-btn" data-act="add-person">הוֹסֵף אִישׁ</button></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-f="phone" inputmode="tel" placeholder="Phone number (optional)"></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-f="notes" placeholder="Note (how you know them, what matters)"></div>'+
+        '<div class="cm-frow cm-frow-end">'+photoBtn+'<button class="cm-btn" data-act="add-person">Add person</button></div>'+
         staged+
       '</div>';
     var listHtml = dir.length
       ? dir.map(personRow).join('')
-      : '<div class="cm-empty">עֲדַיִן אֵין אֲנָשִׁים בַּסְּפַר. הוֹסִיפוּ שָׁכֵן, חָבֵר אוֹ בַּעַל מִקְצוֹעַ לְמַעְלָה.</div>';
-    return '<div class="cm-sec">הוֹסָפַת אִישׁ</div>'+form+
-           '<div class="cm-sec">סְפַר הָאֲנָשִׁים <span class="cm-cnt">'+dir.length+'</span></div>'+
+      : '<div class="cm-empty">No people in the book yet. Add a neighbor, friend, or professional above.</div>';
+    return '<div class="cm-sec">Add a person</div>'+form+
+           '<div class="cm-sec">People directory <span class="cm-cnt">'+dir.length+'</span></div>'+
            '<div class="cm-list">'+listHtml+'</div>';
   }
 
   /* ---- inline edit overlay for one person ----------------------------- */
   function personEditHtml(p){
     return '<div class="cm-card editing" data-pid="'+esc(p.id)+'" data-coll="'+esc(p._coll)+'">'+
-        '<div class="cm-sec sm">עֲרִיכַת אִישׁ</div>'+
-        '<div class="cm-frow"><input class="cm-in" data-e="name" value="'+esc(p.name||p.text||'')+'" placeholder="שֵׁם"></div>'+
+        '<div class="cm-sec sm">Edit person</div>'+
+        '<div class="cm-frow"><input class="cm-in" data-e="name" value="'+esc(p.name||p.text||'')+'" placeholder="Name"></div>'+
         '<div class="cm-frow">'+
-          '<select class="cm-sel" data-e="relation">'+relationOptions(p.relation||'שָׁכֵן')+'</select>'+
+          '<select class="cm-sel" data-e="relation">'+relationOptions(p.relation||'Neighbor')+'</select>'+
           '<select class="cm-sel" data-e="coll">'+collOptions(p._coll)+'</select>'+
         '</div>'+
-        '<div class="cm-frow"><input class="cm-in" data-e="phone" value="'+esc(p.phone||'')+'" inputmode="tel" placeholder="טֵלֵפוֹן"></div>'+
-        '<div class="cm-frow"><input class="cm-in" data-e="notes" value="'+esc(p.notes||'')+'" placeholder="הֶעָרָה"></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-e="phone" value="'+esc(p.phone||'')+'" inputmode="tel" placeholder="Phone"></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-e="notes" value="'+esc(p.notes||'')+'" placeholder="Note"></div>'+
         '<div class="cm-frow cm-frow-end">'+
-          '<button class="cm-btn ghost" data-act="cancel-edit">בַּטֵּל</button>'+
-          '<button class="cm-btn" data-act="save-edit">שְׁמֹר</button></div>'+
+          '<button class="cm-btn ghost" data-act="cancel-edit">Cancel</button>'+
+          '<button class="cm-btn" data-act="save-edit">Save</button></div>'+
       '</div>';
   }
 
@@ -218,8 +218,8 @@
             '<div class="cm-rel"><span class="cm-pill '+sm.cls+'">'+esc(sm.he)+'</span>'+
               (who?'<span class="cm-who">👥 '+esc(who)+'</span>':'')+'</div></div>'+
           '<div class="cm-acts">'+
-            '<span class="cm-mini" data-act="cycle-status" title="קַדֵּם סְטָטוּס">⟳</span>'+
-            '<span class="cm-mini danger" data-act="del-project" title="מְחַק">🗑</span>'+
+            '<span class="cm-mini" data-act="cycle-status" title="Advance status">⟳</span>'+
+            '<span class="cm-mini danger" data-act="del-project" title="Delete">🗑</span>'+
           '</div>'+
         '</div>'+
         (notes?'<div class="cm-body"><div class="cm-notes">'+esc(notes)+'</div></div>':'')+
@@ -230,19 +230,19 @@
     var statusOpts = STATUSES.map(function(s){ return '<option value="'+s.k+'">'+esc(s.he)+'</option>'; }).join('');
     var form =
       '<div class="cm-form">'+
-        '<div class="cm-frow"><input class="cm-in" data-p="title" placeholder="שֵׁם הַפְּרוֹיֶקְט / הַיֹּזְמָה"></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-p="title" placeholder="Project / initiative name"></div>'+
         '<div class="cm-frow">'+
           '<select class="cm-sel" data-p="status">'+statusOpts+'</select>'+
-          '<input class="cm-in" data-p="collaborators" placeholder="מִי אִתִּי (שֻׁתָּפִים)">'+
+          '<input class="cm-in" data-p="collaborators" placeholder="Who\'s with me (collaborators)">'+
         '</div>'+
-        '<div class="cm-frow"><input class="cm-in" data-p="notes" placeholder="הֶעָרָה / מַטָּרָה"></div>'+
-        '<div class="cm-frow cm-frow-end"><button class="cm-btn" data-act="add-project">הוֹסֵף פְּרוֹיֶקְט</button></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-p="notes" placeholder="Note / goal"></div>'+
+        '<div class="cm-frow cm-frow-end"><button class="cm-btn" data-act="add-project">Add project</button></div>'+
       '</div>';
     var listHtml = prj.length
       ? prj.map(projectRow).join('')
-      : '<div class="cm-empty">אֵין עֲדַיִן פְּרוֹיֶקְטִים. רַעְיוֹן קְהִילָתִי? תּוֹסֶפֶת לַשְּׁכוּנָה? הוֹסִיפוּ לְמַעְלָה.</div>';
-    return '<div class="cm-sec">פְּרוֹיֶקְט חָדָשׁ</div>'+form+
-           '<div class="cm-sec">פְּרוֹיֶקְטִים קְהִילָתִיִּים <span class="cm-cnt">'+prj.length+'</span></div>'+
+      : '<div class="cm-empty">No projects yet. A community idea? An addition to the neighborhood? Add one above.</div>';
+    return '<div class="cm-sec">New project</div>'+form+
+           '<div class="cm-sec">Community projects <span class="cm-cnt">'+prj.length+'</span></div>'+
            '<div class="cm-list">'+listHtml+'</div>';
   }
 
@@ -261,7 +261,7 @@
     return '<div class="cm-card" data-cnid="'+esc(c.id)+'">'+
         '<div class="cm-top">'+
           '<div class="cm-id"><div class="cm-name">🔗 '+who+'</div></div>'+
-          '<div class="cm-acts"><span class="cm-mini danger" data-act="del-conn" title="מְחַק">🗑</span></div>'+
+          '<div class="cm-acts"><span class="cm-mini danger" data-act="del-conn" title="Delete">🗑</span></div>'+
         '</div>'+
         (note?'<div class="cm-body"><div class="cm-notes">'+note+'</div></div>':'')+
       '</div>';
@@ -272,25 +272,25 @@
     var conns = listConnections();
     var form =
       '<div class="cm-form">'+
-        '<div class="cm-frow"><input class="cm-in" data-l="person" list="cm-names" value="'+esc(_linksPerson)+'" placeholder="עַל מִי? (שֵׁם מֵהַסְּפַר אוֹ חָדָשׁ)"></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-l="person" list="cm-names" value="'+esc(_linksPerson)+'" placeholder="About whom? (a name from the book, or new)"></div>'+
         datalist+
-        '<div class="cm-frow"><input class="cm-in" data-l="note" placeholder="קֶשֶׁר אוֹ הֶעָרָה — מִי מַכִּיר אֶת מִי, מָה מְשֻׁתָּף…"></div>'+
-        '<div class="cm-frow cm-frow-end"><button class="cm-btn" data-act="add-conn">הוֹסֵף קֶשֶׁר</button></div>'+
+        '<div class="cm-frow"><input class="cm-in" data-l="note" placeholder="Connection or note — who knows whom, what\'s shared…"></div>'+
+        '<div class="cm-frow cm-frow-end"><button class="cm-btn" data-act="add-conn">Add connection</button></div>'+
       '</div>';
     var listHtml = conns.length
       ? conns.map(connRow).join('')
-      : '<div class="cm-empty">אֵין עֲדַיִן הֶעָרוֹת קֶשֶׁר. כָּאן רוֹשְׁמִים מִי מַכִּיר אֶת מִי וּמָה מְקַשֵּׁר בֵּינֵיהֶם.</div>';
+      : '<div class="cm-empty">No connection notes yet. This is where you record who knows whom and what links them.</div>';
     var hint = names.length
       ? ''
-      : '<div class="cm-hint">טִיפּ: הוֹסִיפוּ קֹדֶם אֲנָשִׁים בַּלָּשׁוֹנִית "אֲנָשִׁים" — הַשֵּׁמוֹת יוֹפִיעוּ כָּאן לְהַשְׁלָמָה אוֹטוֹמָטִית.</div>';
-    return '<div class="cm-sec">הוֹסָפַת קֶשֶׁר</div>'+form+hint+
-           '<div class="cm-sec">רֶשֶׁת הַקְּשָׁרִים <span class="cm-cnt">'+conns.length+'</span></div>'+
+      : '<div class="cm-hint">Tip: add people first in the "People" tab — the names will appear here for autocomplete.</div>';
+    return '<div class="cm-sec">Add a connection</div>'+form+hint+
+           '<div class="cm-sec">Connection network <span class="cm-cnt">'+conns.length+'</span></div>'+
            '<div class="cm-list">'+listHtml+'</div>';
   }
 
   /* =====================================================================
    * RENDER ============================================================== */
-  var CHIPS = [['people','אֲנָשִׁים'],['projects','פְּרוֹיֶקְטִים'],['links','קֶשֶׁר']];
+  var CHIPS = [['people','People'],['projects','Projects'],['links','Connections']];
 
   function render(){
     if (!_host) return;
@@ -299,18 +299,18 @@
     var chips = CHIPS.map(function(c){ return '<span class="cm-chip'+(c[0]===VIEW?' on':'')+'" data-view="'+c[0]+'">'+c[1]+'</span>'; }).join('');
     var bodyHtml;
     if (!hasStore){
-      bodyHtml = '<div class="cm-empty">מַאֲגַר הַנְּתוּנִים נִטְעָן…</div>';
+      bodyHtml = '<div class="cm-empty">Loading data store…</div>';
     } else if (VIEW==='people'){ bodyHtml = peopleHtml(); }
     else if (VIEW==='projects'){ bodyHtml = projectsHtml(); }
     else { bodyHtml = linksHtml(); }
 
     _host.innerHTML =
-      '<div id="community-hub" dir="rtl">'+
-        '<h3 class="cm-h">אֲנָשִׁים, שְׁכֵנִים וְקֶשֶׁר</h3>'+
-        '<div class="cm-sub">הַסְּפַר הַחֶבְרָתִי שֶׁל הַבַּיִת — שְׁכֵנִים, חֲבֵרִים, בַּעֲלֵי מִקְצוֹעַ, יוֹזְמוֹת קְהִילָתִיּוֹת וְקִשְׁרֵי הֶכֵּרוּת. נִשְׁמָר רַק עַל הַמַּכְשִׁיר הַזֶּה.</div>'+
+      '<div id="community-hub" dir="ltr">'+
+        '<h3 class="cm-h">People, Neighbors & Connections</h3>'+
+        '<div class="cm-sub">The home\'s social directory — neighbors, friends, professionals, community initiatives, and acquaintance links. Stored only on this device.</div>'+
         '<div class="cm-chips">'+chips+'</div>'+
         '<div class="cm-view">'+bodyHtml+'</div>'+
-        '<div class="cm-foot">סְפַר אֲנָשִׁים אִישִׁי — לֹא רֶשֶׁת חֶבְרָתִית וְלֹא שֵׁרוּת חִיצוֹנִי. רַק מָה שֶׁרָשַׁמְתָּ, נִשְׁמָר מְקוֹמִית (localStorage).</div>'+
+        '<div class="cm-foot">A personal address book — not a social network and not an external service. Only what you\'ve entered, stored locally (localStorage).</div>'+
       '</div>';
   }
 
@@ -463,7 +463,7 @@
     var s=document.createElement('style');
     s.id='community-css';
     s.textContent =
-      '#community-hub{direction:rtl;font-family:Heebo,sans-serif;color:#efe6cf}'+
+      '#community-hub{direction:ltr;font-family:Heebo,sans-serif;color:#efe6cf}'+
       '#community-hub .cm-h{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:20px;color:#fff7e6;margin:0 0 4px}'+
       '#community-hub .cm-sub{color:#a99b78;font-size:12px;line-height:1.5;margin-bottom:12px}'+
       // chips
@@ -484,7 +484,7 @@
       '#community-hub .cm-frow{display:flex;gap:7px;align-items:center}'+
       '#community-hub .cm-frow-end{justify-content:flex-end;margin-top:1px}'+
       '#community-hub .cm-in,#community-hub .cm-sel{flex:1;min-width:0;padding:8px 10px;background:rgba(255,255,255,.04);'+
-        'border:1px solid rgba(202,161,90,.26);border-radius:8px;color:#ece6d8;font-family:Heebo;font-size:13px;direction:rtl}'+
+        'border:1px solid rgba(202,161,90,.26);border-radius:8px;color:#ece6d8;font-family:Heebo;font-size:13px;direction:ltr}'+
       '#community-hub .cm-in::placeholder{color:#7d7560}'+
       '#community-hub .cm-in:focus,#community-hub .cm-sel:focus{outline:none;border-color:rgba(202,161,90,.6)}'+
       '#community-hub .cm-sel{flex:0 0 auto;cursor:pointer}'+

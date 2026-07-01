@@ -1,9 +1,9 @@
 /* ===========================================================================
- * inventory.js · "הבית של אלכס" — מַחְסָן: where-do-I-store-stuff
+ * inventory.js · "Alex's house" — storeroom: where-do-I-store-stuff
  * ---------------------------------------------------------------------------
  * A personal STORAGE INVENTORY for Alex: "where is X?". The point is FAST
  * SEARCH — type a name (or part of one) and the item + its LOCATION jump out
- * prominently ("📍 בְּ…"). Beyond search there are two browse modes —
+ * prominently ("📍 at…"). Beyond search there are two browse modes —
  * by-location (every item grouped under its room/zone/box) and by-category —
  * plus add / edit / delete with an optional downscaled photo.
  *
@@ -16,7 +16,7 @@
  * Persistence: window.LogStore collection 'inventory' when present (shares the
  *   app's one CRUD + photo-cap layer); else a private 'home_inventory_v1'
  *   localStorage store with the SAME record shape. Photos are canvas-downscaled
- *   to ≤~280 KB before storing (the log_store.js cap), mirroring the מוח/garden
+ *   to ≤~280 KB before storing (the log_store.js cap), mirroring the brain/garden
  *   add-form pattern.
  *
  * Self-contained: exposes window.__inventory.render(hostEl, date); injects its
@@ -35,20 +35,20 @@
 
   /* ---- categories (free-text category is allowed; this is the quick-pick set) */
   var CATS = [
-    { k:'tools',     he:'כֵּלִים וְעֲבוֹדָה',      emoji:'🛠️' },
-    { k:'kitchen',   he:'מִטְבָּח',               emoji:'🍳' },
-    { k:'docs',      he:'מִסְמָכִים',              emoji:'📄' },
-    { k:'electronics', he:'אֶלֶקְטְרוֹנִיקָה',     emoji:'🔌' },
-    { k:'garden',    he:'גִּנָּה',                 emoji:'🌿' },
-    { k:'clothes',   he:'בְּגָדִים',               emoji:'👕' },
-    { k:'sport',     he:'סְפּוֹרְט וּפְנַאי',       emoji:'🎒' },
-    { k:'seasonal',  he:'עוֹנָתִי / חַגִּים',       emoji:'🎁' },
-    { k:'cleaning',  he:'נִקָּיוֹן',               emoji:'🧴' },
-    { k:'other',     he:'אַחֵר',                   emoji:'📦' }
+    { k:'tools',     he:'Tools & work',          emoji:'🛠️' },
+    { k:'kitchen',   he:'Kitchen',               emoji:'🍳' },
+    { k:'docs',      he:'Documents',             emoji:'📄' },
+    { k:'electronics', he:'Electronics',         emoji:'🔌' },
+    { k:'garden',    he:'Garden',                emoji:'🌿' },
+    { k:'clothes',   he:'Clothes',               emoji:'👕' },
+    { k:'sport',     he:'Sport & leisure',       emoji:'🎒' },
+    { k:'seasonal',  he:'Seasonal / holidays',   emoji:'🎁' },
+    { k:'cleaning',  he:'Cleaning',              emoji:'🧴' },
+    { k:'other',     he:'Other',                 emoji:'📦' }
   ];
   var CAT_HE = {}, CAT_EMOJI = {};
   CATS.forEach(function (c) { CAT_HE[c.k] = c.he; CAT_EMOJI[c.k] = c.emoji; });
-  function catHe(k){ return CAT_HE[k] || k || 'אַחֵר'; }
+  function catHe(k){ return CAT_HE[k] || k || 'Other'; }
   function catEmoji(k){ return CAT_EMOJI[k] || '📦'; }
 
   /* ---- canonical house locations (for the optional location pick).
@@ -57,22 +57,22 @@
      the picker works even before site.json loads. All free text is still
      accepted — this just lets the location tie to a real room/zone by name. */
   var ROOMS = [
-    { id:'bathG',    he:'חֲדַר רַחְצָה (קוֹמַת קַרְקַע)', floor:'קַרְקַע' },
-    { id:'kitchen',  he:'מִטְבָּח',                       floor:'קַרְקַע' },
-    { id:'living',   he:'סָלוֹן',                          floor:'קַרְקַע' },
-    { id:'bedroomG', he:'חֲדַר שֵׁנָה (קַרְקַע)',          floor:'קַרְקַע' },
-    { id:'pantry',   he:'מַזְוֶה',                         floor:'קַרְקַע' },
-    { id:'stairsG',  he:'מַדְרֵגוֹת',                      floor:'קַרְקַע' },
-    { id:'bedroomSW',he:'חֲדַר שֵׁנָה (דָּרוֹם)',          floor:'עֶלְיוֹנָה' },
-    { id:'bedroomNE',he:'חֲדַר שֵׁנָה (צָפוֹן)',           floor:'עֶלְיוֹנָה' },
-    { id:'terrace',  he:'מִרְפֶּסֶת',                      floor:'עֶלְיוֹנָה' },
-    { id:'bathU',    he:'חֲדַר רַחְצָה (עֶלְיוֹנָה)',      floor:'עֶלְיוֹנָה' },
-    { id:'landing',  he:'גֶּרֶם הַמַּדְרֵגוֹת',            floor:'עֶלְיוֹנָה' }
+    { id:'bathG',    he:'Bathroom (ground floor)',        floor:'ground' },
+    { id:'kitchen',  he:'Kitchen',                        floor:'ground' },
+    { id:'living',   he:'Living room',                    floor:'ground' },
+    { id:'bedroomG', he:'Bedroom (ground)',               floor:'ground' },
+    { id:'pantry',   he:'Pantry',                         floor:'ground' },
+    { id:'stairsG',  he:'Stairs',                         floor:'ground' },
+    { id:'bedroomSW',he:'Bedroom (south)',                floor:'upper' },
+    { id:'bedroomNE',he:'Bedroom (north)',                floor:'upper' },
+    { id:'terrace',  he:'Terrace',                        floor:'upper' },
+    { id:'bathU',    he:'Bathroom (upper)',               floor:'upper' },
+    { id:'landing',  he:'Staircase landing',              floor:'upper' }
   ];
   var ZONE_FALLBACK = [
-    { id:'backyard', he:'הֶחָצֵר הָאֲחוֹרִית' },
-    { id:'balcony',  he:'מִרְפֶּסֶת קוֹמָה רִאשׁוֹנָה' },
-    { id:'front',    he:'חֲזִית הַבַּיִת' }
+    { id:'backyard', he:'Backyard' },
+    { id:'balcony',  he:'First-floor balcony' },
+    { id:'front',    he:'Front of the house' }
   ];
   function zones(){
     var D = window.Derive, zs = (D && D.data && D.data.site && D.data.site.zones) || null;
@@ -147,20 +147,20 @@
     var loc = (it.location || '').trim();
     var rm  = placeHe(it.room);
     if (loc && rm && loc !== rm) return loc + ' · ' + rm;
-    return loc || rm || 'לֹא צֻיַּן';
+    return loc || rm || 'Not specified';
   }
-  // a single grouping key for browse-by-location (so "מחסן" items cluster even
+  // a single grouping key for browse-by-location (so "storeroom" items cluster even
   // when one also tagged a room): prefer the canonical room name, else free text.
   function groupKey(it){
     var rm = placeHe(it.room);
     if (rm) return rm;
     var loc = (it.location || '').trim();
-    return loc || 'לְלֹא מִקּוּם';
+    return loc || 'No location';
   }
 
   /* ===========================================================================
    * PHOTO — canvas downscale to ≤~maxPx then JPEG, shrinking quality until the
-   * dataURL fits PHOTO_CAP (mirrors the מוח/garden add-form pattern).
+   * dataURL fits PHOTO_CAP (mirrors the brain/garden add-form pattern).
    * ======================================================================== */
   function downscalePhoto(file, cb){
     if (!file || !/^image\//.test(file.type)) { cb(null); return; }
@@ -203,9 +203,9 @@
   function itemRow(it){
     var qty = (it.quantity != null && it.quantity !== '' && +it.quantity !== 1)
       ? '<span class="inv-qty">×' + esc(it.quantity) + '</span>' : '';
-    return '<div class="inv-row" data-item="' + esc(it.id) + '" role="button" tabindex="0" title="פְּרָטִים / עֲרִיכָה">' +
+    return '<div class="inv-row" data-item="' + esc(it.id) + '" role="button" tabindex="0" title="Details / Edit">' +
       thumb(it) +
-      '<span class="inv-n">' + esc(it.name || '(לְלֹא שֵׁם)') + qty + '</span>' +
+      '<span class="inv-n">' + esc(it.name || '(no name)') + qty + '</span>' +
       '<span class="inv-loc">📍 ' + esc(itemPlace(it)) + '</span>' +
       '<span class="inv-go" aria-hidden="true">→</span></div>';
   }
@@ -217,7 +217,7 @@
     return '<div class="inv-hit" data-item="' + esc(it.id) + '" role="button" tabindex="0">' +
       thumb(it) +
       '<div class="inv-hitmain">' +
-        '<div class="inv-hitname">' + esc(it.name || '(לְלֹא שֵׁם)') + qty + '</div>' +
+        '<div class="inv-hitname">' + esc(it.name || '(no name)') + qty + '</div>' +
         '<div class="inv-hitloc">📍 ' + esc(itemPlace(it)) + '</div>' +
         (it.category ? '<div class="inv-hitcat">' + catEmoji(it.category) + ' ' + esc(catHe(it.category)) + '</div>' : '') +
         (it.notes ? '<div class="inv-hitnotes">' + esc(it.notes) + '</div>' : '') +
@@ -239,14 +239,14 @@
     var it = _editId ? listItems().find(function(x){ return x.id === _editId; }) : null;
     it = it || {};
     var ph = _draftPhoto || it.photo || '';
-    var roomOpts = '<option value="">— בְּחַר חֶדֶר / אֵזוֹר (לֹא חוֹבָה) —</option>';
-    roomOpts += '<optgroup label="חֲדָרִים — קוֹמַת קַרְקַע">';
-    ROOMS.filter(function(r){ return r.floor==='קַרְקַע'; }).forEach(function(r){
+    var roomOpts = '<option value="">— Choose a room / area (optional) —</option>';
+    roomOpts += '<optgroup label="Rooms — ground floor">';
+    ROOMS.filter(function(r){ return r.floor==='ground'; }).forEach(function(r){
       roomOpts += '<option value="' + esc(r.id) + '"' + (it.room===r.id?' selected':'') + '>' + esc(r.he) + '</option>'; });
-    roomOpts += '</optgroup><optgroup label="חֲדָרִים — קוֹמָה עֶלְיוֹנָה">';
-    ROOMS.filter(function(r){ return r.floor==='עֶלְיוֹנָה'; }).forEach(function(r){
+    roomOpts += '</optgroup><optgroup label="Rooms — upper floor">';
+    ROOMS.filter(function(r){ return r.floor==='upper'; }).forEach(function(r){
       roomOpts += '<option value="' + esc(r.id) + '"' + (it.room===r.id?' selected':'') + '>' + esc(r.he) + '</option>'; });
-    roomOpts += '</optgroup><optgroup label="חָצֵר">';
+    roomOpts += '</optgroup><optgroup label="Yard">';
     zones().forEach(function(z){
       roomOpts += '<option value="' + esc(z.id) + '"' + (it.room===z.id?' selected':'') + '>' + esc(z.he) + '</option>'; });
     roomOpts += '</optgroup>';
@@ -255,33 +255,33 @@
     }).join('');
 
     return '<div class="inv-form" data-form="1">' +
-      '<div class="inv-formhd">' + (_editId ? '✏️ עֲרִיכַת פָּרִיט' : '➕ פָּרִיט חָדָשׁ') + '</div>' +
-      '<label class="inv-lbl">שֵׁם <span class="req">*</span></label>' +
-      '<input class="inv-in" data-f="name" value="' + esc(it.name||'') + '" placeholder="מָה אֲנִי מְאַחְסֵן? (לְמָשָׁל: מַקְדֵּחָה)">' +
+      '<div class="inv-formhd">' + (_editId ? '✏️ Edit item' : '➕ New item') + '</div>' +
+      '<label class="inv-lbl">Name <span class="req">*</span></label>' +
+      '<input class="inv-in" data-f="name" value="' + esc(it.name||'') + '" placeholder="What am I storing? (e.g. a drill)">' +
       '<div class="inv-frow">' +
-        '<div class="inv-fcol"><label class="inv-lbl">מִקּוּם (תֵּבָה / מַדָּף / חֶדֶר)</label>' +
-          '<input class="inv-in" data-f="location" value="' + esc(it.location||'') + '" placeholder="לְמָשָׁל: מַחְסָן · תֵּבָה 3 · מַדָּף עֶלְיוֹן"></div>' +
-        '<div class="inv-fcol inv-qtycol"><label class="inv-lbl">כַּמּוּת</label>' +
+        '<div class="inv-fcol"><label class="inv-lbl">Location (box / shelf / room)</label>' +
+          '<input class="inv-in" data-f="location" value="' + esc(it.location||'') + '" placeholder="e.g. Storeroom · Box 3 · Top shelf"></div>' +
+        '<div class="inv-fcol inv-qtycol"><label class="inv-lbl">Quantity</label>' +
           '<input class="inv-in" data-f="quantity" type="number" min="0" step="1" value="' + esc(it.quantity!=null?it.quantity:'') + '" placeholder="1"></div>' +
       '</div>' +
-      '<label class="inv-lbl">קַשֵּׁר לְחֶדֶר / אֵזוֹר בַּבַּיִת (לֹא חוֹבָה)</label>' +
+      '<label class="inv-lbl">Link to a room / area in the house (optional)</label>' +
       '<select class="inv-in inv-sel" data-f="room">' + roomOpts + '</select>' +
-      '<label class="inv-lbl">קָטֶגוֹרְיָה</label>' +
+      '<label class="inv-lbl">Category</label>' +
       '<select class="inv-in inv-sel" data-f="category">' + catOpts + '</select>' +
-      '<label class="inv-lbl">הֶעָרוֹת</label>' +
-      '<textarea class="inv-in inv-ta" data-f="notes" rows="2" placeholder="פְּרָטִים, מַצָּב, הִשְׁאַלְתִּי לְמִישֶׁהוּ…">' + esc(it.notes||'') + '</textarea>' +
-      '<label class="inv-lbl">תְּמוּנָה (לֹא חוֹבָה)</label>' +
+      '<label class="inv-lbl">Notes</label>' +
+      '<textarea class="inv-in inv-ta" data-f="notes" rows="2" placeholder="Details, condition, lent it to someone…">' + esc(it.notes||'') + '</textarea>' +
+      '<label class="inv-lbl">Photo (optional)</label>' +
       '<div class="inv-photorow">' +
         (ph ? '<span class="inv-thumb-lg"><img src="' + esc(ph) + '" alt=""></span>' : '<span class="inv-thumb-lg inv-emoji">📷</span>') +
-        '<label class="inv-btn inv-photobtn">בְּחַר תְּמוּנָה<input type="file" accept="image/*" data-photo="1" hidden></label>' +
-        (ph ? '<button class="inv-btn inv-del" data-photo-clear="1">הָסֵר</button>' : '') +
+        '<label class="inv-btn inv-photobtn">Choose photo<input type="file" accept="image/*" data-photo="1" hidden></label>' +
+        (ph ? '<button class="inv-btn inv-del" data-photo-clear="1">Remove</button>' : '') +
       '</div>' +
       '<div class="inv-formacts">' +
-        '<button class="inv-btn inv-primary" data-save="1">' + (_editId ? 'שְׁמֹר שִׁנּוּיִים' : 'הוֹסֵף לַמַּחְסָן') + '</button>' +
-        '<button class="inv-btn" data-cancel="1">בִּטּוּל</button>' +
-        (_editId ? '<button class="inv-btn inv-del" data-delete="' + esc(_editId) + '">מְחַק</button>' : '') +
+        '<button class="inv-btn inv-primary" data-save="1">' + (_editId ? 'Save changes' : 'Add to storeroom') + '</button>' +
+        '<button class="inv-btn" data-cancel="1">Cancel</button>' +
+        (_editId ? '<button class="inv-btn inv-del" data-delete="' + esc(_editId) + '">Delete</button>' : '') +
       '</div>' +
-      '<div class="inv-formfoot">הַתְּמוּנָה נִשְׁמֶרֶת מְכֻוֶּצֶת (≤~280KB) בָּאַחְסוּן הַמְּקוֹמִי שֶׁל הַמַּכְשִׁיר בִּלְבָד.</div>' +
+      '<div class="inv-formfoot">The photo is saved compressed (≤~280KB) in the device\'s local storage only.</div>' +
     '</div>';
   }
 
@@ -291,33 +291,33 @@
     var items = listItems();
     var q = _query.trim();
 
-    var html = '<h3>הַמַּחְסָן · אֵיפֹה שַׂמְתִּי אֶת זֶה</h3>' +
-      '<div class="sub">חַפֵּשׂ פָּרִיט — וְהַמִּקּוּם שֶׁלּוֹ יִקְפֹּץ. אוֹ עַיֵּן לְפִי מָקוֹם / קָטֶגוֹרְיָה.</div>' +
-      '<input class="inv-q" placeholder="🔍 אֵיפֹה ה… (שֵׁם פָּרִיט / מָקוֹם)" value="' + esc(_query) + '">';
+    var html = '<h3>The storeroom · where did I put this</h3>' +
+      '<div class="sub">Search for an item — and its location pops out. Or browse by location / category.</div>' +
+      '<input class="inv-q" placeholder="🔍 Where\'s the… (item name / location)" value="' + esc(_query) + '">';
 
     // ---- SEARCH (the core feature): location is the headline of each hit ----
     if (q){
       var hits = items.filter(function(it){ return matches(it, q); });
-      html += '<div class="inv-sec">תּוֹצָאוֹת · ' + hits.length + '</div>';
+      html += '<div class="inv-sec">Results · ' + hits.length + '</div>';
       html += hits.length ? hits.map(searchHit).join('')
-                          : '<div class="inv-empty">אֵין פָּרִיט תּוֹאֵם. אוּלַי עוֹד לֹא הוֹסַפְתָּ אוֹתוֹ?</div>';
-      html += '<div class="inv-foot">' + items.length + ' פְּרִיטִים בַּמַּחְסָן · מְאֻחְסָן עַל הַמַּכְשִׁיר (localStorage)</div>';
+                          : '<div class="inv-empty">No matching item. Maybe you haven\'t added it yet?</div>';
+      html += '<div class="inv-foot">' + items.length + ' items in the storeroom · stored on the device (localStorage)</div>';
       _host.innerHTML = html;
       return;
     }
 
     // ---- add button + the inline form (when open) ----
     html += '<div class="inv-toolbar">' +
-      '<button class="inv-btn inv-primary inv-add" data-addopen="1">➕ הוֹסֵף פָּרִיט</button>' +
+      '<button class="inv-btn inv-primary inv-add" data-addopen="1">➕ Add item</button>' +
       '<div class="inv-modes">' +
-        '<button class="inv-mode' + (_mode==='loc'?' on':'') + '" data-mode="loc">לְפִי מָקוֹם</button>' +
-        '<button class="inv-mode' + (_mode==='cat'?' on':'') + '" data-mode="cat">לְפִי קָטֶגוֹרְיָה</button>' +
+        '<button class="inv-mode' + (_mode==='loc'?' on':'') + '" data-mode="loc">By location</button>' +
+        '<button class="inv-mode' + (_mode==='cat'?' on':'') + '" data-mode="cat">By category</button>' +
       '</div></div>';
     if (_formOpen) html += formHtml();
 
     if (!items.length){
-      html += '<div class="inv-empty inv-empty-big">📦 הַמַּחְסָן רֵיק עֲדַיִן.<br>הוֹסֵף פָּרִיט רִאשׁוֹן — וְתָמִיד תֵּדַע אֵיפֹה שַׂמְתָּ אוֹתוֹ.</div>';
-      html += '<div class="inv-foot">מְאֻחְסָן עַל הַמַּכְשִׁיר (localStorage)</div>';
+      html += '<div class="inv-empty inv-empty-big">📦 The storeroom is still empty.<br>Add your first item — and you\'ll always know where you put it.</div>';
+      html += '<div class="inv-foot">stored on the device (localStorage)</div>';
       _host.innerHTML = html;
       return;
     }
@@ -326,15 +326,15 @@
       // group by location (canonical room name, else free text)
       var groups = {};
       items.forEach(function(it){ var k = groupKey(it); (groups[k] = groups[k] || []).push(it); });
-      var keys = Object.keys(groups).sort(function(a,b){ return b==='לְלֹא מִקּוּם' ? -1 : (groups[b].length - groups[a].length); });
-      html += '<div class="inv-sec">עִיּוּן לְפִי מָקוֹם · ' + keys.length + ' מְקוֹמוֹת</div>';
+      var keys = Object.keys(groups).sort(function(a,b){ return b==='No location' ? -1 : (groups[b].length - groups[a].length); });
+      html += '<div class="inv-sec">Browse by location · ' + keys.length + ' places</div>';
       keys.forEach(function(k){
         html += '<div class="inv-grp">📍 ' + esc(k) + ' <span class="cnt">' + groups[k].length + '</span></div>';
         html += groups[k].map(itemRow).join('');
       });
     } else {
       // group by category, in the CATS order, with an "other" bucket last
-      html += '<div class="inv-sec">עִיּוּן לְפִי קָטֶגוֹרְיָה</div>';
+      html += '<div class="inv-sec">Browse by category</div>';
       var seen = {};
       CATS.forEach(function(c){
         var inC = items.filter(function(it){ return (it.category||'other') === c.k; });
@@ -350,7 +350,7 @@
       }
     }
 
-    html += '<div class="inv-foot">' + items.length + ' פְּרִיטִים · מְאֻחְסָן עַל הַמַּכְשִׁיר (localStorage). תְּמוּנוֹת מְכֻוָּצוֹת.</div>';
+    html += '<div class="inv-foot">' + items.length + ' items · stored on the device (localStorage). Photos compressed.</div>';
     _host.innerHTML = html;
   }
 
@@ -452,11 +452,11 @@
     var s = document.createElement('style');
     s.id = 'inventory-css';
     s.textContent =
-      '#inv-host{direction:rtl;font-family:Heebo,sans-serif;color:#efe6cf}' +
+      '#inv-host{direction:ltr;font-family:Heebo,sans-serif;color:#efe6cf}' +
       '#inv-host h3{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:19px;color:#fff7e6;margin:0 0 2px}' +
       '#inv-host .sub{color:#a99b78;font-size:12px;margin-bottom:8px;line-height:1.5}' +
       '#inv-host .inv-q{width:100%;margin:4px 0 8px;padding:9px 12px;background:rgba(255,255,255,.05);' +
-        'border:1px solid rgba(202,161,90,.34);border-radius:9px;color:#f4eddc;font-family:Heebo;font-size:14px;direction:rtl}' +
+        'border:1px solid rgba(202,161,90,.34);border-radius:9px;color:#f4eddc;font-family:Heebo;font-size:14px;direction:ltr}' +
       '#inv-host .inv-q::placeholder{color:#8a8068}' +
       '#inv-host .inv-q:focus{outline:none;border-color:rgba(202,161,90,.65);background:rgba(255,255,255,.07)}' +
       // toolbar
@@ -512,7 +512,7 @@
       '#inv-host .inv-lbl{display:block;color:#bdb091;font-size:11px;font-family:Heebo;margin:9px 0 3px}' +
       '#inv-host .inv-lbl .req{color:#e0b24a}' +
       '#inv-host .inv-in{width:100%;padding:7px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(202,161,90,.26);' +
-        'border-radius:8px;color:#f2ead8;font-family:Heebo;font-size:13px;direction:rtl;box-sizing:border-box}' +
+        'border-radius:8px;color:#f2ead8;font-family:Heebo;font-size:13px;direction:ltr;box-sizing:border-box}' +
       '#inv-host .inv-in:focus{outline:none;border-color:rgba(202,161,90,.6)}' +
       '#inv-host .inv-in.inv-err{border-color:rgba(224,120,120,.7)}' +
       '#inv-host .inv-sel{appearance:none;-webkit-appearance:none;cursor:pointer}' +

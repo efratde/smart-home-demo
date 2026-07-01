@@ -4,8 +4,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "שְׁמוּרַת עֵמֶק לַרְקְמוֹנְט (דֶּמוֹ)",
-        "type_he": "שְׁמוּרַת טֶבַע"
+        "name_he": "Larkmont Valley Reserve (demo)",
+        "type_he": "Nature reserve"
       },
       "geometry": {
         "type": "Polygon",

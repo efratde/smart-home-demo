@@ -1,7 +1,7 @@
 {
   "recipient": {
-    "name_he": "אֶלֶכְּס",
-    "city_he": "לרקמונט"
+    "name_he": "Alex",
+    "city_he": "Larkmont"
   },
   "coords": {
     "lat": 34.0,
@@ -54,25 +54,25 @@
   "milestones": [
     {
       "id": "move",
-      "label_he": "הַמַּעֲבָר לְלַרְקְמוֹנְט",
+      "label_he": "The move to Larkmont",
       "date": "2020-01-01",
       "emoji": "🌄"
     },
     {
       "id": "house",
-      "label_he": "הַכְּנִיסָה לַבַּיִת",
+      "label_he": "Moving into the house",
       "date": "2021-01-01",
       "emoji": "🏠"
     },
     {
       "id": "mortgage",
-      "label_he": "הַמַּשְׁכַּנְתָּא",
+      "label_he": "The mortgage",
       "date": "2022-01-01",
       "emoji": "🏦"
     },
     {
       "id": "birth",
-      "label_he": "יוֹם הַהֻלֶּדֶת שֶׁל אֶלֶכְּס (לְדֻגְמָה)",
+      "label_he": "Alex's birthday (example)",
       "date": "2000-01-01",
       "emoji": "🎂"
     }
@@ -80,7 +80,7 @@
   "zones": [
     {
       "id": "backyard",
-      "name_he": "הֶחָצֵר הָאֲחוֹרִית",
+      "name_he": "The backyard",
       "facing": "east",
       "color": "#2a5d8f",
       "elevation_offset_m": 0,
@@ -88,12 +88,12 @@
       "offset_e_m": -0.32,
       "size_n_m": 2.9,
       "size_e_m": 7.5,
-      "notes_he": "הֶחָצֵר הָאֲחוֹרִית הַפְּתוּחָה — פּוֹנָה מִזְרָחָה אֶל הַשָּׂדֶה הַפָּתוּחַ, שֶׁמֶשׁ בֹּקֶר חֲזָקָה. שָׁם הַמַּחְסָן וְהַצְּמָחִים, מִתַּחַת לַמִּרְפֶּסֶת.",
+      "notes_he": "The open backyard — faces east toward the open field, strong morning sun. The shed and the plants are there, beneath the balcony.",
       "shades": []
     },
     {
       "id": "balcony",
-      "name_he": "מִרְפֶּסֶת קוֹמָה רִאשׁוֹנָה",
+      "name_he": "First-floor balcony",
       "facing": "east",
       "color": "#4a8a3a",
       "elevation_offset_m": 3.88,
@@ -101,12 +101,12 @@
       "offset_e_m": 2.64,
       "size_n_m": 3.6,
       "size_e_m": 7.32,
-      "notes_he": "מִרְפֶּסֶת מוּרְמֶת מֵעַל הֶחָצֵר; אַקְספּוֹזִיצְיָה מִזְרָחִית פְּתוּחָה — הֲכִי הַרְבֵּה שֶׁמֶשׁ לְאֹרֶךְ הַיּוֹם.",
+      "notes_he": "A balcony raised above the backyard; open eastern exposure — the most sun throughout the day.",
       "shades": []
     },
     {
       "id": "front",
-      "name_he": "חֲזִית הַבַּיִת",
+      "name_he": "House front",
       "facing": "west",
       "color": "#d97f2a",
       "elevation_offset_m": 0,
@@ -114,7 +114,7 @@
       "offset_e_m": -0.3,
       "size_n_m": 2.4,
       "size_e_m": 4.0,
-      "notes_he": "חֲזִית הַבַּיִת הַפּוֹנָה מַעֲרָבָה אֶל הָרְחָבָה הַמְּשֻׁתֶּפֶת — הַכְּנִיסָה לַבַּיִת מֵהָרְחָבָה; בֹּקֶר בְּצֵל, שֶׁמֶשׁ אַחַר־צָהֳרַיִם.",
+      "notes_he": "The front of the house, facing west toward the shared plaza — the entrance to the house is from the plaza; morning in shade, afternoon sun.",
       "shades": []
     }
   ]

@@ -11,7 +11,7 @@
 
      window.__backup.export()        → gathers every home_* namespace
                                        into one dated JSON file + triggers
-                                       a download (גיבוי-אלכס-YYYY-MM-DD.json).
+                                       a download (alex-backup-YYYY-MM-DD.json).
      window.__backup.import(fileOrJson, {mode}) → restores them, with a
                                        confirm + a merge-or-replace choice.
      window.__backup.render(host)    → a small RTL #inst card: how much
@@ -27,18 +27,18 @@
    home_log_<coll>_v1, and the dynamic home_v2_drag.<id> keys). So we
    SCAN localStorage for the 'home_' prefix — this auto-captures present
    AND future namespaces. A curated CATALOG (below) only supplies the
-   nice Hebrew labels for the summary; an unlabeled future key still gets
+   nice display labels for the summary; an unlabeled future key still gets
    backed up (shown under its raw key). No data is ever silently skipped.
 
    DESIGN RULES (honesty + safety):
    • NEVER throws — every entry point is wrapped; failures return a
-     {ok:false, error} result and surface a gentle Hebrew message.
+     {ok:false, error} result and surface a gentle message.
    • DESTRUCTIVE-CLEAR ("replace") and overwrite-on-conflict ALWAYS ask
      for an explicit confirm first, naming exactly what's at stake.
    • A restore is NOT a guess: we only accept files we wrote (a signed
      envelope {app:'alex-gift', kind:'backup', v, data}); a foreign /
      corrupt file is rejected with a clear reason, the store untouched.
-   • Self-injects its own CSS once; RTL Hebrew; the gold-on-glass #inst
+   • Self-injects its own CSS once; RTL layout; the gold-on-glass #inst
      instrument language (mirrors zone_card.js / workbench.js).
    • No network. Pure browser + a Blob download + a hidden file <input>.
    =================================================================== */
@@ -53,31 +53,31 @@
   var PREFIX   = 'home_';                            // every app namespace is home_*
   var ENVELOPE = { app:'alex-gift', kind:'backup', v:1 };
 
-  /* ---- curated catalog: key → Hebrew label + family (for the summary only).
+  /* ---- curated catalog: key → display label + family (for the summary only).
      Dynamic families (LogStore collections, the per-id drag keys) are matched
      by prefix so we don't have to enumerate every collection. Anything not
      matched here is still exported — it just shows under its raw key. ---- */
   var CATALOG = [
-    { key:'home_record_v1',        he:'יוֹמַן הָאַקְלִים הַחַי',        fam:'אַקְלִים' },
-    { key:'home_garden_v1',        he:'הַגִּינָּה וְכַרְטִיסֵי הַצְּמָחִים', fam:'גִּינָּה' },
-    { key:'home_workbench_v1',     he:'שֻׁלְחַן הָעֲבוֹדָה (חֲדָרִים)',  fam:'בַּיִת' },
-    { key:'home_vision_v1',        he:'לוּחַ הַחֲזוֹן',                 fam:'חֲזוֹן' },
-    { key:'home_inventory_v1',     he:'מְלַאי · אֵיפֹה שַׂמְתִּי',       fam:'בַּיִת' },
-    { key:'home_natal_v1',         he:'מַפַּת הַלֵּדָה',                fam:'שָׁמַיִם' },
-    { key:'home_planning_v1',      he:'מִטְמוֹן תִּכְנוּן',             fam:'מַעֲרֶכֶת' },
-    { key:'home_alerts_state_v1',  he:'הִתְרָאוֹת שֶׁנֻּקּוּ',          fam:'מַעֲרֶכֶת' },
-    { key:'home_amb_v1',           he:'הַעֲדָפוֹת צְלִיל',              fam:'מַעֲרֶכֶת' },
-    { key:'home_env_cache_v1',     he:'מִטְמוֹן סְבִיבָה',             fam:'מַעֲרֶכֶת' },
-    { key:'home_env_keys_v1',      he:'מַפְתְּחוֹת סְבִיבָה',           fam:'מַעֲרֶכֶת' },
-    { key:'home_plantnet_key',     he:'מַפְתֵּחַ זִהוּי צְמָחִים',      fam:'מַעֲרֶכֶת' },
-    { key:'home_mag_week',         he:'סִמּוּן מָגְנִיטוֹמֶטֶר שָׁבוּעַ', fam:'מַעֲרֶכֶת' },
-    { key:'home_read',             he:'קְרִיאוֹת מוֹנֶה (אֵנֶרְגְּיָה)',  fam:'בַּיִת' },
-    { key:'home_obs',              he:'תַּצְפִּיּוֹת טֶבַע',            fam:'טֶבַע' }
+    { key:'home_record_v1',        he:'Living climate journal',        fam:'Climate' },
+    { key:'home_garden_v1',        he:'Garden & plant cards', fam:'Garden' },
+    { key:'home_workbench_v1',     he:'Workbench (rooms)',  fam:'Home' },
+    { key:'home_vision_v1',        he:'Vision board',                 fam:'Vision' },
+    { key:'home_inventory_v1',     he:'Inventory · where did I put it',       fam:'Home' },
+    { key:'home_natal_v1',         he:'Natal chart',                fam:'Sky' },
+    { key:'home_planning_v1',      he:'Planning cache',             fam:'System' },
+    { key:'home_alerts_state_v1',  he:'Dismissed alerts',          fam:'System' },
+    { key:'home_amb_v1',           he:'Sound preferences',              fam:'System' },
+    { key:'home_env_cache_v1',     he:'Environment cache',             fam:'System' },
+    { key:'home_env_keys_v1',      he:'Environment keys',           fam:'System' },
+    { key:'home_plantnet_key',     he:'Plant ID key',      fam:'System' },
+    { key:'home_mag_week',         he:'Magnetometer week marker', fam:'System' },
+    { key:'home_read',             he:'Meter readings (energy)',  fam:'Home' },
+    { key:'home_obs',              he:'Nature observations',            fam:'Nature' }
   ];
   /* prefix-matched families for the dynamic keys */
   var PREFIX_FAMS = [
-    { pre:'home_log_', he:'אוֹסֶף יוֹמָן', fam:'מוֹחַ' },           // LogStore collections
-    { pre:'home_v2_drag.', he:'מִקּוּם רָהִיט', fam:'בַּיִת' }      // per-id drag positions
+    { pre:'home_log_', he:'Log collection', fam:'Brain' },           // LogStore collections
+    { pre:'home_v2_drag.', he:'Furniture position', fam:'Home' }      // per-id drag positions
   ];
   function labelFor(key){
     for(var i=0;i<CATALOG.length;i++) if(CATALOG[i].key===key) return CATALOG[i];
@@ -85,7 +85,7 @@
       var rest=key.slice(PREFIX_FAMS[j].pre.length).replace(/_v1$/,'');
       return { key:key, he:PREFIX_FAMS[j].he+(rest?' · '+rest:''), fam:PREFIX_FAMS[j].fam };
     }
-    return { key:key, he:key, fam:'אַחֵר' };
+    return { key:key, he:key, fam:'Other' };
   }
 
   /* ---- localStorage scan (defensive everywhere) ---- */
@@ -103,14 +103,14 @@
   }
 
   function fmtBytes(b){
-    if(!isFinite(b)||b<=0) return '0 ב׳';
-    if(b<1024) return b+' ב׳';
-    if(b<1024*1024) return (Math.round(b/102.4)/10)+' ק״ב';
-    return (Math.round(b/104857.6)/10)+' מ״ב';
+    if(!isFinite(b)||b<=0) return '0 B';
+    if(b<1024) return b+' B';
+    if(b<1024*1024) return (Math.round(b/102.4)/10)+' KB';
+    return (Math.round(b/104857.6)/10)+' MB';
   }
   // rough byte size of a stored string (UTF-16 chars; a stable RELATIVE measure)
   function strBytes(s){ return s? s.length*2 : 0; }
-  // try to count "records" in a value so the summary can say "12 פריטים"
+  // try to count "records" in a value so the summary can say "12 items"
   function countItems(raw){
     if(raw==null) return null;
     try{
@@ -189,38 +189,38 @@
     try{
       var payload=buildPayload();
       var text=JSON.stringify(payload, null, opts.pretty===false?0:2);
-      var filename='גיבוי-אלכס-'+dateStamp()+'.json';
+      var filename='alex-backup-'+dateStamp()+'.json';
       var did = opts.noDownload ? true : download(filename, text);
       return { ok:did, filename:filename, count:payload.count, bytes:strBytes(text),
                skipped:payload.skipped, payload:payload, text:text,
-               error: did?null:'הַהוֹרָדָה נֶחְסְמָה עַל יְדֵי הַדַּפְדְּפָן' };
+               error: did?null:'The download was blocked by the browser' };
     }catch(e){
-      return { ok:false, error:(e&&e.message)||'שְׁגִיאָה בִּיצִירַת הַגִּבּוּי' };
+      return { ok:false, error:(e&&e.message)||'Error creating the backup' };
     }
   }
 
   /* ===================== IMPORT / RESTORE ===================== */
   // validate a parsed object is one of OUR backups. Returns {ok, reason, payload}.
   function validate(obj){
-    if(!obj || typeof obj!=='object')        return { ok:false, reason:'הַקֹּבֶץ אֵינוֹ JSON תָּקִין' };
+    if(!obj || typeof obj!=='object')        return { ok:false, reason:'The file is not valid JSON' };
     if(obj.app!==ENVELOPE.app || obj.kind!==ENVELOPE.kind)
-                                             return { ok:false, reason:'זֶה אֵינוֹ קֹבֶץ גִּבּוּי שֶׁל הַמַּתָּנָה' };
+                                             return { ok:false, reason:'This is not a backup file from the gift' };
     if(!obj.data || typeof obj.data!=='object')
-                                             return { ok:false, reason:'הַגִּבּוּי רֵיק אוֹ פָּגוּם (אֵין נְתוּנִים)' };
+                                             return { ok:false, reason:'The backup is empty or corrupt (no data)' };
     // accept only home_* string values (anything else is foreign/unsafe → drop it)
     var clean={}, dropped=[];
     Object.keys(obj.data).forEach(function(k){
       if(typeof k==='string' && k.indexOf(PREFIX)===0 && typeof obj.data[k]==='string') clean[k]=obj.data[k];
       else dropped.push(k);
     });
-    if(!Object.keys(clean).length) return { ok:false, reason:'אֵין בַּקֹּבֶץ אַף מַפְתֵּחַ תָּקִין שֶׁל הָאַפְּלִיקַצְיָה' };
+    if(!Object.keys(clean).length) return { ok:false, reason:'The file contains no valid app keys' };
     return { ok:true, payload:Object.assign({}, obj, { data:clean }), dropped:dropped };
   }
 
   // parse text → object (defensive)
   function parseText(text){
     try{ return { ok:true, obj:JSON.parse(text) }; }
-    catch(e){ return { ok:false, reason:'לֹא נִתָּן לִקְרֹא אֶת הַקֹּבֶץ כְּ-JSON' }; }
+    catch(e){ return { ok:false, reason:'The file could not be read as JSON' }; }
   }
 
   /* apply a validated payload to localStorage.
@@ -240,7 +240,7 @@
       });
       return { ok:failed.length===0, written:written, removed:removed, failed:failed };
     }catch(e){
-      return { ok:false, written:written, removed:removed, failed:failed, error:(e&&e.message)||'שְׁגִיאָה בַּשִּׁחְזוּר' };
+      return { ok:false, written:written, removed:removed, failed:failed, error:(e&&e.message)||'Error during restore' };
     }
   }
 
@@ -264,8 +264,8 @@
                        : (typeof opts.confirm==='function' ? opts.confirm
                        : (typeof confirm==='function' ? confirm : function(){ return true; }));
         var msg = mode==='replace'
-          ? ('שִׁחְזוּר בְּהַחְלָפָה: כָּל הַנְּתוּנִים הַנּוֹכְחִיִּים בַּדַּפְדְּפָן הַזֶּה יִמָּחֲקוּ וְיוּחְלְפוּ בְּ-'+nKeys+' מַפְתְּחוֹת מֵהַגִּבּוּי. לְהַמְשִׁיךְ?')
-          : ('שִׁחְזוּר בְּמִזּוּג: '+nKeys+' מַפְתְּחוֹת מֵהַגִּבּוּי יִדְרְסוּ אֶת הַנּוֹכְחִיּוֹת בְּאוֹתוֹ שֵׁם (הַשְּׁאָר יִשָּׁמֵר). לְהַמְשִׁיךְ?');
+          ? ('Replace restore: all current data in this browser will be erased and replaced with '+nKeys+' keys from the backup. Continue?')
+          : ('Merge restore: '+nKeys+' keys from the backup will overwrite the current ones with the same name (the rest are kept). Continue?');
         var go=false; try{ go=!!doConfirm(msg); }catch(e){ go=false; }
         if(!go){ resolve({ ok:false, cancelled:true }); return; }
         var res=applyPayload(v.payload, mode);
@@ -275,14 +275,14 @@
         if(input && typeof input==='object' && typeof input.text==='function' && typeof input.name==='string'){
           // a File (or Blob): read it then restore
           if(typeof input.text==='function'){
-            input.text().then(fromText, function(){ resolve({ ok:false, error:'לֹא נִתָּן לִקְרֹא אֶת הַקֹּבֶץ' }); });
+            input.text().then(fromText, function(){ resolve({ ok:false, error:'The file could not be read' }); });
           }
           return;
         }
         if(typeof FileReader!=='undefined' && input && input.name && input.size!=null){
           var fr=new FileReader();
           fr.onload=function(){ fromText(String(fr.result||'')); };
-          fr.onerror=function(){ resolve({ ok:false, error:'לֹא נִתָּן לִקְרֹא אֶת הַקֹּבֶץ' }); };
+          fr.onerror=function(){ resolve({ ok:false, error:'The file could not be read' }); };
           fr.readAsText(input);
           return;
         }
@@ -293,16 +293,16 @@
           if(!v2.ok){ resolve({ ok:false, error:v2.reason }); return; }
           fromText(JSON.stringify(input)); return;
         }
-        resolve({ ok:false, error:'לֹא הִתְקַבֵּל קֹבֶץ לְשִׁחְזוּר' });
+        resolve({ ok:false, error:'No file was provided to restore' });
       }catch(e){
-        resolve({ ok:false, error:(e&&e.message)||'שְׁגִיאָה בִּקְרִיאַת הַקֹּבֶץ' });
+        resolve({ ok:false, error:(e&&e.message)||'Error reading the file' });
       }
     });
   }
 
   /* ===================== CSS (the #inst gold-on-glass language) ===================== */
   var CSS = ''
-  + '#bk-host{font-family:"Heebo",sans-serif;color:#efe6cf;direction:rtl}'
+  + '#bk-host{font-family:"Heebo",sans-serif;color:#efe6cf;direction:ltr}'
   + '#bk-host .bk-intro{font-size:12px;color:#a99b78;line-height:1.6;margin:0 0 12px;'
   +   'border-right:2px solid rgba(202,161,90,.3);padding-right:9px}'
   + '#bk-host .bk-card{background:linear-gradient(160deg,rgba(12,14,26,.93),rgba(6,7,15,.95));'
@@ -360,26 +360,26 @@
     var s=summary();
     var pills = s.families.length
       ? s.families.map(function(f){ return '<span class="bk-pill">'+esc(f.fam)+' · '+esc(fmtBytes(f.bytes))+'</span>'; }).join('')
-      : '<span class="bk-pill">אֵין עֲדַיִן נְתוּנִים</span>';
+      : '<span class="bk-pill">No data yet</span>';
     var rows = s.rows.length
       ? s.rows.map(function(r){
-          var cnt = (r.items!=null) ? (r.items+' פְּרִיטִים') : '—';
+          var cnt = (r.items!=null) ? (r.items+' items') : '—';
           return '<div class="bk-row"><span>'+esc(r.he)+'</span>'
                + '<b>'+esc(fmtBytes(r.bytes))+'</b>'
                + '<span class="bk-meta">'+esc(cnt)+'</span></div>';
         }).join('')
-      : '<div class="bk-row"><span>הַגִּינָּה רֵיקָה עֲדַיִן — שׁוּם דָּבָר לְגַבּוֹת.</span></div>';
+      : '<div class="bk-row"><span>The garden is still empty — nothing to back up.</span></div>';
     return ''
       + '<div class="bk-card">'
-      +   '<div class="bk-ct">כַּמָּה נֶאֱסַף עַד כֹּה</div>'
+      +   '<div class="bk-ct">How much has been gathered so far</div>'
       +   '<div class="bk-stat">'
-      +     '<div><div class="bk-big">'+s.keys+'</div><div class="bk-sub">מַפְתְּחוֹת נְתוּנִים</div></div>'
-      +     '<div><div class="bk-big">'+esc(fmtBytes(s.totalBytes))+'</div><div class="bk-sub">סַךְ הַכֹּל בַּדַּפְדְּפָן</div></div>'
+      +     '<div><div class="bk-big">'+s.keys+'</div><div class="bk-sub">Data keys</div></div>'
+      +     '<div><div class="bk-big">'+esc(fmtBytes(s.totalBytes))+'</div><div class="bk-sub">Total in the browser</div></div>'
       +   '</div>'
       +   '<div class="bk-fam">'+pills+'</div>'
       + '</div>'
       + '<div class="bk-card">'
-      +   '<div class="bk-ct">פֵּרוּט <span class="bk-meta" style="font-size:9.5px;color:#7d7150">לְפִי גֹּדֶל</span></div>'
+      +   '<div class="bk-ct">Breakdown <span class="bk-meta" style="font-size:9.5px;color:#7d7150">by size</span></div>'
       +   rows
       + '</div>';
   }
@@ -396,34 +396,34 @@
     if(!host) return;
     try{
       ensureCSS();
-      host.id='bk-host'; host.setAttribute('dir','rtl');
+      host.id='bk-host'; host.setAttribute('dir','ltr');
       host.innerHTML = ''
-        + '<div class="bk-intro">הַמַּתָּנָה צוֹבֶרֶת נְתוּנִים אֲמִתִּיִּים לְאֹרֶךְ שָׁנִים — יוֹמַן הָאַקְלִים, הַגִּינָּה, '
-        +   'לוּחַ הַחֲזוֹן, הַמְּלַאי, הָאֲנָשִׁים וְעוֹד — וְכֻלָּם חַיִּים רַק בַּדַּפְדְּפָן הַזֶּה. '
-        +   'גַּבּוּ אוֹתָם לְקֹבֶץ אֶחָד, שִׁמְרוּ בְּמָקוֹם בָּטוּחַ, וְשַׁחְזְרוּ בְּכָל מַכְשִׁיר חָדָשׁ.</div>'
+        + '<div class="bk-intro">The gift gathers real data over the years — the climate journal, the garden, '
+        +   'the vision board, the inventory, the people, and more — and they all live only in this browser. '
+        +   'Back them up to a single file, keep it somewhere safe, and restore it on any new device.</div>'
         + summaryHtml()
         + '<div class="bk-card">'
-        +   '<div class="bk-ct">גִּבּוּי</div>'
+        +   '<div class="bk-ct">Backup</div>'
         +   '<div class="bk-btns">'
-        +     '<div class="bk-btn primary" data-act="export">⬇ הוֹרֵד גִּבּוּי (JSON)</div>'
+        +     '<div class="bk-btn primary" data-act="export">⬇ Download backup (JSON)</div>'
         +   '</div>'
-        +   '<div class="bk-foot">קֹבֶץ מְתֻאָרָךְ נִשְׁמָר לַהוֹרָדוֹת. שְׁמֹר אוֹתוֹ בְּעֲנָן / כּוֹנֵן חִיצוֹנִי — הוּא כָּל הַזִּכָּרוֹן שֶׁל הַמַּתָּנָה.</div>'
+        +   '<div class="bk-foot">A dated file is saved to your Downloads. Keep it in the cloud or on an external drive — it is the whole memory of the gift.</div>'
         + '</div>'
         + '<div class="bk-card">'
-        +   '<div class="bk-ct">שִׁחְזוּר מִקֹּבֶץ</div>'
+        +   '<div class="bk-ct">Restore from file</div>'
         +   '<div class="bk-mode">'
-        +     '<label class="'+(_mode==='merge'?'on':'')+'" data-mode="merge"><span class="bk-mh">מִזּוּג</span>'
-        +       '<span class="bk-md">מְעַדְכֵּן מַפְתְּחוֹת מֵהַגִּבּוּי, מַשְׁאִיר אֶת הַשְּׁאָר. בָּטוּחַ.</span>'
+        +     '<label class="'+(_mode==='merge'?'on':'')+'" data-mode="merge"><span class="bk-mh">Merge</span>'
+        +       '<span class="bk-md">Updates keys from the backup, leaves the rest. Safe.</span>'
         +       '<input type="radio" name="bk-mode" '+(_mode==='merge'?'checked':'')+'></label>'
-        +     '<label class="'+(_mode==='replace'?'on':'')+'" data-mode="replace"><span class="bk-mh">הַחְלָפָה מְלֵאָה</span>'
-        +       '<span class="bk-md">מוֹחֵק הַכֹּל וּמַחֲזִיר בְּדִיּוּק אֶת הַגִּבּוּי. זָהִיר.</span>'
+        +     '<label class="'+(_mode==='replace'?'on':'')+'" data-mode="replace"><span class="bk-mh">Full replace</span>'
+        +       '<span class="bk-md">Erases everything and restores the backup exactly. Careful.</span>'
         +       '<input type="radio" name="bk-mode" '+(_mode==='replace'?'checked':'')+'></label>'
         +   '</div>'
         +   (_mode==='replace'
-              ? '<div class="bk-warn">⚠ הַחְלָפָה מְלֵאָה תִּמְחַק אֶת כָּל הַנְּתוּנִים הַנּוֹכְחִיִּים בַּדַּפְדְּפָן הַזֶּה. תִּתְבַּקֵּשׁ לְאַשֵּׁר.</div>'
+              ? '<div class="bk-warn">⚠ Full replace will erase all current data in this browser. You will be asked to confirm.</div>'
               : '')
         +   '<div class="bk-btns" style="margin-top:10px">'
-        +     '<div class="bk-btn ghost" data-act="import">⬆ בְּחַר קֹבֶץ גִּבּוּי…</div>'
+        +     '<div class="bk-btn ghost" data-act="import">⬆ Choose a backup file…</div>'
         +   '</div>'
         +   '<input type="file" accept="application/json,.json" data-role="file" style="display:none">'
         + '</div>'
@@ -431,7 +431,7 @@
 
       wire(host, date);
     }catch(e){
-      try{ host.innerHTML='<div class="bk-msg show err" style="font-family:Heebo,sans-serif;direction:rtl">לֹא נִתָּן לְהַצִּיג אֶת מָסַךְ הַגִּבּוּי כָּעֵת.</div>'; }catch(_){}
+      try{ host.innerHTML='<div class="bk-msg show err" style="font-family:Heebo,sans-serif;direction:ltr">The backup screen cannot be shown right now.</div>'; }catch(_){}
     }
   }
 
@@ -446,8 +446,8 @@
       var act=btn.getAttribute('data-act');
       if(act==='export'){
         var r=exportData();
-        if(r.ok) setMsg(host,'ok','✓ הַגִּבּוּי יָרַד: '+esc(r.filename)+' · '+r.count+' מַפְתְּחוֹת · '+esc(fmtBytes(r.bytes)));
-        else setMsg(host,'err','✗ '+esc(r.error||'הַגִּבּוּי נִכְשַׁל'));
+        if(r.ok) setMsg(host,'ok','✓ Backup downloaded: '+esc(r.filename)+' · '+r.count+' keys · '+esc(fmtBytes(r.bytes)));
+        else setMsg(host,'err','✗ '+esc(r.error||'Backup failed'));
       } else if(act==='import'){
         var inp=host.querySelector('[data-role="file"]');
         if(inp){ try{ inp.value=''; }catch(_){}; inp.click(); }
@@ -458,14 +458,14 @@
       inp.addEventListener('change', function(){
         var f=inp.files && inp.files[0];
         if(!f){ return; }
-        setMsg(host,'ok','קוֹרֵא אֶת הַקֹּבֶץ…');
+        setMsg(host,'ok','Reading the file…');
         importData(f, { mode:_mode }).then(function(res){
-          if(res.cancelled){ setMsg(host,'err','בֻּטַּל — שׁוּם דָּבָר לֹא הִשְׁתַּנָּה.'); return; }
+          if(res.cancelled){ setMsg(host,'err','Cancelled — nothing changed.'); return; }
           if(res.ok){
-            setMsg(host,'ok','✓ שֻׁחְזַר בְּהַצְלָחָה · '+res.written+' מַפְתְּחוֹת נִכְתְּבוּ'+(res.removed?(' · '+res.removed+' נִמְחֲקוּ'):'')+'. רַעֲנֵן אֶת הַדַּף כְּדֵי לִרְאוֹת הַכֹּל.');
-            try{ var top=host.querySelector('.bk-card'); if(top){ render(host, date); setMsg(host,'ok','✓ שֻׁחְזַר בְּהַצְלָחָה · '+res.written+' מַפְתְּחוֹת. רַעֲנֵן אֶת הַדַּף.'); } }catch(_){}
+            setMsg(host,'ok','✓ Restored successfully · '+res.written+' keys written'+(res.removed?(' · '+res.removed+' removed'):'')+'. Refresh the page to see everything.');
+            try{ var top=host.querySelector('.bk-card'); if(top){ render(host, date); setMsg(host,'ok','✓ Restored successfully · '+res.written+' keys. Refresh the page.'); } }catch(_){}
           } else {
-            setMsg(host,'err','✗ '+esc(res.error||'הַשִּׁחְזוּר נִכְשַׁל'));
+            setMsg(host,'err','✗ '+esc(res.error||'Restore failed'));
           }
         });
       });

@@ -1,5 +1,5 @@
 /* ===========================================================================
- * movable.js · "הבית של אלכס"
+ * movable.js · "Alex's House"
  * ---------------------------------------------------------------------------
  * The ONE clean layer that makes the original app's floating panels movable +
  * resizable — replacing the old v2_windows.js / v2_inst.js pile of runtime
@@ -25,7 +25,7 @@
     s.textContent =
       '.mv-grip{display:flex;align-items:center;gap:7px;cursor:grab;padding:4px 9px;' +
       'border-bottom:1px solid rgba(202,161,90,.22);opacity:.5;transition:opacity .15s;' +
-      'font-family:Heebo,sans-serif;direction:rtl;border-top-left-radius:8px;border-top-right-radius:8px;' +
+      'font-family:Heebo,sans-serif;direction:ltr;border-top-left-radius:8px;border-top-right-radius:8px;' +
       'background:linear-gradient(180deg,rgba(202,161,90,.10),transparent)}' +
       '.mv-grip:hover{opacity:1}.mv-grip:active{cursor:grabbing}' +
       '.mv-dots{color:' + GOLD + ';font-size:12px;letter-spacing:-2px;line-height:1}' +
@@ -91,7 +91,7 @@
   }
 
   /* ---- the standalone floating weather card (#wx) is RETIRED ------------- */
-  /* Its content moved into the instrument panel's סביבה tab (panels.js
+  /* Its content moved into the instrument panel's Environment tab (panels.js
      weatherBlockHTML). Hide the element if app.js still builds it, and do NOT
      hand it to V2Drag (it would try to make a hidden card draggable). */
   function hideWx() {
@@ -108,10 +108,10 @@
     var MOBILE = (window.innerWidth || 1200) <= 760 || (window.innerHeight || 900) <= 540;
     if (!MOBILE) {
       // The content cards — draggable + resizable, tiled so they don't overlap.
-      card('bld',  'שכבות', function (v) { return { tx: 18, ty: 372 }; },                             { minW: 240, minH: 110 });
-      card('inst', 'מכשירים', function (v) { return { tx: Math.max(18, v.w - 372), ty: 18 }; },        { minW: 300, minH: 220, maxW: Math.max(360, (window.innerWidth || 1200) - 40) });
+      card('bld',  'Layers', function (v) { return { tx: 18, ty: 372 }; },                             { minW: 240, minH: 110 });
+      card('inst', 'Instruments', function (v) { return { tx: Math.max(18, v.w - 372), ty: 18 }; },        { minW: 300, minH: 220, maxW: Math.max(360, (window.innerWidth || 1200) - 40) });
       // The scrubber has sliders → drag via its grip; no resize. Bottom-centre, clear of compass + inst.
-      card('tbar', 'זמן', function (v) { return { tx: Math.max(220, (v.w - 540) / 2), ty: v.h - 150 }; }, { resize: false });
+      card('tbar', 'Time', function (v) { return { tx: Math.max(220, (v.w - 540) / 2), ty: v.h - 150 }; }, { resize: false });
       // The compass dial — draggable whole, no resize. Bottom-left.
       mover('compass', function (v) { return { tx: 18, ty: v.h - 230 }; });
     }

@@ -4,7 +4,7 @@
     {
       "type": "Feature",
       "properties": {
-        "lith_he": "גִּיר וְדוֹלוֹמִיט",
+        "lith_he": "Limestone and dolomite",
         "lith": "limestone",
         "color": "#7fa8c9"
       },
@@ -39,7 +39,7 @@
     {
       "type": "Feature",
       "properties": {
-        "lith_he": "חוֹל וְחַוָּר",
+        "lith_he": "Sand and marl",
         "lith": "sandstone",
         "color": "#c79a5b"
       },

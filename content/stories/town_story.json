@@ -1,23 +1,23 @@
 {
-  "title_he": "הַסִּפּוּר שֶׁל לַרְקְמוֹנְט",
+  "title_he": "The Story of Larkmont",
   "read_minutes": 3,
   "sections": [
     {
-      "h": "עֲיָרָה עַל שְׂפַת הָעֵמֶק",
-      "body_he": "לַרְקְמוֹנְט הִיא עֲיָרָה בִּדְיוֹנִית הַיּוֹשֶׁבֶת עַל שְׂפַת עֵמֶק. נוֹסְדָה כְּדֻגְמָה לְצֹרֶךְ הַדֶּמוֹ, לְלֹא קֶשֶׁר לְמָקוֹם אֲמִתִּי."
+      "h": "A Town on the Valley's Edge",
+      "body_he": "Larkmont is a fictional town that sits on the edge of a valley. It was founded as an example for the demo, with no connection to any real place."
     },
     {
-      "h": "חַיִּים בַּגֹּבַהּ",
-      "body_he": "הָאֲוִיר יָבֵשׁ וְצָלוּל, הַיָּמִים חַמִּים וְהַלֵּילוֹת קָרִים — אַקְלִים שֶׁל רָמָה גְּבוֹהָה."
+      "h": "Life at Altitude",
+      "body_he": "The air is dry and clear, the days warm and the nights cold — a high-plateau climate."
     },
     {
-      "h": "מָקוֹם שֶׁל שֶׁקֶט",
-      "body_he": "מְעַט אוֹרוֹת, הַרְבֵּה שָׁמַיִם — זוֹ הַזֶּהוּת שֶׁל הָעֲיָרָה הַבִּדְיוֹנִית הַזֹּאת."
+      "h": "A Place of Quiet",
+      "body_he": "Few lights, plenty of sky — that is the identity of this fictional town."
     }
   ],
   "sources": [
     {
-      "name": "לרקמונט · אַרְכִיוֹן הַדֶּמוֹ (סִינְתֵטִי)",
+      "name": "Larkmont · Demo Archive (synthetic)",
       "url": ""
     }
   ]

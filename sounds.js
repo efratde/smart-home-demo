@@ -1,5 +1,5 @@
 /* ===========================================================================
- * sounds.js · "הבית של אלכס" — the offline audio engine for the nature guide.
+ * sounds.js · "Alex's House" — the offline audio engine for the nature guide.
  * ---------------------------------------------------------------------------
  * Plays the BUNDLED, free-licensed bird CALL recordings that ship with the
  * field guide (assets/nature/sounds/<species-id>.mp3). Each clip was sourced

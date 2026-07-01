@@ -2,14 +2,14 @@
    explain.js — the universal "?" affordance (window.Explain).
    ONE reusable component for every numeric value across the app.
    Hover  -> one-line gloss tooltip.
-   Click  -> popover: הסבר (summary + "הערכה" flag) / הנתונים (rows) /
-             מקור (source links) + a "פירוט מלא ←" button.
+   Click  -> popover: Explanation (summary + "estimate" flag) / Data (rows) /
+             Source (source links) + a "Full detail ←" button.
    Button -> method DRAWER (slides in, instrument skin): formula +
              data table + assumptions + reading links.
    model = { title, summary, estimate?, gloss?, data:[{k,v}],
              formula?, assumptions?:[string], sources:[{label,url}] }
    Skin per spec: bg #05060f, gold #caa15a, Frank Ruhl Libre / Heebo /
-   Bellefair. Honesty discipline: estimate -> first-class "הערכה" badge;
+   Bellefair. Honesty discipline: estimate -> first-class "estimate" badge;
    assumptions + source links are surfaced in the drawer.
    =================================================================== */
 (function(){
@@ -37,7 +37,7 @@
   // only a fallback/source). Fully defensive: if the file is missing or the
   // fetch fails, every chip degrades to exactly the old explicit-model behavior.
   // ===================================================================
-  // 'measured'/'ephemeris' are real readings → no "הערכה" badge; everything
+  // 'measured'/'ephemeris' are real readings → no "estimate" badge; everything
   // else (modeled|hybrid|static) is shown as an estimate (CLAUDE.md honesty).
   function isEstimateKind(kind){ return !(kind==='measured' || kind==='ephemeris'); }
 
@@ -113,7 +113,7 @@
     return out;
   }
 
-  // ---- sources.json: optional "מקורות / למד עוד" helper (domain → links) ----
+  // ---- sources.json: optional "Sources / learn more" helper (domain → links) ----
   let SOURCES=null, sourcesPromise=null;
   function loadSources(){
     if(SOURCES) return Promise.resolve(SOURCES);
@@ -159,10 +159,10 @@
     cursor:pointer;vertical-align:middle;user-select:none;transition:background .15s,box-shadow .15s}
   .xpl-chip:hover{background:rgba(202,161,90,.28);color:#fff7e6;box-shadow:0 0 0 2px rgba(202,161,90,.2)}
   .xpl-gloss{position:fixed;z-index:60;max-width:240px;padding:6px 9px;border-radius:7px;
-    font-family:'Heebo',sans-serif;font-size:11px;line-height:1.45;color:#efe6cf;direction:rtl;text-align:right;
+    font-family:'Heebo',sans-serif;font-size:11px;line-height:1.45;color:#efe6cf;direction:ltr;text-align:left;
     background:linear-gradient(160deg,rgba(12,14,26,.97),rgba(5,6,15,.98));border:1px solid rgba(202,161,90,.3);
     box-shadow:0 10px 30px rgba(0,0,0,.6);pointer-events:none}
-  .xpl-pop{position:fixed;z-index:62;width:280px;max-width:calc(100vw - 24px);direction:rtl;text-align:right;
+  .xpl-pop{position:fixed;z-index:62;width:280px;max-width:calc(100vw - 24px);direction:ltr;text-align:left;
     font-family:'Heebo',sans-serif;color:#efe6cf;border-radius:10px;overflow:hidden;
     background:linear-gradient(160deg,rgba(12,14,26,.97),rgba(5,6,15,.98));
     border:1px solid rgba(202,161,90,.3);box-shadow:0 22px 56px rgba(0,0,0,.62);backdrop-filter:blur(12px)}
@@ -188,7 +188,7 @@
   .xpl-scrim{position:fixed;inset:0;z-index:70;background:rgba(3,4,10,.55);backdrop-filter:blur(2px);opacity:0;
     transition:opacity .25s}
   .xpl-scrim.on{opacity:1}
-  .xpl-drawer{position:fixed;top:0;right:0;bottom:0;z-index:71;width:380px;max-width:92vw;direction:rtl;text-align:right;
+  .xpl-drawer{position:fixed;top:0;right:0;bottom:0;z-index:71;width:380px;max-width:92vw;direction:ltr;text-align:left;
     font-family:'Heebo',sans-serif;color:#efe6cf;overflow-y:auto;transform:translateX(100%);transition:transform .28s ease;
     background:linear-gradient(160deg,rgba(10,12,22,.99),rgba(5,6,15,1));border-left:1px solid rgba(202,161,90,.3);
     box-shadow:-26px 0 70px rgba(0,0,0,.7)}
@@ -207,7 +207,7 @@
   .xpl-dtable td{padding:6px 4px;border-top:1px solid rgba(202,161,90,.12);color:#d6ccb2}
   .xpl-dtable tr:first-child td{border-top:none}
   .xpl-dtable td.k{color:#a99b78} .xpl-dtable td.v{text-align:left;color:#fff7e6;font-family:'Bellefair',serif}
-  .xpl-assume{margin:0;padding:0 16px 0 0;font-size:12.5px;line-height:1.65;color:#d6ccb2}
+  .xpl-assume{margin:0;padding:0 0 0 16px;font-size:12.5px;line-height:1.65;color:#d6ccb2}
   .xpl-assume li{margin:3px 0}
   .xpl-srclink{display:block;font-size:12.5px;color:#9fb6e0;text-decoration:none;padding:4px 0}
   .xpl-srclink:hover{color:#cfe0ff;text-decoration:underline}
@@ -239,28 +239,28 @@
     closePopover();
     ensureCss();
     const pop=el('div','xpl-pop');
-    // header: title + (optional) "הערכה" estimate badge — both real children
+    // header: title + (optional) "estimate" badge — both real children
     const hd=el('div','xpl-hd');
     hd.appendChild(el('span','xpl-ttl',esc(m.title)));
-    if(m.estimate) hd.appendChild(el('span','xpl-estimate','הערכה'));
+    if(m.estimate) hd.appendChild(el('span','xpl-estimate','Estimate'));
     pop.appendChild(hd);
-    // הסבר (summary)
+    // Explanation (summary)
     if(m.summary){
-      pop.appendChild(el('div','xpl-sec',`<div class="xpl-lbl">הֶסְבֵּר</div><div class="xpl-sum">${esc(m.summary)}</div>`));
+      pop.appendChild(el('div','xpl-sec',`<div class="xpl-lbl">Explanation</div><div class="xpl-sum">${esc(m.summary)}</div>`));
     }
-    // הנתונים (data rows) — only if present
+    // Data (data rows) — only if present
     if(m.data.length){
       const rows=m.data.map(r=>`<div class="xpl-r"><span>${esc(r.k)}</span><b>${esc(r.v)}</b></div>`).join('');
-      pop.appendChild(el('div','xpl-sec xpl-data',`<div class="xpl-lbl">הַנְּתוּנִים</div>${rows}`));
+      pop.appendChild(el('div','xpl-sec xpl-data',`<div class="xpl-lbl">Data</div>${rows}`));
     }
-    // מקור (source links) — only if present
+    // Source (source links) — only if present
     if(m.sources.length){
       const links=m.sources.map(s=>`<a href="${esc(s.url||'#')}" target="_blank" rel="noopener">${esc(s.label)} ↗</a>`).join('');
-      pop.appendChild(el('div','xpl-sec xpl-src',`<div class="xpl-lbl">מָקוֹר</div>${links}`));
+      pop.appendChild(el('div','xpl-sec xpl-src',`<div class="xpl-lbl">Source</div>${links}`));
     }
-    // footer: "פירוט מלא ←" → drawer
+    // footer: "Full detail ←" → drawer
     const ft=el('div','xpl-ft');
-    const more=el('button','xpl-more','פֵּרוּט מָלֵא ←');
+    const more=el('button','xpl-more','Full detail ←');
     more.addEventListener('click',e=>{ e.stopPropagation(); closePopover(); openDrawer(m); });
     ft.appendChild(more); pop.appendChild(ft);
     document.body.appendChild(pop);
@@ -288,27 +288,27 @@
     d.appendChild(dh);
     // small helper: a labelled section whose body holds a real classed leaf el
     const sec=(labelHtml,leaf)=>{ const s=el('div','dsec'); s.appendChild(el('div','dlbl',labelHtml)); s.appendChild(leaf); d.appendChild(s); };
-    // הסבר
+    // Explanation
     if(m.summary || m.estimate){
-      sec('הֶסְבֵּר'+(m.estimate?' · הַעֲרָכָה':''), el('div','xpl-sum',esc(m.summary)));
+      sec('Explanation'+(m.estimate?' · Estimate':''), el('div','xpl-sum',esc(m.summary)));
     }
-    // נוסחה (formula)
+    // Formula (formula)
     if(m.formula){
-      sec('נֻסְחָה', el('div','xpl-formula',esc(m.formula)));
+      sec('Formula', el('div','xpl-formula',esc(m.formula)));
     }
-    // נתונים (data table)
+    // Data (data table)
     if(m.data.length){
       const rows=m.data.map(r=>`<tr><td class="k">${esc(r.k)}</td><td class="v">${esc(r.v)}</td></tr>`).join('');
-      sec('נְתוּנִים', el('table','xpl-dtable',`<tbody>${rows}</tbody>`));
+      sec('Data', el('table','xpl-dtable',`<tbody>${rows}</tbody>`));
     }
-    // הנחות (assumptions)
+    // Assumptions (assumptions)
     if(m.assumptions.length){
       const lis=m.assumptions.map(a=>`<li>${esc(a)}</li>`).join('');
-      sec('הַנָּחוֹת', el('ul','xpl-assume',lis));
+      sec('Assumptions', el('ul','xpl-assume',lis));
     }
-    // לקריאה נוספת (source links) — each link is a real .xpl-srclink child
+    // Further reading (source links) — each link is a real .xpl-srclink child
     if(m.sources.length){
-      const s=el('div','dsec'); s.appendChild(el('div','dlbl','לְקִרְיאָה נוֹסֶפֶת'));
+      const s=el('div','dsec'); s.appendChild(el('div','dlbl','Further reading'));
       m.sources.forEach(src=>{
         const a=el('a','xpl-srclink',`${esc(src.label)} ↗`);
         a.href=src.url||'#'; a.target='_blank';
@@ -317,7 +317,7 @@
       });
       d.appendChild(s);
     }
-    d.appendChild(el('div','dnote','שיטה ומקורות גלויים בכוונה — מספרים מסומנים "הערכה" אינם מדידה.'));
+    d.appendChild(el('div','dnote','Method and sources shown on purpose — numbers marked "Estimate" are not measurements.'));
     document.body.appendChild(scrim); document.body.appendChild(d);
     // next-frame to trigger the slide-in transition (sync fallback in DOM-less hosts)
     nextFrame(()=>{ scrim.classList.add('on'); d.classList.add('on'); });
@@ -392,7 +392,7 @@
     const c=el('span','xpl-chip','?');
     if(typeof c.setAttribute==='function'){       // guard: degrade gracefully in stub/DOM-less hosts
       c.setAttribute('role','button');
-      c.setAttribute('aria-label','הסבר');
+      c.setAttribute('aria-label','Explain');
       // suppress the native tooltip once we have (or will have) a title to draw ourselves
       if(model && (model.title || model.metric_id)) c.setAttribute('title','');
     }
@@ -411,7 +411,7 @@
     chip, attach, model,
     // content registry
     loadContent, contentModel,
-    // optional "מקורות / למד עוד" affordance
+    // optional "Sources / learn more" affordance
     loadSources, domainLinks,
     _closePopover:closePopover, _closeDrawer:closeDrawer
   };

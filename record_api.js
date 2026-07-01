@@ -3,7 +3,7 @@
 
    Pulls REAL hourly weather (Open-Meteo) for Alex's exact coordinates and
    hands it, gap-free, to the rest of the Living Record pipeline. This is the
-   "מבוסס מדידות אמת" half of the record: temperature, shortwave radiation,
+   "based on real measurements" half of the record: temperature, shortwave radiation,
    ET0, precipitation, cloud, wind, humidity and soil temperature — actually
    measured / reanalysed, NOT a sensor in his garden and NOT our model.
 

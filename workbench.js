@@ -1,5 +1,5 @@
 /* ===================================================================
-   workbench.js — the IN-WORLD room workbench (Make pillar, גישה א׳).
+   workbench.js — the IN-WORLD room workbench (Make pillar, approach A).
    No separate 2D screen: when a room is selected in EnterMode (by a room
    pill OR by clicking the room on the real 3D model), THIS panel opens in
    the exact #inst instrument language (brass-on-glass, serif niqqud title,
@@ -23,7 +23,7 @@
   function R(id,name,floor,type,area,extra){
     return Object.assign({ id,name,floor,type,area,
       // NOTE: no est default → est is undefined ("estimated, not yet verified") so the
-      // overview shows משוער on structure/circuit/water until the user explicitly verifies.
+      // overview shows 'estimated' on structure/circuit/water until the user explicitly verifies.
       comps:[], inv:[], tasks:[], notes:[], parts:[], bu:{}, circuit:'', water:'', structure:'' }, extra||{});
   }
   // SEED — areas/structure/wet-zones/openings/ceilings for a synthetic demo model
@@ -32,56 +32,56 @@
   // build-up panel (ceiling height + source). GF ceiling 2.80, upper 2.50 (from sections).
   function SEED(){ return {
     // ---- GROUND FLOOR (ceiling 2.80 m) ----
-    bathG:  R('bathG','חדר רחצה','ground','bath',4.0,
-      { water:'מקלחת · כיור · אסלה · ניקוז', circuit:'', structure:'אזור רטוב — קירות בטון',
-        bu:{ceiling:'2.80 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'אזור רטוב: צנרת + ניקוז כאן — יקר להזיז בשיפוץ',d:'מהתוכנית'}],
-        tasks:[{t:'ריצוף + אינסטלציה',s:'prog',cost:9500}],
-        comps:[{n:'ברז',d:'2019'},{n:'דוד שמש',d:'2018'}],
-        parts:[{n:'ברז',installed:'2019',replaced:'',warr:'',supplier:''},
-               {n:'דוד שמש',installed:'2018',replaced:'',warr:'',supplier:''}] }),
-    stairsG:R('stairsG','מדרגות','ground','stairs',4.0,
-      { circuit:'', structure:'גרם מדרגות בטון יצוק', bu:{ceiling:'2.80 מ׳', source:'מודל סינתטי'} }),
-    kitchen:R('kitchen','מטבח','ground','kitchen',10.9,
-      { circuit:'', water:'כיור · מדיח (אזור רטוב)', structure:'חגורת בטון',
-        bu:{ceiling:'2.80 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'חלון מזרח 80/120 (פתוח, ליד המזגן); דלת פנים 90/205 מהכניסה',d:'מהתוכנית'}],
-        tasks:[{t:'החלפת ארונות',s:'prog',cost:12000}],
-        comps:[{n:'תנור',d:'2021'},{n:'מדיח',d:'2020'}], inv:[{n:'מקרר'},{n:'מיקרוגל'}],
-        parts:[{n:'תנור',installed:'2021',replaced:'',warr:'',supplier:''},
-               {n:'מדיח',installed:'2020',replaced:'',warr:'',supplier:''}] }),
-    living: R('living','סלון','ground','living',22.0,
-      { circuit:'', structure:'חגורת בטון + עמוד (מפתח ~6.8 מ׳)',
-        bu:{ceiling:'2.80 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'דלת הזזה גדולה לחצר האחורית (מזרח); חלון מזרח/דרום נאטם (סגירת פתח חלון)',d:'מהתוכנית'}],
-        inv:[{n:'ספה'},{n:'טלוויזיה'},{n:'מזגן',lent:'רני'}], tasks:[{t:'תכנון שיפוץ',s:'plan',cost:0}] }),
-    bedroomG:R('bedroomG','חדר שינה','ground','bedroom',9.7,
-      { circuit:'', structure:'חגורת בטון', bu:{ceiling:'2.80 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'חלון 100/130 לחצר האחורית (מזרח)',d:'מהתוכנית'}],
-        inv:[{n:'מיטה'},{n:'ארון'}], tasks:[{t:'שופץ',s:'done',cost:18000}] }),
-    pantry: R('pantry','מזווה','ground','storage',5.4,
-      { circuit:'', structure:'קירות בלוק', bu:{ceiling:'2.80 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'חלונות מערב + צפון, סף גבוה (uk=180)',d:'מהתוכנית'}],
-        inv:[{n:'מדפים'}], tasks:[{t:'דלת + אוורור',s:'prog',cost:3200}] }),
+    bathG:  R('bathG','Bathroom','ground','bath',4.0,
+      { water:'Shower · sink · toilet · drain', circuit:'', structure:'Wet zone — concrete walls',
+        bu:{ceiling:'2.80 m', source:'Synthetic model'},
+        notes:[{t:'Wet zone: plumbing + drainage here — expensive to relocate in a renovation',d:'From the plan'}],
+        tasks:[{t:'Tiling + plumbing',s:'prog',cost:9500}],
+        comps:[{n:'Faucet',d:'2019'},{n:'Solar water heater',d:'2018'}],
+        parts:[{n:'Faucet',installed:'2019',replaced:'',warr:'',supplier:''},
+               {n:'Solar water heater',installed:'2018',replaced:'',warr:'',supplier:''}] }),
+    stairsG:R('stairsG','Stairs','ground','stairs',4.0,
+      { circuit:'', structure:'Cast-concrete stair flight', bu:{ceiling:'2.80 m', source:'Synthetic model'} }),
+    kitchen:R('kitchen','Kitchen','ground','kitchen',10.9,
+      { circuit:'', water:'Sink · dishwasher (wet zone)', structure:'Concrete ring beam',
+        bu:{ceiling:'2.80 m', source:'Synthetic model'},
+        notes:[{t:'East window 80/120 (open, next to the AC unit); interior door 90/205 from the entrance',d:'From the plan'}],
+        tasks:[{t:'Cabinet replacement',s:'prog',cost:12000}],
+        comps:[{n:'Oven',d:'2021'},{n:'Dishwasher',d:'2020'}], inv:[{n:'Fridge'},{n:'Microwave'}],
+        parts:[{n:'Oven',installed:'2021',replaced:'',warr:'',supplier:''},
+               {n:'Dishwasher',installed:'2020',replaced:'',warr:'',supplier:''}] }),
+    living: R('living','Living room','ground','living',22.0,
+      { circuit:'', structure:'Concrete ring beam + column (span ~6.8 m)',
+        bu:{ceiling:'2.80 m', source:'Synthetic model'},
+        notes:[{t:'Large sliding door to the back yard (east); east/south window sealed (window opening closed up)',d:'From the plan'}],
+        inv:[{n:'Sofa'},{n:'TV'},{n:'AC unit',lent:'Rani'}], tasks:[{t:'Renovation planning',s:'plan',cost:0}] }),
+    bedroomG:R('bedroomG','Bedroom','ground','bedroom',9.7,
+      { circuit:'', structure:'Concrete ring beam', bu:{ceiling:'2.80 m', source:'Synthetic model'},
+        notes:[{t:'Window 100/130 to the back yard (east)',d:'From the plan'}],
+        inv:[{n:'Bed'},{n:'Wardrobe'}], tasks:[{t:'Renovated',s:'done',cost:18000}] }),
+    pantry: R('pantry','Pantry','ground','storage',5.4,
+      { circuit:'', structure:'Block walls', bu:{ceiling:'2.80 m', source:'Synthetic model'},
+        notes:[{t:'West + north windows, high sill (uk=180)',d:'From the plan'}],
+        inv:[{n:'Shelves'}], tasks:[{t:'Door + ventilation',s:'prog',cost:3200}] }),
     // ---- FIRST FLOOR (ceiling ~2.50 m) ----
-    bedroomSW:R('bedroomSW','חדר שינה (דרום)','upper','bedroom',9.7,
-      { circuit:'', structure:'חגורת בטון', bu:{ceiling:'2.50 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'חלון 100/130 בקיר הדרומי',d:'מהתוכנית'}], inv:[{n:'מיטה זוגית'}] }),
-    bedroomNE:R('bedroomNE','חדר שינה (צפון)','upper','room',9.5,
-      { circuit:'', structure:'חגורת בטון', bu:{ceiling:'2.50 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'חלון בקיר המזרחי',d:'מהתוכנית'}] }),
-    terrace:R('terrace','מרפסת','upper','roof',25.7,
-      { water:'ניקוז גג', circuit:'', structure:'מרצפת בטון + מעקה',
-        bu:{ceiling:'פתוח (חוץ)', source:'מודל סינתטי'},
-        notes:[{t:'מרפסת ריצוף מעל החצר האחורית; פתח 148/205; פוטנציאל סולארי',d:'מהתוכנית'}],
-        inv:[{n:'דוד שמש'},{n:'פאנל סולארי'}], tasks:[{t:'פוטנציאל סולארי',s:'plan',cost:0}] }),
-    bathU:  R('bathU','חדר רחצה','upper','bath',5.0,
-      { water:'אמבטיה 160 · כיור · אסלה', circuit:'', structure:'אזור רטוב — קירות בטון',
-        bu:{ceiling:'2.50 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'אמבטיה 160 ס״מ; אזור רטוב',d:'מהתוכנית'}] }),
-    landing:R('landing','גרם המדרגות','upper','stairs',5.0,
-      { circuit:'', structure:'פיר מדרגות 187 + מבואה', bu:{ceiling:'2.50 מ׳', source:'מודל סינתטי'},
-        notes:[{t:'מבואה בראש המדרגות; רצועת מ.שירות עם מדפים במערב',d:'מהתוכנית'}] }),
+    bedroomSW:R('bedroomSW','Bedroom (south)','upper','bedroom',9.7,
+      { circuit:'', structure:'Concrete ring beam', bu:{ceiling:'2.50 m', source:'Synthetic model'},
+        notes:[{t:'Window 100/130 in the south wall',d:'From the plan'}], inv:[{n:'Double bed'}] }),
+    bedroomNE:R('bedroomNE','Bedroom (north)','upper','room',9.5,
+      { circuit:'', structure:'Concrete ring beam', bu:{ceiling:'2.50 m', source:'Synthetic model'},
+        notes:[{t:'Window in the east wall',d:'From the plan'}] }),
+    terrace:R('terrace','Terrace','upper','roof',25.7,
+      { water:'Roof drain', circuit:'', structure:'Concrete floor slab + railing',
+        bu:{ceiling:'Open (outdoor)', source:'Synthetic model'},
+        notes:[{t:'Paved terrace above the back yard; opening 148/205; solar potential',d:'From the plan'}],
+        inv:[{n:'Solar water heater'},{n:'Solar panel'}], tasks:[{t:'Solar potential',s:'plan',cost:0}] }),
+    bathU:  R('bathU','Bathroom','upper','bath',5.0,
+      { water:'Bathtub 160 · sink · toilet', circuit:'', structure:'Wet zone — concrete walls',
+        bu:{ceiling:'2.50 m', source:'Synthetic model'},
+        notes:[{t:'Bathtub 160 cm; wet zone',d:'From the plan'}] }),
+    landing:R('landing','Staircase','upper','stairs',5.0,
+      { circuit:'', structure:'Stair shaft 187 + vestibule', bu:{ceiling:'2.50 m', source:'Synthetic model'},
+        notes:[{t:'Vestibule at the top of the stairs; utility strip with shelves on the west',d:'From the plan'}] }),
   }; }
 
   /* ---------------- persistence: home_workbench_v1 + mergeDefaults ---------------- */
@@ -200,17 +200,17 @@
 
   /* ---------------- view ---------------- */
   let panel=null, body=null, tabsEl=null, cur=null, TAB='overview', _instPrev=null;
-  const FLOOR_HE={ground:'קומת קרקע',upper:'קומה עליונה'};
-  const FLOOR_SH={ground:'קרקע',upper:'עליונה'};
-  const TABS=[['overview','סקירה'],['climate','אקלים'],['structure','מבנה'],['inv','מלאי'],['mep','חשמל·מים'],['reno','שיפוץ'],['parts','רכיבים·החלפות'],['notes','הערות']];
+  const FLOOR_HE={ground:'Ground floor',upper:'Upper floor'};
+  const FLOOR_SH={ground:'Ground',upper:'Upper'};
+  const TABS=[['overview','Overview'],['climate','Climate'],['structure','Structure'],['inv','Inventory'],['mep','Power·Water'],['reno','Renovation'],['parts','Parts·Replacements'],['notes','Notes']];
 
   /* ---- derived ROOM CLIMATE (parallels the garden's microclimate). Aspect/sun/floor are
      GEOMETRY, from the plan-frame room rect via __enterMode.roomGeom (PLAN→WORLD: -z=West/
      plaza, +z=East/back-yard, -x=South, +x=North). Temperature = the engine's whole-house
      Derive.indoorTemp + a TRANSPARENT per-room exposure lean (afternoon-west & upper run
      hottest; north & ground coolest, ≈34.0°N). Labelled a model. ---- */
-  const ASPECT_HE={W:'מַעֲרָב',E:'מִזְרָח',N:'צָפוֹן',S:'דָּרוֹם'};
-  const ASPECT_SUN={W:'שֶׁמֶשׁ אַחַר־הַצָּהֳרַיִם',E:'שֶׁמֶשׁ בֹּקֶר',S:'שֶׁמֶשׁ צָהֳרַיִם',N:'מְעַט שֶׁמֶשׁ יְשִׁירָה'};
+  const ASPECT_HE={W:'West',E:'East',N:'North',S:'South'};
+  const ASPECT_SUN={W:'Afternoon sun',E:'Morning sun',S:'Midday sun',N:'Little direct sun'};
   const ASPECT_HEAT={W:2.0,S:1.5,E:0.9,N:0.0};
   const WB_BX=8.41, WB_BXS=10.50, WB_BZ=7.20;
   function geomOf(id){ return (window.__enterMode&&window.__enterMode.roomGeom)?window.__enterMode.roomGeom(id):null; }
@@ -224,7 +224,7 @@
     return ext;
   }
   function warmthScore(g){ if(!g) return 0; let s=(g.floor==='upper')?2.0:0; roomAspect(g).forEach(d=>s+=ASPECT_HEAT[d]||0); return s; }
-  const RISK_HE={high:'גָּבוֹהַּ',med:'בֵּינוֹנִי',low:'נָמוּךְ'};
+  const RISK_HE={high:'High',med:'Medium',low:'Low'};
   // WINTER CONDENSATION: a surface fogs when its inner face drops below the indoor dew
   // point. Coldest exterior wall (north > E/W > south; no solar gain) vs the dew point of
   // a heated room (~20°/55%). Inner-surface ≈ indoor − f·(indoor−outdoor); f bigger for
@@ -244,10 +244,10 @@
   function renoConsiderations(r,g){
     const ext=roomAspect(g), bits=[];
     const wet=(r.type==='bath'||r.type==='kitchen'||(r.water&&r.water!=='—'&&r.water!==''));
-    if(wet) bits.push({icon:'🚰',he:'אֵזוֹר רָטוֹב — צֶנֶּרֶת וְנִקּוּז כָּאן. הֲזָזַת אִינְסְטָלַצְיָה הִיא מֵהַיָּקָר בְּשִׁפּוּץ; שְׁמִירַת מִקּוּם הָרָטוֹב חוֹסֶכֶת.'});
-    if(ext.length) bits.push({icon:'🧱',he:`${ext.length} קִירוֹת חוּץ (${ext.map(d=>ASPECT_HE[d]).join(' · ')}) — בִּדּוּד, חַלּוֹנוֹת וַאֲטִימוּת מַשְׁפִּיעִים עַל נוֹחוּת וְאֶנֶרְגְּיָה. קִירוֹת פְּנִים זוֹלִים בְּהַרְבֵּה לַהֲזָזָה.`});
-    else bits.push({icon:'🧱',he:'חֶדֶר פְּנִימִי — אֵין מַעֲטֶפֶת חוּץ; קִירוֹת הַפְּנִים גְּמִישִׁים וְזוֹלִים לְשִׁנּוּי.'});
-    if(r.structure && /בטון|חגור|עמוד|נושא/.test(r.structure)) bits.push({icon:'🏗️',he:'יֵשׁ אֵלֵמֶנְט מִבְנִי (בֵּטוֹן/חֲגוֹרָה/עַמּוּד) — נוֹשֵׂא מִשְׁקָל; אֵין לְהָסִיר לְלֹא יוֹעֵץ קוֹנְסְטְרוּקְצְיָה.'});
+    if(wet) bits.push({icon:'🚰',he:'Wet zone — plumbing and drainage are here. Relocating the plumbing is among the costliest parts of a renovation; keeping the wet zone in place saves money.'});
+    if(ext.length) bits.push({icon:'🧱',he:`${ext.length} exterior walls (${ext.map(d=>ASPECT_HE[d]).join(' · ')}) — insulation, windows and sealing affect comfort and energy. Interior walls are far cheaper to move.`});
+    else bits.push({icon:'🧱',he:'Interior room — no exterior envelope; the interior walls are flexible and cheap to change.'});
+    if(r.structure && /concrete|beam|column|bearing/i.test(r.structure)) bits.push({icon:'🏗️',he:'There is a structural element (concrete / ring beam / column) — load-bearing; do not remove without a structural engineer.'});
     return bits;
   }
 
@@ -262,9 +262,9 @@
   /* ---- ACTUAL HISTORY (the Living Record, for THIS room).
      Honesty contract: there is NO interior sensor and NO per-interior-room
      measured store — RecordStore accumulates the YARD zones. What is genuinely
-     MEASURED (Open-Meteo, מבוסס מדידות אמת) is the OUTDOOR weather the whole
+     MEASURED (Open-Meteo, based on real measurements) is the OUTDOOR weather the whole
      house actually sat in: real days recorded, absolute outdoor min/max, frost
-     nights, rain. The INTERIOR figures stay MODELED (מוֹדֵל) — the room's damped
+     nights, rain. The INTERIOR figures stay MODELED (modeled) — the room's damped
      response to that measured outdoor, via the same warmth lean used above.
      We probe for a future RecordStore.roomTotals/roomDaily or Derive.roomDay and
      use them if a parallel build ever lands them; otherwise we surface the real
@@ -317,8 +317,8 @@
     // NEITHER source has data yet → honest model-only line.
     if(!rm && (!ho || !ho.days)){
       const bld=(ho&&ho.building);
-      return `<div class="card"><div class="cct">🗒️ הַהִיסְטוֹרְיָה שֶׁל הַחֶדֶר <span class="pill amber">מוֹדֵל · הַעֲרָכָה</span></div>`+
-        `<div class="note">${bld?'הַיּוֹמָן הַחַי נִבְנֶה כָּעֵת מִמְּדִידוֹת אֲמִתִּיּוֹת (Open-Meteo)… הַנְּתוּנִים הַמְּצֻבָּרִים יוֹפִיעוּ כָּאן.':'עֲדַיִן אֵין מְדִידוֹת מְצֻבָּרוֹת. הַמֻּצָּג לְמַעְלָה הוּא מוֹדֵל אַקְלִים מְקוֹמִי (הַעֲרָכָה), לֹא חַיְשָׁן.'}</div></div>`;
+      return `<div class="card"><div class="cct">🗒️ The room's history <span class="pill amber">Model · estimate</span></div>`+
+        `<div class="note">${bld?'The live log is being built right now from real measurements (Open-Meteo)… the accumulated data will appear here.':'No accumulated measurements yet. What is shown above is a local-climate model (an estimate), not a sensor.'}</div></div>`;
     }
     // GENUINE per-room living record (preferred): the room's MODELED indoor curve
     // accumulated day-by-day from the MEASURED outdoor air. Honest: the inputs are
@@ -326,46 +326,46 @@
     // sensor — the pill credits the measurements, the note states the modeling.
     if(rm){
       const span=spanHe(rm.firstDate,rm.lastDate);
-      let h=`<div class="card"><div class="cct">🗒️ מַה הַחֶדֶר עָבַר <span class="pill green">מְבֻסָּס מְדִידוֹת אֲמֶת</span></div>`+
-        `<div class="row"><span>יָמִים בַּיּוֹמָן</span><b>${rm.days}${span?` · ${span}`:''}</b></div>`;
+      let h=`<div class="card"><div class="cct">🗒️ What the room has been through <span class="pill green">Based on real measurements</span></div>`+
+        `<div class="row"><span>Days in the log</span><b>${rm.days}${span?` · ${span}`:''}</b></div>`;
       if(rm.tMinAbs!=null&&rm.tMaxAbs!=null)
-        h+=`<div class="row"><span>טְוַח הַחֶדֶר <span class="pill amber">מוֹדֵל</span></span><b>~${rm.tMinAbs}° … ~${rm.tMaxAbs}°</b></div>`;
+        h+=`<div class="row"><span>Room range <span class="pill amber">Model</span></span><b>~${rm.tMinAbs}° … ~${rm.tMaxAbs}°</b></div>`;
       if(rm.tMeanAvg!=null)
-        h+=`<div class="row"><span>מְמֻצָּע הַחֶדֶר</span><b>~${rm.tMeanAvg}°</b></div>`;
+        h+=`<div class="row"><span>Room average</span><b>~${rm.tMeanAvg}°</b></div>`;
       if(rm.hoursBelow18)
-        h+=`<div class="row"><span>שָׁעוֹת קְרִירוֹת (&lt;18°)</span><b>${Math.round(rm.hoursBelow18)}</b></div>`;
+        h+=`<div class="row"><span>Cool hours (&lt;18°)</span><b>${Math.round(rm.hoursBelow18)}</b></div>`;
       if(rm.hoursAbove28)
-        h+=`<div class="row"><span>שָׁעוֹת חַמּוֹת (&gt;28°)</span><b>${Math.round(rm.hoursAbove28)}</b></div>`;
+        h+=`<div class="row"><span>Hot hours (&gt;28°)</span><b>${Math.round(rm.hoursAbove28)}</b></div>`;
       if(rm.comfortHours)
-        h+=`<div class="row"><span>שָׁעוֹת נוֹחוּת (18–26°)</span><b>${Math.round(rm.comfortHours)}</b></div>`;
+        h+=`<div class="row"><span>Comfort hours (18–26°)</span><b>${Math.round(rm.comfortHours)}</b></div>`;
       if(rm.condensationRiskDays)
-        h+=`<div class="row"><span>יְמֵי סִכּוּן עִבּוּי</span><b>${rm.condensationRiskDays}</b></div>`;
-      h+=`<div class="note">מֶזֶג־הָאֲוִיר בַּחוּץ מָדוּד (Open-Meteo) לְמִקּוּם הַבַּיִת; טֶמְפֵּרָטוּרַת הַחֶדֶר מְחֻשֶּׁבֶת מִמֶּנּוּ דֶּרֶךְ גֵּאוֹמֶטְרְיַת הַבַּיִת — לֹא חַיְשָׁן פִיזִי.</div></div>`;
+        h+=`<div class="row"><span>Condensation-risk days</span><b>${rm.condensationRiskDays}</b></div>`;
+      h+=`<div class="note">The outdoor weather is measured (Open-Meteo) for the house's location; the room temperature is computed from it through the house geometry — not a physical sensor.</div></div>`;
       return h;
     }
     // measured OUTDOOR envelope the house sat in + the room's MODELED interior.
     const span=spanHe(ho.firstDate,ho.lastDate);
     const interior=modelRoomFromOutdoor(ho.tMinAbs,ho.tMaxAbs,myScore,mean);
-    let h=`<div class="card"><div class="cct">🗒️ מַה הַחֶדֶר עָבַר <span class="pill green">מְבֻסָּס מְדִידוֹת אֲמֶת</span></div>`+
-      `<div class="row"><span>יָמִים מְצֻבָּרִים</span><b>${ho.days}${span?` · ${span}`:''}</b></div>`;
+    let h=`<div class="card"><div class="cct">🗒️ What the room has been through <span class="pill green">Based on real measurements</span></div>`+
+      `<div class="row"><span>Accumulated days</span><b>${ho.days}${span?` · ${span}`:''}</b></div>`;
     if(ho.tMinAbs!=null&&ho.tMaxAbs!=null)
-      h+=`<div class="row"><span>טְוַח בַּחוּץ (מָדוּד)</span><b>~${ho.tMinAbs}° … ~${ho.tMaxAbs}°</b></div>`;
+      h+=`<div class="row"><span>Outdoor range (measured)</span><b>~${ho.tMinAbs}° … ~${ho.tMaxAbs}°</b></div>`;
     if(ho.frostNights!=null)
-      h+=`<div class="row"><span>לֵילוֹת כְּפוֹר</span><b>${ho.frostNights}</b></div>`;
+      h+=`<div class="row"><span>Frost nights</span><b>${ho.frostNights}</b></div>`;
     if(ho.rainSum!=null)
-      h+=`<div class="row"><span>גֶּשֶׁם מְצֻבָּר</span><b>${ho.rainSum} מ״מ</b></div>`;
+      h+=`<div class="row"><span>Accumulated rain</span><b>${ho.rainSum} mm</b></div>`;
     if(interior)
-      h+=`<div class="row"><span>טְוַח הַחֶדֶר <span class="pill amber">מוֹדֵל</span></span><b>~${interior.min}° … ~${interior.max}°</b></div>`;
+      h+=`<div class="row"><span>Room range <span class="pill amber">Model</span></span><b>~${interior.min}° … ~${interior.max}°</b></div>`;
     if(ho.building)
-      h+=`<div class="tag" style="margin-top:6px">⏳ הַיּוֹמָן עוֹד נִבְנֶה ברקע${ho.pct?` (${ho.pct}%)`:''}</div>`;
-    h+=`<div class="note">מֶזֶג־הָאֲוִיר בַּחוּץ — מָדוּד (Open-Meteo) לְמִקּוּם הַבַּיִת. טְוַח הַחֶדֶר — מוֹדֵל: הַתְּגוּבָה הַמְּמֻסֶּכֶת שֶׁל הַמָּסָה הַפְּנִימִית לַמְּדִידוֹת, לֹא חַיְשָׁן.</div></div>`;
+      h+=`<div class="tag" style="margin-top:6px">⏳ The log is still building in the background${ho.pct?` (${ho.pct}%)`:''}</div>`;
+    h+=`<div class="note">Outdoor weather — measured (Open-Meteo) for the house's location. Room range — modeled: the damped response of the interior mass to the measurements, not a sensor.</div></div>`;
     return h;
   }
 
   function ensure(){
     if(panel) return;
     document.head.appendChild(el('style',null,CSS));
-    panel=el('div'); panel.id='wbPanel'; panel.setAttribute('dir','rtl');
+    panel=el('div'); panel.id='wbPanel'; panel.setAttribute('dir','ltr');
     tabsEl=el('div','tabs'); body=el('div','body'); panel.appendChild(tabsEl); panel.appendChild(body);
     document.body.appendChild(panel);
     tabsEl.addEventListener('click',e=>{ const t=e.target.closest('.tab'); if(!t) return; TAB=t.dataset.t; render(); });
@@ -377,7 +377,7 @@
   function restoreInst(){ const i=document.querySelector('#inst:not(.inst-embed)'); if(i&&_instPrev!==null){ i.style.display=_instPrev; } _instPrev=null; }
 
   // ---- renovation KB (data/renovation_kb.json): per-room renovation IDEAS with $ ranges +
-  //      permit + duration, surfaced in the שיפוץ tab. Honest ESTIMATES (ranges, not quotes). ----
+  //      permit + duration, surfaced in the Renovation tab. Honest ESTIMATES (ranges, not quotes). ----
   let _renoKB=null, _renoKBtried=false;
   function loadRenoKB(){
     if(_renoKBtried) return; _renoKBtried=true;
@@ -391,30 +391,30 @@
     const ideas=_renoKB.renovations.filter(rv=>Array.isArray(rv.suits) && (rv.suits.indexOf(tag)>=0 || rv.suits.indexOf('whole-house')>=0));
     if(!ideas.length) return '';
     const rows=ideas.map(rv=>`<div class="ridea"><div class="rih"><span>${rv.emoji||'🔧'} <b>${esc(rv.name_he)}</b></span>`+
-        `<span class="edit" data-act="addReno" data-arg="${esc(rv.id)}" title="הוֹסֵף לַתָּכְנִית">＋</span></div>`+
+        `<span class="edit" data-act="addReno" data-arg="${esc(rv.id)}" title="Add to the plan">＋</span></div>`+
         `<div class="rim">${esc(rv.cost_he||'')}</div>`+
         `<div class="rip">${esc([rv.permit_he,rv.duration_he].filter(Boolean).join(' · '))}</div></div>`).join('');
-    return `<div class="card"><div class="cct">💡 רַעְיוֹנוֹת שִׁפּוּץ לַחֶדֶר <span class="pill blue">הַעֲרָכָה</span></div>${rows}`+
-      `<div class="note">עֲלֻיּוֹת הֵן טְוָחִים מַעֲרִיכִים (לֹא הַצָּעַת מְחִיר) · לְחַץ ＋ לְהוֹסִיף כִּמְשִׂימָה.</div></div>`;
+    return `<div class="card"><div class="cct">💡 Renovation ideas for the room <span class="pill blue">Estimate</span></div>${rows}`+
+      `<div class="note">Costs are estimated ranges (not a quote) · click ＋ to add as a task.</div></div>`;
   }
 
   function render(){
     const r=room(cur); if(!r){ return; }
     tabsEl.innerHTML=TABS.map(([k,l])=>`<div class="tab${k===TAB?' on':''}" data-t="${k}">${l}</div>`).join('');
     // Structure/circuit/water are NOT in the byte-identical scanned drawings — show
-    // 'משוער' by DEFAULT; only an explicit user "verify" (r.est===false) clears it.
-    const est=(r.est===false)?'':' <span class="pill amber">משוער</span>';
+    // 'estimated' by DEFAULT; only an explicit user "verify" (r.est===false) clears it.
+    const est=(r.est===false)?'':' <span class="pill amber">estimated</span>';
     let html='';
     if(TAB==='overview'){
       const open=(r.tasks||[]).filter(t=>t.s!=='done').length;
-      html=`<div class="row"><span>קומה</span><span>${FLOOR_SH[r.floor]||''}</span></div>`+
-        `<div class="row"><span>שטח</span><b>${r.area} מ״ר</b></div>`+
-        `<div class="row"><span>▦ מבנה</span><span>${esc(r.structure||'—')}${r.structure?est:''}</span></div>`+
-        `<div class="row"><span>🔧 רכיבים</span><b>${(r.comps||[]).length}</b></div>`+
-        `<div class="row"><span>📦 מלאי</span><b>${(r.inv||[]).length}</b></div>`+
-        `<div class="row"><span>⚡ חשמל</span><span>${esc(r.circuit||'—')}${r.circuit?est:''}</span></div>`+
-        `<div class="row"><span>🚰 מים</span><span>${esc(r.water||'—')}${r.water?est:''}</span></div>`+
-        `<div class="row"><span>✅ משימות פתוחות</span><b>${open}</b></div>`;
+      html=`<div class="row"><span>Floor</span><span>${FLOOR_SH[r.floor]||''}</span></div>`+
+        `<div class="row"><span>Area</span><b>${r.area} m²</b></div>`+
+        `<div class="row"><span>▦ Structure</span><span>${esc(r.structure||'—')}${r.structure?est:''}</span></div>`+
+        `<div class="row"><span>🔧 Components</span><b>${(r.comps||[]).length}</b></div>`+
+        `<div class="row"><span>📦 Inventory</span><b>${(r.inv||[]).length}</b></div>`+
+        `<div class="row"><span>⚡ Power</span><span>${esc(r.circuit||'—')}${r.circuit?est:''}</span></div>`+
+        `<div class="row"><span>🚰 Water</span><span>${esc(r.water||'—')}${r.water?est:''}</span></div>`+
+        `<div class="row"><span>✅ Open tasks</span><b>${open}</b></div>`;
     } else if(TAB==='climate'){
       const g=geomOf(r.id), ext=roomAspect(g), D=window.Derive;
       // scrub-aware: read the BASE house temp at the current SCENE date (not only
@@ -426,7 +426,7 @@
       const sorted=scores.slice().sort((a,b)=>b.s-a.s);
       const n=sorted.length, rank=sorted.findIndex(x=>x.id===r.id);
       const myScore=g?warmthScore(g):mean;
-      const tier=rank<0?'':(rank<n/3?'מֵהַחַמִּים בַּבַּיִת':(rank>=Math.ceil(2*n/3)?'מֵהַקְּרִירִים':'חֲדַר־בֵּינַיִם'));
+      const tier=rank<0?'':(rank<n/3?'Among the warmest in the house':(rank>=Math.ceil(2*n/3)?'Among the coolest':'Mid-range room'));
       const offset=Math.round((myScore-mean)*0.45*10)/10;
       const roomTemp=base?Math.round((base.tempC+offset)*10)/10:null;
       // night-cooling uses the LIVE outdoor air — honest only when the scene is
@@ -435,80 +435,80 @@
       const W=window.Weather, out=(today&&W&&W.state&&W.state.temp!=null)?W.state.temp:null;
       const canCool=(out!=null&&base&&out<base.tempC-1&&ext.length>0);
       const frac=(n>1&&sorted[0].s!==sorted[n-1].s)?(myScore-sorted[n-1].s)/(sorted[0].s-sorted[n-1].s):0.5;
-      let h=`<div class="card"><div class="cct">כִּוּוּן וְשֶׁמֶשׁ <span class="pill green">תָּכְנִית</span></div>`;
+      let h=`<div class="card"><div class="cct">Orientation & sun <span class="pill green">Plan</span></div>`;
       if(ext.length){
-        h+=`<div class="row"><span>חֲזִיתוֹת חוּץ</span><span>${ext.map(d=>ASPECT_HE[d]).join(' · ')}</span></div>`+
-           `<div class="row"><span>שֶׁמֶשׁ</span><span>${[...new Set(ext.map(d=>ASPECT_SUN[d]))].join(' · ')}</span></div>`;
-      } else h+=`<div class="tag">חֶדֶר פְּנִימִי — אֵין קִיר חִיצוֹנִי יָשִׁיר; יַצִּיב טֶרְמִית.</div>`;
-      h+=`<div class="row"><span>קוֹמָה</span><span>${FLOOR_HE[r.floor]||''}${r.floor==='upper'?' · קָרוֹב לַגַּג':''}</span></div></div>`;
+        h+=`<div class="row"><span>Exterior faces</span><span>${ext.map(d=>ASPECT_HE[d]).join(' · ')}</span></div>`+
+           `<div class="row"><span>Sun</span><span>${[...new Set(ext.map(d=>ASPECT_SUN[d]))].join(' · ')}</span></div>`;
+      } else h+=`<div class="tag">Interior room — no direct exterior wall; thermally stable.</div>`;
+      h+=`<div class="row"><span>Floor</span><span>${FLOOR_HE[r.floor]||''}${r.floor==='upper'?' · close to the roof':''}</span></div></div>`;
       if(roomTemp!=null){
-        h+=`<div class="card"><div class="cct">טֶמְפֵּרָטוּרָה ${today?'עַכְשָׁו':'בַּתַּאֲרִיךְ'} <span class="pill amber">מוֹדֵל</span></div>`+
-          `<div class="row"><span>הַחֶדֶר (מוֹעֲרָךְ)</span><b>~${roomTemp}°C</b></div>`+
-          `<div class="row"><span>בָּסִיס הַבַּיִת</span><span>~${base.tempC}°C${offset?` · חֶדֶר ${offset>0?'+':''}${offset}°`:''}</span></div>`+
+        h+=`<div class="card"><div class="cct">Temperature ${today?'now':'on this date'} <span class="pill amber">Model</span></div>`+
+          `<div class="row"><span>The room (estimated)</span><b>~${roomTemp}°C</b></div>`+
+          `<div class="row"><span>House baseline</span><span>~${base.tempC}°C${offset?` · room ${offset>0?'+':''}${offset}°`:''}</span></div>`+
           `<div class="bar"><i style="width:${Math.round(frac*100)}%;background:linear-gradient(90deg,#6f9fd0,#caa15a,#d98a5a)"></i></div>`+
-          `<div class="row"><span>נְטִיָּה</span><span>${tier}</span></div>`+
+          `<div class="row"><span>Tendency</span><span>${tier}</span></div>`+
           `<div class="note">${esc(base.note_he||'')}</div></div>`;
       }
-      if(canCool) h+=`<div class="card"><div class="cct">🌙 קֵרוּר לַיְלָה</div>`+
-        `<div class="row"><span>בַּחוּץ ~${Math.round(out)}° · בִּפְנִים ~${base.tempC}°</span></div>`+
-        `<div class="note">אֲוִיר הַחוּץ כְּבָר קַר מֵהַמָּסָה הַפְּנִימִית — פְּתִיחַת חַלּוֹנוֹת תְּקָרֵר חִנָּם בִּמְקוֹם מִיזוּג.</div></div>`;
+      if(canCool) h+=`<div class="card"><div class="cct">🌙 Night cooling</div>`+
+        `<div class="row"><span>Outside ~${Math.round(out)}° · inside ~${base.tempC}°</span></div>`+
+        `<div class="note">The outdoor air is already colder than the interior mass — opening windows will cool for free instead of using AC.</div></div>`;
       const cd=condensationRisk(g);
       if(cd&&cd.wall){ const rp=cd.risk==='low'?'green':'amber';
-        h+=`<div class="card"><div class="cct">💧 עִבּוּי בַּחֹרֶף <span class="pill amber">מוֹדֵל</span></div>`+
-          `<div class="row"><span>קִיר ${ASPECT_HE[cd.wall]} (הַקַּר בְּיוֹתֵר)</span><span>~${cd.surf}°</span></div>`+
-          `<div class="row"><span>נְקֻדַּת טַל (פְּנִים)</span><span>~${cd.dew}°</span></div>`+
-          `<div class="row"><span>סִכּוּן</span><span class="pill ${rp}">${RISK_HE[cd.risk]}</span></div>`+
-          `<div class="note">בְּלֵיל חֹרֶף קַר (בַּחוּץ ~1°, בַּיִת מְחֻמָּם ~20° · לַחוּת ~55%). ${cd.risk!=='low'?'אֲוְרוּר קָצָר בַּיּוֹם וּמְנִיעַת לַחוּת (בִּשּׁוּל/מִקְלַחַת) מַפְחִיתִים עִבּוּי וְעֹבֶשׁ עַל הַקִּיר.':'הַקִּיר נִשְׁאָר מֵעַל נְקֻדַּת הַטַּל — סִכּוּן נָמוּךְ.'}</div></div>`;
+        h+=`<div class="card"><div class="cct">💧 Winter condensation <span class="pill amber">Model</span></div>`+
+          `<div class="row"><span>${ASPECT_HE[cd.wall]} wall (the coldest)</span><span>~${cd.surf}°</span></div>`+
+          `<div class="row"><span>Dew point (interior)</span><span>~${cd.dew}°</span></div>`+
+          `<div class="row"><span>Risk</span><span class="pill ${rp}">${RISK_HE[cd.risk]}</span></div>`+
+          `<div class="note">On a cold winter night (outside ~1°, heated house ~20° · humidity ~55%). ${cd.risk!=='low'?'Short daytime ventilation and reducing moisture (cooking/showering) lower condensation and mold on the wall.':'The wall stays above the dew point — low risk.'}</div></div>`;
       }
       // ---- ACTUAL HISTORY (Living Record) — real measured outdoor envelope the
       // house sat in + the room's MODELED response. Honest fallback when empty. ----
       h+=historyCardHTML(r,g,myScore,mean);
-      html=h+`<div class="note">כִּוּוּן וְקוֹמָה — מֵהַתָּכְנִית (מודל סינתטי). טֶמְפֵּרָטוּרָה וְעִבּוּי — מוֹדֵל אַקְלִים מְקוֹמִי, הַעֲרָכָה.</div>`;
+      html=h+`<div class="note">Orientation and floor — from the plan (synthetic model). Temperature and condensation — local-climate model, an estimate.</div>`;
     } else if(TAB==='structure'){
       html=structureHTML(r)+
-        `<div class="row" style="margin-top:8px"><span>תיאור חופשי</span><span>${esc(r.structure||'—')}${r.structure?est:''}</span></div>`+
-        `<div class="add" data-act="plan">📄 על מקור המודל (דמו)</div>`+
-        `<div class="add" data-act="setField" data-arg="structure">✎ ערוך תיאור מבנה</div>`+
-        `<div class="add" data-act="toggleEst">${r.est!==false?'✓ סמן את התיאור כמאומת':'⚑ סמן את התיאור כמשוער'}</div>`;
+        `<div class="row" style="margin-top:8px"><span>Free-text description</span><span>${esc(r.structure||'—')}${r.structure?est:''}</span></div>`+
+        `<div class="add" data-act="plan">📄 About the model source (demo)</div>`+
+        `<div class="add" data-act="setField" data-arg="structure">✎ Edit structure description</div>`+
+        `<div class="add" data-act="toggleEst">${r.est!==false?'✓ Mark the description as verified':'⚑ Mark the description as estimated'}</div>`;
     } else if(TAB==='inv'){
-      html=listHTML(r.comps,'comps','🔧 אין רכיבים','רכיבים קבועים')+
-        `<div class="add" data-act="addItem" data-arg="comps">＋ הוסף רכיב</div>`+
+      html=listHTML(r.comps,'comps','🔧 No components','Fixed components')+
+        `<div class="add" data-act="addItem" data-arg="comps">＋ Add component</div>`+
         `<div style="height:6px"></div>`+
-        listHTML(r.inv,'inv','📦 אין פריטים','מלאי / ריהוט')+
-        `<div class="add" data-act="addItem" data-arg="inv">＋ הוסף פריט מלאי</div>`;
+        listHTML(r.inv,'inv','📦 No items','Inventory / furniture')+
+        `<div class="add" data-act="addItem" data-arg="inv">＋ Add inventory item</div>`;
     } else if(TAB==='mep'){
-      html=`<div class="row"><span>⚡ מעגל חשמל</span><span><span>${esc(r.circuit||'לא ידוע')}</span> <span class="edit" data-act="setField" data-arg="circuit">✎</span></span></div>`+
-        `<div class="row"><span>🚰 מים</span><span><span>${esc(r.water||'—')}</span> <span class="edit" data-act="setField" data-arg="water">✎</span></span></div>`+
-        `<div class="note">⚡ <b>אין תוכנית חשמל במודל</b> — מעגלים/שקעים אינם בשרטוטים. (הנתון הקודם C1–C5 היה זמני ולא אמיתי; נמחק.) מלא ידנית את מה שידוע לדייר.<br>🚰 אזורים רטובים — מהתוכנית.</div>`;
+      html=`<div class="row"><span>⚡ Electrical circuit</span><span><span>${esc(r.circuit||'Unknown')}</span> <span class="edit" data-act="setField" data-arg="circuit">✎</span></span></div>`+
+        `<div class="row"><span>🚰 Water</span><span><span>${esc(r.water||'—')}</span> <span class="edit" data-act="setField" data-arg="water">✎</span></span></div>`+
+        `<div class="note">⚡ <b>No electrical plan in the model</b> — circuits/sockets are not in the drawings. (The previous C1–C5 data was a placeholder and not real; it was deleted.) Fill in manually whatever the resident knows.<br>🚰 Wet zones — from the plan.</div>`;
     } else if(TAB==='reno'){
       const tot=(r.tasks||[]).reduce((a,t)=>a+(t.cost||0),0);
-      const rows=(r.tasks||[]).map((t,i)=>`<div class="it"><span><span class="pill ${t.s==='done'?'green':t.s==='prog'?'amber':'blue'}">${t.s==='done'?'בוצע':t.s==='prog'?'בתהליך':'מתוכנן'}</span> ${esc(t.t)}</span>`+
-        `<span>${t.cost?'$'+t.cost.toLocaleString():''} <span class="edit" data-act="addMat" data-arg="${i}" title="הוֹסֵף חֹמֶר לַפְּרוֹיֶקְט (→ רֶכֶשׁ מְשֻׁתָּף)">🔩</span> <span class="edit" data-act="cycleTask" data-arg="${i}">↻</span> <span class="edit" data-act="delItem" data-arg="tasks" data-arg2="${i}">✕</span></span></div>`).join('')||'<div class="tag">אין משימות</div>';
+      const rows=(r.tasks||[]).map((t,i)=>`<div class="it"><span><span class="pill ${t.s==='done'?'green':t.s==='prog'?'amber':'blue'}">${t.s==='done'?'Done':t.s==='prog'?'In progress':'Planned'}</span> ${esc(t.t)}</span>`+
+        `<span>${t.cost?'$'+t.cost.toLocaleString():''} <span class="edit" data-act="addMat" data-arg="${i}" title="Add material to the project (→ shared procurement)">🔩</span> <span class="edit" data-act="cycleTask" data-arg="${i}">↻</span> <span class="edit" data-act="delItem" data-arg="tasks" data-arg2="${i}">✕</span></span></div>`).join('')||'<div class="tag">No tasks</div>';
       // PLOT-LEVEL planning card at the TOP — identical for every room (the planning
-      // governs the whole מגרש, not a single room). Kicks off Planning.load() once.
+      // governs the whole lot, not a single room). Kicks off Planning.load() once.
       // When the RICH card module (window.__planning) is loaded we mount its full
-      // 'מה מותר במגרש' content (תוספת בנייה / חדר מָגֵן / קומה / חצר / פטור / קישורים)
+      // 'What's allowed on the lot' content (building addition / safe room / floor / yard / exemption / links)
       // into a host placeholder AFTER body.innerHTML is set — see render()'s tail.
       // Otherwise we fall back to the simpler inline planningCardHTML() (load-order safe).
       const cons=renoConsiderations(r,geomOf(r.id));
-      const consHTML=cons.length?`<div class="card"><div class="cct">שִׁקּוּלֵי שִׁפּוּץ <span class="pill green">נִגְזָר</span></div>`+
+      const consHTML=cons.length?`<div class="card"><div class="cct">Renovation considerations <span class="pill green">Derived</span></div>`+
         cons.map(c=>`<div class="cons"><span class="ci">${c.icon}</span><span>${c.he}</span></div>`).join('')+`</div>`:'';
       const richPlan=!!(window.__planning&&window.__planning.render);
       const planHTML=richPlan?`<div id="wbRichPlan"></div>`:planningCardHTML();
-      html=planHTML+consHTML+renoIdeasHTML(r)+rows+`<div class="row" style="margin-top:6px"><span>סה״כ מְשֹׁעָר</span><b>$${tot.toLocaleString()}</b></div>`+
-        `<div class="add" data-act="addTask">＋ הוסף משימה</div>`;
+      html=planHTML+consHTML+renoIdeasHTML(r)+rows+`<div class="row" style="margin-top:6px"><span>Estimated total</span><b>$${tot.toLocaleString()}</b></div>`+
+        `<div class="add" data-act="addTask">＋ Add task</div>`;
       if(!richPlan) kickPlanning();
     } else if(TAB==='parts'){
       html=partsHTML(r)+
-        `<div class="add" data-act="addPart">＋ הוסף רכיב / החלפה</div>`+
-        `<div class="note">יומן רכיבים והחלפות — מתי הותקן, מתי הוחלף, אחריות וספק. הזיכרון התחזוקתי של הבית.</div>`;
+        `<div class="add" data-act="addPart">＋ Add part / replacement</div>`+
+        `<div class="note">Log of parts and replacements — when installed, when replaced, warranty and supplier. The house's maintenance memory.</div>`;
     } else if(TAB==='notes'){
-      html=listHTML(r.notes,'notes','📝 אין הערות',null)+`<div class="add" data-act="addNote">＋ הוסף הערה</div>`;
+      html=listHTML(r.notes,'notes','📝 No notes',null)+`<div class="add" data-act="addNote">＋ Add note</div>`;
     }
-    body.innerHTML=`<div class="hd"><h3>${esc(r.name)}</h3><span class="x" data-act="close" title="סגור">✕</span></div>`+
-      `<div class="sub"><span class="floor">${FLOOR_HE[r.floor]||''}</span> · ${r.area} מ״ר · ${typeHe(r.type)}</div>`+
+    body.innerHTML=`<div class="hd"><h3>${esc(r.name)}</h3><span class="x" data-act="close" title="Close">✕</span></div>`+
+      `<div class="sub"><span class="floor">${FLOOR_HE[r.floor]||''}</span> · ${r.area} m² · ${typeHe(r.type)}</div>`+
       html+
-      `<div class="foot">נשמר אוטומטית · אותה שפה כמו חצר · שמיים · אנרגיה</div>`;
+      `<div class="foot">Saved automatically · same language as Yard · Sky · Energy</div>`;
     // mount the RICH plot-rights card (planning_card.js) into its host placeholder,
     // now that the markup is in the DOM. Defensive: only if the host rendered AND
     // the module is present (the reno branch already chose the inline fallback when
@@ -521,15 +521,15 @@
       }
     }
   }
-  function typeHe(t){ return ({bath:'רחצה',kitchen:'מטבח',living:'מגורים',bedroom:'שינה',room:'חדר',storage:'אחסון',stairs:'מעבר',roof:'גג / חוץ'})[t]||''; }
+  function typeHe(t){ return ({bath:'Bath',kitchen:'Kitchen',living:'Living',bedroom:'Bedroom',room:'Room',storage:'Storage',stairs:'Passage',roof:'Roof / outdoor'})[t]||''; }
 
-  /* ---- structure (מבנה) build-up rows from HouseBuildup (gotcha #2):
+  /* ---- structure build-up rows from HouseBuildup (gotcha #2):
      verified facts (wall/slab/roof/levels/areas, all proven in building.js)
      render plain; anything not in the drawings (belt/columns/circuit/floor
-     finish / wall layers) gets a «משוער» pill + a 'לא משורטט' note and stays
+     finish / wall layers) gets an «estimated» pill + a 'not drawn' note and stays
      blank-and-editable. Falls back to a single honest note if the loader
      isn't present. ---- */
-  function estPill(){ return ' <span class="pill amber">משוער</span>'; }
+  function estPill(){ return ' <span class="pill amber">estimated</span>'; }
   function buRow(label,val,verified,note){
     const v=(val==null||val==='')?'—':esc(val);
     return `<div class="row"><span>${esc(label)}</span><span><b>${v}</b>${verified?'':estPill()}</span></div>`+
@@ -537,54 +537,54 @@
   }
   function structureHTML(r){
     if(!(window.HouseBuildup&&HouseBuildup.get)){
-      return `<div class="note">נתוני מבנה הם הערכת מודל סינתטי — לא נמדד בשטח.</div>`;
+      return `<div class="note">Structure data is a synthetic-model estimate — not measured on site.</div>`;
     }
     const b=HouseBuildup.get(cur, r.floor), A=b.assemblies||{}, L=b.levels||{}, rm=b.room||{};
-    let h='<div class="tag" style="margin:2px 0 4px">בנייה מאומתת · מהמודל</div>';
+    let h='<div class="tag" style="margin:2px 0 4px">Verified construction · from the model</div>';
     // walls present in this room
     (b.walls||[]).forEach(w=>{
-      const t=(w.thickness_m!=null)?(Math.round(w.thickness_m*100)+' ס״מ'):'';
-      h+=buRow(w.label||'קיר', t+(w.finish_he?(' · '+w.finish_he):''), w.verified, '');
+      const t=(w.thickness_m!=null)?(Math.round(w.thickness_m*100)+' cm'):'';
+      h+=buRow(w.label||'Wall', t+(w.finish_he?(' · '+w.finish_he):''), w.verified, '');
       if(w.layers && w.layers_verified===false){
-        h+=buRow('הרכב שכבות קיר', (w.layers.map(x=>x.n).filter(Boolean).join(' · ')||''), false, w.note_he||'');
+        h+=buRow('Wall layer composition', (w.layers.map(x=>x.n).filter(Boolean).join(' · ')||''), false, w.note_he||'');
       }
     });
-    if(A.slab)     h+=buRow(A.slab.label||'רצפת בטון', Math.round(A.slab.thickness_m*100)+' ס״מ', A.slab.verified, '');
-    if(r.floor==='upper' && A.roofSlab) h+=buRow(A.roofSlab.label||'תקרת גג', Math.round(A.roofSlab.thickness_m*100)+' ס״מ', A.roofSlab.verified, '');
+    if(A.slab)     h+=buRow(A.slab.label||'Concrete floor slab', Math.round(A.slab.thickness_m*100)+' cm', A.slab.verified, '');
+    if(r.floor==='upper' && A.roofSlab) h+=buRow(A.roofSlab.label||'Roof slab', Math.round(A.roofSlab.thickness_m*100)+' cm', A.roofSlab.verified, '');
     // levels (verified)
     if(L.verified){
       const lev=r.floor==='upper'
-        ? `${L.firstFloor_m.toFixed(2)} → גג ${L.roofSlab_m.toFixed(2)}`
-        : `${L.ground_m.toFixed(2)} → תקרה ${L.firstFloor_m.toFixed(2)}`;
-      h+=buRow('מפלסים (מ׳)', lev, true, '');
+        ? `${L.firstFloor_m.toFixed(2)} → roof ${L.roofSlab_m.toFixed(2)}`
+        : `${L.ground_m.toFixed(2)} → ceiling ${L.firstFloor_m.toFixed(2)}`;
+      h+=buRow('Levels (m)', lev, true, '');
     }
-    // unverified deep rows — blank + editable + משוער/לא משורטט
-    h+='<div class="tag" style="margin:9px 0 4px">לא משורטט · ניתן לעריכה</div>';
-    h+=buRowEditable('גמר רצפה', rm.floorFinish, 'floorFinish');
-    h+=buRowEditable('חגורת בטון', rm.concreteBelt, 'concreteBelt');
-    h+=buRowEditable('עמודים', rm.columns, 'columns');
+    // unverified deep rows — blank + editable + estimated/not drawn
+    h+='<div class="tag" style="margin:9px 0 4px">Not drawn · editable</div>';
+    h+=buRowEditable('Floor finish', rm.floorFinish, 'floorFinish');
+    h+=buRowEditable('Concrete ring beam', rm.concreteBelt, 'concreteBelt');
+    h+=buRowEditable('Columns', rm.columns, 'columns');
     return h;
   }
-  /* ---- parts/replacements log (רכיבים·החלפות): reuses .it/.pill/.tag/.edit,
+  /* ---- parts/replacements log (Parts·Replacements): reuses .it/.pill/.tag/.edit,
      no new CSS. Each part {n, installed, replaced, warr, supplier}. ---- */
   function partsHTML(r){
     const arr=r.parts||[];
-    if(!arr.length) return `<div class="tag">🔧 אין רכיבים רשומים</div>`;
+    if(!arr.length) return `<div class="tag">🔧 No parts recorded</div>`;
     return arr.map((p,i)=>{
       const sub=[];
-      if(p.installed) sub.push('הותקן '+esc(p.installed));
-      if(p.replaced)  sub.push('הוחלף '+esc(p.replaced));
-      if(p.warr)      sub.push('אחריות '+esc(p.warr));
-      if(p.supplier)  sub.push('ספק '+esc(p.supplier));
-      const replPill=p.replaced?` <span class="pill green">הוחלף</span>`:'';
-      return `<div class="it"><span><b>${esc(p.n||'רכיב')}</b>${replPill}`+
+      if(p.installed) sub.push('Installed '+esc(p.installed));
+      if(p.replaced)  sub.push('Replaced '+esc(p.replaced));
+      if(p.warr)      sub.push('Warranty '+esc(p.warr));
+      if(p.supplier)  sub.push('Supplier '+esc(p.supplier));
+      const replPill=p.replaced?` <span class="pill green">Replaced</span>`:'';
+      return `<div class="it"><span><b>${esc(p.n||'Part')}</b>${replPill}`+
         (sub.length?`<div class="tag" style="margin-top:2px">${sub.join(' · ')}</div>`:'')+
-        `</span><span><span class="edit" data-act="editPartDate" data-arg="${i}" title="עדכן החלפה / פרטים">✎</span> `+
+        `</span><span><span class="edit" data-act="editPartDate" data-arg="${i}" title="Update replacement / details">✎</span> `+
         `<span class="edit" data-act="delItem" data-arg="parts" data-arg2="${i}">✕</span></span></div>`;
     }).join('');
   }
   // an editable unverified build-up row: value is the user-saved override
-  // (r.bu[field]) when present, else the JSON blank; shows משוער + a ✎.
+  // (r.bu[field]) when present, else the JSON blank; shows estimated + a ✎.
   function buRowEditable(label,cell,field){
     const r=room(cur), saved=(r&&r.bu&&r.bu[field]!=null)?r.bu[field]:null;
     const val=(saved!=null&&saved!=='')?saved:((cell&&cell.he)?cell.he:'');
@@ -597,12 +597,12 @@
     arr=arr||[]; const head=title?`<div class="tag" style="margin:2px 0 4px">${title}</div>`:'';
     if(!arr.length) return head+`<div class="tag">${empty}</div>`;
     return head+arr.map((x,i)=>`<div class="it"><span>${esc(x.n||x.t)}`+
-      `${x.lent?` <span class="pill blue">מושאל ל${esc(x.lent)}</span>`:''}`+
+      `${x.lent?` <span class="pill blue">Lent to ${esc(x.lent)}</span>`:''}`+
       `${x.d?` <span class="tag">· ${esc(x.d)}</span>`:''}</span>`+
       `<span class="edit" data-act="delItem" data-arg="${key}" data-arg2="${i}">✕</span></div>`).join('');
   }
 
-  /* ---- PLOT-LEVEL planning card ('📋 מה מותר במגרש · תכנון'): lists the
+  /* ---- PLOT-LEVEL planning card ('📋 What's allowed on the lot · planning'): lists the
      official planning-registry plans that GOVERN the lot, each with a link to
      its planUrl page where the real building-rights text lives. PLOT-level → the
      same card regardless of which room is open. Reuses .card/.cct/.row/.tag/.pill
@@ -611,33 +611,33 @@
      — only which plans apply + a link to the official document. ---- */
   function planningCardHTML(){
     const P=window.Planning, d=P&&P.get&&P.get();
-    let h=`<div class="card"><div class="cct">📋 מה מותר במגרש · תכנון <span class="pill green">מִרְשָׁם · חי</span></div>`;
+    let h=`<div class="card"><div class="cct">📋 What's allowed on the lot · planning <span class="pill green">Registry · live</span></div>`;
     if(!d){
       // not loaded yet — show a loading line; kickPlanning() will fetch + re-render.
-      return h+`<div class="tag">טוען נתוני תכנון מרשות התכנון…</div></div>`;
+      return h+`<div class="tag">Loading planning data from the planning authority…</div></div>`;
     }
     const plans=d.plans||[];
     if(!plans.length){
       // error or genuinely no governing plan returned — honest, non-fabricated state.
       const msg=d.error&&d.error!=='no-results'
-        ? 'לא ניתן לטעון נתוני תכנון כעת — נסה שוב מאוחר יותר.'
-        : 'לא נמצאה תכנית מקוונת החלה על המגרש בַּמִּרְשָׁם הַתִּכְנוּנִי.';
+        ? 'Unable to load planning data right now — try again later.'
+        : 'No online plan applying to the lot was found in the planning registry.';
       return h+`<div class="tag">${esc(msg)}</div></div>`;
     }
     plans.forEach(p=>{
       const meta=[p.number, p.subtype, p.status].filter(Boolean).map(esc).join(' · ');
       const link=p.planUrl
-        ? ` <a class="edit" target="_blank" rel="noopener" href="${esc(p.planUrl)}" title="עמוד התכנית הרשמי במאגר התכניות">מאגר התכניות ↗</a>`
+        ? ` <a class="edit" target="_blank" rel="noopener" href="${esc(p.planUrl)}" title="The official plan page in the plans repository">Plans repository ↗</a>`
         : '';
-      h+=`<div class="row"><span><b>${esc(p.name||'תכנית')}</b>`+
+      h+=`<div class="row"><span><b>${esc(p.name||'Plan')}</b>`+
          (meta?`<div class="tag" style="margin-top:2px">${meta}</div>`:'')+
          `</span><span>${link}</span></div>`;
     });
     const lu=(d.landUse||[]).filter(Boolean);
     if(lu.length){
-      h+=`<div class="row"><span>ייעוד קרקע</span><span>${lu.map(esc).join(' · ')}</span></div>`;
+      h+=`<div class="row"><span>Land use</span><span>${lu.map(esc).join(' · ')}</span></div>`;
     }
-    h+=`<div class="foot">נתוני מרשם התכנון, חי · זכויות הבנייה המלאות בקישור</div>`;
+    h+=`<div class="foot">Planning-registry data, live · the full building rights are in the link</div>`;
     return h+'</div>';
   }
   // CSS for links inside the planning card (the .edit anchor needs underline-free,
@@ -651,7 +651,7 @@
     document.head.appendChild(st);
   })();
   // Kick off the planning-registry fetch ONCE per session if nothing is cached yet; when it
-  // resolves, re-render only if the שיפוץ tab is still open on a room (so a late
+  // resolves, re-render only if the Renovation tab is still open on a room (so a late
   // network reply paints into the right view, and never into a closed/other tab).
   let _planKicked=false;
   function kickPlanning(){
@@ -669,24 +669,24 @@
     if(act==='close'){ closeToOverview(); return; }
     if(!r) return;
     if(act==='plan'){ const src=r.floor==='ground'?'':'';
-      if(window.__planView) window.__planView(src,'תוכנית '+(FLOOR_HE[r.floor]||'')+' · מודל סינתטי'); return; }
-    if(act==='setField'){ const v=prompt('ערך חדש:',r[arg]||''); if(v===null) return; r[arg]=v; save(); render(); }
+      if(window.__planView) window.__planView(src,'Plan · '+(FLOOR_HE[r.floor]||'')+' · synthetic model'); return; }
+    if(act==='setField'){ const v=prompt('New value:',r[arg]||''); if(v===null) return; r[arg]=v; save(); render(); }
     else if(act==='toggleEst'){ r.est=(r.est===false); save(); render(); }
-    else if(act==='addItem'){ const n=prompt('שם הפריט:'); if(!n) return;
-      const lent=arg==='inv'?(prompt('מושאל למי? (ריק = לא מושאל)')||''):''; r[arg].push(lent?{n,lent}:{n}); save(); render(); }
-    else if(act==='addTask'){ const tt=prompt('תיאור המשימה:'); if(!tt) return;
-      const cost=parseInt(prompt('עלות משוערת $ (אופציונלי):')||'0',10)||0;
+    else if(act==='addItem'){ const n=prompt('Item name:'); if(!n) return;
+      const lent=arg==='inv'?(prompt('Lent to whom? (blank = not lent)')||''):''; r[arg].push(lent?{n,lent}:{n}); save(); render(); }
+    else if(act==='addTask'){ const tt=prompt('Task description:'); if(!tt) return;
+      const cost=parseInt(prompt('Estimated cost $ (optional):')||'0',10)||0;
       const task={t:tt,s:'plan',cost}; projMirrorAdd(r,task); r.tasks.push(task); save(); render(); }
     else if(act==='addReno'){ const rv=(_renoKB&&Array.isArray(_renoKB.renovations)?_renoKB.renovations:[]).filter(x=>x.id===arg)[0]; if(!rv) return;
       const task={t:rv.name_he+(rv.cost_he?' — '+rv.cost_he:''),s:'plan',cost:0}; projMirrorAdd(r,task); r.tasks.push(task); save(); render(); }
     else if(act==='addMat'){ const t=r.tasks[+arg]; if(!t) return;
       // add a material tagged with this project (task) → window.__materials connects it across
       // projects (Alex's ask: "I need iron rods for project X AND Y — know it's for both").
-      const nm=prompt('שֵׁם הַחֹמֶר (לְמָשָׁל: מוֹטוֹת בַּרְזֶל):'); if(!nm) return;
-      const qty=parseFloat(prompt('כַּמָּה?')||'0')||0; const unit=prompt('יְחִידָה (יח׳ / מ׳ / ק״ג / שַׂק…):')||'יח׳';
+      const nm=prompt('Material name (e.g.: iron rods):'); if(!nm) return;
+      const qty=parseFloat(prompt('How much?')||'0')||0; const unit=prompt('Unit (pcs / m / kg / bag…):')||'pcs';
       try{ if(window.__materials&&window.__materials.add) window.__materials.add(nm,qty,unit,t.t); }catch(e){}
-      try{ alert('נוֹסַף: '+nm+' לַפְּרוֹיֶקְט "'+t.t+'". רְאֵה אֶת הָרֶכֶשׁ הַמְּשֻׁתָּף בְּמוֹחַ → 🔩 חֹמֶר.'); }catch(e){} }
-    else if(act==='addNote'){ const tt=prompt('הערה:'); if(!tt) return;
+      try{ alert('Added: '+nm+' to the project "'+t.t+'". See the shared procurement in Brain → 🔩 Materials.'); }catch(e){} }
+    else if(act==='addNote'){ const tt=prompt('Note:'); if(!tt) return;
       r.notes.push({t:tt,d:new Date().toLocaleDateString('he-IL')}); save(); render(); }
     else if(act==='delItem'){
       if(arg==='tasks'){ const tk=r.tasks[+arg2]; if(tk) projMirrorRemove(tk); }
@@ -694,22 +694,22 @@
     else if(act==='cycleTask'){ const o={plan:'prog',prog:'done',done:'plan'};
       if(r.tasks[+arg]){ r.tasks[+arg].s=o[r.tasks[+arg].s]; projMirrorUpdate(r,r.tasks[+arg]); save(); render(); } }
     else if(act==='setBU'){ const cur0=(r.bu&&r.bu[arg]!=null)?r.bu[arg]:'';
-      const v=prompt('ערך (משוער · לא משורטט):',cur0); if(v===null) return;
+      const v=prompt('Value (estimated · not drawn):',cur0); if(v===null) return;
       if(!r.bu||typeof r.bu!=='object') r.bu={}; r.bu[arg]=v; save(); render(); }
-    else if(act==='addPart'){ const n=prompt('שם הרכיב (מרזב · מעקה · ברז · דוד שמש · מזגן…):'); if(!n) return;
-      const installed=prompt('שנת התקנה (אופציונלי):')||''; const supplier=prompt('ספק / יצרן (אופציונלי):')||'';
+    else if(act==='addPart'){ const n=prompt('Part name (gutter · railing · faucet · solar water heater · AC unit…):'); if(!n) return;
+      const installed=prompt('Installation year (optional):')||''; const supplier=prompt('Supplier / manufacturer (optional):')||'';
       r.parts.push({n,installed,replaced:'',warr:'',supplier}); save(); render(); }
     else if(act==='editPartDate'){ const p=r.parts[+arg]; if(!p) return;
-      const replaced=prompt('תאריך/שנת החלפה אחרונה:',p.replaced||''); if(replaced===null) return; p.replaced=replaced;
-      const warr=prompt('אחריות עד (אופציונלי):',p.warr||''); if(warr!==null) p.warr=warr;
+      const replaced=prompt('Date/year of last replacement:',p.replaced||''); if(replaced===null) return; p.replaced=replaced;
+      const warr=prompt('Warranty until (optional):',p.warr||''); if(warr!==null) p.warr=warr;
       save(); render(); }
   }
 
-  /* ---- reno tasks mirror to LogStore 'projects' so alerts.js / the מוח tab
+  /* ---- reno tasks mirror to LogStore 'projects' so alerts.js / the Brain tab
      see renovation work. add on create, update on cycle, remove on delete —
      keyed by a stored projId on the task. Soft-guarded: no LogStore → no-op
      (the task still lives in the workbench DOC, as before). ---- */
-  function projStatusHe(s){ return ({plan:'מתוכנן',prog:'בתהליך',done:'בוצע'})[s]||'מתוכנן'; }
+  function projStatusHe(s){ return ({plan:'Planned',prog:'In progress',done:'Done'})[s]||'Planned'; }
   function projMirrorAdd(r,task){
     if(!(window.LogStore&&window.LogStore.add)) return;
     try{ const rec=window.LogStore.add('projects',{ room:r.id, roomHe:r.name, t:task.t, title:task.t,
@@ -750,8 +750,8 @@
     const st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
     let lb=null,img=null,cap=null;
     function build(){ if(lb) return;
-      lb=document.createElement('div'); lb.id='planLightbox'; lb.setAttribute('dir','rtl');
-      lb.innerHTML=`<div class="pv"><span class="px" data-x title="סגור">✕</span><img alt=""><div class="pcap"></div></div>`;
+      lb=document.createElement('div'); lb.id='planLightbox'; lb.setAttribute('dir','ltr');
+      lb.innerHTML=`<div class="pv"><span class="px" data-x title="Close">✕</span><img alt=""><div class="pcap"></div></div>`;
       img=lb.querySelector('img'); cap=lb.querySelector('.pcap'); document.body.appendChild(lb);
       lb.addEventListener('click',e=>{ if(e.target===lb||e.target.closest('[data-x]')) lb.classList.remove('on'); });
     }
@@ -759,7 +759,7 @@
     // render an honest placeholder note instead of loading a (non-existent) image.
     window.__planView=function(src,caption){ build();
       if(img){ img.removeAttribute('src'); img.style.display='none'; }
-      cap.textContent='📐 הדמו אינו כולל תוכניות בנייה — המבנה נוצר ממודל סינתטי, ללא היתר או סריקה.';
+      cap.textContent='📐 The demo includes no building plans — the structure was generated from a synthetic model, with no permit or scan.';
       lb.classList.add('on'); };
   })();
 
@@ -784,7 +784,7 @@
       const sorted=scores.slice().sort((a,b)=>b.s-a.s), n=sorted.length;
       const my=warmthScore(g), rank=sorted.findIndex(x=>x.id===id);
       const frac=(n>1&&sorted[0].s!==sorted[n-1].s)?(my-sorted[n-1].s)/(sorted[0].s-sorted[n-1].s):0.5;
-      const tier=rank<0?'':(rank<n/3?'חם':(rank>=Math.ceil(2*n/3)?'קריר':'ביניים'));
+      const tier=rank<0?'':(rank<n/3?'Warm':(rank>=Math.ceil(2*n/3)?'Cool':'Mid'));
       return { tempC: base?Math.round((base.tempC+(my-mean)*0.45)*10)/10:null, frac, tier, score:my, floor:g.floor };
     },
     _doc(){ return DOC; },

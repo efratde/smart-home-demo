@@ -1,84 +1,84 @@
 {
   "meta": {
-    "title_he": "סְבִיבַת לַרְקְמוֹנְט · דֶּמוֹ",
-    "what_he": "שִׁכְבוֹת מֶרְחָב סִינְתֵטִיוֹת לְהַדְגָּמָה — גֵּאוֹלוֹגְיָה, מַיִם, הִיסְטוֹרְיָה וְצִמְחִיָּה שֶׁל מָקוֹם בִּדְיוֹנִי.",
-    "site": "לַרְקְמוֹנְט",
-    "honesty_he": "כָּל הַנְּתוּנִים בָּעַמּוּד הַזֶּה בְּדוּיִים לְחֻלּוּטִין וְנוֹעֲדוּ לְהַדְגָּמָה בִּלְבַד.",
-    "license_summary_he": "נְתוּנֵי דֶּמוֹ סִינְתֵטִיִּים — לְלֹא מָקוֹר חִיצוֹנִי.",
+    "title_he": "Larkmont Environment · Demo",
+    "what_he": "Synthetic spatial layers for demonstration — geology, water, history and vegetation of a fictional place.",
+    "site": "Larkmont",
+    "honesty_he": "All the data on this page is entirely fictional and is intended for demonstration only.",
+    "license_summary_he": "Synthetic demo data — no external source.",
     "compiled_date": "2026-01-01"
   },
   "geology": {
-    "title_he": "גֵּאוֹלוֹגְיָה",
-    "intro_he": "עֵמֶק לַרְקְמוֹנְט הוּא עֵמֶק-סְחִיפָה בִּדְיוֹנִי — נָהָר עַתִּיק חָתַךְ אוֹתוֹ בְּמֶשֶׁךְ עִדָּנִים.",
-    "mechanism_he": "מַיִם זוֹרְמִים חָתְכוּ אֶת דַּרְכָּם דֶּרֶךְ שִׁכְבוֹת סֶלַע מְשֻׁכָּבוֹת, הֶעֱמִיקוּ אֶת הָעֵמֶק וְהִרְחִיבוּ אוֹתוֹ כְּשֶׁדְּפָנוֹתָיו נִסְחֲפוּ עִם הַזְּמַן.",
+    "title_he": "Geology",
+    "intro_he": "Larkmont Valley is a fictional erosion valley — an ancient river carved it over the ages.",
+    "mechanism_he": "Flowing water cut its way through layered rock strata, deepening the valley and widening it as its walls eroded over time.",
     "dimensions": {
       "length_km": 18,
       "width_km": 6,
       "depth_m": 350,
-      "claim_he": "מִמַּדִּים בְּדוּיִים לְהַדְגָּמָה."
+      "claim_he": "Fictional dimensions for demonstration."
     },
     "strata": [
       {
-        "name_he": "גִּיר הַמָּצוֹק",
+        "name_he": "Cliff Limestone",
         "symbol": "c",
-        "age_he": "דֶּמוֹ",
-        "lithology_he": "גִּיר קָשֶׁה הַבּוֹנֶה אֶת הַמָּצוֹק."
+        "age_he": "Demo",
+        "lithology_he": "Hard limestone that forms the cliff."
       },
       {
-        "name_he": "חוֹלוֹת הַתַּשְׁתִּית",
+        "name_he": "Basal Sands",
         "symbol": "lck",
-        "age_he": "דֶּמוֹ",
-        "lithology_he": "חוֹל רַךְ שֶׁנִּסְחַף בְּקַלּוּת."
+        "age_he": "Demo",
+        "lithology_he": "Soft sand that erodes easily."
       },
       {
-        "name_he": "סַחַף עֶכְשָׁוִי",
+        "name_he": "Recent Alluvium",
         "symbol": "q",
-        "age_he": "דֶּמוֹ",
-        "lithology_he": "חָצָץ וְחוֹל בְּקַרְקָעִית הָעֵמֶק."
+        "age_he": "Demo",
+        "lithology_he": "Gravel and sand on the valley floor."
       }
     ],
-    "no_active_faults_he": "בַּדֶּמוֹ אֵין שְׁבָרִים פְּעִילִים — כָּל הַשְּׁבָרִים מְצֻיָּרִים לְהַמְחָשָׁה.",
+    "no_active_faults_he": "In the demo there are no active faults — all faults are drawn for illustration.",
     "sites": [
       {
-        "name_he": "תַּצְפִּית הָעֵמֶק",
+        "name_he": "Valley Overlook",
         "name_en": "Valley Overlook",
-        "type_he": "תַּצְפִּית",
+        "type_he": "Overlook",
         "lat": 34.018,
         "lon": -40.025,
         "coord_approx": true,
-        "desc_he": "תַּצְפִּית עַל קַרְקָעִית הָעֵמֶק (אֲתָר דֶּמוֹ)."
+        "desc_he": "An overlook of the valley floor (demo site)."
       },
       {
-        "name_he": "עַמּוּדֵי הַחוֹל",
+        "name_he": "Sand Pillars",
         "name_en": "Sand Pillars",
-        "type_he": "תַּצּוּרַת סְחִיפָה",
+        "type_he": "Erosion formation",
         "lat": 34.012,
         "lon": -39.972,
         "coord_approx": true,
-        "desc_he": "עַמּוּדֵי חוֹל מְפֻסָּלִים — בִּדְיוֹנִי."
+        "desc_he": "Sculpted sand pillars — fictional."
       }
     ],
     "sources": [
       {
-        "name": "אַרְכִיוֹן הַדֶּמוֹ (סִינְתֵטִי)"
+        "name": "Demo archive (synthetic)"
       }
     ]
   },
   "groundwater": {
-    "title_he": "מֵי תְּהוֹם",
-    "intro_he": "מְעַט מַיִם, עָמֹק מִתַּחַת לַפְּנֵי הַשֶּׁטַח — תְּמוּנָה בְּדוּיָה לְהַדְגָּמָה.",
+    "title_he": "Groundwater",
+    "intro_he": "Little water, deep below the surface — a fictional picture for demonstration.",
     "nearest_boreholes": [
       {
-        "name_he": "קְדִיחָה צְפוֹנִית",
-        "aquifer_he": "אַקְוִיפֶר הָעֶלְיוֹן",
-        "status_he": "פָּעִיל",
+        "name_he": "Northern Borehole",
+        "aquifer_he": "Upper Aquifer",
+        "status_he": "active",
         "lat": 34.022,
         "lon": -40.018
       },
       {
-        "name_he": "קְדִיחָה דְּרוֹמִית",
-        "aquifer_he": "אַקְוִיפֶר הַגִּיר",
-        "status_he": "נָטוּשׁ",
+        "name_he": "Southern Borehole",
+        "aquifer_he": "Limestone Aquifer",
+        "status_he": "abandoned",
         "lat": 33.985,
         "lon": -39.99
       }
@@ -86,73 +86,73 @@
     "aquifers_legend": [
       {
         "code": "U",
-        "name_he": "אַקְוִיפֶר עֶלְיוֹן (דֶּמוֹ)"
+        "name_he": "Upper Aquifer (demo)"
       },
       {
         "code": "L",
-        "name_he": "אַקְוִיפֶר גִּיר עָמֹק (דֶּמוֹ)"
+        "name_he": "Deep Limestone Aquifer (demo)"
       }
     ],
-    "springs_intro_he": "מַעְיָנוֹת עוֹנָתִיִּים מְעַטִּים — כֻּלָּם בְּדוּיִים.",
+    "springs_intro_he": "A few seasonal springs — all fictional.",
     "springs": [
       {
-        "name_he": "מַעְיַן הָעֵמֶק",
+        "name_he": "Valley Spring",
         "name_en": "Valley Spring",
         "lat": 34.008,
         "lon": -40.015,
         "elev_m": 280,
-        "aquifer_he": "אַקְוִיפֶר הָעֶלְיוֹן",
-        "type_he": "נְבִיעָה עוֹנָתִית",
-        "note_he": "מַעְיָן בִּדְיוֹנִי."
+        "aquifer_he": "Upper Aquifer",
+        "type_he": "Seasonal seepage",
+        "note_he": "A fictional spring."
       },
       {
-        "name_he": "מַעְיַן הַמָּצוֹק",
+        "name_he": "Cliff Spring",
         "name_en": "Cliff Spring",
         "lat": 33.988,
         "lon": -39.98,
         "elev_m": 240,
-        "aquifer_he": "אַקְוִיפֶר הַגִּיר",
-        "type_he": "מַעְיַן מַגָּע",
-        "note_he": "נְקֻדָּה סִינְתֵטִית."
+        "aquifer_he": "Limestone Aquifer",
+        "type_he": "Contact spring",
+        "note_he": "A synthetic point."
       }
     ],
     "sources": [
       {
-        "name": "אַרְכִיוֹן הַדֶּמוֹ (סִינְתֵטִי)"
+        "name": "Demo archive (synthetic)"
       }
     ]
   },
   "history": {
-    "title_he": "הִיסְטוֹרְיָה",
-    "town_intro_he": "לַרְקְמוֹנְט הִיא עֲיָרָה בִּדְיוֹנִית עַל שְׂפַת הָעֵמֶק; כָּל הַתַּאֲרִיכִים וְהַשֵּׁמוֹת לְהַדְגָּמָה.",
+    "title_he": "History",
+    "town_intro_he": "Larkmont is a fictional town on the edge of the valley; all dates and names are for demonstration.",
     "timeline": [
       {
         "year": 1960,
-        "event_he": "הִתְיַשְּׁבוּת רִאשׁוֹנָה (דֶּמוֹ)."
+        "event_he": "First settlement (demo)."
       },
       {
         "year": 1985,
-        "event_he": "הַרְחָבַת הָעֲיָרָה (דֶּמוֹ)."
+        "event_he": "Town expansion (demo)."
       },
       {
         "year": 2010,
-        "event_he": "הַכְרָזַת שְׁמוּרַת הָעֵמֶק (דֶּמוֹ)."
+        "event_he": "Declaration of the valley reserve (demo)."
       }
     ],
-    "timeline_note_he": "צִיר זְמַן בָּדוּי לְהַמְחָשָׁה.",
+    "timeline_note_he": "A fictional timeline for illustration.",
     "trade_sites": [
       {
-        "name_he": "תַּחֲנַת הַדֶּרֶךְ הַיְשָׁנָה",
+        "name_he": "Old Waystation",
         "name_en": "Old Waystation",
-        "category_he": "אֲתָר הִיסְטוֹרִי (דֶּמוֹ)",
+        "category_he": "Historic site (demo)",
         "lat": 33.995,
         "lon": -40.02,
         "coord_quality": "approx"
       },
       {
-        "name_he": "הַמִּבְצָר הַיָּשָׁן",
+        "name_he": "Old Fort",
         "name_en": "Old Fort",
-        "category_he": "אַרְכֵיאוֹלוֹגְיָה",
+        "category_he": "Archaeology",
         "lat": 34.022,
         "lon": -39.985,
         "coord_quality": "approx"
@@ -160,17 +160,17 @@
     ],
     "sources": [
       {
-        "name": "אַרְכִיוֹן הַדֶּמוֹ (סִינְתֵטִי)"
+        "name": "Demo archive (synthetic)"
       }
     ]
   },
   "vegetation": {
-    "title_he": "צִמְחִיָּה",
-    "intro_he": "כִּסּוּי צִמְחִיָּה דַּל וְעוֹנָתִי — אָפְיָנִי לְאֵזוֹר יָבֵשׁ בִּדְיוֹנִי.",
-    "delta_he": "אַחֲרֵי גְּשָׁמִים יֵשׁ פְּרִיחָה קְצָרָה; שְׁאָר הַשָּׁנָה הַשֶּׁטַח חָשׂוּף. נְתוּנֵי דֶּמוֹ.",
+    "title_he": "Vegetation",
+    "intro_he": "Sparse, seasonal vegetation cover — typical of a fictional arid region.",
+    "delta_he": "After rains there is a brief bloom; the rest of the year the area is bare. Demo data.",
     "sources": [
       {
-        "name": "אַרְכִיוֹן הַדֶּמוֹ (סִינְתֵטִי)"
+        "name": "Demo archive (synthetic)"
       }
     ]
   }

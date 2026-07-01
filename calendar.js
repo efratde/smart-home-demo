@@ -1,5 +1,5 @@
 /* ===========================================================================
- * calendar.js · "הבית של אלכס" — לוּחַ הַשָּׁנָה בַּגִּינָה (the garden year-calendar)
+ * calendar.js · "Alex's house" — the garden year-calendar
  * ---------------------------------------------------------------------------
  * A classic month-grid calendar for Larkmont, painted in the #inst
  * dark/gold RTL skin, with TWO toggleable overlay LAYERS over the day cells:
@@ -20,8 +20,8 @@
  *
  * Clicking a day opens a small in-grid detail card: that day's sky events +,
  * for past days, its real measured climate. Every surfaced number is labeled
- * honestly — מבוסס מדידות אמת (measured weather) vs מחושב לפי הגיאומטריה
- * (geometry-modeled). NEVER implies a physical sensor.
+ * honestly — based on real measurements (measured weather) vs computed from
+ * geometry (geometry-modeled). NEVER implies a physical sensor.
  *
  * Self-contained: owns its own DOM + CSS (ensureCSS, scoped #homeCal). Reads
  * only documented globals (Astro, Derive, Satellites, RecordStore); degrades
@@ -35,9 +35,9 @@
   if (window.__calendar) return;
 
   var GOLD = '#caa15a';
-  var MONTHS_HE = ['יָנוּאָר','פֶבְּרוּאָר','מֵרְץ','אַפְּרִיל','מַאי','יוּנִי','יוּלִי','אוֹגוּסְט','סֶפְּטֶמְבֶּר','אוֹקְטוֹבֶּר','נוֹבֶמְבֶּר','דֶצֶמְבֶּר'];
-  // Sunday-first week (regional convention); ש = שבת
-  var DOW_HE = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','שׁ'];
+  var MONTHS_HE = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  // Sunday-first week (regional convention); Sat = Saturday
+  var DOW_HE = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function pad(n){ return String(n).padStart(2,'0'); }
@@ -170,7 +170,7 @@
   }
 
   /* ---- astro-events almanac (data/astro_events.json) — dated sky events so the
-     same events shown in the שמיים almanac also land on their calendar days ---- */
+     same events shown in the sky almanac also land on their calendar days ---- */
   var _astro=null, _astroTried=false;
   function loadAstro(){
     if(_astroTried) return; _astroTried=true;
@@ -184,8 +184,8 @@
     return _astro.filter(function(e){ return e && e.date && e.date>=f && e.date<=t; });
   }
   /* ---- HIS own dated entries from the second-brain (LogStore due/date) — so
-     things he adds in מוח (משימות/השאלות/אירוח/חשבוניות) appear on the calendar ---- */
-  var COLL_HE={ schedule:'מְשִׁימָה', lending:'הַשְׁאָלָה', airbnb:'אֵירוּחַ', invoices:'חֶשְׁבּוֹנִית' };
+     things he adds in the second-brain (tasks/lendings/hosting/invoices) appear on the calendar ---- */
+  var COLL_HE={ schedule:'Task', lending:'Lending', airbnb:'Hosting', invoices:'Invoice' };
   var COLL_GLYPH={ schedule:'📌', lending:'↩️', airbnb:'🏠', invoices:'🧾' };
   function logLabel(le){ var r=le.rec||{}; return r.title||r.name||r.note||r.text||r.item||COLL_HE[le.coll]||le.coll; }
   function collNameHe(coll){ return COLL_HE[coll]||coll; }
@@ -199,7 +199,7 @@
     return out;
   }
 
-  /* ---- 🌿 גִּינָה: the month's GARDEN-CARE tasks for HIS owned plants.
+  /* ---- 🌿 Garden: the month's GARDEN-CARE tasks for HIS owned plants.
      Owned plants come from data/resident_plants.json (the same set garden.js
      loadCurated() reads); their per-month tasks come from the keyless
      PlantCare engine (care.js / data/plant_care.json), joined by name_latin.
@@ -232,7 +232,7 @@
     return out;
   }
 
-  /* ---- 🛠️ שִׁפּוּץ: renovation DUE-DATES from the LogStore 'projects'
+  /* ---- 🛠️ Renovation: renovation DUE-DATES from the LogStore 'projects'
      collection — only entries that actually carry a due date (rec.due /
      rec.date), placed on that day. Same per-day shape + defensive read as
      logEntriesIn(); omitted entirely if LogStore is missing. -------------- */
@@ -247,7 +247,7 @@
     });
     return out;
   }
-  function renoLabel(re){ var r=re.rec||{}; return r.title||r.t||r.name||r.roomHe||r.note||'שִׁפּוּץ'; }
+  function renoLabel(re){ var r=re.rec||{}; return r.title||r.t||r.name||r.roomHe||r.note||'Renovation'; }
 
   /* ---------------- state ---------------- */
   var _host=null, _wired=false;
@@ -291,8 +291,8 @@
     var gc=D.galacticCore(mid);
     if(!gc) return '';
     if(gc.inSeason)
-      return '🌌 לֵב שְׁבִיל הֶחָלָב גָּלוּי הַחֹדֶשׁ — שִׂיא ' + gc.peakAlt + '° בָּאֲזִימוּט ' + gc.peakAz + '° (' + esc(gc.fromHM||'') + '–' + esc(gc.toHM||'') + ')';
-    return '🌌 לֵב שְׁבִיל הֶחָלָב לֹא גָּלוּי הַחֹדֶשׁ בַּחֲשֵׁכָה';
+      return '🌌 The Milky Way core is visible this month — peak ' + gc.peakAlt + '° at azimuth ' + gc.peakAz + '° (' + esc(gc.fromHM||'') + '–' + esc(gc.toHM||'') + ')';
+    return '🌌 The Milky Way core is not visible in the dark this month';
   }
 
   /* ---------------- render the month grid ---------------- */
@@ -345,24 +345,24 @@
     var leading=first.getDay();   // 0=Sun … 6=Sat (Sunday-first grid)
 
     var h='';
-    h+='<div class="cal-wrap" dir="rtl">';
+    h+='<div class="cal-wrap" dir="ltr">';
     // ---- header: title + month nav + layer toggles ----
     h+='<div class="cal-head">'+
-         '<h3>לוּחַ הַשָּׁנָה בַּגִּינָה</h3>'+
+         '<h3>The Garden Year-Calendar</h3>'+
          '<div class="cal-nav">'+
-           '<span class="cnav" data-cal-nav="-1" role="button" tabindex="0" title="חֹדֶשׁ קוֹדֵם">‹</span>'+
+           '<span class="cnav" data-cal-nav="-1" role="button" tabindex="0" title="Previous month">‹</span>'+
            '<span class="cmon">'+MONTHS_HE[_viewMonth]+' '+_viewYear+'</span>'+
-           '<span class="cnav" data-cal-nav="1" role="button" tabindex="0" title="חֹדֶשׁ הַבָּא">›</span>'+
+           '<span class="cnav" data-cal-nav="1" role="button" tabindex="0" title="Next month">›</span>'+
          '</div>'+
        '</div>';
-    h+='<div class="cal-sub">לוּחַ שָׁנָה לְלרקמונט · שְׁתֵּי שְׁכָבוֹת נִתָּנוֹת לְכִבּוּי</div>';
+    h+='<div class="cal-sub">Year calendar for Larkmont · two toggleable layers</div>';
     h+='<div class="cal-layers">'+
-         '<span class="clay'+(_layers.stars?' on':'')+'" data-cal-layer="stars" role="button" tabindex="0">🌌 שָׁמַיִם</span>'+
-         '<span class="clay'+(_layers.climate?' on':'')+'" data-cal-layer="climate" role="button" tabindex="0">🌡️ אַקְלִים אֲמִתִּי</span>'+
-         '<span class="clay'+(_layers.mine?' on':'')+'" data-cal-layer="mine" role="button" tabindex="0">📌 שֶׁלִּי</span>'+
-         '<span class="clay'+(_layers.garden?' on':'')+'" data-cal-layer="garden" role="button" tabindex="0">🌿 גִּינָה</span>'+
-         '<span class="clay'+(_layers.reno?' on':'')+'" data-cal-layer="reno" role="button" tabindex="0">🛠️ שִׁפּוּץ</span>'+
-         '<span class="clay ctoday" data-cal-today="1" role="button" tabindex="0">הַיּוֹם</span>'+
+         '<span class="clay'+(_layers.stars?' on':'')+'" data-cal-layer="stars" role="button" tabindex="0">🌌 Sky</span>'+
+         '<span class="clay'+(_layers.climate?' on':'')+'" data-cal-layer="climate" role="button" tabindex="0">🌡️ Real climate</span>'+
+         '<span class="clay'+(_layers.mine?' on':'')+'" data-cal-layer="mine" role="button" tabindex="0">📌 Mine</span>'+
+         '<span class="clay'+(_layers.garden?' on':'')+'" data-cal-layer="garden" role="button" tabindex="0">🌿 Garden</span>'+
+         '<span class="clay'+(_layers.reno?' on':'')+'" data-cal-layer="reno" role="button" tabindex="0">🛠️ Renovation</span>'+
+         '<span class="clay ctoday" data-cal-today="1" role="button" tabindex="0">Today</span>'+
        '</div>';
     var gn=galacticNote();
     if(gn) h+='<div class="cal-gc">'+gn+'</div>';
@@ -401,17 +401,17 @@
       if(moon){ marks+='<span class="cmoon" title="'+esc(moon.name)+' · '+Math.round(moon.illum*100)+'%">'+moon.glyph+'</span>'; }
       var badges='';
       if(_layers.stars){
-        if(dayEv.meteors && dayEv.meteors.length) badges+='<span class="cbadge meteor" title="שִׂיא מֶטֵאוֹרִים">☄️</span>';
-        if(dayEv.dark) badges+='<span class="cbadge dark" title="לַיְלָה חָשׁוּךְ (מוֹלָד)">🌑</span>';
-        if(dayEv.iss) badges+='<span class="cbadge iss" title="מַעֲבָר תַּחֲנַת חָלָל גָּלוּי">🛰️</span>';
+        if(dayEv.meteors && dayEv.meteors.length) badges+='<span class="cbadge meteor" title="Meteor peak">☄️</span>';
+        if(dayEv.dark) badges+='<span class="cbadge dark" title="Dark night (new moon)">🌑</span>';
+        if(dayEv.iss) badges+='<span class="cbadge iss" title="Visible space-station pass">🛰️</span>';
         if(dayEv.astroEv && dayEv.astroEv.length) badges+='<span class="cbadge astev" title="'+esc(dayEv.astroEv.map(function(e){return e.title_he;}).join(' · '))+'">✦</span>';
       }
       if(_layers.mine && dayEv.logEv && dayEv.logEv.length) badges+='<span class="cbadge mine" title="'+esc(dayEv.logEv.map(function(le){return logLabel(le);}).join(' · '))+'">📌</span>';
-      if(_layers.garden && dayEv.gardenEv && dayEv.gardenEv.length) badges+='<span class="cbadge garden" title="'+esc('טִפּוּל בַּגִּינָה הַחֹדֶשׁ · '+dayEv.gardenEv.map(function(g){return g.name_he+': '+g.task_he;}).join(' · '))+'">🌿</span>';
+      if(_layers.garden && dayEv.gardenEv && dayEv.gardenEv.length) badges+='<span class="cbadge garden" title="'+esc('Garden care this month · '+dayEv.gardenEv.map(function(g){return g.name_he+': '+g.task_he;}).join(' · '))+'">🌿</span>';
       if(_layers.reno && dayEv.renoEv && dayEv.renoEv.length) badges+='<span class="cbadge reno" title="'+esc(dayEv.renoEv.map(function(re){return renoLabel(re);}).join(' · '))+'">🛠️</span>';
       if(_layers.climate && clim){
-        if(clim.frost) badges+='<span class="cbadge frost" title="לֵיל כְּפוֹר (מָדוּד)">❄️</span>';
-        if(clim.rainMm!=null && clim.rainMm>=0.2) badges+='<span class="cbadge rain" title="גֶּשֶׁם '+r1(clim.rainMm)+' מ״מ (מָדוּד)">🌧️</span>';
+        if(clim.frost) badges+='<span class="cbadge frost" title="Frost night (measured)">❄️</span>';
+        if(clim.rainMm!=null && clim.rainMm>=0.2) badges+='<span class="cbadge rain" title="Rain '+r1(clim.rainMm)+' mm (measured)">🌧️</span>';
       }
 
       var climTmax=(clim&&clim.tMax!=null)?('<span class="ctmax">'+Math.round(clim.tMax)+'°</span>'):'';
@@ -429,18 +429,18 @@
 
     // ---- legend + honesty footer ----
     h+='<div class="cal-legend">'+
-         (_layers.stars?'<span>🌑 מוֹלָד</span><span>🌕 מָלֵא</span><span>☄️ מֶטֵאוֹרִים</span><span>🛰️ תַּחֲנַת חָלָל</span>':'')+
-         (_layers.climate?'<span>❄️ כְּפוֹר</span><span>🌧️ גֶּשֶׁם</span><span class="ctint">צֶבַע = שִׂיא חֹם מָדוּד</span>':'')+
-         (_layers.garden?'<span>🌿 טִפּוּל בַּגִּינָה</span>':'')+
-         (_layers.reno?'<span>🛠️ יַעַד שִׁפּוּץ</span>':'')+
+         (_layers.stars?'<span>🌑 New moon</span><span>🌕 Full</span><span>☄️ Meteors</span><span>🛰️ Space station</span>':'')+
+         (_layers.climate?'<span>❄️ Frost</span><span>🌧️ Rain</span><span class="ctint">Color = measured high temp</span>':'')+
+         (_layers.garden?'<span>🌿 Garden care</span>':'')+
+         (_layers.reno?'<span>🛠️ Renovation deadline</span>':'')+
        '</div>';
-    var foot='שְׁכָבַת הַשָּׁמַיִם: אֶפֵמֶרִיס אֲמִתִּי (יָרֵחַ · מֶטֵאוֹרִים · שְׁבִיל הֶחָלָב · תַּחֲנַת חָלָל). ';
+    var foot='Sky layer: real ephemeris (moon · meteors · Milky Way · space station). ';
     if(_layers.climate){
       foot += storeReady
-        ? 'שְׁכָבַת הָאַקְלִים: מְדִידוֹת אֲמֶת שֶׁל מֶזֶג הָאֲוִיר בַּבַּיִת שֶׁלּוֹ (יָמִים שֶׁעָבְרוּ). '
-        : 'שְׁכָבַת הָאַקְלִים תִּתְמַלֵּא כְּשֶׁיֹּמְצַם רֵקוֹרְד הַמְּדִידוֹת (נִטְעָן בָּרֶקַע). ';
+        ? 'Climate layer: real measurements of the weather at his house (past days). '
+        : 'The climate layer will fill in once the measurement record is found (loading in the background). ';
     }
-    foot += 'אֵין חַיְשָׁן פִיזִי — מֶזֶג אֲוִיר מָדוּד, גֵּאוֹמֶטְרְיָה מְחֻשֶּׁבֶת.';
+    foot += 'No physical sensor — measured weather, geometry-modeled.';
     h+='<div class="cal-foot">'+foot+'</div>';
     h+='</div>';
 
@@ -455,47 +455,47 @@
     var title=parts[2]+' '+MONTHS_HE[parts[1]-1]+' '+parts[0];
 
     var h='<div class="cal-detail">';
-    h+='<div class="cdhd"><span class="cdt">'+title+'</span><span class="cdx" data-cal-detail-close="1" title="סְגֹר">✕</span></div>';
+    h+='<div class="cdhd"><span class="cdt">'+title+'</span><span class="cdx" data-cal-detail-close="1" title="Close">✕</span></div>';
 
     // ---- 🌌 sky for that day (always available — pure ephemeris) ----
     var A=ASTRO(), D=DERIVE();
-    h+='<div class="cd-sec">🌌 שָׁמַיִם <span class="cd-lab modeled">אֶפֵמֶרִיס</span></div>';
+    h+='<div class="cd-sec">🌌 Sky <span class="cd-lab modeled">Ephemeris</span></div>';
     var moon=moonForDay(d);
     if(moon){
-      h+='<div class="cd-row"><span>יָרֵחַ</span><b>'+moon.glyph+' '+esc(moon.name)+' · '+Math.round(moon.illum*100)+'%</b></div>';
+      h+='<div class="cd-row"><span>Moon</span><b>'+moon.glyph+' '+esc(moon.name)+' · '+Math.round(moon.illum*100)+'%</b></div>';
     }
     // twilight clock-times for the day
     if(D && D.twilightTimes){
       var tw=null; try{ tw=D.twilightTimes(d); }catch(e){ tw=null; }
       if(tw){
-        if(tw.golden) h+='<div class="cd-row"><span>שָׁעָה זְהֻבָּה</span><b>'+esc(tw.golden.morn||'—')+' · '+esc(tw.golden.eve||'—')+'</b></div>';
-        if(tw.astro)  h+='<div class="cd-row"><span>חֲשֵׁכָה מְלֵאָה (אַסְטְרוֹ׳)</span><b>'+esc(tw.astro.eve||'—')+'</b></div>';
+        if(tw.golden) h+='<div class="cd-row"><span>Golden hour</span><b>'+esc(tw.golden.morn||'—')+' · '+esc(tw.golden.eve||'—')+'</b></div>';
+        if(tw.astro)  h+='<div class="cd-row"><span>Full darkness (astro)</span><b>'+esc(tw.astro.eve||'—')+'</b></div>';
       }
     }
     // any meteor peak / dark night / ISS marked on this day
     var built=buildMonthIndex(), ev=built.idx[iso]||{};
     if(ev.meteors && ev.meteors.length){
       ev.meteors.forEach(function(m){
-        h+='<div class="cd-row"><span>☄️ מֶטֵאוֹרִים</span><b>'+esc(m.name)+' · ~'+m.zhr+'/ש׳ בַּשִּׂיא</b></div>';
+        h+='<div class="cd-row"><span>☄️ Meteors</span><b>'+esc(m.name)+' · ~'+m.zhr+'/hr at peak</b></div>';
       });
     }
     if(ev.dark){
-      var cl=(ev.darkCloud!=null)?(' · ~'+Math.round(ev.darkCloud*100)+'% עֲנָנִים'):'';
-      h+='<div class="cd-row"><span>🌑 לַיְלָה חָשׁוּךְ</span><b>מוֹלָד · '+Math.round((ev.darkIllum||0)*100)+'% מוּאָר'+cl+'</b></div>';
+      var cl=(ev.darkCloud!=null)?(' · ~'+Math.round(ev.darkCloud*100)+'% clouds'):'';
+      h+='<div class="cd-row"><span>🌑 Dark night</span><b>New moon · '+Math.round((ev.darkIllum||0)*100)+'% illuminated'+cl+'</b></div>';
     }
     if(ev.iss){
-      h+='<div class="cd-row"><span>🛰️ תַּחֲנַת הֶחָלָל</span><b>מַעֲבָר גָּלוּי · שִׂיא ~'+ev.iss.peakAlt+'°</b></div>';
+      h+='<div class="cd-row"><span>🛰️ Space station</span><b>Visible pass · peak ~'+ev.iss.peakAlt+'°</b></div>';
     }
     if(ev.astroEv && ev.astroEv.length){
       ev.astroEv.forEach(function(e){
-        h+='<div class="cd-row"><span>✦ '+esc(e.title_he||'אֵרוּעַ שָׁמַיִם')+'</span><b>'+esc(e.best_time||'')+'</b></div>';
+        h+='<div class="cd-row"><span>✦ '+esc(e.title_he||'Sky event')+'</span><b>'+esc(e.best_time||'')+'</b></div>';
         if(e.detail_he) h+='<div class="cd-row sm"><span></span><b style="font-weight:400;opacity:.82">'+esc(e.detail_he)+'</b></div>';
       });
     }
 
     // ---- 📌 his own dated entries (LogStore) for that day ----
     if(ev.logEv && ev.logEv.length){
-      h+='<div class="cd-sec">📌 שֶׁלִּי <span class="cd-lab measured">יוֹמָן</span></div>';
+      h+='<div class="cd-sec">📌 Mine <span class="cd-lab measured">Log</span></div>';
       ev.logEv.forEach(function(le){
         h+='<div class="cd-row"><span>'+esc(le.glyph||'•')+' '+esc(collNameHe(le.coll))+'</span><b>'+esc(logLabel(le))+'</b></div>';
       });
@@ -503,7 +503,7 @@
 
     // ---- 🌿 the month's garden-care tasks for his owned plants ----
     if(ev.gardenEv && ev.gardenEv.length){
-      h+='<div class="cd-sec">🌿 טִפּוּל בַּגִּינָה <span class="cd-lab modeled">הֶחֹדֶשׁ</span></div>';
+      h+='<div class="cd-sec">🌿 Garden care <span class="cd-lab modeled">This month</span></div>';
       ev.gardenEv.forEach(function(g){
         h+='<div class="cd-row"><span>'+esc((g.emoji||'🌿')+' '+(g.name_he||''))+'</span><b>'+esc((g.kindEmoji||'')+' '+g.task_he)+'</b></div>';
       });
@@ -511,46 +511,46 @@
 
     // ---- 🛠️ renovation due-dates (LogStore 'projects') for that day ----
     if(ev.renoEv && ev.renoEv.length){
-      h+='<div class="cd-sec">🛠️ שִׁפּוּץ <span class="cd-lab measured">יַעַד</span></div>';
+      h+='<div class="cd-sec">🛠️ Renovation <span class="cd-lab measured">Deadline</span></div>';
       ev.renoEv.forEach(function(re){
         var r=re.rec||{}; var meta=[]; if(r.roomHe) meta.push(r.roomHe); if(r.status) meta.push(r.status);
-        h+='<div class="cd-row"><span>'+esc(renoLabel(re))+'</span><b>'+esc(meta.join(' · ')||'יַעַד')+'</b></div>';
+        h+='<div class="cd-row"><span>'+esc(renoLabel(re))+'</span><b>'+esc(meta.join(' · ')||'Deadline')+'</b></div>';
       });
     }
 
     // ---- 🌡️ real climate (past days, from RecordStore) ----
     if(isPast){
       var clim=climateForDay(iso);
-      h+='<div class="cd-sec">🌡️ אַקְלִים <span class="cd-lab measured">מְדִידוֹת אֲמֶת</span></div>';
+      h+='<div class="cd-sec">🌡️ Climate <span class="cd-lab measured">Real measurements</span></div>';
       if(clim){
         if(clim.tMax!=null||clim.tMin!=null)
-          h+='<div class="cd-row"><span>טֶמְפֶּרָטוּרָה (עִיר)</span><b>'+(clim.tMax!=null?Math.round(clim.tMax)+'°':'—')+' / '+(clim.tMin!=null?Math.round(clim.tMin)+'°':'—')+'</b></div>';
+          h+='<div class="cd-row"><span>Temperature (town)</span><b>'+(clim.tMax!=null?Math.round(clim.tMax)+'°':'—')+' / '+(clim.tMin!=null?Math.round(clim.tMin)+'°':'—')+'</b></div>';
         if(clim.rainMm!=null)
-          h+='<div class="cd-row"><span>מִשְׁקָעִים</span><b>'+r1(clim.rainMm)+' מ״מ</b></div>';
+          h+='<div class="cd-row"><span>Precipitation</span><b>'+r1(clim.rainMm)+' mm</b></div>';
         if(clim.frost)
-          h+='<div class="cd-row"><span>כְּפוֹר</span><b class="cd-frost">❄️ לֵיל כְּפוֹר</b></div>';
+          h+='<div class="cd-row"><span>Frost</span><b class="cd-frost">❄️ Frost night</b></div>';
         // per-zone modeled lows (geometry), if present — labeled modeled
         if(clim.zonesRec){
           var zids=Object.keys(clim.zonesRec);
           if(zids.length){
-            h+='<div class="cd-zsec">לְפִי אֵזוֹר <span class="cd-lab modeled">מְחֻשָּׁב לְפִי הַגֵּאוֹמֶטְרְיָה</span></div>';
+            h+='<div class="cd-zsec">By zone <span class="cd-lab modeled">Geometry-modeled</span></div>';
             zids.forEach(function(zid){
               var zr=clim.zonesRec[zid]; if(!zr) return;
               var bits=[];
-              if(zr.tMin!=null) bits.push('שַׁחַר '+Math.round(zr.tMin)+'°');
-              if(zr.sunHours!=null) bits.push(Math.round(zr.sunHours*10)/10+' ש׳ שֶׁמֶשׁ');
-              if(zr.frost) bits.push('כְּפוֹר');
+              if(zr.tMin!=null) bits.push('Dawn '+Math.round(zr.tMin)+'°');
+              if(zr.sunHours!=null) bits.push(Math.round(zr.sunHours*10)/10+' hr sun');
+              if(zr.frost) bits.push('Frost');
               h+='<div class="cd-row sm"><span>'+esc(zoneNameHe(zid))+'</span><b>'+(bits.join(' · ')||'—')+'</b></div>';
             });
           }
         }
       } else {
         var sr = !!(STORE() && STORE().dayRecord);
-        h+='<div class="cd-empty">'+(sr?'אֵין עֲדַיִן רֵקוֹרְד מָדוּד לַיּוֹם הַזֶּה.':'רֵקוֹרְד הַמְּדִידוֹת נִטְעָן בָּרֶקַע…')+'</div>';
+        h+='<div class="cd-empty">'+(sr?'No measured record yet for this day.':'The measurement record is loading in the background…')+'</div>';
       }
     } else {
-      h+='<div class="cd-sec">🌡️ אַקְלִים</div>';
-      h+='<div class="cd-empty">שְׁכָבַת הָאַקְלִים מַרְאָה מְדִידוֹת אֲמֶת — רַק לְיָמִים שֶׁעָבְרוּ.</div>';
+      h+='<div class="cd-sec">🌡️ Climate</div>';
+      h+='<div class="cd-empty">The climate layer shows real measurements — for past days only.</div>';
     }
     h+='</div>';
     return h;
@@ -561,7 +561,7 @@
     var zs=(D&&D.data&&D.data.site&&D.data.site.zones)||[];
     var z=zs.find(function(x){ return x.id===zid; });
     if(z&&z.name_he) return z.name_he;
-    var fb={ backyard:'חָצֵר אֲחוֹרִית', balcony:'מִרְפֶּסֶת', front:'חֲזִית' };
+    var fb={ backyard:'Backyard', balcony:'Balcony', front:'Front' };
     return fb[zid]||zid;
   }
 
@@ -570,7 +570,7 @@
     if(document.getElementById('alex-cal-css')) return;
     var s=document.createElement('style'); s.id='alex-cal-css';
     s.textContent=
-      '.cal-wrap{font-family:Heebo,sans-serif;color:#efe6cf;direction:rtl}'+
+      '.cal-wrap{font-family:Heebo,sans-serif;color:#efe6cf;direction:ltr}'+
       '.cal-head{display:flex;align-items:center;justify-content:space-between;gap:8px}'+
       '.cal-head h3{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:17px;color:#fff7e6;margin:0}'+
       '.cal-nav{display:flex;align-items:center;gap:8px}'+

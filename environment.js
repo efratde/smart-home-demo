@@ -195,7 +195,7 @@ const Environment = (function(){
     apron.rotation.x=-Math.PI/2; apron.position.set(4.2,0.01,4.5); apron.receiveShadow=true; G.add(apron);
 
     // ---- boundary walls of the plot ----
-    //   These outline the wider plot (the site plan marks "קיר" along the
+    //   These outline the wider plot (the site plan marks "wall" along the
     //   west/south/east edges). They must read as the SAME sandy STUCCO as the
     //   house — not grey — or, combined with the old grey foundation pad, the
     //   plot looked like a chunky raised platform. Colour is matched to the
@@ -219,7 +219,7 @@ const Environment = (function(){
     //   faces it) / world-SOUTH (row). world-EAST is left OPEN (the desert/view), and a
     //   plaza gap (~ -1.2..-4.5 on world-W) is left open between Alex and the west units.
     //   Each block is named 'homeblock' + uses its OWN material instance (a clone of
-    //   the house stucco) so the "מבנים סביב הבית" display layer (app.js applyBlocks)
+    //   the house stucco) so the "buildings around the house" display layer (app.js applyBlocks)
     //   can fade/hide JUST the neighbours via the opacity slider, without touching the
     //   house. castShadow off — the REAL neighbour shading is the derive.js occluders;
     //   the scene shadow here would be cosmetic (and odd when the layer is faded).
@@ -231,7 +231,7 @@ const Environment = (function(){
     ].forEach(([x0,x1,z0,z1,h])=>{
       const m=new THREE.Mesh(new THREE.BoxGeometry(x1-x0,h,z1-z0), nbrMat);
       m.position.set((x0+x1)/2, h/2, (z0+z1)/2);
-      m.name='homeblock';            // ← driven by the "מבנים סביב הבית" layer toggle + opacity slider
+      m.name='homeblock';            // ← driven by the "buildings around the house" layer toggle + opacity slider
       m.castShadow=false; m.receiveShadow=true; G.add(m);
     });
 

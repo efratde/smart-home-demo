@@ -1,9 +1,9 @@
 /* ===================================================================
-   planning_card.js — the "מה מותר בחלקה / תכנון" card (the HIDDEN gem).
+   planning_card.js — the "what may be built on the lot / planning" card (the HIDDEN gem).
    Surfaces the OFFICIAL planning that governs Alex's lot in Larkmont:
-   WHICH plans (תכניות) rule the plot + their type/status + a deep link to
+   WHICH plans rule the plot + their type/status + a deep link to
    each plan's official page on the plan registry, plus the land designation
-   (יעוד קרקע) when the GIS carries a real one. Same #inst brass-on-glass
+   when the GIS carries a real one. Same #inst brass-on-glass
    RTL skin as zone_card.js / workbench.js — reads as the same instrument.
 
    DATA: a keyless, no-backend lookup served by a planning registry
@@ -16,7 +16,7 @@
    seen. We surface that caveat honestly in the footer.
 
    HONESTY: the detailed build numbers — height / coverage / setbacks / FAR
-   (גובה, כיסוי קרקע, מרווחי בנייה, יחס שטח בנוי) — live INSIDE the plan documents,
+   (height, ground coverage, building setbacks, floor-area ratio) — live INSIDE the plan documents,
    NOT in the GIS attributes. So we do NOT fabricate any number; we name the
    governing plans accurately and link out to read the rules at the source.
 
@@ -51,7 +51,7 @@
      not a floating overlay — so no fixed position / z-index. Self-contained:
      every selector is under #planCard, nothing leaks to #inst / panels. ---- */
   const CSS=`
-  #planCard{font-family:'Heebo',sans-serif;color:#efe6cf;direction:rtl;text-align:right;
+  #planCard{font-family:'Heebo',sans-serif;color:#efe6cf;direction:ltr;text-align:left;
     text-shadow:0 1px 6px rgba(0,0,0,.6)}
   #planCard .pcwrap{display:flex;flex-direction:column;gap:11px;max-width:560px;margin:0 auto}
   #planCard .pchd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
@@ -99,7 +99,7 @@
   @keyframes pcspin{to{transform:rotate(360deg)}}
   #planCard .pfoot{font-size:9.5px;color:#7d7150;line-height:1.6;margin-top:2px}
   #planCard .pfoot a{color:#a99b78;text-decoration:underline}
-  /* plan purpose line (plot-specific, straight from the GIS 'מטרות') */
+  /* plan purpose line (plot-specific, straight from the GIS purpose attribute) */
   #planCard .ppurpose{font-size:11.5px;color:#cfc4a6;line-height:1.55;margin-top:7px;
     border-right:2px solid rgba(202,161,90,.28);padding-right:8px}
   /* scope chips: plot-specific (gold) vs generic (quiet) vs illustrative */
@@ -108,7 +108,7 @@
   #planCard .scope.plot{background:rgba(224,178,74,.16);color:#e8c474;border:1px solid rgba(224,178,74,.4)}
   #planCard .scope.gen{background:rgba(255,255,255,.045);color:#b7ac8c;border:1px solid rgba(202,161,90,.2)}
   #planCard .scope.ill{background:rgba(120,150,210,.14);color:#bcd0f0;border:1px solid rgba(120,150,210,.34)}
-  /* possibility blocks (תוספת בנייה / חדר מָגֵן / קומה / חצר) */
+  /* possibility blocks (building addition / safe room / extra floor / yard) */
   #planCard .poss{border-top:1px solid rgba(202,161,90,.14);padding:11px 0}
   #planCard .poss:first-of-type{border-top:none;padding-top:2px}
   #planCard .poss:last-of-type{padding-bottom:2px}
@@ -154,18 +154,18 @@
      a meaningful colour; everything else stays neutral grey (honest, no guess). */
   function statusPill(status){
     const s=String(status||'');
-    if(/מאוש|בתוקף|אישור/.test(s)) return 'green';          // approved / in force
-    if(/הפקד|התנגד|השג/.test(s))   return 'amber';          // deposited / objections
-    if(/בדיק|הכנ|דיון|תכנונית/.test(s)) return 'blue';      // in review / preparation
+    if(/approved|in force|permit/.test(s)) return 'green';          // approved / in force
+    if(/deposited|objection|appeal/.test(s))   return 'amber';      // deposited / objections
+    if(/review|preparation|discussion|planning/.test(s)) return 'blue';      // in review / preparation
     return 'grey';
   }
 
   /* ---- a scope chip: marks each figure plot-specific (gold) vs generic-rule
      (quiet) vs illustrative-example (blue). The honesty contract made visible. */
   function scopeChip(scope){
-    if(scope==='plot')          return `<span class="scope plot">לַמִּגְרָשׁ</span>`;
-    if(scope==='illustrative')  return `<span class="scope ill">לְדֻגְמָה בִּלְבַד</span>`;
-    if(scope==='generic')       return `<span class="scope gen">כְּלָל כְּלָלִי</span>`;
+    if(scope==='plot')          return `<span class="scope plot">Plot-specific</span>`;
+    if(scope==='illustrative')  return `<span class="scope ill">Example only</span>`;
+    if(scope==='generic')       return `<span class="scope gen">General rule</span>`;
     return '';
   }
 
@@ -173,7 +173,7 @@
      PURPOSE (plot-specific, from the GIS) + approved dwelling-units when real. */
   function planHtml(p){
     if(!p) return '';
-    const name=esc(p.name||'תכנית ללא שם');
+    const name=esc(p.name||'Unnamed plan');
     const num=p.number?`<span class="pnum">${esc(p.number)}</span>`:'';
     const sub=p.subtype?`<span class="ppill grey">${esc(p.subtype)}</span>`:'';
     const status=p.status?`<span class="ppill ${statusPill(p.status)}">${esc(p.status)}</span>`:'';
@@ -182,7 +182,7 @@
     const mv=String(p.planUrl||'');
     if(/^https?:\/\//i.test(mv)){
       link=`<a class="pplanurl" href="${esc(mv)}" target="_blank" rel="noopener noreferrer">`+
-           `קְרָא אֶת הַתָּכְנִית בְּמַאֲגַר הַתָּכְנִיּוֹת <span class="ar">↗</span></a>`;
+           `Read the plan in the plan registry <span class="ar">↗</span></a>`;
     }
     // plot-specific PURPOSE line: what THIS plan actually regulates (e.g. a
     // local plan that increases coverage + allows storage sheds & pools).
@@ -190,22 +190,22 @@
       ? `<div class="ppurpose">${esc(p.purpose)}${scopeChip('plot')}</div>` : '';
     // approved dwelling-units only when the GIS returned a real positive count.
     const homes=(p.homesApproved>0)
-      ? `<span class="ppill grey">${esc(p.homesApproved)} יח"ד מאושרות</span>` : '';
+      ? `<span class="ppill grey">${esc(p.homesApproved)} approved dwelling units</span>` : '';
     return `<div class="plan"><div class="pname">${name}</div>`+
       `<div class="pmeta">${num}${sub}${status}${homes}</div>${purpose}${link}</div>`;
   }
 
   /* ---- the land-designation block (only real designations; planning.js already
-     suppresses the "אינה חלה" placeholder, so landUse[] here is real or empty). */
+     suppresses the "does not apply" placeholder, so landUse[] here is real or empty). */
   function landUseHtml(landUse){
     const lu=Array.isArray(landUse)?landUse:[];
     if(!lu.length){
-      return `<div class="pcard"><div class="pct">יִעוּד קַרְקַע <span class="ptag">מֵה‑GIS</span></div>`+
-        `<div class="pempty">יִעוּד הַקַּרְקַע הַמְּדֻיָּק לֹא הֻחְזַר מֵהַשִּׁכְבָה הַגֵּאוֹגְרָפִית עֲבוּר הַנְּקֻדָּה הַזֹּאת — `+
-        `הוּא מֻגְדָּר בְּתוֹךְ מִסְמְכֵי הַתָּכְנִיּוֹת לְמַעְלָה.</div></div>`;
+      return `<div class="pcard"><div class="pct">Land designation <span class="ptag">from GIS</span></div>`+
+        `<div class="pempty">The exact land designation was not returned from the GIS layer for this point — `+
+        `it is defined inside the plan documents above.</div></div>`;
     }
-    return `<div class="pcard"><div class="pct">יִעוּד קַרְקַע <span class="ptag">מֵה‑GIS</span></div>`+
-      lu.map(u=>`<div class="lurow"><span>יִעוּד</span><b>${esc(u)}</b></div>`).join('')+
+    return `<div class="pcard"><div class="pct">Land designation <span class="ptag">from GIS</span></div>`+
+      lu.map(u=>`<div class="lurow"><span>Designation</span><b>${esc(u)}</b></div>`).join('')+
       `</div>`;
   }
 
@@ -213,17 +213,17 @@
      rich plot_rights.json reference hasn't loaded. We deliberately DON'T
      fabricate numbers; we explain WHERE they live and link to the source. ---- */
   function rulesHtml(){
-    return `<div class="pcard"><div class="pct">מָה מֻתָּר לִבְנוֹת? <span class="ptag">זְכוּיוֹת בְּנִיָּה</span></div>`+
-      `<div class="pnote">הַמִּסְפָּרִים הַמְּדֻיָּקִים — גֹּבַהּ מֻתָּר, כִּסּוּי הַקַּרְקַע, יַחַס הַשֶּׁטַח הַבָּנוּי וּמֶרְחֲקֵי הַבְּנִיָּה `+
-      `(הַמֶּרְחָק הַמִּזְעָרִי מִגְּבוּל הַמִּגְרָשׁ) — נִמְצָאִים בְּתוֹךְ <b>הוֹרְאוֹת הַתָּכְנִית</b> וְלֹא בַּשִּׁכְבָה `+
-      `הַגֵּאוֹגְרָפִית. לְכֵן אֲנַחְנוּ לֹא מַמְצִיאִים מִסְפָּרִים כָּאן — לוֹחֲצִים עַל "קְרָא אֶת הַתָּכְנִית בְּמַאֲגַר הַתָּכְנִיּוֹת" `+
-      `לְיַד כָּל תָּכְנִית כְּדֵי לִרְאוֹת אֶת הַזְּכוּיוֹת בַּמָּקוֹר הָרִשְׁמִי.</div></div>`;
+    return `<div class="pcard"><div class="pct">What may be built? <span class="ptag">Building rights</span></div>`+
+      `<div class="pnote">The exact numbers — permitted height, ground coverage, floor-area ratio and building setbacks `+
+      `(the minimum distance from the plot boundary) — live inside the <b>plan provisions</b>, not in the GIS `+
+      `layer. So we don't fabricate numbers here — click "Read the plan in the plan registry" `+
+      `next to each plan to see the rights at the official source.</div></div>`;
   }
 
-  /* ---- the CONCRETE possibilities block (plain Hebrew, NOT vocalised — this is
+  /* ---- the CONCRETE possibilities block (plain prose, NOT vocalised — this is
      planning prose the reader skims), driven by plot_rights.json. Each block is
-     a renovation/extension pathway (תוספת בנייה / חדר מָגֵן / תוספת קומה / בנייה
-     בחצר) with its points, a "how to read the real number" note, and scope chips
+     a renovation/extension pathway (building addition / safe room / extra floor /
+     yard build) with its points, a "how to read the real number" note, and scope chips
      so plot-specific vs generic is unambiguous. Returns '' if the data is
      absent, so the card degrades to the rulesHtml() fallback. ---- */
   function point(pt){
@@ -242,7 +242,7 @@
     const ul=pts?`<ul>${pts}</ul>`:'';
     let read='';
     if(p.readNumber&&p.readNumber.he){
-      read=`<div class="pread"><span class="rk">איך קוראים את המספר האמיתי:</span> ${safeInline(p.readNumber.he)}</div>`;
+      read=`<div class="pread"><span class="rk">How to read the real number:</span> ${safeInline(p.readNumber.he)}</div>`;
     }
     let est='';
     if(p.estimateNote&&p.estimateNote.he){
@@ -255,11 +255,11 @@
     if(!arr.length) return '';
     const intro=(rights.intro&&rights.intro.he)
       ? `<div class="pnote">${esc(rights.intro.he)}${scopeChip(rights.intro.scope||'generic')}</div>` : '';
-    return `<div class="pcard"><div class="pct">מָה אֶפְשָׁר לְהוֹסִיף? <span class="ptag">אֶפְשָׁרֻיּוֹת שִׁפּוּץ וְהַרְחָבָה</span></div>`+
+    return `<div class="pcard"><div class="pct">What can be added? <span class="ptag">Renovation & extension options</span></div>`+
       intro+arr.map(possibilityHtml).join('')+`</div>`;
   }
 
-  /* ---- the פטור-מהיתר exemption list: the small works that DON'T need a permit. ---- */
+  /* ---- the permit-exemption list: the small works that DON'T need a permit. ---- */
   function exemptionsHtml(rights){
     const ex=rights&&rights.exemptions;
     if(!ex||!Array.isArray(ex.items)||!ex.items.length) return '';
@@ -268,7 +268,7 @@
       const he=(typeof it==='string')?it:(it.he||''); return he?`<li>${safeInline(he)}</li>`:'';
     }).join('');
     const caveat=(ex.caveat&&ex.caveat.he)?`<div class="pread">${safeInline(ex.caveat.he)}${scopeChip(ex.caveat.scope||'generic')}</div>`:'';
-    return `<div class="pcard"><div class="pct">${esc((ex.icon||'')+' '+(ex.title||''))} <span class="ptag">פְּטוֹר מֵהֶיתֵּר</span></div>`+
+    return `<div class="pcard"><div class="pct">${esc((ex.icon||'')+' '+(ex.title||''))} <span class="ptag">Permit exemption</span></div>`+
       intro+`<ul class="exlist">${items}</ul>`+caveat+`</div>`;
   }
 
@@ -283,7 +283,7 @@
         `<span>${esc(l.label||url)}</span><span class="ar">↗</span></a>`;
     }).filter(Boolean).join('');
     if(!rows) return '';
-    return `<div class="pcard"><div class="pct">קִשּׁוּרִים רִשְׁמִיִּים <span class="ptag">מָקוֹר</span></div>`+
+    return `<div class="pcard"><div class="pct">Official links <span class="ptag">Source</span></div>`+
       `<div class="links">${rows}</div></div>`;
   }
 
@@ -305,19 +305,19 @@
 
   /* ---------------- the renderers per outcome ---------------- */
   function headerHtml(){
-    return `<div class="pchd"><h3><span class="pe">📐</span>מָה מֻתָּר בַּמִּגְרָשׁ</h3></div>`+
-      `<div class="pcsub">הַתָּכְנוּן הָרִשְׁמִי שֶׁחָל עַל הַמִּגְרָשׁ · לרקמונט · `+
+    return `<div class="pchd"><h3><span class="pe">📐</span>What may be built on the plot</h3></div>`+
+      `<div class="pcsub">The official planning that governs the plot · Larkmont · `+
       `<span class="lot">${LAT.toFixed(5)}, ${LON.toFixed(5)}</span></div>`;
   }
 
   function footHtml(d){
-    const live=`מְקוֹר: מִרְשַׁם הַתִּכְנוּן — נְתוּנֵי דֶּמוֹ סִינְתֶטִיִּים. `+
-      `נִשְׁמָר בְּמַטְמוֹן לְ~30 יוֹם, אָז פְּתִיחָה חוֹזֶרֶת מִיָּדִית וְעוֹבֶדֶת גַּם בְּלִי רֶשֶׁת.`;
+    const live=`Source: the planning registry — synthetic demo data. `+
+      `Cached for ~30 days, so reopening is instant and works offline too.`;
     let stamp='';
     if(d&&d.fetchedAt){
       try{
         const dt=new Date(d.fetchedAt);
-        stamp=` · עֻדְכַּן: ${dt.toLocaleDateString('he-IL')}`;
+        stamp=` · Updated: ${dt.toLocaleDateString('en-US')}`;
       }catch(e){}
     }
     return `<div class="pfoot">${live}${stamp}</div>`;
@@ -326,7 +326,7 @@
   function loadingBody(){
     return `<div class="pcwrap">${headerHtml()}`+
       `<div class="pcard"><div class="pload"><span class="pspin"></span>`+
-      `<span>טוֹעֵן אֶת הַתָּכְנוּן הָרִשְׁמִי…</span></div></div></div>`;
+      `<span>Loading the official planning…</span></div></div></div>`;
   }
 
   function errorBody(d){
@@ -335,15 +335,15 @@
     const rights=getRightsSync();
     let inner='';
     if(plans.length){
-      inner=`<div class="pcard"><div class="pct">הַתָּכְנִיּוֹת שֶׁחָלוֹת <span class="ptag">מִמַּטְמוֹן</span></div>`+
+      inner=`<div class="pcard"><div class="pct">The governing plans <span class="ptag">From cache</span></div>`+
         plans.map(planHtml).join('')+`</div>`;
     }
     // the possibilities/exemptions are generic — show them even on a live-fetch
     // failure so the renovation guidance is useful offline too.
     inner+=rightsSection(rights);
     return `<div class="pcwrap">${headerHtml()}`+
-      `<div class="perr">לֹא הִצְלַחְנוּ לְהִתְחַבֵּר כָּעֵת לְמִנְהַל הַתִּכְנוּן (בְּדִיקָה חַיָּה). `+
-      `${plans.length?'לְמַטָּה מֻצֶּגֶת הַגִּרְסָה הַשְּׁמוּרָה הָאַחֲרוֹנָה.':'הַכְּלָלִים הַכְּלָלִיִּים לְמַטָּה זְמִינִים תָּמִיד; נַסּוּ שׁוּב לְנְּתוּנֵי הַחֶלְקָה כְּשֶׁיֵּשׁ רֶשֶׁת.'}</div>`+
+      `<div class="perr">We couldn't connect to the planning authority right now (live check). `+
+      `${plans.length?'The last saved version is shown below.':'The general rules below are always available; try again for the plot data when you have a network.'}</div>`+
       inner+footHtml(d)+`</div>`;
   }
 
@@ -352,17 +352,17 @@
     const rights=getRightsSync();
     let inner='';
     if(plans.length){
-      inner+=`<div class="pcard"><div class="pct">הַתָּכְנִיּוֹת שֶׁחָלוֹת עַל הַמִּגְרָשׁ `+
+      inner+=`<div class="pcard"><div class="pct">The plans that govern the plot `+
         `<span class="ptag">${plans.length}</span></div>`+
         plans.map(planHtml).join('')+`</div>`;
       inner+=landUseHtml(d.landUse);
     } else {
       // resolved but nothing matched (error:'no-results'): honest empty state.
-      inner+=`<div class="pcard"><div class="pct">הַתָּכְנִיּוֹת שֶׁחָלוֹת</div>`+
-        `<div class="pempty">לֹא הֻחְזְרוּ תָּכְנִיּוֹת מֵהַשִּׁכְבָה הַגֵּאוֹגְרָפִית עֲבוּר הַנְּקֻדָּה הַזֹּאת. `+
-        `יִתָּכֵן שֶׁהַשֵּׁרוּת לֹא זָמִין כָּעֵת — נַסּוּ שׁוּב מְאֻחָר יוֹתֵר.</div></div>`;
+      inner+=`<div class="pcard"><div class="pct">The governing plans</div>`+
+        `<div class="pempty">No plans were returned from the GIS layer for this point. `+
+        `The service may be unavailable right now — try again later.</div></div>`;
     }
-    // the concrete possibilities + פטור list + official links (generic
+    // the concrete possibilities + exemption list + official links (generic
     // rules from plot_rights.json), shown regardless of plan-match outcome.
     inner+=rightsSection(rights);
     return `<div class="pcwrap">${headerHtml()}${inner}${footHtml(d)}</div>`;
@@ -428,7 +428,7 @@
     }
 
     // 3) kick off the static plot-rights reference (concrete possibilities +
-    //    פטור list + links). When it resolves, re-paint so the section
+    //    exemption list + links). When it resolves, re-paint so the section
     //    fills in (the first paint may have used the rulesHtml() fallback).
     if(P && typeof P.rights==='function' && !getRightsSync()){
       let rr; try{ rr=P.rights(); }catch(e){ rr=null; }

@@ -1,31 +1,31 @@
 {
 "months_he_short": [
-"ינו",
-"פבר",
-"מרץ",
-"אפר",
-"מאי",
-"יונ",
-"יול",
-"אוג",
-"ספט",
-"אוק",
-"נוב",
-"דצמ"
+"Jan",
+"Feb",
+"Mar",
+"Apr",
+"May",
+"Jun",
+"Jul",
+"Aug",
+"Sep",
+"Oct",
+"Nov",
+"Dec"
 ],
 "months_he_full": [
-"ינואר",
-"פברואר",
-"מרץ",
-"אפריל",
-"מאי",
-"יוני",
-"יולי",
-"אוגוסט",
-"ספטמבר",
-"אוקטובר",
-"נובמבר",
-"דצמבר"
+"January",
+"February",
+"March",
+"April",
+"May",
+"June",
+"July",
+"August",
+"September",
+"October",
+"November",
+"December"
 ],
 "degree_days": {
 "rows": [
@@ -195,7 +195,7 @@
 "backup_months": [
 12
 ],
-"backup_months_he": "דצמבר",
+"backup_months_he": "December",
 "demand_l_day": 120,
 "tank_l": 150,
 "collector_area_m2": 2.5
@@ -210,7 +210,7 @@
 "tmin_c": 4.0,
 "tmax_c": 13.0,
 "needs_cooling": false,
-"note_he": "ממילא קריר — אין צורך ברענון לילה"
+"note_he": "Already cool — no night flush needed"
 },
 {
 "month": 2,
@@ -220,7 +220,7 @@
 "tmin_c": 5.0,
 "tmax_c": 15.0,
 "needs_cooling": false,
-"note_he": "ממילא קריר — אין צורך ברענון לילה"
+"note_he": "Already cool — no night flush needed"
 },
 {
 "month": 3,
@@ -230,7 +230,7 @@
 "tmin_c": 8.0,
 "tmax_c": 18.0,
 "needs_cooling": false,
-"note_he": "ממילא קריר — אין צורך ברענון לילה"
+"note_he": "Already cool — no night flush needed"
 },
 {
 "month": 4,
@@ -240,7 +240,7 @@
 "tmin_c": 11.0,
 "tmax_c": 22.0,
 "needs_cooling": false,
-"note_he": "ממילא קריר — אין צורך ברענון לילה"
+"note_he": "Already cool — no night flush needed"
 },
 {
 "month": 5,
@@ -300,7 +300,7 @@
 "tmin_c": 13.0,
 "tmax_c": 23.0,
 "needs_cooling": false,
-"note_he": "ממילא קריר — אין צורך ברענון לילה"
+"note_he": "Already cool — no night flush needed"
 },
 {
 "month": 11,
@@ -310,7 +310,7 @@
 "tmin_c": 8.0,
 "tmax_c": 18.0,
 "needs_cooling": false,
-"note_he": "ממילא קריר — אין צורך ברענון לילה"
+"note_he": "Already cool — no night flush needed"
 },
 {
 "month": 12,
@@ -320,7 +320,7 @@
 "tmin_c": 5.0,
 "tmax_c": 14.0,
 "needs_cooling": false,
-"note_he": "ממילא קריר — אין צורך ברענון לילה"
+"note_he": "Already cool — no night flush needed"
 }
 ]
 },
@@ -348,7 +348,7 @@
 "_note": "legacy STATIC estimate (30 m² @ 20% @ 80% PR). Superseded by the live Derive.roofSolar() model that reads the roof:{} inputs below; kept here as a documented cross-check."
 },
 "roof": {
-"_note": "inputs for the live Derive.roofSolar() physical model. Gross roof = two flat slabs at +5.30 from building.js: north band 8.41×3.60 + SW bedroom 3.18×3.60 ≈ 41.7 m². usable_fraction is a CONSERVATIVE geometric estimate (parapet setback + inter-row spacing + room for the existing דוד-שמש collector); not a true packing solve.",
+"_note": "inputs for the live Derive.roofSolar() physical model. Gross roof = two flat slabs at +5.30 from building.js: north band 8.41×3.60 + SW bedroom 3.18×3.60 ≈ 41.7 m². usable_fraction is a CONSERVATIVE geometric estimate (parapet setback + inter-row spacing + room for the existing solar water heater collector); not a true packing solve.",
 "usable_fraction": 0.65,
 "usable_area_m2_override": null,
 "module_eff": 0.20,
@@ -357,10 +357,10 @@
 "tariff_nis_per_kwh": 0.65,
 "grid_co2_kg_per_kwh": 0.6,
 "ghi_calibration": 1.0,
-"_ghi_calibration_note": "NO fudge factor (1.0). The clearSkyGHI engine was previously a sea-level standard-atmosphere Kasten model that under-predicted this 300 m clean arid-highland site by ~30%, so a 1.30 factor was carried here to reach the measured-TMY band (~2,100 kWh/m²/yr horizontal). That clear-sky model is now altitude/turbidity-corrected (derive.js M3 fix: Kasten-Young air mass + 0.965 altitude pressure + cleaner arid-air transmission), so it ALREADY integrates to ~2,150 kWh/m²/yr horizontal — inside the Larkmont TMY band — and the roof tilt now points correctly south (derive.js C1 fix → best_tilt≈20°). With both fixed (plus the L12/L13 Liu–Jordan tilt view-factor fix to the diffuse/reflected split), the modeled tilted-plane POA is ~2,040 kWh/m²/yr and the specific yield ≈1,635 kWh/kWp — a defensible (slightly conservative, given the 20° tilt vs ~28° optimum + 0.80 PR + geometric usable-area packing) figure for the the highlands (~1,700–1,850 kWh/kWp typical). The factor is therefore set to 1.0; raise toward ~1.10 (→ ~1,800 kWh/kWp) only if validating against a specific real installation. Still disclosed in-UI as 'הערכה'."
+"_ghi_calibration_note": "NO fudge factor (1.0). The clearSkyGHI engine was previously a sea-level standard-atmosphere Kasten model that under-predicted this 300 m clean arid-highland site by ~30%, so a 1.30 factor was carried here to reach the measured-TMY band (~2,100 kWh/m²/yr horizontal). That clear-sky model is now altitude/turbidity-corrected (derive.js M3 fix: Kasten-Young air mass + 0.965 altitude pressure + cleaner arid-air transmission), so it ALREADY integrates to ~2,150 kWh/m²/yr horizontal — inside the Larkmont TMY band — and the roof tilt now points correctly south (derive.js C1 fix → best_tilt≈20°). With both fixed (plus the L12/L13 Liu–Jordan tilt view-factor fix to the diffuse/reflected split), the modeled tilted-plane POA is ~2,040 kWh/m²/yr and the specific yield ≈1,635 kWh/kWp — a defensible (slightly conservative, given the 20° tilt vs ~28° optimum + 0.80 PR + geometric usable-area packing) figure for the the highlands (~1,700–1,850 kWh/kWp typical). The factor is therefore set to 1.0; raise toward ~1.10 (→ ~1,800 kWh/kWp) only if validating against a specific real installation. Still disclosed in-UI as 'estimate'."
 },
 "tariff": {
-"_note": "LABELED-ESTIMATE consumer tariffs used by the consumption dashboard in panels.js (renderEnergy). Approximate average household rates incl. tax; NOT a billed figure — the UI labels every cost value as 'הערכה'. Electricity ~0.62/kWh, water ~13/m³ (blended tariff incl. sewage), in local demo currency units. Tune freely.",
+"_note": "LABELED-ESTIMATE consumer tariffs used by the consumption dashboard in panels.js (renderEnergy). Approximate average household rates incl. tax; NOT a billed figure — the UI labels every cost value as 'estimate'. Electricity ~0.62/kWh, water ~13/m³ (blended tariff incl. sewage), in local demo currency units. Tune freely.",
 "elec_nis_kwh": 0.62,
 "water_nis_m3": 13
 }

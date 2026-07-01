@@ -4,8 +4,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "שְׁבִיל הָעֵמֶק",
-        "kind_he": "שְׁבִיל הֲלִיכָה"
+        "name_he": "Valley Trail",
+        "kind_he": "Walking trail"
       },
       "geometry": {
         "type": "LineString",
@@ -28,8 +28,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "שְׁבִיל הַגַּרְעִין",
-        "kind_he": "שְׁבִיל אוֹפְנֵי הָרִים"
+        "name_he": "Core Trail",
+        "kind_he": "Mountain-bike trail"
       },
       "geometry": {
         "type": "LineString",

@@ -1,10 +1,10 @@
-# מָקוֹם · Smart-Home Demo (synthetic)
+# Makom · Smart-Home Demo (synthetic)
 
 A Three.js (r128) interactive model of a **fictional** L-shaped house in the
 made-up town of **Larkmont** (invented coordinates LAT 34.0, LON -40.0, a
 notional Bortle-3 sky). It demonstrates **derived, hyper-local** home knowledge
 — microclimate, sun/shade, the night sky — together with a **management
-workbench** for the house and garden. Hebrew / RTL, desktop, static
+workbench** for the house and garden. English / LTR, desktop, static
 (deploy target: Cloudflare Pages).
 
 > **This is an anonymous demo.** There is no real person, no real address, and
@@ -34,10 +34,10 @@ Hard-reload after edits (cache). No build step; three.js loads from CDN.
 | `weather.js` | live Open-Meteo weather + mood |
 | `app.js` | orchestrator: scene/camera/render loop, **EnterMode** (go inside, floors/rooms), the microclimate **heatmap** (YardGrid) + `window.__microclimate`, **GardenPins** (plant markers), sightings, compass |
 | `derive.js` | the derived-knowledge **engine**: microclimate energy balance, per-cell grid, plant suitability, sun/shade, frost; the **sky** derivations (`goOutScore`, `nextDarkNight`, `galacticCore`, `twilightTimes`, `zodiacalLight`, `overnightPasses`, `zodiacChart`/`ascendant`); the room **`siteHeatChill`** / `indoorTemp` |
-| `panels.js` | the instrument panel `#inst` (tabs: חצר · שמיים · אנרגיה · טבע · סביבה · היסטוריה · מוח). The **שמיים** tab surfaces the sky derivations + a ✨ button → `natal.js` |
+| `panels.js` | the instrument panel `#inst` (tabs: Yard · Sky · Energy · Nature · Environment · History · Brain). The **Sky** tab surfaces the sky derivations + a ✨ button → `natal.js` |
 | `natal.js` | **natal sky + tonight's transits** (`window.__natal`) — a **placeholder** birth date → zodiac/rising signs vs live positions; astrology as poetic framing, real ephemeris |
 | `place_map.js` | Leaflet map of the surroundings with toggleable **synthetic** geology/water/history layers |
-| `env_extras.js` | the **סביבה** tab — synthetic geology/groundwater/history/vegetation cards |
+| `env_extras.js` | the **Environment** tab — synthetic geology/groundwater/history/vegetation cards |
 | `workbench.js` | **in-world room workbench** (`window.__workbench`) — a room's data panel in the `#inst` skin |
 | `garden.js` | **in-world plant tracking** (`window.__garden`) — the plant card + catalog, fed by the microclimate engine |
 
@@ -48,14 +48,14 @@ WEST**. The house is turned via `app.js houseWrap.rotation.y = 95°` (≈ 90° +
 4.8° tilt); `derive.js` rotates the world sun into that frame
 (`HOUSE_YAW_DEG = 95`, `toPlanDir`) — **keep those two in sync.** The unit is
 modelled as 1 of ~5 around the plaza: neighbour blocks (occluders in `derive.js`
-+ visual massing in `environment.js`, named `homeblock`, driven by the "מבנים
-סביב הבית" layer) sit on **W/N/S**; the **EAST is left open**. All footprint
++ visual massing in `environment.js`, named `homeblock`, driven by the "buildings
+around the house" layer) sit on **W/N/S**; the **EAST is left open**. All footprint
 dimensions, neighbour heights and sun-hour figures are **illustrative model
 values**, not measurements.
 
 ## The Make layer (digital twin)
-- **Rooms:** enter the house, then select a room (a **pill** or **click it on the 3D model**) → its workbench opens top-right in the instrument skin. The **🌡️ אקלים** tab gives derived room-climate: exterior-wall aspect/sun/floor from the plan-frame room rect, a per-room temperature (the engine's `Derive.indoorTemp` + a transparent exposure lean), a hottest↔coolest ranking, night-cooling advice, and a winter-condensation estimate. The **reno** tab adds derived **שיקולי שיפוץ**. In **floor-overview** an in-world heat-map tints each room's floor by warmth. Room geometry is **synthetic example data** (no real plan exists); electrical is intentionally blank/"לא ידוע".
-- **Plants:** each plant is a **marker on the garden surface** (GardenPins). **Click** a marker → its tracking card (`garden.js`); **drag** it → drop it on a spot, and it reads **its own 0.5 m microclimate cell** (`cellForPlant` → `Derive.cellProfile`/`rankPlantsForCell`). The card takes a **pot size** (litres) and turns the weekly water figure into a **frequency** via `wateringSchedule`, plus a **lifecycle** block (planting-date → age, a 12-month timeline, the next harvest window, and a site-suitability line from the derived chill-hours / GDD). The **🌿 הגינה** button opens the all-plants cockpit with a **📖 weekly garden magazine** (`renderMag`); a **gentle weekly nudge** surfaces it once a week via the **Alerts** banner.
+- **Rooms:** enter the house, then select a room (a **pill** or **click it on the 3D model**) → its workbench opens top-right in the instrument skin. The **🌡️ Climate** tab gives derived room-climate: exterior-wall aspect/sun/floor from the plan-frame room rect, a per-room temperature (the engine's `Derive.indoorTemp` + a transparent exposure lean), a hottest↔coolest ranking, night-cooling advice, and a winter-condensation estimate. The **reno** tab adds derived **renovation considerations**. In **floor-overview** an in-world heat-map tints each room's floor by warmth. Room geometry is **synthetic example data** (no real plan exists); electrical is intentionally blank/"unknown".
+- **Plants:** each plant is a **marker on the garden surface** (GardenPins). **Click** a marker → its tracking card (`garden.js`); **drag** it → drop it on a spot, and it reads **its own 0.5 m microclimate cell** (`cellForPlant` → `Derive.cellProfile`/`rankPlantsForCell`). The card takes a **pot size** (litres) and turns the weekly water figure into a **frequency** via `wateringSchedule`, plus a **lifecycle** block (planting-date → age, a 12-month timeline, the next harvest window, and a site-suitability line from the derived chill-hours / GDD). The **🌿 Garden** button opens the all-plants cockpit with a **📖 weekly garden magazine** (`renderMag`); a **gentle weekly nudge** surfaces it once a week via the **Alerts** banner.
 
 ## State (localStorage)
 `home_workbench_v1` (rooms) · `home_garden_v1` (plants) · `home_natal_v1` (placeholder birth date/time) · `home_mag_week` · `home_read` (meter readings) · `home_obs` (nature observations) · `home_alerts_state_v1`.

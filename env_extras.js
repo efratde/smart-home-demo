@@ -1,17 +1,17 @@
 /* ===================================================================
-   env_extras.js — the EXTRA environmental readout for the סביבה tab.
+   env_extras.js — the EXTRA environmental readout for the environment tab.
 
    Surfaces the HARVESTED-but-never-shown area data for Larkmont /
    Larkmont Vale / the the highlands highlands as a gift-grade, READABLE readout
    (NOT raw GIS/CSV dumps). Four sections, each built ONLY from real
    harvested data curated into data/env_extras.json:
-     🪨 גֵּאוֹלוֹגְיָה  — the larkmont-vale's strata/ages +
+     🪨 Geology  — the larkmont-vale's strata/ages +
                           notable sites (regional geo survey 1:200k map + curated summary)
-     💧 מֵי תְּהוֹם    — the the highlands aquifers + nearest boreholes + desert
+     💧 Groundwater    — the the highlands aquifers + nearest boreholes + desert
                           springs (Water Authority + Hydrological Service)
-     🗺️ הִיסְטוֹרְיָה  — town timeline + Old Trade Road + 'Old Fort 3D + the two
+     🗺️ History  — town timeline + Old Trade Road + 'Old Fort 3D + the two
                           honest map insets (CC0 + Public-Domain)
-     🌿 צִמְחִיָּה      — seasonal NDVI (Sentinel-2 via Earth Engine)
+     🌿 Vegetation      — seasonal NDVI (Sentinel-2 via Earth Engine)
 
    HONESTY: every card carries a source/license; each section flags whether
    it is a curated summary or a filtered dataset, and surfaces the real gaps
@@ -61,7 +61,7 @@
   /* ---------------- CSS (the #inst brass-on-glass language, scoped .envx-*) ----------------
      Matches the env tab's dark/gold RTL palette (gold #caa15a, ink #efe6cf on
      glass) so the readout reads as the same instrument family as the rest of
-     the סביבה tab. Self-contained — no shared selectors with #inst. */
+     the environment tab. Self-contained — no shared selectors with #inst. */
   const CSS=`
   #envx{font-family:'Heebo',sans-serif;color:#efe6cf;margin-top:18px}
   #envx .ex-h{font-family:'Frank Ruhl Libre',serif;font-weight:500;font-size:16.5px;color:#fff7e6;
@@ -121,7 +121,7 @@
     #envx .ex-img .cap{font-size:10px}
     #envx .ex-row{font-size:11.5px;gap:8px}
     /* let a long Hebrew label + value wrap instead of crushing each other */
-    #envx .ex-row b{text-align:right}
+    #envx .ex-row b{text-align:left}
     #envx .ex-li .nm{font-size:12px}
     #envx .ex-src{font-size:9.5px}
     #envx .ex-src a{word-break:break-word}
@@ -141,12 +141,12 @@
       const lic=s.license_he?` <span style="color:#7d7150">(${esc(s.license_he)})</span>`:'';
       return s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">${label}</a>${lic}`:`${label}${lic}`;
     });
-    return `<div class="ex-src">מָקוֹר: ${parts.join(' · ')}</div>`;
+    return `<div class="ex-src">Source: ${parts.join(' · ')}</div>`;
   }
-  function gapHtml(g){ return g?`<div class="ex-gap"><b>פְּעָר:</b> ${esc(g)}</div>`:''; }
+  function gapHtml(g){ return g?`<div class="ex-gap"><b>Gap:</b> ${esc(g)}</div>`:''; }
   function flagHtml(f){
-    if(f==='dataset') return `<span class="flag dataset">מַאֲגָר מְסֻנָּן</span>`;
-    if(f==='curated') return `<span class="flag curated">סִכּוּם אָצוּר</span>`;
+    if(f==='dataset') return `<span class="flag dataset">Filtered dataset</span>`;
+    if(f==='curated') return `<span class="flag curated">Curated summary</span>`;
     return '';
   }
   function header(emoji,title,flag){
@@ -156,24 +156,24 @@
   /* ---------------- 🪨 GEOLOGY ---------------- */
   function geologyHtml(G){
     if(!G) return '';
-    let h=header('🪨', G.title_he||'גֵּאוֹלוֹגְיָה', G.flag);
+    let h=header('🪨', G.title_he||'Geology', G.flag);
     if(G.intro_he) h+=`<div class="ex-intro">${esc(G.intro_he)}</div>`;
     // mechanism + dimensions
     if(G.mechanism_he||G.dimensions){
-      h+=`<div class="ex-card"><div class="ex-ct">אֵיךְ נוֹצַר העמק</div>`;
+      h+=`<div class="ex-card"><div class="ex-ct">How the valley formed</div>`;
       if(G.mechanism_he) h+=`<div class="ex-li"><div class="ds">${esc(G.mechanism_he)}</div></div>`;
       const d=G.dimensions;
       if(d){
-        h+=`<div class="ex-row"><span>אֹרֶךְ</span><b>${esc(d.length_km)} ק\"מ</b></div>`+
-           `<div class="ex-row"><span>רֹחַב</span><b>${esc(d.width_km)} ק\"מ</b></div>`+
-           `<div class="ex-row"><span>עֹמֶק</span><b>${esc(d.depth_m)} מ׳</b></div>`;
+        h+=`<div class="ex-row"><span>Length</span><b>${esc(d.length_km)} km</b></div>`+
+           `<div class="ex-row"><span>Width</span><b>${esc(d.width_km)} km</b></div>`+
+           `<div class="ex-row"><span>Depth</span><b>${esc(d.depth_m)} m</b></div>`;
         if(d.claim_he) h+=`<div class="ex-note">${esc(d.claim_he)}</div>`;
       }
       h+=`</div>`;
     }
     // stratigraphy table (oldest → youngest)
     if(Array.isArray(G.strata)&&G.strata.length){
-      h+=`<div class="ex-card"><div class="ex-ct">חַתָּךְ הַסֶּלַע · עָתִיק ← חָדָשׁ <span class="ex-pill amber">regional geo survey 1:200k</span></div>`;
+      h+=`<div class="ex-card"><div class="ex-ct">Rock section · old ← new <span class="ex-pill amber">regional geo survey 1:200k</span></div>`;
       if(G.stratigraphy_note_he) h+=`<div class="ds" style="font-size:10.5px;color:#bdb091;line-height:1.55;margin-bottom:4px">${esc(G.stratigraphy_note_he)}</div>`;
       h+=G.strata.map(s=>
         `<div class="ex-li"><div><span class="nm">${esc(s.name_he)}</span> <span class="meta">${esc(s.symbol||'')} · ${esc(s.age_he||'')}</span></div>`+
@@ -184,15 +184,15 @@
     // fossils + no-active-faults
     if(G.fossils_he||G.no_active_faults_he){
       h+=`<div class="ex-card">`;
-      if(G.fossils_he) h+=`<div class="ex-ct">🐚 אַמּוֹנִיטִים וּמַאֻבָּנִים</div><div class="ds" style="font-size:11.5px;color:#d6ccb2;line-height:1.6">${esc(G.fossils_he)}</div>`;
+      if(G.fossils_he) h+=`<div class="ex-ct">🐚 Ammonites & fossils</div><div class="ds" style="font-size:11.5px;color:#d6ccb2;line-height:1.6">${esc(G.fossils_he)}</div>`;
       if(G.no_active_faults_he) h+=`<div class="ex-note" style="margin-top:9px">${esc(G.no_active_faults_he)}</div>`;
       h+=`</div>`;
     }
     // notable sites
     if(Array.isArray(G.sites)&&G.sites.length){
-      h+=`<div class="ex-card"><div class="ex-ct">אֲתָרִים בּוֹלְטִים</div>`+
+      h+=`<div class="ex-card"><div class="ex-ct">Notable sites</div>`+
         G.sites.map(s=>{
-          const ap=s.coord_approx?` <span class="ex-pill amber">נ\"צ מְקֹרָב</span>`:'';
+          const ap=s.coord_approx?` <span class="ex-pill amber">Approx. coords</span>`:'';
           const mf=mfAttrs(s);
           return `<div class="ex-li${mf?' clk':''}"${mf}><div>${mf?'<span class="ex-pin">📍</span> ':''}<span class="nm">${esc(s.name_he)}</span> <span class="meta">${esc(s.type_he||s.name_en||'')}</span>${ap}</div>`+
             `<div class="ds">${esc(s.desc_he||'')}</div></div>`;
@@ -207,16 +207,16 @@
   /* ---------------- 💧 GROUNDWATER ---------------- */
   function groundwaterHtml(W){
     if(!W) return '';
-    let h=header('💧', W.title_he||'מֵי תְּהוֹם', W.flag);
+    let h=header('💧', W.title_he||'Groundwater', W.flag);
     if(W.intro_he) h+=`<div class="ex-intro">${esc(W.intro_he)}</div>`;
     // nearest boreholes
     if(Array.isArray(W.nearest_boreholes)&&W.nearest_boreholes.length){
-      h+=`<div class="ex-card"><div class="ex-ct">קִדּוּחִים קְרוֹבִים · לַרְקְמוֹנְט <span class="ex-pill blue">רְשׁוּת הַמַּיִם</span></div>`;
+      h+=`<div class="ex-card"><div class="ex-ct">Nearest boreholes · Larkmont <span class="ex-pill blue">Water Authority</span></div>`;
       if(W.nearest_boreholes_he) h+=`<div class="ds" style="font-size:10.5px;color:#bdb091;line-height:1.55;margin-bottom:4px">${esc(W.nearest_boreholes_he)}</div>`;
       h+=W.nearest_boreholes.map(b=>{
-        const st=(b.status_he==='פָּעִיל')?`<span class="ex-pill green">פָּעִיל</span>`:`<span class="ex-pill amber">${esc(b.status_he||'')}</span>`;
+        const st=(b.status_he==='active')?`<span class="ex-pill green">active</span>`:`<span class="ex-pill amber">${esc(b.status_he||'')}</span>`;
         const mf=mfAttrs(b);
-        const ap=mf?` <span class="ex-pill amber">נ\"צ מְקֹרָב</span>`:'';
+        const ap=mf?` <span class="ex-pill amber">Approx. coords</span>`:'';
         return `<div class="ex-row${mf?' clk':''}"${mf}><span>${mf?'<span class="ex-pin">📍</span> ':''}${esc(b.name_he)} <span class="meta">${esc(b.aquifer_he||'')}</span>${ap}</span><b>${st}</b></div>`;
       }).join('');
       if(W.region_stats_he) h+=`<div class="ex-note">${esc(W.region_stats_he)}</div>`;
@@ -224,16 +224,16 @@
     }
     // aquifer legend
     if(Array.isArray(W.aquifers_legend)&&W.aquifers_legend.length){
-      h+=`<div class="ex-card"><div class="ex-ct">אַקְוִיפֶרִים בָּאֵזוֹר</div>`+
-        W.aquifers_legend.map(a=>`<div class="ex-row"><span class="sym">${esc(a.code)}</span><b style="text-align:right;flex:1">${esc(a.name_he)}</b></div>`).join('')+
+      h+=`<div class="ex-card"><div class="ex-ct">Aquifers in the area</div>`+
+        W.aquifers_legend.map(a=>`<div class="ex-row"><span class="sym">${esc(a.code)}</span><b style="text-align:left;flex:1">${esc(a.name_he)}</b></div>`).join('')+
         `</div>`;
     }
     // springs
     if(Array.isArray(W.springs)&&W.springs.length){
-      h+=`<div class="ex-card"><div class="ex-ct">מַעְיְנוֹת הָאֵזוֹר</div>`;
+      h+=`<div class="ex-card"><div class="ex-ct">Springs in the area</div>`;
       if(W.springs_intro_he) h+=`<div class="ds" style="font-size:10.5px;color:#bdb091;line-height:1.55;margin-bottom:4px">${esc(W.springs_intro_he)}</div>`;
       h+=W.springs.map(s=>{
-        const elev=(s.elev_m!=null)?` · רוּם ${esc(s.elev_m)} מ׳`:'';
+        const elev=(s.elev_m!=null)?` · elev. ${esc(s.elev_m)} m`:'';
         const mf=mfAttrs(s);
         return `<div class="ex-li${mf?' clk':''}"${mf}><div>${mf?'<span class="ex-pin">📍</span> ':''}<span class="nm">${esc(s.name_he)}</span> <span class="meta">${esc(s.aquifer_he||'')}${elev}</span></div>`+
           `<div class="ds">${esc(s.note_he||s.type_he||'')}</div></div>`;
@@ -248,21 +248,21 @@
   /* ---------------- 🗺️ HISTORY ---------------- */
   function historyHtml(H){
     if(!H) return '';
-    let h=header('🗺️', H.title_he||'הִיסְטוֹרְיָה', H.flag);
+    let h=header('🗺️', H.title_he||'History', H.flag);
     if(H.town_intro_he) h+=`<div class="ex-intro">${esc(H.town_intro_he)}</div>`;
     // timeline
     if(Array.isArray(H.timeline)&&H.timeline.length){
-      h+=`<div class="ex-card"><div class="ex-ct">צִיר זְמַן · הָעֲיָרָה</div>`+
-        H.timeline.map(t=>`<div class="ex-row"><span class="sym">${esc(t.year)}</span><span style="text-align:right;flex:1;color:#d6ccb2">${esc(t.event_he)}</span></div>`).join('');
+      h+=`<div class="ex-card"><div class="ex-ct">Timeline · the town</div>`+
+        H.timeline.map(t=>`<div class="ex-row"><span class="sym">${esc(t.year)}</span><span style="text-align:left;flex:1;color:#d6ccb2">${esc(t.event_he)}</span></div>`).join('');
       if(H.timeline_note_he) h+=`<div class="ex-note">${esc(H.timeline_note_he)}</div>`;
       h+=`</div>`;
     }
     // old road sites + landmark 3D
     if(Array.isArray(H.trade_sites)&&H.trade_sites.length){
-      h+=`<div class="ex-card"><div class="ex-ct">🏛️ הַדֶּרֶךְ הַיְשָׁנָה <span class="ex-pill amber">בָּדוּי</span></div>`;
+      h+=`<div class="ex-card"><div class="ex-ct">🏛️ The old road <span class="ex-pill amber">Fictional</span></div>`;
       if(H.trade_road_intro_he) h+=`<div class="ds" style="font-size:11px;color:#d6ccb2;line-height:1.6;margin-bottom:4px">${esc(H.trade_road_intro_he)}</div>`;
       h+=H.trade_sites.map(s=>{
-        const prec=(s.coord_quality==='precise')?` <span class="ex-pill green">נ\"צ מְדֻיָּק</span>`:` <span class="ex-pill amber">נ\"צ מְקֹרָב</span>`;
+        const prec=(s.coord_quality==='precise')?` <span class="ex-pill green">Precise coords</span>`:` <span class="ex-pill amber">Approx. coords</span>`;
         const mf=mfAttrs(s);
         return `<div class="ex-li${mf?' clk':''}"${mf}><div>${mf?'<span class="ex-pin">📍</span> ':''}<span class="nm">${esc(s.name_he)}</span> <span class="meta">${esc(s.category_he||'')}</span>${prec}</div>`+
           `<div class="ds">${esc(s.note_he||'')}</div></div>`;
@@ -270,14 +270,14 @@
     }
     if(H.landmark_3d){
       const a=H.landmark_3d;
-      h+=`<div class="ex-card"><div class="ex-ct">🏺 ${esc(a.name_he||'המבצר')} <span class="ex-pill blue">תְּלַת-מֵמַד</span></div>`+
+      h+=`<div class="ex-card"><div class="ex-ct">🏺 ${esc(a.name_he||'the fort')} <span class="ex-pill blue">3D</span></div>`+
         `<div class="ds" style="font-size:11.5px;color:#d6ccb2;line-height:1.6">${esc(a.desc_he||'')}</div>`+
-        (a.credit_he?`<div class="ex-src">קֶרֶדִיט: ${esc(a.credit_he)}${a.source_url?` · <a href="${esc(a.source_url)}" target="_blank" rel="noopener">מָקוֹר</a>`:''}</div>`:'')+
+        (a.credit_he?`<div class="ex-src">Credit: ${esc(a.credit_he)}${a.source_url?` · <a href="${esc(a.source_url)}" target="_blank" rel="noopener">Source</a>`:''}</div>`:'')+
         `</div>`;
     }
     // honest map insets
     if(Array.isArray(H.maps)&&H.maps.length){
-      h+=`<div class="ex-card"><div class="ex-ct">מַפּוֹת הִיסְטוֹרִיּוֹת <span class="ex-pill amber">אִינְסֶט</span></div>`+
+      h+=`<div class="ex-card"><div class="ex-ct">Historical maps <span class="ex-pill amber">Inset</span></div>`+
         `<div class="ex-imgs">`+
         H.maps.map(m=>
           `<div class="ex-img"><img src="${esc(m.img)}" alt="${esc(m.title_he||'')}" loading="lazy">`+
@@ -295,12 +295,12 @@
   /* ---------------- 🌿 VEGETATION (NDVI) ---------------- */
   function vegetationHtml(V){
     if(!V) return '';
-    let h=header('🌿', V.title_he||'צִמְחִיָּה', V.flag);
+    let h=header('🌿', V.title_he||'Vegetation', V.flag);
     if(V.intro_he) h+=`<div class="ex-intro">${esc(V.intro_he)}</div>`;
     if(Array.isArray(V.seasons)&&V.seasons.length){
       // scale NDVI bar fill: 0.04..0.12 → 0..100% (desert range), clamped.
       const pct=v=>{ if(v==null||!isFinite(v)) return 0; return Math.max(0,Math.min(100,Math.round((v-0.04)/0.08*100))); };
-      h+=`<div class="ex-card"><div class="ex-ct">NDVI עוֹנָתִי <span class="ex-pill blue">Sentinel-2 · 10 מ׳</span></div>`+
+      h+=`<div class="ex-card"><div class="ex-ct">Seasonal NDVI <span class="ex-pill blue">Sentinel-2 · 10 m</span></div>`+
         `<div class="ex-imgs">`+
         V.seasons.map(s=>
           `<div class="ex-img"><img src="${esc(s.img)}" alt="${esc(s.name_he||'')}" loading="lazy">`+
@@ -328,14 +328,14 @@
     ensureCSS();
     // reuse our own #envx node inside this host (idempotent re-render).
     let box=host.querySelector?host.querySelector('#envx'):null;
-    if(!box){ box=el('div'); box.id='envx'; box.setAttribute('dir','rtl'); host.appendChild(box); }
+    if(!box){ box=el('div'); box.id='envx'; box.setAttribute('dir','ltr'); host.appendChild(box); }
     if(!DATA){
       // failed to load → a small honest "retry" state (not a frozen loading dots line).
       // tapping it clears the cache and re-fetches; the next render repaints when data lands.
       if(_failed){
-        box.innerHTML=`<div class="ex-empty ex-retry" role="button" tabindex="0" style="cursor:pointer">שְׁכָבוֹת הַסְּבִיבָה לֹא נִטְעֲנוּ — נְנַסֶּה שׁוּב 🔄</div>`;
+        box.innerHTML=`<div class="ex-empty ex-retry" role="button" tabindex="0" style="cursor:pointer">Environment layers failed to load — retry 🔄</div>`;
       }else{
-        box.innerHTML=`<div class="ex-empty">שְׁכָבוֹת סְבִיבָה נוֹסָפוֹת נִטְעָנוֹת…</div>`;
+        box.innerHTML=`<div class="ex-empty">Loading additional environment layers…</div>`;
       }
       return;
     }
@@ -353,8 +353,8 @@
     // honesty footer (license + provenance spine)
     let foot=[];
     if(m.honesty_he) foot.push(esc(m.honesty_he));
-    if(m.license_summary_he) foot.push('רִשְׁיוֹנוֹת — '+esc(m.license_summary_he));
-    if(m.compiled_date) foot.push('נֶאֱסַף '+esc(m.compiled_date));
+    if(m.license_summary_he) foot.push('Licenses — '+esc(m.license_summary_he));
+    if(m.compiled_date) foot.push('Compiled '+esc(m.compiled_date));
     html+=`<div class="ex-foot">${foot.join(' · ')}</div>`;
     box.innerHTML=html;
   }
@@ -372,7 +372,7 @@
       (document.head||document.documentElement).appendChild(st);
     }
     host.addEventListener('click',function(e){
-      // retry: tapping the "לֹא נִטְעֲנוּ — נְנַסֶּה שׁוּב" state re-fetches and repaints.
+      // retry: tapping the "failed to load — retry" state re-fetches and repaints.
       const rt=e.target.closest&&e.target.closest('.ex-retry');
       if(rt){ _failed=false; _pendingHost=host; paint(host); load().then(()=>{ if(_pendingHost) paint(_pendingHost); }); return; }
       const it=e.target.closest&&e.target.closest('[data-mapfocus]'); if(!it) return;

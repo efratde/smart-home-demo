@@ -4,9 +4,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "חַתָּךְ צָפוֹן-מַעֲרָב",
+        "name_he": "North-West Section",
         "symbol": "c",
-        "age_he": "גִּיר הַמָּצוֹק (דֶּמוֹ)",
+        "age_he": "Cliff Limestone (demo)",
         "color": "#5b8fb0"
       },
       "geometry": {
@@ -40,9 +40,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "גַּרְעִין רַךְ דְּרוֹמִי",
+        "name_he": "Southern Soft Core",
         "symbol": "lck",
-        "age_he": "חוֹלוֹת הַגַּרְעִין (דֶּמוֹ)",
+        "age_he": "Core Sands (demo)",
         "color": "#e34a3a"
       },
       "geometry": {
@@ -76,9 +76,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "מַדְרוֹן צָפוֹן-מִזְרָח",
+        "name_he": "North-East Slope",
         "symbol": "jm",
-        "age_he": "שִׁכְבוֹת בֵּינַיִם (דֶּמוֹ)",
+        "age_he": "Intermediate Layers (demo)",
         "color": "#e8b94f"
       },
       "geometry": {
@@ -112,9 +112,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name_he": "מִדְרוֹן הַסַּחַף הָעֶלְיוֹן",
+        "name_he": "Upper Alluvium Slope",
         "symbol": "q",
-        "age_he": "סַחַף עֶכְשָׁוִי (דֶּמוֹ)",
+        "age_he": "Recent Alluvium (demo)",
         "color": "#d9c9a0"
       },
       "geometry": {

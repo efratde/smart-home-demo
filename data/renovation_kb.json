@@ -1,50 +1,50 @@
 {
   "schema": 1,
   "meta": {
-    "title_he": "מאגר ידע לשיפוץ — תכנון בית פרטי",
-    "what_he": "מדריך תכנון לשיפוצים נפוצים בבית פרטי: עלות מוערכת, היתר/פטור, משך ושיקולים. נועד לכלי תכנון בטאב השיפוץ — לא תחליף להצעת מחיר מקבלן או לייעוץ אדריכל/מהנדס.",
-    "place_he": "לרקמונט",
+    "title_he": "Renovation knowledge base — planning a private home",
+    "what_he": "A planning guide for common private-home renovations: estimated cost, permit/exemption, duration and considerations. Meant for the planning tool in the renovation tab — not a substitute for a contractor's quote or for advice from an architect/engineer.",
+    "place_he": "Larkmont",
     "year": 2026,
     "currency": "$",
     "entry_shape": "{ id, name_he, emoji, cost_he, permit_he, duration_he, considerations_he[], suits[] }"
   },
-  "note_he": "כל המחירים כאן הם הערכות בלבד — טווחים גסים לאזור 2026, לא הצעת מחיר. העלות בפועל תלויה באזור (בלרקמונט ובפריפריה הובלה ועבודה לעיתים יקרים יותר בגלל מרחק מהמרכז), ברמת הגימור, במחירי החומרים המשתנים ובמצב הבית הקיים. לפני התחייבות — קבלו שתיים-שלוש הצעות מחיר מפורטות בכתב, ובדקו מול אדריכל/מהנדס מה דורש היתר. אין כאן ערך אחד 'נכון', רק טווח לתכנון ראשוני.",
-  "permit_overview_he": "לפי כללי הפטור מהיתר המקומיים, חלק מהעבודות פטורות מהיתר בנייה בכפוף לתנאים (גודל, מיקום, הגשת הצהרת מהנדס / הודעה לרשות לעיתים). שיפוץ פנים שאינו נוגע בקירות נושאים, בשטח הבנוי או במעטפת — בדרך כלל פטור. הריסת קיר נושא, תוספת שטח/חדר, שינוי חזית, וכל שינוי קונסטרוקטיבי — דורשים היתר בנייה ותכנון מהנדס. חדר המָגֵן המחוזק הוא מסלול נפרד לפי תקן חדרי-המגן. הפטור אינו פוטר מעמידה בתקן או מאחריות בטיחותית — תמיד לאמת מול הרשות המקומית והגורם המקצועי.",
+  "note_he": "All prices here are estimates only — rough ranges for the 2026 area, not a quote. The actual cost depends on location (in Larkmont and outlying areas, hauling and labor are sometimes more expensive due to the distance from the center), on the finish level, on shifting material prices and on the condition of the existing house. Before committing — get two or three detailed written quotes, and check with an architect/engineer about what requires a permit. There is no single 'right' figure here, only a range for initial planning.",
+  "permit_overview_he": "Under the local permit-exemption rules, some works are exempt from a building permit subject to conditions (size, location, and sometimes filing an engineer's declaration / a notice to the authority). Interior renovation that does not touch load-bearing walls, the built area or the building envelope — usually exempt. Demolishing a load-bearing wall, adding floor area/a room, changing the facade, and any structural change — require a building permit and engineering design. The reinforced safe room is a separate track under the safe-room standard. An exemption does not waive compliance with the standard or safety responsibility — always verify with the local authority and the relevant professional.",
   "sources_he": [
     {
-      "name_he": "כללי הפטור מהיתר",
-      "org": "רשות התכנון האזורית",
-      "what_he": "כללי הפטור מהיתר המקומיים ותיקוניהם — מפרטים אילו עבודות פטורות מהיתר ובאילו תנאים (פרגולה, מחסן, גדר, פאנלים סולאריים, שינויים פנימיים ועוד)."
+      "name_he": "Permit-exemption rules",
+      "org": "Regional Planning Authority",
+      "what_he": "The local permit-exemption rules and their amendments — they specify which works are exempt from a permit and under what conditions (pergola, shed, fence, solar panels, interior changes and more)."
     },
     {
-      "name_he": "חדר המָגֵן — הנחיות",
-      "org": "תקן חדרי-המגן",
-      "what_he": "מפרט חדר המָגֵן המחוזק לבית: עובי קירות בטון, דלת וחלון מחוזקים, אוורור וסינון — מסלול אישור נפרד לפי תקן חדרי-המגן, גם בשיפוץ/תוספת."
+      "name_he": "Reinforced safe room — guidelines",
+      "org": "Safe-room standard",
+      "what_he": "The specification for a home's reinforced safe room: concrete wall thickness, a reinforced door and window, ventilation and filtration — a separate approval track under the safe-room standard, including in a renovation/addition."
     },
     {
-      "name_he": "רשות התכנון המקומית",
-      "org": "רשות מקומית (לרקמונט)",
-      "what_he": "הגורם המאשר היתרי בנייה בפועל. לפני כל עבודה משמעותית — לבדוק מול מהנדס הרשות מה דורש היתר ומה פטור באזור הספציפי."
+      "name_he": "Local Planning Authority",
+      "org": "Local authority (Larkmont)",
+      "what_he": "The body that actually approves building permits. Before any significant work — check with the authority's engineer what requires a permit and what is exempt in the specific area."
     },
     {
-      "name_he": "תקני בנייה רלוונטיים (אינסטלציה וחשמל)",
-      "org": "מכון התקינה",
-      "what_he": "תקני אינסטלציה ואיטום וחשמל — עבודות רטובות וחשמל חייבות בעל מקצוע מורשה (אינסטלטור / חשמלאי מוסמך)."
+      "name_he": "Relevant building standards (plumbing and electrical)",
+      "org": "Standards Institute",
+      "what_he": "Plumbing, waterproofing and electrical standards — wet works and electrical work require a licensed professional (a licensed plumber / a certified electrician)."
     }
   ],
   "renovations": [
     {
       "id": "kitchen",
-      "name_he": "שיפוץ מטבח",
+      "name_he": "Kitchen renovation",
       "emoji": "🍳",
-      "cost_he": "טווח רחב לפי גודל וגימור: מטבח כלכלי ~$25,000–45,000; בינוני ~$45,000–90,000; יוקרתי/גדול $90,000–200,000+. ארונות+שיש לבדם לרוב $1,500–4,000 למטר אורך.",
-      "permit_he": "בדרך כלל פטור מהיתר כל עוד לא מזיזים קיר נושא ולא משנים שטח בנוי. הזזת נקודות מים/ביוב וחשמל — בלי היתר, אך חייבת בעל מקצוע מורשה.",
-      "duration_he": "2–5 שבועות (מטבח שלם כולל הריסה, אינסטלציה, חשמל, ריצוף נקודתי וחיפוי).",
+      "cost_he": "A wide range by size and finish: a budget kitchen ~$25,000–45,000; mid-range ~$45,000–90,000; luxury/large $90,000–200,000+. Cabinets + countertop alone are usually $1,500–4,000 per linear meter.",
+      "permit_he": "Usually exempt from a permit as long as you don't move a load-bearing wall or change the built area. Relocating water/sewage and electrical points — no permit needed, but requires a licensed professional.",
+      "duration_he": "2–5 weeks (a full kitchen including demolition, plumbing, electrical, spot flooring and tiling).",
       "considerations_he": [
-        "הזזת עמדת המים/ביוב היא מהיקר והמורכב — לשמור על מיקום הרטוב חוסך משמעותית.",
-        "לתאם רצף: חשמל ומים בקיר → טיח/חיפוי → ריצוף → ארונות → שיש → חשמל סופי.",
-        "שיש אבן טבעית/קוורץ לעומת למינציה משנה מחיר דרמטית; למדוד מראש פתחים למקרר/תנור.",
-        "אוורור ונקודת מנדף, ותכנון מספיק שקעים — קל וזול עכשיו, יקר לתקן אחר כך."
+        "Relocating the water/sewage station is among the costliest and most complex tasks — keeping the wet zone in place saves significantly.",
+        "Coordinate the sequence: electrical and plumbing in the wall → plaster/tiling → flooring → cabinets → countertop → final electrical.",
+        "A natural-stone/quartz countertop versus laminate changes the price dramatically; measure the openings for the fridge/oven in advance.",
+        "Ventilation and a range-hood point, plus planning enough outlets — easy and cheap now, expensive to fix later."
       ],
       "suits": [
         "kitchen"
@@ -52,16 +52,16 @@
     },
     {
       "id": "bathroom",
-      "name_he": "שיפוץ חדר רחצה / שירותים",
+      "name_he": "Bathroom / restroom renovation",
       "emoji": "🚿",
-      "cost_he": "חדר רחצה קטן בסיסי ~$18,000–35,000; בינוני/מקלחון מודרני ~$35,000–60,000; גדול/יוקרתי $60,000–120,000+. שירותי אורחים בלבד ~$8,000–18,000.",
-      "permit_he": "פטור מהיתר (שיפוץ פנים). אך אינסטלציה ואיטום חייבים אינסטלטור מורשה ועמידה בתקן האיטום והאינסטלציה; שינוי מיקום אסלה/ניקוז מורכב.",
-      "duration_he": "2–4 שבועות (הריסה, צנרת, איטום + זמן ייבוש, ריצוף וחיפוי, סניטריה).",
+      "cost_he": "A small basic bathroom ~$18,000–35,000; mid-range/a modern shower ~$35,000–60,000; large/luxury $60,000–120,000+. A guest restroom only ~$8,000–18,000.",
+      "permit_he": "Exempt from a permit (interior renovation). But plumbing and waterproofing require a licensed plumber and compliance with the waterproofing and plumbing standard; relocating a toilet/drain is complex.",
+      "duration_he": "2–4 weeks (demolition, piping, waterproofing + drying time, flooring and tiling, fixtures).",
       "considerations_he": [
-        "אזור רטוב — איטום נכון (יריעות/איטום מתחת לריצוף) הוא הקריטי ביותר; כשל איטום = נזק יקר לשכנים/לבית.",
-        "הזזת ניקוז/אסלה דורשת שיפועים והגבהת רצפה — מהדברים היקרים; עדיף לשמר מיקום.",
-        "לתת זמן ייבוש לאיטום ולטיט לפני ריצוף — לחץ זמן כאן גורם לנזילות.",
-        "אוורור (חלון/מאוורר) חיוני נגד עובש; לשקול חימום רצפה/מגבות באקלים הקר של לרקמונט."
+        "A wet area — proper waterproofing (membranes/sealing under the flooring) is the most critical part; a waterproofing failure = expensive damage to the neighbors/the house.",
+        "Moving a drain/toilet requires slopes and raising the floor — one of the costly items; better to keep the location.",
+        "Allow drying time for the waterproofing and mortar before flooring — time pressure here causes leaks.",
+        "Ventilation (a window/fan) is essential against mold; consider floor/towel heating in Larkmont's cold climate."
       ],
       "suits": [
         "bath"
@@ -69,16 +69,16 @@
     },
     {
       "id": "flooring",
-      "name_he": "החלפת ריצוף",
+      "name_he": "Flooring replacement",
       "emoji": "🧱",
-      "cost_he": "כ-$150–450 למ\"ר עבודה+חומר לקרמיקה/גרניט פורצלן סטנדרטי; אבן/פרקט/שיש $400–900+ למ\"ר. כולל פירוק ישן והשלכה — תוספת ~$40–90 למ\"ר.",
-      "permit_he": "פטור מהיתר לחלוטין (גימור פנים בלבד).",
-      "duration_he": "כ-3–7 ימים לדירה/קומה ממוצעת, ועוד זמן התקשות והתפוגגות אבק; פינוי ריהוט נדרש.",
+      "cost_he": "About $150–450 per m² (labor + material) for standard ceramic/porcelain tile; stone/parquet/marble $400–900+ per m². Including removal and disposal of the old floor — add ~$40–90 per m².",
+      "permit_he": "Completely exempt from a permit (interior finish only).",
+      "duration_he": "About 3–7 days for an average apartment/floor, plus time for curing and for the dust to settle; furniture removal required.",
       "considerations_he": [
-        "ריצוף על גבי ריצוף קיים מוזיל ומקצר אך מעלה את גובה הרצפה — לבדוק התאמת דלתות וספי כניסה.",
-        "החלפה מלאה דורשת פירוק שמרעיש ומאביק; לתכנן מגורים חלופיים/בידוד אזורים.",
-        "אריח גדול נראה מרווח אך דורש רצפה ישרה ויישור מצע — עלות נוספת.",
-        "באקלים קר — לשקול חימום תת-רצפתי דווקא עכשיו, לפני שמכסים את המצע."
+        "Tiling over the existing floor is cheaper and faster but raises the floor height — check that doors and entry thresholds still fit.",
+        "A full replacement requires demolition that is noisy and dusty; plan alternative living arrangements/zoning off areas.",
+        "A large tile looks spacious but requires a level floor and substrate leveling — an added cost.",
+        "In a cold climate — consider underfloor heating right now, before the substrate is covered."
       ],
       "suits": [
         "whole-house",
@@ -90,16 +90,16 @@
     },
     {
       "id": "wall_removal",
-      "name_he": "פתיחת / הסרת קיר",
+      "name_he": "Opening / removing a wall",
       "emoji": "🔨",
-      "cost_he": "קיר פנים לא-נושא (גבס/בלוק): ~$1,500–5,000 כולל פינוי ותיקוני טיח/חשמל. קיר נושא (פתיחה + קורת פלדה/בטון מחזקת): ~$8,000–25,000+ כולל קונסטרוקציה והיתר.",
-      "permit_he": "קיר פנים לא-נושא — פטור. קיר נושא — חובה היתר בנייה + תכנון מהנדס קונסטרוקציה; אסור לגעת בלי אישור.",
-      "duration_he": "קיר לא-נושא: 1–3 ימים + תיקוני גמר. קיר נושא: שבוע-שבועיים לעבודה, אך תכנון+היתר עשויים לקחת חודשים.",
+      "cost_he": "An interior non-load-bearing wall (drywall/block): ~$1,500–5,000 including removal and plaster/electrical repairs. A load-bearing wall (opening it + a reinforcing steel/concrete beam): ~$8,000–25,000+ including the structural work and the permit.",
+      "permit_he": "An interior non-load-bearing wall — exempt. A load-bearing wall — a building permit + a structural engineer's design are mandatory; do not touch it without approval.",
+      "duration_he": "Non-load-bearing wall: 1–3 days + finishing repairs. Load-bearing wall: one to two weeks of work, but the design + permit may take months.",
       "considerations_he": [
-        "ראשית לקבוע אם הקיר נושא משקל — חובה מהנדס קונסטרוקציה; טעות כאן מסכנת את המבנה.",
-        "קיר עשוי להכיל צנרת/חשמל/מים — להזיז לפני הריסה, מוסיף עלות.",
-        "פתיחת חלל מחייבת תיקון רצפה/תקרה/טיח בקו הקיר שהוסר.",
-        "פתיחה לחלל פתוח משפרת אור ותחושת מרחב אך פוגעת בבידוד אקוסטי וטרמי בין אזורים."
+        "First determine whether the wall bears load — a structural engineer is mandatory; a mistake here endangers the structure.",
+        "A wall may contain piping/electrical/water — relocate it before demolition, which adds cost.",
+        "Opening up a space requires repairing the floor/ceiling/plaster along the line of the removed wall.",
+        "Opening into an open space improves light and the sense of space but harms acoustic and thermal insulation between areas."
       ],
       "suits": [
         "whole-house",
@@ -110,16 +110,16 @@
     },
     {
       "id": "room_addition",
-      "name_he": "תוספת חדר / הרחבה",
+      "name_he": "Room addition / extension",
       "emoji": "🏗️",
-      "cost_he": "תוספת בנייה קשיחה: ~$6,000–12,000 למ\"ר בנוי (שלד+גמר), כלומר חדר ~15 מ\"ר ≈ $90,000–180,000+. עלייה על גג/קומה נוספת יקרה יותר בשל חיזוקים.",
-      "permit_he": "חובה היתר בנייה — תוספת שטח בנוי. דורש אדריכל, מהנדס, ולעיתים הקלה/שינוי תכנית הבנייה; תהליך ארוך.",
-      "duration_he": "בנייה 2–5 חודשים; אך היתר ותכנון מקדים עשויים להוסיף 6–18 חודשים.",
+      "cost_he": "A solid built addition: ~$6,000–12,000 per built m² (shell + finish), i.e. a ~15 m² room ≈ $90,000–180,000+. Building onto the roof/an additional story is more expensive due to the reinforcement needed.",
+      "permit_he": "A building permit is mandatory — added built area. Requires an architect, an engineer, and sometimes a variance/change to the building plan; a long process.",
+      "duration_he": "Construction 2–5 months; but the permit and preliminary design may add 6–18 months.",
       "considerations_he": [
-        "תלוי בזכויות בנייה הקיימות במגרש (תכנית הבנייה/יחס שטח בנוי) — לבדוק מול הרשות לפני הכל.",
-        "חיבור לבית קיים דורש התאמת יסודות, גג, איטום וחיבור אנרגטי — נקודות תורפה לרטיבות.",
-        "תוספת מגדילה מס עירוני והיטל פיתוח אפשרי — לתקצב מעבר לעלות הבנייה.",
-        "בפריפריה זמינות קבלן שלד וזמני אספקה עשויים להאריך לוח זמנים."
+        "Depends on the existing building rights for the lot (the building plan/built-area ratio) — check with the authority before anything else.",
+        "Connecting to the existing house requires matching the foundations, roof, waterproofing and an energy connection — weak points for moisture.",
+        "An addition increases the municipal tax and a possible development levy — budget beyond the construction cost.",
+        "In outlying areas, the availability of a shell contractor and supply lead times may stretch the schedule."
       ],
       "suits": [
         "whole-house",
@@ -129,16 +129,16 @@
     },
     {
       "id": "roof_waterproofing",
-      "name_he": "איטום גג",
+      "name_he": "Roof waterproofing",
       "emoji": "🛡️",
-      "cost_he": "גג שטוח: ~$80–200 למ\"ר לפי שיטה (יריעות ביטומניות, איטום אקרילי/פוליאוריאתן). גג ~80 מ\"ר ≈ $7,000–18,000. תיקון נקודתי $1,500–5,000.",
-      "permit_he": "פטור מהיתר (תחזוקה/איטום). פאנלים סולאריים על הגג גם פטורים בתנאים — לבדוק מול הרשות.",
-      "duration_he": "2–6 ימים לפי שטח ומספר שכבות; דורש מזג אוויר יבש ופני גג נקיים.",
+      "cost_he": "A flat roof: ~$80–200 per m² depending on the method (bituminous membranes, acrylic/polyurethane sealing). An ~80 m² roof ≈ $7,000–18,000. A spot repair $1,500–5,000.",
+      "permit_he": "Exempt from a permit (maintenance/waterproofing). Solar panels on the roof are also exempt under conditions — check with the authority.",
+      "duration_he": "2–6 days depending on the area and the number of layers; requires dry weather and a clean roof surface.",
       "considerations_he": [
-        "לאתר קודם את מקור הרטיבות — לעיתים הבעיה בסדקים/חיבורים ולא בכל הגג.",
-        "בלרקמונט: פערי טמפרטורה גדולים יום/לילה וקרינת UV חזקה מזקינים איטום — לבחור מערכת עמידת UV.",
-        "ניקוז וירידת מים תקינה חשובים כמו האיטום עצמו — מים עומדים הורסים כל יריעה.",
-        "איטום צבעוני/לבן (קריר) מפחית עומס חום על הגג — יתרון אנרגטי באקלים החם של הקיץ."
+        "First locate the source of the moisture — sometimes the problem is in cracks/joints and not the whole roof.",
+        "In Larkmont: large day/night temperature swings and strong UV radiation age the waterproofing — choose a UV-resistant system.",
+        "Proper drainage and water runoff are as important as the waterproofing itself — standing water destroys any membrane.",
+        "Colored/white (cool) sealing reduces the heat load on the roof — an energy advantage in the hot summer climate."
       ],
       "suits": [
         "roof",
@@ -147,16 +147,16 @@
     },
     {
       "id": "central_ac",
-      "name_he": "מיזוג מרכזי / מיני-מרכזי",
+      "name_he": "Central / mini-central air conditioning",
       "emoji": "❄️",
-      "cost_he": "מערכת מיני-מרכזית לבית ~$20,000–45,000 כולל תעלות ויחידות; מרכזי גדול/רב-אזורי $40,000–80,000+. עיבוי+מפוח לבד $9,000–20,000.",
-      "permit_he": "פטור מהיתר ככלל. מיקום יחידת עיבוי על חזית/גג — לוודא שאינו פוגע בחזית מאושרת/בתקנון; חיבור חשמל ייעודי דרוש.",
-      "duration_he": "התקנה 3–7 ימים; הכי קל לבצע במהלך שיפוץ כללי כשהתקרות/קירות פתוחים לתעלות.",
+      "cost_he": "A mini-central system for a house ~$20,000–45,000 including ducts and units; a large/multi-zone central system $40,000–80,000+. A condenser + air handler alone $9,000–20,000.",
+      "permit_he": "Generally exempt from a permit. The placement of the condenser unit on the facade/roof — make sure it doesn't violate an approved facade/the bylaws; a dedicated electrical connection is required.",
+      "duration_he": "Installation 3–7 days; easiest to do during a general renovation when the ceilings/walls are open for the ducts.",
       "considerations_he": [
-        "מיני-מרכזי דורש מרחב תקרה אקוסטית/גבס לתעלות — לתכנן יחד עם הריצוף/תקרות.",
-        "בלרקמונט העומס הוא בעיקר חימום בחורף — לשקול משאבת חום/מיזוג שמחמם ביעילות (COP גבוה).",
-        "מיקום יחידת העיבוי משפיע על רעש ויעילות — לא מול חלון שינה, לא במקום חסום אוויר.",
-        "חיווט והכנה לתרמוסטט חכם זול עכשיו — תכנון אזורים (zoning) חוסך אנרגיה לאורך זמן."
+        "A mini-central system requires acoustic/drywall ceiling space for the ducts — plan it together with the flooring/ceilings.",
+        "In Larkmont the load is mainly heating in winter — consider a heat pump/AC that heats efficiently (a high COP).",
+        "The placement of the condenser unit affects noise and efficiency — not facing a bedroom window, and not in an air-blocked spot.",
+        "Wiring and prep for a smart thermostat is cheap now — zoning planning saves energy over time."
       ],
       "suits": [
         "mep",
@@ -167,16 +167,16 @@
     },
     {
       "id": "electrical_upgrade",
-      "name_he": "שדרוג חשמל (לוח + נקודות)",
+      "name_he": "Electrical upgrade (panel + points)",
       "emoji": "⚡",
-      "cost_he": "החלפת/שדרוג לוח חשמל ~$3,000–8,000; הוספת נקודה (שקע/מאור) ~$200–500 לנקודה; חיווט מלא לבית ~$15,000–40,000 לפי גודל ומורכבות.",
-      "permit_he": "פטור מהיתר בנייה, אך עבודת חשמל חייבת חשמלאי מוסמך ובדיקת ספק החשמל לחיבור/שדרוג; עמידה בתקני החשמל.",
-      "duration_he": "החלפת לוח 1–2 ימים; חיווט מלא במהלך שיפוץ 1–2 שבועות (הכי קל כשקירות חשופים).",
+      "cost_he": "Replacing/upgrading the electrical panel ~$3,000–8,000; adding a point (outlet/light) ~$200–500 per point; full house wiring ~$15,000–40,000 depending on size and complexity.",
+      "permit_he": "Exempt from a building permit, but electrical work requires a certified electrician and an inspection by the power utility for the connection/upgrade; compliance with the electrical standards.",
+      "duration_he": "Panel replacement 1–2 days; full wiring during a renovation 1–2 weeks (easiest when the walls are exposed).",
       "considerations_he": [
-        "לוח ישן בלי מפסק פחת/הארקה תקינה הוא סיכון בטיחות — שדרוג מפסקי פחת (RCD) קודם לכל.",
-        "הספק מתאים לעומס מודרני (תנור, מזגנים, רכב חשמלי, אינדוקציה) — לבדוק גודל חיבור מול ספק החשמל.",
-        "להוסיף נקודות/שקעים ביד רחבה בזמן שהקירות פתוחים — הוספה אחר כך דורשת שבירה.",
-        "הכנה לעתיד: עמדת טעינה לרכב, פאנלים סולאריים, תקשורת — צינורות ריקים זולים עכשיו."
+        "An old panel without a residual-current device/proper grounding is a safety hazard — upgrading the residual-current devices (RCD) comes first of all.",
+        "Capacity suited to a modern load (oven, air conditioners, an electric vehicle, induction) — check the connection size with the power utility.",
+        "Add points/outlets generously while the walls are open — adding them later requires breaking into the walls.",
+        "Future-proofing: an EV charging station, solar panels, data — empty conduits are cheap now."
       ],
       "suits": [
         "mep",
@@ -185,16 +185,16 @@
     },
     {
       "id": "plumbing_replacement",
-      "name_he": "החלפת צנרת",
+      "name_he": "Pipe replacement",
       "emoji": "🚰",
-      "cost_he": "החלפת צנרת מים/ביוב לבית ~$15,000–45,000 לפי גודל ונגישות; נקודתי לחדר רחצה/מטבח $3,000–10,000. צנרת בקיר/רצפה יקרה יותר מגלויה.",
-      "permit_he": "פטור מהיתר, אך חובה אינסטלטור מורשה ועמידה בתקן האיטום והאינסטלציה; חיבור לקו עירוני/מד-מים דרך הרשות.",
-      "duration_he": "1–3 שבועות לבית; כרוך בשבירת קירות/רצפה ותיקוני גמר אחריהם.",
+      "cost_he": "Replacing the water/sewage piping for a house ~$15,000–45,000 depending on size and accessibility; a spot job for a bathroom/kitchen $3,000–10,000. Piping in the wall/floor is more expensive than exposed piping.",
+      "permit_he": "Exempt from a permit, but a licensed plumber and compliance with the waterproofing and plumbing standard are mandatory; connecting to the municipal line/water meter goes through the authority.",
+      "duration_he": "1–3 weeks for a house; involves breaking into walls/floors and finishing repairs afterward.",
       "considerations_he": [
-        "החלפת אינסטלציה היא מהעבודות היקרות והפולשניות — כרוכה בשבירה, איטום מחדש וריצוף.",
-        "הכי משתלם לבצע יחד עם שיפוץ מטבח/חדר רחצה כשהקירות והרצפה ממילא פתוחים.",
-        "צנרת ישנה (ברזל/עופרת) שווה להחליף לפוליאתילן/מולטי-לייר — אמינות ובריאות מי השתייה.",
-        "מים חמים: לשקול בידוד צנרת וקרבה לדוד/קולטים — חיסכון אנרגיה משמעותי באקלים קר."
+        "Replacing the plumbing is among the costliest and most invasive jobs — it involves breaking in, re-waterproofing and re-tiling.",
+        "Most cost-effective to do together with a kitchen/bathroom renovation when the walls and floor are open anyway.",
+        "Old piping (iron/lead) is worth replacing with polyethylene/multilayer — for reliability and drinking-water health.",
+        "Hot water: consider pipe insulation and proximity to the boiler/solar collectors — significant energy savings in a cold climate."
       ],
       "suits": [
         "mep",
@@ -205,16 +205,16 @@
     },
     {
       "id": "painting",
-      "name_he": "צביעה",
+      "name_he": "Painting",
       "emoji": "🎨",
-      "cost_he": "כ-$18–40 למ\"ר קיר/תקרה לעבודה (כולל חומר) לפי מצב הקיר ומספר שכבות; דירה/קומה שלמה ~$4,000–12,000. שפכטל/תיקוני קירות בתוספת.",
-      "permit_he": "פטור מהיתר לחלוטין.",
-      "duration_he": "2–5 ימים לדירה ממוצעת כולל הכנה, שפכטל וייבוש בין שכבות; פינוי/כיסוי ריהוט.",
+      "cost_he": "About $18–40 per m² of wall/ceiling for labor (material included) depending on the wall's condition and the number of coats; a whole apartment/floor ~$4,000–12,000. Skim coating/wall repairs are extra.",
+      "permit_he": "Completely exempt from a permit.",
+      "duration_he": "2–5 days for an average apartment including prep, skim coating and drying between coats; moving/covering furniture.",
       "considerations_he": [
-        "הכנת הקיר (שפכטל, ליטוש, פריימר) קובעת את התוצאה יותר מהצבע עצמו.",
-        "צבע איכותי שטיף (לחדרי ילדים/מסדרון) חוסך צביעות חוזרות — שווה את ההפרש.",
-        "בחדרים רטובים/חוץ — צבע נגד עובש/אקרילי חוץ עמיד יותר.",
-        "הזולה והמשתלמת מבין כל השיפוצים מבחינת אפקט-לעלות; קלה לעשייה עצמית חלקית."
+        "Wall preparation (skim coating, sanding, primer) determines the result more than the paint itself.",
+        "Quality washable paint (for children's rooms/the hallway) saves repainting — worth the difference.",
+        "In wet rooms/outdoors — anti-mold/exterior acrylic paint is more durable.",
+        "The cheapest and most cost-effective of all the renovations in terms of effect-per-cost; easy for partial DIY."
       ],
       "suits": [
         "whole-house",
@@ -226,16 +226,16 @@
     },
     {
       "id": "plaster_facade",
-      "name_he": "חידוש טיח / חזית",
+      "name_he": "Plaster / facade renewal",
       "emoji": "🏠",
-      "cost_he": "טיח/שפריץ חזית חיצוני ~$90–250 למ\"ר לפי שיטה (שפכטל אקרילי, טיח צבעוני, חיפוי). חזית בית פרטי שלם ~$25,000–70,000+ כולל פיגומים.",
-      "permit_he": "חידוש/צביעת חזית — לרוב פטור. אך שינוי מראה חזית, חיפוי אבן או הוספת בידוד חיצוני (תרמי) עשויים לדרוש אישור/היתר — לבדוק מול הרשות ותקנון.",
-      "duration_he": "1–4 שבועות לפי שטח החזית, כולל הקמת פיגומים, הכנה, שכבות וייבוש.",
+      "cost_he": "Exterior facade plaster/spray ~$90–250 per m² depending on the method (acrylic skim coat, colored plaster, cladding). A whole private-home facade ~$25,000–70,000+ including scaffolding.",
+      "permit_he": "Renewing/painting a facade — usually exempt. But changing the facade's appearance, stone cladding or adding external (thermal) insulation may require approval/a permit — check with the authority and the bylaws.",
+      "duration_he": "1–4 weeks depending on the facade area, including erecting scaffolding, preparation, coats and drying.",
       "considerations_he": [
-        "סדקים בחזית מקורם לעיתים בבעיה מבנית/רטיבות — לאבחן לפני שמכסים בטיח חדש.",
-        "בידוד תרמי חיצוני (HIB/קל-קר) יקר יותר אך משפר דרמטית נוחות ואנרגיה — רלוונטי לאקלים הקיצוני של לרקמונט.",
-        "פיגומים הם נתח עלות משמעותי — לרכז את כל עבודות החוץ (גם איטום/צבע/חלונות) לאותה הזדמנות.",
-        "צבע חזית עמיד-UV ועמיד-מליחות/אבק חשוב ברמה; גוונים בהירים מפחיתים עומס חום."
+        "Cracks in the facade sometimes originate from a structural/moisture problem — diagnose them before covering them with new plaster.",
+        "External thermal insulation (an EIFS-type system) is more expensive but dramatically improves comfort and energy — relevant to Larkmont's extreme climate.",
+        "Scaffolding is a significant chunk of the cost — consolidate all the exterior work (waterproofing/paint/windows too) into the same opportunity.",
+        "UV-resistant and salt/dust-resistant facade paint really matters here; light shades reduce the heat load."
       ],
       "suits": [
         "whole-house",
@@ -244,16 +244,16 @@
     },
     {
       "id": "windows",
-      "name_he": "החלפת חלונות (כפול / בידוד)",
+      "name_he": "Window replacement (double-glazed / insulated)",
       "emoji": "🪟",
-      "cost_he": "חלון/דלת אלומיניום עם זיגוג בידודי (כפול) ~$1,500–4,000 ליחידה לפי גודל ופרופיל; בית שלם ~$25,000–80,000+. פרופיל שובר-קור ותריס חשמלי מייקרים.",
-      "permit_he": "החלפה באותו פתח — בדרך כלל פטור. הגדלת פתח/שינוי חזית או יצירת פתח חדש — דורש היתר ולעיתים מהנדס (אם נוגע בקיר נושא).",
-      "duration_he": "1–4 ימים לבית לפי כמות; עבודה נקייה יחסית אם הפתחים נשמרים בגודלם.",
+      "cost_he": "An aluminum window/door with insulating (double) glazing ~$1,500–4,000 per unit depending on size and profile; a whole house ~$25,000–80,000+. A thermal-break profile and an electric shutter add to the cost.",
+      "permit_he": "Replacement in the same opening — usually exempt. Enlarging an opening/changing the facade or creating a new opening — requires a permit and sometimes an engineer (if it touches a load-bearing wall).",
+      "duration_he": "1–4 days for a house depending on the quantity; relatively clean work if the openings keep their size.",
       "considerations_he": [
-        "זיגוג כפול/בידודי משנה דרמטית נוחות ואנרגיה — קריטי באקלים לרקמונט (לילות קרים, שמש חזקה).",
-        "איכות האיטום סביב המסגרת (מילוי, סיליקון, סף) חשובה כמו החלון עצמו — מונע חדירת אבק/מים/קור.",
-        "תריסים/הצללה חיצונית חוסכים יותר מזיגוג לבדו בקיץ — לשקול תריס/סורג משולב.",
-        "פרופיל 'שובר קור' (thermal break) מונע התעבות/קרירות מסגרת בחורף — שדרוג כדאי ברמה הגבוה."
+        "Double/insulating glazing dramatically changes comfort and energy — critical in Larkmont's climate (cold nights, strong sun).",
+        "The quality of the sealing around the frame (filler, silicone, sill) is as important as the window itself — it prevents the ingress of dust/water/cold.",
+        "Shutters/external shading save more than glazing alone in summer — consider a combined shutter/grille.",
+        "A 'thermal break' profile prevents condensation/a cold frame in winter — a worthwhile upgrade at the high end."
       ],
       "suits": [
         "whole-house",
@@ -263,16 +263,16 @@
     },
     {
       "id": "saferoom",
-      "name_he": "הוספת / שדרוג חדר מָגֵן מחוזק",
+      "name_he": "Adding / upgrading a reinforced safe room",
       "emoji": "🛟",
-      "cost_he": "בניית חדר מָגֵן מחוזק חדש (~9–12 מ\"ר, קירות בטון, דלת+חלון מחוזק, אוורור) ~$70,000–150,000+ לפי גודל ונגישות. שדרוג/החלפת דלת/חלון מחוזק בלבד $6,000–20,000.",
-      "permit_he": "מסלול נפרד — אישור לפי תקן חדרי-המגן למפרט החדר, ובנוסף היתר בנייה מהרשות (תוספת שטח/אלמנט קונסטרוקטיבי). דורש מהנדס.",
-      "duration_he": "בנייה 1–3 חודשים; כולל תכנון, אישור התקן והיתר — סך הכל לעיתים 6–12 חודשים.",
+      "cost_he": "Building a new reinforced safe room (~9–12 m², concrete walls, a reinforced door + window, ventilation) ~$70,000–150,000+ depending on size and accessibility. Upgrading/replacing just the reinforced door/window $6,000–20,000.",
+      "permit_he": "A separate track — approval under the safe-room standard for the room's specification, plus a building permit from the authority (added area/a structural element). Requires an engineer.",
+      "duration_he": "Construction 1–3 months; including design, standard approval and the permit — in total sometimes 6–12 months.",
       "considerations_he": [
-        "חדר המָגֵן אינו חדר רגיל — עובי קירות בטון, דלת וחלון מחוזקים, אוורור/סינון לפי תקן חדרי-המגן; אין לאלתר.",
-        "מיקום חדר המָגֵן משפיע על נגישות בעת חירום — קרוב לאזורי השהייה, לא בקצה הבית.",
-        "אפשר לתכננו לשמש כחדר שינה/עבודה בשגרה, אך אסור לפגוע בתפקודו המָגֵן (דלת חופשית, אוורור).",
-        "בתוספת לבית קיים — חיבור היסודות והקונסטרוקציה דורש מהנדס; זהו אלמנט נושא."
+        "A safe room is not an ordinary room — concrete wall thickness, a reinforced door and window, ventilation/filtration per the safe-room standard; do not improvise.",
+        "The location of the safe room affects accessibility in an emergency — close to the living areas, not at the far end of the house.",
+        "It can be designed to serve as a bedroom/office in everyday use, but its protective function must not be compromised (an unobstructed door, ventilation).",
+        "When added to an existing house — connecting the foundations and the structure requires an engineer; this is a load-bearing element."
       ],
       "suits": [
         "whole-house",
@@ -282,16 +282,16 @@
     },
     {
       "id": "pergola_yard",
-      "name_he": "פרגולה / פיתוח חצר",
+      "name_he": "Pergola / yard landscaping",
       "emoji": "🌳",
-      "cost_he": "פרגולה: עץ ~$600–1,500 למ\"ר, אלומיניום/מתכת ~$1,000–2,500 למ\"ר. דק/ריצוף חצר ~$250–700 למ\"ר. פיתוח חצר שלם (ריצוף, גינון, תאורה, השקיה) $30,000–120,000+ לפי שטח.",
-      "permit_he": "פרגולה פתוחה (לא מקורה אטום) עד שטח/גובה מסוימים — פטור לפי כללי הפטור האזוריים, בתנאים. גג אטום/סגירת מרפסת/מבנה קשיח — דורש היתר. גדר מעל גובה מסוים — לבדוק.",
-      "duration_he": "פרגולה 2–7 ימים; פיתוח חצר מלא 2–6 שבועות לפי היקף הגינון, הריצוף והשתילה.",
+      "cost_he": "Pergola: wood ~$600–1,500 per m², aluminum/metal ~$1,000–2,500 per m². Decking/yard paving ~$250–700 per m². Full yard landscaping (paving, gardening, lighting, irrigation) $30,000–120,000+ depending on the area.",
+      "permit_he": "An open pergola (not sealed-roofed) up to certain area/height limits — exempt under the regional exemption rules, subject to conditions. A sealed roof/enclosing a balcony/a solid structure — requires a permit. A fence above a certain height — check.",
+      "duration_he": "Pergola 2–7 days; full yard landscaping 2–6 weeks depending on the scope of the gardening, paving and planting.",
       "considerations_he": [
-        "פרגולה פתוחה פטורה רק בעמידה בתנאי הפטור (מרווחי הצללה, גודל, מרחק מגבול) — לוודא לפני ביצוע.",
-        "בלרקמונט: הצללה מהשמש החזקה ושבירת רוח חשובות; חומרים עמידי-UV ואבק.",
-        "פיתוח חצר לשלב יחד עם תכנון השקיה, ניקוז ותאורה — תשתיות זולות לפני הריצוף.",
-        "צמחייה מקומית/חסכונית במים (קסריסקייפ) מתאימה לאקלים היבש וחוסכת בהשקיה ובתחזוקה."
+        "An open pergola is exempt only if it meets the exemption conditions (shading gaps, size, distance from the boundary) — verify before building.",
+        "In Larkmont: shading from the strong sun and wind-breaking matter; UV- and dust-resistant materials.",
+        "Combine yard landscaping with planning the irrigation, drainage and lighting — infrastructure is cheap before the paving.",
+        "Native/water-thrifty vegetation (xeriscape) suits the dry climate and saves on irrigation and maintenance."
       ],
       "suits": [
         "yard"

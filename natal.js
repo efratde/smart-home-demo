@@ -1,5 +1,5 @@
 /* ===================================================================
-   natal.js — "מַפַּת הַשָּׁמַיִם הָאִישִׁית" (Alex's natal sky + tonight's transits).
+   natal.js — "The Personal Sky Map" (Alex's natal sky + tonight's transits).
    A self-contained panel in the #inst brass-on-glass language (NOT inside the
    per-second renderSky, so its date/time inputs keep focus). Astrology as POETIC
    FRAMING, never prediction — but the positions are REAL: geocentric tropical
@@ -17,14 +17,14 @@
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify(DOC)); }catch(e){} }
   let DOC=load();                                   // { date:'YYYY-MM-DD', time:'HH:MM' }
 
-  // אִם לֹא נִשְׁמַר תַּאֲרִיךְ — נַנִּיחַ תַּאֲרִיךְ לֵדָה מֵ-resident_numbers.json (נִתָּן לַעֲרִיכָה).
-  // לֹא דּוֹרֵס עֵרֶךְ שֶׁהַמִּשְׁתַּמֵּשׁ כְּבָר שָׁמַר.
+  // If no date is saved — assume a birth date from resident_numbers.json (editable).
+  // Never overrides a value the user has already saved.
   let _seeded=false;
   function seedBirthDate(){
     if(_seeded||DOC.date) return; _seeded=true;
     try{
       fetch('data/resident_numbers.json').then(r=>r.ok?r.json():null).then(j=>{
-        if(!j||DOC.date) return;                    // נִשְׁמַר בֵּינְתַיִם — אַל תִּדְרֹס
+        if(!j||DOC.date) return;                    // saved in the meantime — don't override
         const m=String(j.birth_iso||'').match(/^(\d{4}-\d{2}-\d{2})/);
         if(m){ DOC.date=m[1]; save(); if(body) render(); }
       }).catch(()=>{});
@@ -97,31 +97,31 @@
   function render(){
     if(!body) return;
     const D=window.Derive; const bd=birthDate();
-    let html=`<div class="hd"><h3>✨ מַפַּת הַשָּׁמַיִם הָאִישִׁית</h3><span class="x" data-act="close" title="סגור">✕</span></div>`+
-      `<div class="sub">הַשָּׁמַיִם בִּזְמַן לֵדָתְךָ — וְהֵיכָן אוֹתָם גְּרָמִים הַלַּיְלָה. מִיקוּמִים אֲמִיתִּיִּים (גֵּאוֹצֶנְטְרִי · טְרוֹפִּי).</div>`+
-      `<div class="bd"><label>תַּאֲרִיךְ לֵדָה</label><input type="date" data-act="bdate" value="${esc(DOC.date||'')}" max="2026-12-31">`+
-      `<label>שָׁעָה</label><input type="time" data-act="btime" value="${esc(DOC.time||'')}" style="width:96px"></div>`;
+    let html=`<div class="hd"><h3>✨ The Personal Sky Map</h3><span class="x" data-act="close" title="Close">✕</span></div>`+
+      `<div class="sub">The sky at the moment of your birth — and where those same bodies are tonight. Real positions (geocentric · tropical).</div>`+
+      `<div class="bd"><label>Birth date</label><input type="date" data-act="bdate" value="${esc(DOC.date||'')}" max="2026-12-31">`+
+      `<label>Time</label><input type="time" data-act="btime" value="${esc(DOC.time||'')}" style="width:96px"></div>`;
     if(!bd){
-      html+=`<div class="foot">הַזֵּן תַּאֲרִיךְ לֵדָה כְּדֵי לִרְאוֹת אֶת מַזַּל הַשֶּׁמֶשׁ, הַיָּרֵחַ וְכוֹכְבֵי הַלֶּכֶת בִּזְמַן לֵדָתְךָ — וְהוֹסֵף שָׁעָה כְּדֵי לְחַשֵּׁב גַּם אֶת הַמַּזָּל הָעוֹלֶה.</div>`;
+      html+=`<div class="foot">Enter a birth date to see the sun sign, the moon and the planets at the moment of your birth — and add a time to also compute the rising sign.</div>`;
       body.innerHTML=html; return;
     }
     const natal=D&&D.zodiacChart?D.zodiacChart(bd):null;
     const now=D&&D.zodiacChart?D.zodiacChart(new Date()):null;
     const asc=(DOC.time&&D&&D.ascendant)?D.ascendant(bd):null;
     if(natal){
-      const order=[['Sun','☀️ שֶׁמֶשׁ',natal.sun],['Moon','🌙 יָרֵחַ',natal.moon]];
+      const order=[['Sun','☀️ Sun',natal.sun],['Moon','🌙 Moon',natal.moon]];
       const nowMap={}; if(now){ nowMap.Sun=now.sun; nowMap.Moon=now.moon; (now.planets||[]).forEach(p=>nowMap[p.name]=p); }
-      html+=`<div class="cols"><span class="b">גֶּרֶם</span><span class="n">בַּלֵּדָה</span><span class="tr">הַלַּיְלָה</span></div>`;
+      html+=`<div class="cols"><span class="b">Body</span><span class="n">At birth</span><span class="tr">Tonight</span></div>`;
       const row=(label,nat,tr)=>`<div class="prow"><span class="b">${label}</span><span class="n">${fmt(nat)}</span><span class="tr">${fmt(tr)}</span></div>`;
-      html+=row('☀️ שֶׁמֶשׁ', natal.sun, nowMap.Sun);
-      html+=row('🌙 יָרֵחַ', natal.moon, nowMap.Moon)+
-        (!DOC.time?`<div class="prow" style="border:none;padding-top:0"><span class="b" style="font-size:9.5px;color:#8a7a52">↳ הַיָּרֵחַ זָז מַהֵר — הַזֵּן שָׁעָה לְדִיּוּק</span></div>`:'');
+      html+=row('☀️ Sun', natal.sun, nowMap.Sun);
+      html+=row('🌙 Moon', natal.moon, nowMap.Moon)+
+        (!DOC.time?`<div class="prow" style="border:none;padding-top:0"><span class="b" style="font-size:9.5px;color:#8a7a52">↳ The moon moves fast — enter a time for accuracy</span></div>`:'');
       (natal.planets||[]).forEach(p=>{ html+=row(`${PSYM[p.name]||'•'} ${p.he}`, p, nowMap[p.name]); });
-      html+=`<div class="asc">↑ הַמַּזָּל הָעוֹלֶה (Ascendant): `+
-        (asc?`<b>${asc.sign} ${asc.deg}°</b><div class="hint">מוּעֲרָךְ — מַנִּיחַ לֵדָה בְּאֵזוֹרוֹ. תְּלוּי מְאוֹד בְּשָׁעָה וּמָקוֹם מְדֻיָּקִים.</div>`
-            :`<b>—</b><div class="hint">דּוֹרֵשׁ שָׁעַת לֵדָה. הוֹסֵף אוֹתָהּ לְמַעְלָה וְהַמַּזָּל הָעוֹלֶה יְחֻשַּׁב.</div>`)+`</div>`;
+      html+=`<div class="asc">↑ The rising sign (Ascendant): `+
+        (asc?`<b>${asc.sign} ${asc.deg}°</b><div class="hint">Estimated — assumes a birth in his region. Highly dependent on an exact time and place.</div>`
+            :`<b>—</b><div class="hint">Requires a birth time. Add it above and the rising sign will be computed.</div>`)+`</div>`;
     }
-    html+=`<div class="foot">אַסְטְרוֹלוֹגְיָה כָּאן הִיא מִסְגֶּרֶת פּוֹאֵטִית — לֹא נִבּוּי. הַמִּיקוּמִים אֲמִיתִּיִּים, מְחֻשָּׁבִים מֵאֶפֵמֵרִיס. "הַלַּיְלָה" = הֵיכָן הַגְּרָמִים בָּאֱמֶת עַכְשָׁו.</div>`;
+    html+=`<div class="foot">Astrology here is a poetic framing — not prediction. The positions are real, computed from an ephemeris. "Tonight" = where the bodies actually are right now.</div>`;
     body.innerHTML=html;
   }
   function onChange(e){ const t=e.target.closest('[data-act]'); if(!t) return;
@@ -130,7 +130,7 @@
   function onClick(e){ const t=e.target.closest('[data-act]'); if(t&&t.dataset.act==='close') close(); }
   function ensure(){
     if(panel) return; ensureCSS();
-    panel=el('div'); panel.id='natalPanel'; panel.setAttribute('dir','rtl');
+    panel=el('div'); panel.id='natalPanel'; panel.setAttribute('dir','ltr');
     body=el('div','body'); panel.appendChild(body); document.body.appendChild(panel);
     body.addEventListener('change',onChange); body.addEventListener('click',onClick);
   }

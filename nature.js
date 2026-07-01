@@ -1,12 +1,12 @@
 /* ===========================================================================
- * nature.js · "הבית של אלכס" — מדריך הטבע (field guide)
+ * nature.js · "Alex's House" — the nature guide (field guide)
  * ---------------------------------------------------------------------------
- * The טבע tab, rebuilt as a CURATED, OFFLINE, seasonal field guide for the
+ * The nature tab, rebuilt as a CURATED, OFFLINE, seasonal field guide for the
  * Larkmont valley / highlands area (data/nature_species.json,
  * 58 verified species). Replaces the old live-iNaturalist feed, which for
  * this sparse highland area returned ~0–2 sightings.
  *
- * Layout (chosen with the user): "בסביבה עכשיו" for the current month FIRST,
+ * Layout (chosen with the user): "Around you now" for the current month FIRST,
  * then collapsible browse-by-category. A row's → opens the full species CARD as
  * a SELF-CONTAINED FLOATING OVERLAY (#natureCard), mirroring garden.js's
  * #gardenCard: a position-fixed brass-on-glass panel that temporarily hides the
@@ -15,10 +15,10 @@
  *
  * Media (Hybrid): 4 iconic species carry a bundled, free-license photo
  * (assets/nature/*.jpg, with credit); 14 birds carry a BUNDLED, free-license
- * (CC0/CC BY/CC BY-NC, iNaturalist) call recording — a 🔊 הקריאה PLAY button
+ * (CC0/CC BY/CC BY-NC, iNaturalist) call recording — a 🔊 "The call" PLAY button
  * (data-nat-play-call) that plays assets/nature/sounds/<id>.mp3 OFFLINE via
  * window.__amb (sounds.js); a species without a bundled clip keeps its external
- * sound link as a fallback. Every species has a "מידע נוסף" link. Self-contained
+ * sound link as a fallback. Every species has a "More info" link. Self-contained
  * DOM layer — never touches the WebGL scene. Exposes isReady()/onReady() so
  * panels.js can mount promptly.
  * ======================================================================== */
@@ -30,42 +30,42 @@
   var DATA = null, READY = false, _readyCbs = [];
   var _host = null, _wiredHost = null, _query = '', _expanded = {};
 
-  var MONTHS_HE = ['יָנוּאָר','פֶבְּרוּאָר','מֵרְץ','אַפְּרִיל','מַאי','יוּנִי','יוּלִי','אוֹגוּסְט','סֶפְּטֶמְבֶּר','אוֹקְטוֹבֶּר','נוֹבֶמְבֶּר','דֶצֶמְבֶּר'];
-  var MON_SHORT = ['ינ','פב','מרץ','אפר','מאי','יונ','יול','אוג','ספט','אוק','נוב','דצמ'];
+  var MONTHS_HE = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var MON_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var CATS = [
-    { k:'plant',   he:'צְמָחִים',           emoji:'🌿' },
-    { k:'bird',    he:'צִפּוֹרִים',         emoji:'🐦' },
-    { k:'insect',  he:'חֲרָקִים וּמַאֲבִיקִים', emoji:'🦋' },
-    { k:'reptile', he:'זוֹחֲלִים',          emoji:'🦎' },
-    { k:'fungi',   he:'פִּטְרִיּוֹת',         emoji:'🍄' },
-    { k:'mammal',  he:'יוֹנְקִים',          emoji:'🦌' }
+    { k:'plant',   he:'Plants',                emoji:'🌿' },
+    { k:'bird',    he:'Birds',                 emoji:'🐦' },
+    { k:'insect',  he:'Insects & Pollinators', emoji:'🦋' },
+    { k:'reptile', he:'Reptiles',              emoji:'🦎' },
+    { k:'fungi',   he:'Fungi',                 emoji:'🍄' },
+    { k:'mammal',  he:'Mammals',               emoji:'🦌' }
   ];
   var EMOJI = { bird:'🐦', mammal:'🦌', reptile:'🦎', insect:'🦗', plant:'🌿', fungi:'🍄', other:'•' };
   var CAT_HE = {}; CATS.forEach(function (c) { CAT_HE[c.k] = c.he; });
 
-  /* ---- RESIDENCY (birds) — מקומיות vs נודדות --------------------------------
+  /* ---- RESIDENCY (birds) — residents vs migrants ----------------------------
      the developer's note: separate the birds you can always see (resident, year-round)
      from the ones that pass through only seasonally. Each value carries a short
      Hebrew label + a badge tone for the row tag and the detail card. */
   var RESID = {
-    resident: { he:'מְקוֹמִית · כָּל הַשָּׁנָה', short:'מְקוֹמִית', cls:'res-local' },
-    winter:   { he:'חוֹרֶפֶת · אוֹרַחַת חֹרֶף',  short:'חוֹרֶפֶת', cls:'res-move' },
-    summer:   { he:'קַיְצִית · מְקַנֶּנֶת קַיִץ', short:'קַיְצִית', cls:'res-move' },
-    passage:  { he:'נוֹדֶדֶת · בִּמְעֻף הַנְּדִידָה', short:'נוֹדֶדֶת', cls:'res-move' },
-    migrant:  { he:'נוֹדֶדֶת', short:'נוֹדֶדֶת', cls:'res-move' }
+    resident: { he:'Resident · Year-round', short:'Resident', cls:'res-local' },
+    winter:   { he:'Wintering · Winter visitor',  short:'Wintering', cls:'res-move' },
+    summer:   { he:'Summer · Summer breeder', short:'Summer', cls:'res-move' },
+    passage:  { he:'Migrant · On passage', short:'Migrant', cls:'res-move' },
+    migrant:  { he:'Migrant', short:'Migrant', cls:'res-move' }
   };
   function isResident(s){ return s.residency === 'resident'; }
 
-  /* ---- LIFEFORM (plants) — חד-שנתיים/עונתיים first --------------------------
+  /* ---- LIFEFORM (plants) — annuals/seasonals first --------------------------
      the developer's note: lead with the annuals & geophytes that bloom after the rains,
      not the big year-round perennials. ORDER weights the seasonal bloomers up;
      LF supplies a short Hebrew label + badge tone. */
   var LF = {
-    annual:    { he:'חַד-שְׁנָתִי · עוֹנָתִי', short:'חַד-שְׁנָתִי', cls:'lf-annual', ord:0 },
-    geophyte:  { he:'גֵּאוֹפִיט · פּוֹרֵחַ עוֹנָתִי', short:'גֵּאוֹפִיט', cls:'lf-annual', ord:1 },
-    perennial: { he:'רַב-שְׁנָתִי', short:'רַב-שְׁנָתִי', cls:'lf-peren', ord:2 },
-    shrub:     { he:'שִׂיחַ · רַב-שְׁנָתִי', short:'שִׂיחַ', cls:'lf-peren', ord:3 },
-    tree:      { he:'עֵץ · רַב-שְׁנָתִי', short:'עֵץ', cls:'lf-peren', ord:4 }
+    annual:    { he:'Annual · Seasonal', short:'Annual', cls:'lf-annual', ord:0 },
+    geophyte:  { he:'Geophyte · Seasonal bloomer', short:'Geophyte', cls:'lf-annual', ord:1 },
+    perennial: { he:'Perennial', short:'Perennial', cls:'lf-peren', ord:2 },
+    shrub:     { he:'Shrub · Perennial', short:'Shrub', cls:'lf-peren', ord:3 },
+    tree:      { he:'Tree · Perennial', short:'Tree', cls:'lf-peren', ord:4 }
   };
   function lfOrd(s){ var f = LF[s.lifeform]; return f ? f.ord : 9; }
   function isSeasonalPlant(s){ return s.lifeform === 'annual' || s.lifeform === 'geophyte'; }
@@ -89,7 +89,7 @@
   /* ---- a short season label for a list row -------------------------------- */
   function seasonSpan(s){
     var m = s.months || [];
-    if (m.length >= 11) return 'כָּל הַשָּׁנָה';
+    if (m.length >= 11) return 'Year-round';
     if (!m.length) return '';
     var lo = Math.min.apply(null, m), hi = Math.max.apply(null, m);
     return lo === hi ? MON_SHORT[lo-1] : (MON_SHORT[lo-1] + '–' + MON_SHORT[hi-1]);
@@ -100,7 +100,7 @@
     return '<span class="natthumb natemoji">' + (EMOJI[s.cat] || '•') + '</span>';
   }
 
-  /* ---- a small residency/lifeform badge for a row (מקומית / נודדת / חד-שנתי) */
+  /* ---- a small residency/lifeform badge for a row (resident / migrant / annual) */
   function kindBadge(s){
     if (s.cat === 'bird' && s.residency && RESID[s.residency])
       return '<span class="natkind ' + RESID[s.residency].cls + '">' + esc(RESID[s.residency].short) + '</span>';
@@ -113,8 +113,8 @@
   function rowHtml(s, opts){
     opts = opts || {};
     var now = inSeasonNow(s);
-    var tag = opts.now ? '' : (now ? '<span class="nattag on">🟢 בָּעוֹנָה</span>' : '<span class="nattag">' + esc(seasonSpan(s)) + '</span>');
-    return '<div class="natrow' + (s.iconic ? ' iconic' : '') + '" data-species="' + esc(s.id) + '" role="button" tabindex="0" title="פְּתַח כַּרְטִיס">' +
+    var tag = opts.now ? '' : (now ? '<span class="nattag on">🟢 In season</span>' : '<span class="nattag">' + esc(seasonSpan(s)) + '</span>');
+    return '<div class="natrow' + (s.iconic ? ' iconic' : '') + '" data-species="' + esc(s.id) + '" role="button" tabindex="0" title="Open card">' +
       thumb(s) +
       '<span class="natn">' + esc(s.he) + ' <span class="natsci">' + esc(s.sci) + '</span></span>' +
       kindBadge(s) +
@@ -133,7 +133,7 @@
   /* ---- the FULL species card body (painted into the floating card) -------- */
   function speciesDetailHtml(id){
     var s = byId(id);
-    if (!s) return '<div class="idt-foot">לֹא נִמְצָא.</div>';
+    if (!s) return '<div class="idt-foot">Not found.</div>';
     var h = '<div class="nat-card">';
     if (s.photo && s.photo.local){
       var pc = s.photo.credit ? esc(s.photo.credit) : '';
@@ -156,50 +156,50 @@
     // lead paragraph (rich blurb) — the warm, story-like opening
     if (s.blurb_he) h += '<div class="natd-lead">' + esc(s.blurb_he) + '</div>';
     // season
-    h += '<div class="natd-sec">מָתַי רוֹאִים' + (inSeasonNow(s) ? ' <span class="natnow-pill">🟢 בָּעוֹנָה עַכְשָׁו</span>' : '') + '</div>';
+    h += '<div class="natd-sec">When to See' + (inSeasonNow(s) ? ' <span class="natnow-pill">🟢 In season now</span>' : '') + '</div>';
     h += seasonStrip(s);
     if (s.peak) h += '<div class="natpeak">' + esc(s.peak) + '</div>';
     if (s.where_when_he) h += '<div class="natd-rich">' + esc(s.where_when_he) + '</div>';
     // id marks
     if (Array.isArray(s.id_marks) && s.id_marks.length){
-      h += '<div class="natd-sec">סִימָנֵי זִיהוּי</div><ul class="natmarks">';
+      h += '<div class="natd-sec">ID Marks</div><ul class="natmarks">';
       s.id_marks.forEach(function(m){ h += '<li>' + esc(m) + '</li>'; });
       h += '</ul>';
     }
     // behaviour — how it lives
     if (s.behavior_he){
-      h += '<div class="natd-sec">הִתְנַהֲגוּת</div>';
+      h += '<div class="natd-sec">Behavior</div>';
       h += '<div class="natd-rich">' + esc(s.behavior_he) + '</div>';
     }
     if (s.info) h += '<div class="natd-info">' + esc(s.info) + '</div>';
     // folklore — myth, tradition, name-lore
     if (s.folklore_he){
-      h += '<div class="natd-sec">מָסֹרֶת וְסִפּוּר</div>';
+      h += '<div class="natd-sec">Tradition &amp; Lore</div>';
       h += '<div class="natd-rich">' + esc(s.folklore_he) + '</div>';
     }
     // 💡 fun fact — highlighted "did you know?" line
     if (s.fun_fact_he){
-      h += '<div class="natfact"><span class="natfact-k">💡 יָדַעְתָּ?</span> ' + esc(s.fun_fact_he) + '</div>';
+      h += '<div class="natfact"><span class="natfact-k">💡 Did you know?</span> ' + esc(s.fun_fact_he) + '</div>';
     }
     // actions
     var acts = '';
-    // 🔊 הקריאה — if a BUNDLED, free-licensed clip ships for this species (audio.local),
+    // 🔊 The call — if a BUNDLED, free-licensed clip ships for this species (audio.local),
     // render a PLAY button that plays it offline via window.__amb.playCall(id). Otherwise
     // keep the external link as an honest fallback (no fake "play" with nothing behind it).
     var hasLocal = !!(s.audio && s.audio.local);
     if (hasLocal) {
-      acts += '<button type="button" class="natbtn snd" data-nat-play-call="' + esc(s.id) + '">🔊 הַקְּרִיאָה</button>';
+      acts += '<button type="button" class="natbtn snd" data-nat-play-call="' + esc(s.id) + '">🔊 The call</button>';
     } else if (s.sound) {
-      acts += '<a class="natbtn snd" href="' + esc(s.sound) + '" target="_blank" rel="noopener">🔊 הַקְּרִיאָה ↗</a>';
+      acts += '<a class="natbtn snd" href="' + esc(s.sound) + '" target="_blank" rel="noopener">🔊 The call ↗</a>';
     }
-    if (s.link)  acts += '<a class="natbtn" href="' + esc(s.link) + '" target="_blank" rel="noopener">מֵידָע נוֹסָף ↗</a>';
+    if (s.link)  acts += '<a class="natbtn" href="' + esc(s.link) + '" target="_blank" rel="noopener">More info ↗</a>';
     if (acts) h += '<div class="natd-acts">' + acts + '</div>';
     // bundled-call credit (honest attribution for the offline recording)
     if (s.audio && s.audio.local) {
-      h += '<div class="natsndcred">🎙️ הַקְלָטָה: ' + esc(s.audio.credit || '') +
+      h += '<div class="natsndcred">🎙️ Recording: ' + esc(s.audio.credit || '') +
            (s.audio.license ? ' · ' + esc(s.audio.license) : '') + ' · iNaturalist</div>';
     }
-    h += '<div class="idt-foot">מַדְרִיךְ שָׂדֶה — נְתוּנִים מְאֻמָּתִים לְאֵזוֹר לרקמונט. תְּמוּנָה בְּרִשְׁיוֹן חָפְשִׁי (Wikimedia).</div>';
+    h += '<div class="idt-foot">Field guide — data verified for the Larkmont area. Photo under a free license (Wikimedia).</div>';
     h += '</div>';
     return h;
   }
@@ -219,12 +219,12 @@
      press toggles it off. Reflects playing/stopped on the button label; if the
      master mute is on, nudges the label honestly. Never throws if __amb is
      missing (button just no-ops). */
-  function setPlayLabel(btn, on){ if (btn) btn.innerHTML = on ? '⏸ עוֹצֵר' : '🔊 הַקְּרִיאָה'; }
+  function setPlayLabel(btn, on){ if (btn) btn.innerHTML = on ? '⏸ Stop' : '🔊 The call'; }
   function onPlayCall(btn){
     var id = btn.getAttribute('data-nat-play-call');
     var amb = window.__amb;
     if (!amb || typeof amb.playCall !== 'function') return;
-    if (amb.isMuted && amb.isMuted()){ btn.innerHTML = '🔇 מֻשְׁתָּק'; setTimeout(function(){ setPlayLabel(btn, false); }, 1100); return; }
+    if (amb.isMuted && amb.isMuted()){ btn.innerHTML = '🔇 Muted'; setTimeout(function(){ setPlayLabel(btn, false); }, 1100); return; }
     var res = amb.playCall(id) || {};
     if (res.ok && res.playing){
       // reset every other play button in the card, mark this one playing
@@ -238,7 +238,7 @@
   function ensureCard(){
     if (_card) return;
     ensureCSS();
-    _card = document.createElement('div'); _card.id = 'natureCard'; _card.setAttribute('dir','rtl');
+    _card = document.createElement('div'); _card.id = 'natureCard'; _card.setAttribute('dir','ltr');
     _cardBody = document.createElement('div'); _cardBody.className = 'body';
     _card.appendChild(_cardBody); document.body.appendChild(_card);
     // close on ✕, on the backdrop margin, or Escape; play a bundled call on 🔊
@@ -259,7 +259,7 @@
     var emoji = s ? (EMOJI[s.cat] || '•') : '•';
     _cardBody.innerHTML =
       '<div class="hd"><h3><span class="e">' + emoji + '</span>' + esc(name) + '</h3>' +
-        '<span class="x" data-nat-close="1" title="סְגֹר">✕</span></div>' +
+        '<span class="x" data-nat-close="1" title="Close">✕</span></div>' +
       speciesDetailHtml(_cur);
   }
 
@@ -279,9 +279,9 @@
   }
 
   /* ---- the rows for one category, with residency/lifeform grouping --------
-     birds  → "מְקוֹמִיּוֹת · כָּל הַשָּׁנָה" group first, then "נוֹדְדוֹת / עוֹנָתִיּוֹת".
+     birds  → "Residents · Year-round" group first, then "Migrants / Seasonal".
      plants → ordered annuals/geophytes first, then perennials, under a
-              "חַד-שְׁנָתִיִּים / עוֹנָתִיִּים" → "רַב-שְׁנָתִיִּים" sub-split.
+              "Annuals / Seasonal" → "Perennials" sub-split.
      others → flat, iconic-first (unchanged behaviour). */
   function iconicSort(a,b){ return (b.iconic?1:0) - (a.iconic?1:0); }
   function subGroup(title, list){
@@ -295,14 +295,14 @@
     if (catKey === 'bird'){
       var local = inC.filter(isResident).sort(iconicSort);
       var moving = inC.filter(function(s){ return !isResident(s); }).sort(iconicSort);
-      return subGroup('מְקוֹמִיּוֹת · כָּל הַשָּׁנָה', local) +
-             subGroup('נוֹדְדוֹת / עוֹנָתִיּוֹת', moving);
+      return subGroup('Residents · Year-round', local) +
+             subGroup('Migrants / Seasonal', moving);
     }
     if (catKey === 'plant'){
       var seasonal = inC.filter(isSeasonalPlant).sort(function(a,b){ return lfOrd(a)-lfOrd(b) || iconicSort(a,b); });
       var peren = inC.filter(function(s){ return !isSeasonalPlant(s); }).sort(function(a,b){ return lfOrd(a)-lfOrd(b) || iconicSort(a,b); });
-      return subGroup('חַד-שְׁנָתִיִּים / עוֹנָתִיִּים', seasonal) +
-             subGroup('רַב-שְׁנָתִיִּים', peren);
+      return subGroup('Annuals / Seasonal', seasonal) +
+             subGroup('Perennials', peren);
     }
     return inC.slice().sort(iconicSort).map(function(s){ return rowHtml(s, {}); }).join('');
   }
@@ -310,11 +310,11 @@
   /* ---- render the guide list into the host -------------------------------- */
   function render(){
     if (!_host) return;
-    if (!DATA){ _host.innerHTML = '<div class="est">טוֹעֵן מַדְרִיךְ טֶבַע…</div>'; return; }
+    if (!DATA){ _host.innerHTML = '<div class="est">Loading nature guide…</div>'; return; }
     var q = _query.trim();
-    var html = '<h3>מַדְרִיךְ הַטֶּבַע · לרקמונט</h3>' +
-      '<div class="sub">מָה חַי סְבִיבְךָ — לְפִי הָעוֹנָה. לְחַץ עַל מִין לְכַרְטִיס מָלֵא.</div>' +
-      '<input class="natq" placeholder="חיפוש מין…" value="' + esc(_query) + '">';
+    var html = '<h3>Nature Guide · Larkmont</h3>' +
+      '<div class="sub">What lives around you — by season. Tap a species for the full card.</div>' +
+      '<input class="natq" placeholder="Search species…" value="' + esc(_query) + '">';
 
     if (q){
       var ql = q.toLowerCase();
@@ -324,13 +324,13 @@
                (s.en && s.en.toLowerCase().indexOf(ql) !== -1) ||
                (s.info && s.info.indexOf(q) !== -1);
       });
-      html += '<div class="nat-sec">תּוֹצָאוֹת · ' + hits.length + '</div>';
+      html += '<div class="nat-sec">Results · ' + hits.length + '</div>';
       html += hits.length ? hits.map(function(s){ return rowHtml(s, {}); }).join('')
-                          : '<div class="est">אֵין תּוֹצָאוֹת</div>';
+                          : '<div class="est">No results</div>';
     } else {
-      // ---- בסביבה עכשיו (grouped by category, scannable) ----
+      // ---- around you now (grouped by category, scannable) ----
       var nowList = DATA.filter(inSeasonNow);
-      html += '<div class="nat-now">🟢 בַּסְּבִיבָה עַכְשָׁו · ' + MONTHS_HE[curMonth()-1] + ' <span class="cnt">' + nowList.length + '</span></div>';
+      html += '<div class="nat-now">🟢 Around you now · ' + MONTHS_HE[curMonth()-1] + ' <span class="cnt">' + nowList.length + '</span></div>';
       CATS.forEach(function(c){
         var inC = nowList.filter(function(s){ return s.cat === c.k; });
         if (!inC.length) return;
@@ -343,9 +343,9 @@
         html += '<div class="natcatsub">' + c.emoji + ' ' + c.he + '</div>';
         html += inC.map(function(s){ return rowHtml(s, {now:true}); }).join('');
       });
-      // ---- עיון לפי קבוצה (collapsible; all species, in-season marked) ----
-      //   birds split מקומיות/נודדות, plants lead with annuals/geophytes (catBodyHtml)
-      html += '<div class="nat-sec nat-browse">עִיּוּן לְפִי קְבוּצָה</div>';
+      // ---- browse by category (collapsible; all species, in-season marked) ----
+      //   birds split residents/migrants, plants lead with annuals/geophytes (catBodyHtml)
+      html += '<div class="nat-sec nat-browse">Browse by Category</div>';
       CATS.forEach(function(c){
         var inC = DATA.filter(function(s){ return s.cat === c.k; });
         if (!inC.length) return;
@@ -357,7 +357,7 @@
         if (open) html += '<div class="natcatbody">' + catBodyHtml(c.k) + '</div>';
       });
     }
-    html += '<div class="foot">תְּמוּנוֹת: Wikimedia (רִשְׁיוֹן חָפְשִׁי) · קְרִיאוֹת מֻקְלָטוֹת: iNaturalist (CC) · נְתוּנִים מְאֻמָּתִים לָאֵזוֹר</div>';
+    html += '<div class="foot">Photos: Wikimedia (free license) · Recorded calls: iNaturalist (CC) · Data verified for the area</div>';
     _host.innerHTML = html;
   }
 
@@ -400,7 +400,7 @@
     s.id = 'nature-css';
     s.textContent =
       '#wild-guide .natq{width:100%;margin:8px 0 4px;padding:7px 10px;background:rgba(255,255,255,.04);' +
-        'border:1px solid rgba(202,161,90,.28);border-radius:8px;color:#e9e3d4;font-family:Heebo,sans-serif;font-size:13px;direction:rtl}' +
+        'border:1px solid rgba(202,161,90,.28);border-radius:8px;color:#e9e3d4;font-family:Heebo,sans-serif;font-size:13px;direction:ltr}' +
       '#wild-guide .natq::placeholder{color:#7d7560}' +
       '#wild-guide .nat-now{margin:12px 0 4px;color:' + GOLD + ';font-family:Bellefair,serif;font-size:14px;letter-spacing:.03em}' +
       '#wild-guide .nat-now .cnt,#wild-guide .natcathd .cnt{color:#a99b78;font-size:11px;font-family:Heebo;margin-inline-start:4px}' +
@@ -417,14 +417,14 @@
       '#wild-guide .natsci{color:#857c66;font-size:10px;font-style:italic}' +
       '#wild-guide .nattag{color:#857c66;font-size:10px;font-family:Heebo;flex:0 0 auto}' +
       '#wild-guide .nattag.on{color:#7fb88a}' +
-      // ---- residency / lifeform badge on a row (מקומית · נודדת · חד-שנתי) ----
+      // ---- residency / lifeform badge on a row (resident · migrant · annual) ----
       '#wild-guide .natkind{flex:0 0 auto;font-size:9.5px;font-family:Heebo;padding:1.5px 6px;border-radius:999px;' +
         'line-height:1.35;white-space:nowrap;border:1px solid transparent}' +
       '#wild-guide .natkind.res-local{color:#8fd0a0;background:rgba(127,184,138,.13);border-color:rgba(127,184,138,.34)}' +
       '#wild-guide .natkind.res-move{color:#e3c489;background:rgba(202,161,90,.12);border-color:rgba(202,161,90,.32)}' +
       '#wild-guide .natkind.lf-annual{color:#8fd0a0;background:rgba(127,184,138,.13);border-color:rgba(127,184,138,.34)}' +
       '#wild-guide .natkind.lf-peren{color:#bdb08c;background:rgba(255,255,255,.05);border-color:rgba(202,161,90,.22)}' +
-      // ---- a sub-group heading inside a category (מקומיות / נודדות · חד-שנתיים / רב-שנתיים) ----
+      // ---- a sub-group heading inside a category (residents / migrants · annuals / perennials) ----
       '#wild-guide .natgrp{margin:8px 0 3px;color:#cdbf9b;font-size:11px;font-family:Heebo;letter-spacing:.02em;opacity:.9;' +
         'padding-bottom:3px;border-bottom:1px dashed rgba(202,161,90,.18)}' +
       '#wild-guide .natgo{color:' + GOLD + ';font-size:14px;opacity:.65;flex:0 0 auto}' +
@@ -450,7 +450,7 @@
         'border:1px solid rgba(202,161,90,.22);background:rgba(255,255,255,.03);transition:.15s}' +
       '#natureCard .x:hover{color:#fff7e6;border-color:rgba(202,161,90,.5)}' +
       // ---- the species-card inner content (was the side-panel card) ----
-      '#natureCard .nat-card{direction:rtl}' +
+      '#natureCard .nat-card{direction:ltr}' +
       '#natureCard .natphoto{position:relative;border-radius:9px;overflow:hidden;margin-bottom:9px;border:1px solid rgba(202,161,90,.22)}' +
       '#natureCard .natphoto img{width:100%;max-height:210px;object-fit:cover;display:block}' +
       '#natureCard .natcred{position:absolute;left:0;right:0;bottom:0;padding:3px 7px;font-size:9px;color:#d8cfb8;' +

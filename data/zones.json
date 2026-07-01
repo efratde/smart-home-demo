@@ -1,7 +1,7 @@
 [
 {
 "id": "backyard",
-"name_he": "החצר האחורית",
+"name_he": "The backyard",
 "color": "#2a5d8f",
 "bbox": {
 "south": 34.0,
@@ -12,7 +12,7 @@
 },
 {
 "id": "balcony",
-"name_he": "מרפסת קומה ראשונה",
+"name_he": "First-floor balcony",
 "color": "#4a8a3a",
 "bbox": {
 "south": 34.0,
@@ -23,7 +23,7 @@
 },
 {
 "id": "front",
-"name_he": "חזית הבית",
+"name_he": "House front",
 "color": "#d97f2a",
 "bbox": {
 "south": 34.0,

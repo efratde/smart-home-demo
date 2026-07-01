@@ -7,30 +7,30 @@
   let mr=requestAnimationFrame(()=>{}); while(mr-- > 0) cancelAnimationFrame(mr);
   let mi=setInterval(()=>{},9e6); while(mi-- > 0) clearInterval(mi);
   const errEl=document.getElementById('err');
-  // Alex never sees a raw English stack: render a warm Hebrew fallback card; the raw
-  // error hides behind a "פרטים טכניים" toggle (revealed only if he asks for it).
+  // Alex never sees a raw stack: render a warm fallback card; the raw
+  // error hides behind a "Technical details" toggle (revealed only if he asks for it).
   const fail=(m)=>{
     console.error(m);
     try{
       const esc=String(m).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       errEl.innerHTML=
         '<div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;'+
-        'background:#06070f;z-index:120;font-family:\'Heebo\',sans-serif;padding:24px;" dir="rtl">'+
+        'background:#06070f;z-index:120;font-family:\'Heebo\',sans-serif;padding:24px;" dir="ltr">'+
         '<div style="max-width:420px;text-align:center;color:#efe6cf;background:linear-gradient(150deg,rgba(14,16,30,.92),rgba(8,9,18,.9));'+
         'border:1px solid rgba(202,161,90,.32);border-radius:6px;box-shadow:0 16px 44px rgba(0,0,0,.5);padding:26px 24px;">'+
         '<div style="font-size:34px;line-height:1;margin-bottom:14px;">🌅</div>'+
         '<div style="font-family:\'Frank Ruhl Libre\',serif;font-size:17px;color:#fff7e6;line-height:1.55;">'+
-        'הַתְּצוּגָה הַתְּלַת-מֵמַדִּית לֹא נִטְעֲנָה — נַסּוּ דַּפְדְּפָן אוֹ מַכְשִׁיר אַחֵר</div>'+
+        'The 3D view failed to load — try a different browser or device</div>'+
         '<button id="errTechToggle" type="button" style="margin-top:18px;background:transparent;border:1px solid rgba(202,161,90,.4);'+
         'color:#e7c98a;font-family:\'Heebo\',sans-serif;font-size:12px;padding:7px 14px;border-radius:4px;cursor:pointer;min-height:34px;">'+
-        'פְּרָטִים טֶכְנִיִּים</button>'+
+        'Technical details</button>'+
         '<pre id="errTechBody" style="display:none;text-align:left;direction:ltr;margin-top:14px;color:#ff9b9b;'+
         'font-family:monospace;font-size:11px;white-space:pre-wrap;word-break:break-word;max-height:40vh;overflow:auto;">'+esc+'</pre>'+
         '</div></div>';
       const tg=errEl.querySelector&&errEl.querySelector('#errTechToggle');
       const bd=errEl.querySelector&&errEl.querySelector('#errTechBody');
       if(tg&&bd) tg.addEventListener('click',()=>{ bd.style.display = bd.style.display==='none' ? 'block' : 'none'; });
-    }catch(_e){ try{ errEl.textContent='הַתְּצוּגָה הַתְּלַת-מֵמַדִּית לֹא נִטְעֲנָה 🌅'; }catch(__e){} }
+    }catch(_e){ try{ errEl.textContent='The 3D view failed to load 🌅'; }catch(__e){} }
   };
   const MYGEN=(window.__gen=(window.__gen||0)+1);  // newest run supersedes older loops
   try{
@@ -207,7 +207,7 @@
                  t0:performance.now(), dur:850 };
   };
   // window.__flyTopHome(): a near-top-down "from above" overview of the house + yard — fired
-  // when the בית/חצר tabs open so the spatial view is immediate. Reuses the home-tween plumbing;
+  // when the House/Yard tabs open so the spatial view is immediate. Reuses the home-tween plumbing;
   // a small +z keeps OrbitControls' polar clamp (φ<π/2) off the exact pole.
   window.__flyTopHome=function(){
     _focusTween=null; _groundTween=null; restoreGroundClamp();
@@ -241,7 +241,7 @@
   Weather.init(scene);
 
   // ====================================================================
-  //  ENTER THE HOUSE  ("היכנס לבית")  — reveal the interior + dollhouse view
+  //  ENTER THE HOUSE  ("Enter the house")  — reveal the interior + dollhouse view
   //  --------------------------------------------------------------------
   //  building.js already models the FULL interior inside the shell (partitions,
   //  per-room floor tiles, stairs, kitchen counter, bathtub). It's normally
@@ -283,7 +283,7 @@
   //  orbit stays around the house. The ground-safe polar clamp (≤1.5 rad) is
   //  kept armed so manual orbit never dives under the floor. EXIT restores the
   //  saved outside pose + the original min/max distance. __flyHome() also EXITs
-  //  (so "⌂ הביתה" doubles as a leave-the-house action).
+  //  (so "⌂ Home" doubles as a leave-the-house action).
   // ====================================================================
   const EnterMode=(function(){
     const _GH=(house.userData&&house.userData.GH)||2.80;   // ground storey ≈2.80
@@ -330,19 +330,19 @@
     // roomAtLocal() so a click on a room's floor in the 3D model selects it.
     const ROOMS={
       ground:[
-        {id:'kitchen',  he:'מטבח',      cx:6.39, cz:1.80, x0:4.745, x1:8.41,  z0:0.0, z1:3.6},
-        {id:'living',   he:'סלון',      cx:6.84, cz:5.40, x0:4.215, x1:10.50, z0:3.6, z1:7.2},
-        {id:'bedroomG', he:'חדר שינה',  cx:1.59, cz:5.40, x0:0.0,   x1:4.215, z0:3.6, z1:7.2},
-        {id:'bathG',    he:'חדר רחצה',  cx:2.03, cz:1.80, x0:1.375, x1:2.565, z0:0.0, z1:3.6},
-        {id:'pantry',   he:'מזווה',     cx:0.72, cz:1.80, x0:0.0,   x1:1.375, z0:0.0, z1:3.6},
-        {id:'stairsG',  he:'מדרגות',    cx:3.10, cz:1.80, x0:2.565, x1:4.745, z0:0.0, z1:3.6},
+        {id:'kitchen',  he:'Kitchen',    cx:6.39, cz:1.80, x0:4.745, x1:8.41,  z0:0.0, z1:3.6},
+        {id:'living',   he:'Living room', cx:6.84, cz:5.40, x0:4.215, x1:10.50, z0:3.6, z1:7.2},
+        {id:'bedroomG', he:'Bedroom',    cx:1.59, cz:5.40, x0:0.0,   x1:4.215, z0:3.6, z1:7.2},
+        {id:'bathG',    he:'Bathroom',   cx:2.03, cz:1.80, x0:1.375, x1:2.565, z0:0.0, z1:3.6},
+        {id:'pantry',   he:'Pantry',     cx:0.72, cz:1.80, x0:0.0,   x1:1.375, z0:0.0, z1:3.6},
+        {id:'stairsG',  he:'Stairs',     cx:3.10, cz:1.80, x0:2.565, x1:4.745, z0:0.0, z1:3.6},
       ],
       upper:[
-        {id:'bedroomNE',he:'חדר שינה (צפון)', cx:6.80, cz:1.80, x0:5.175, x1:8.41,  z0:0.0, z1:3.6},
-        {id:'bedroomSW',he:'חדר שינה (דרום)', cx:1.59, cz:5.40, x0:0.0,   x1:4.215, z0:3.6, z1:7.2},
-        {id:'bathU',    he:'חדר רחצה',        cx:3.55, cz:1.80, x0:2.41,  x1:5.175, z0:0.0, z1:3.6},
-        {id:'terrace',  he:'מרפסת',           cx:6.84, cz:5.40, x0:4.215, x1:10.50, z0:3.6, z1:7.2},
-        {id:'landing',  he:'גרם המדרגות',     cx:1.27, cz:1.80, x0:0.0,   x1:2.41,  z0:0.0, z1:3.6},
+        {id:'bedroomNE',he:'Bedroom (north)', cx:6.80, cz:1.80, x0:5.175, x1:8.41,  z0:0.0, z1:3.6},
+        {id:'bedroomSW',he:'Bedroom (south)', cx:1.59, cz:5.40, x0:0.0,   x1:4.215, z0:3.6, z1:7.2},
+        {id:'bathU',    he:'Bathroom',        cx:3.55, cz:1.80, x0:2.41,  x1:5.175, z0:0.0, z1:3.6},
+        {id:'terrace',  he:'Terrace',         cx:6.84, cz:5.40, x0:4.215, x1:10.50, z0:3.6, z1:7.2},
+        {id:'landing',  he:'Stair landing',   cx:1.27, cz:1.80, x0:0.0,   x1:2.41,  z0:0.0, z1:3.6},
       ],
     };
     // footprint centre (building.js: BX=8.41, BZ=7.20) for the floor overview
@@ -601,21 +601,21 @@
     // Injected ONCE, shown only while inside (display:none otherwise). Top-centre,
     // clear of the left weather column, the right tabs panel (#inst), the bottom
     // time bar and the bottom-left compass. Styled like .panel (dark glass + gold),
-    // RTL. Row 1 = floor pills; Row 2 = [מבט-על] + room buttons for the active floor.
+    // RTL. Row 1 = floor pills; Row 2 = [Overview] + room buttons for the active floor.
     let _nav=null, _floorRowEls=null, _roomRow=null;
     function buildNav(){
       if(_nav) return _nav;
       const root=document.getElementById('ui')||document.body;
       _nav=document.createElement('div'); _nav.id='enterNav'; _nav.className='panel';
-      _nav.setAttribute('dir','rtl'); _nav.style.display='none';
+      _nav.setAttribute('dir','ltr'); _nav.style.display='none';
       // Row 1 — floor selector
       const r1=document.createElement('div'); r1.className='enRow enFloors';
       // explicit EXIT pill — leaving the dollhouse from the floating button alone was easy to miss
-      const bX=document.createElement('button'); bX.type='button'; bX.className='enPill enExit'; bX.textContent='✕ יְצִיאָה'; bX.title='יְצִיאָה מֵהַבַּיִת';
+      const bX=document.createElement('button'); bX.type='button'; bX.className='enPill enExit'; bX.textContent='✕ Exit'; bX.title='Exit the house';
       bX.addEventListener('click',()=>exit());
       r1.appendChild(bX);
-      const bUp=document.createElement('button'); bUp.type='button'; bUp.className='enPill'; bUp.dataset.floor='upper'; bUp.textContent='קומה עליונה';
-      const bGn=document.createElement('button'); bGn.type='button'; bGn.className='enPill'; bGn.dataset.floor='ground'; bGn.textContent='קומת קרקע';
+      const bUp=document.createElement('button'); bUp.type='button'; bUp.className='enPill'; bUp.dataset.floor='upper'; bUp.textContent='Upper floor';
+      const bGn=document.createElement('button'); bGn.type='button'; bGn.className='enPill'; bGn.dataset.floor='ground'; bGn.textContent='Ground floor';
       bUp.addEventListener('click',()=>showFloor('upper'));
       bGn.addEventListener('click',()=>showFloor('ground'));
       r1.appendChild(bUp); r1.appendChild(bGn);
@@ -629,7 +629,7 @@
     function rebuildRoomRow(){
       buildNav(); _roomRow.innerHTML='';
       // leading floor-overview button
-      const ov=document.createElement('button'); ov.type='button'; ov.className='enPill enOver'; ov.dataset.room='__over'; ov.textContent='מבט-על';
+      const ov=document.createElement('button'); ov.type='button'; ov.className='enPill enOver'; ov.dataset.room='__over'; ov.textContent='Overview';
       ov.addEventListener('click',()=>floorOverview());
       _roomRow.appendChild(ov);
       (ROOMS[_floor]||[]).forEach(r=>{
@@ -654,9 +654,9 @@
       const b=document.getElementById('enterBtn'); if(!b) return;
       b.classList.toggle('on',_on);
       b.setAttribute('aria-pressed',_on?'true':'false');
-      b.innerHTML = _on ? '<span class="hg">⤴</span> צֵא מֵהַבַּיִת'
-                        : '<span class="hg">🚪</span> הִיכָּנֵס לַבַּיִת';
-      b.title = _on ? 'יציאה מהבית' : 'כניסה לבית — חשיפת החדרים';
+      b.innerHTML = _on ? '<span class="hg">⤴</span> Leave the house'
+                        : '<span class="hg">🚪</span> Enter the house';
+      b.title = _on ? 'Exit the house' : 'Enter the house — reveal the rooms';
     }
     // room plan-frame geometry by id (for the workbench's derived room-climate)
     function roomGeom(id){
@@ -684,10 +684,10 @@
     document.head.appendChild(st);
     let el=null;
     window.__heatLegend=function(on){
-      if(on&&!el){ el=document.createElement('div'); el.id='heatLegend'; el.setAttribute('dir','rtl');
-        el.innerHTML='<b>מַפַּת חֹם · חֲדָרִים</b><div class="grad"></div>'+
-          '<div class="ends"><span>קָרִיר</span><span>חַם</span></div>'+
-          '<div class="hint">טֶמְפֵּרָטוּרָה מוֹעֲרֶכֶת לְפִי חֲשִׂיפָה וְקוֹמָה · מוֹדֵל</div>';
+      if(on&&!el){ el=document.createElement('div'); el.id='heatLegend'; el.setAttribute('dir','ltr');
+        el.innerHTML='<b>Heat map · Rooms</b><div class="grad"></div>'+
+          '<div class="ends"><span>Cool</span><span>Warm</span></div>'+
+          '<div class="hint">Temperature estimated by exposure and floor · model</div>';
         document.body.appendChild(el); }
       if(el) el.style.display=on?'block':'none';
     };
@@ -741,34 +741,34 @@
 
     // ---- the variables + seasons the control offers (shared with panels.js) ----
     const VARIABLES=[
-      { key:'surfaceTemp', label_he:'טמפ׳ פני השטח', unit:'°C', temp:true },
-      { key:'airDelta',    label_he:'Δ מהעיר',        unit:'°C', signed:true },
-      { key:'dli',         label_he:'אור · DLI',      unit:'mol/m²/d' },
-      { key:'sunHours',    label_he:'שעות שמש',        unit:'ש׳/יום' },
-      { key:'frost',       label_he:'סיכון כפור',      unit:'0–100' },
-      { key:'etc',         label_he:'מים · ביקוש',     unit:'מ״מ/יום' },
-      { key:'wind',        label_he:'חשיפה לרוח',      unit:'0–1' }
+      { key:'surfaceTemp', label_he:'Surface temp', unit:'°C', temp:true },
+      { key:'airDelta',    label_he:'Δ from city',  unit:'°C', signed:true },
+      { key:'dli',         label_he:'Light · DLI',  unit:'mol/m²/d' },
+      { key:'sunHours',    label_he:'Sun hours',     unit:'h/day' },
+      { key:'frost',       label_he:'Frost risk',    unit:'0–100' },
+      { key:'etc',         label_he:'Water · demand', unit:'mm/day' },
+      { key:'wind',        label_he:'Wind exposure', unit:'0–1' }
     ];
     const SEASONS=[
-      { key:'live',   label_he:'עכשיו' },
-      { key:'winter', label_he:'חורף' },
-      { key:'spring', label_he:'אביב' },
-      { key:'summer', label_he:'קיץ' },
-      { key:'autumn', label_he:'סתיו' }
+      { key:'live',   label_he:'Now' },
+      { key:'winter', label_he:'Winter' },
+      { key:'spring', label_he:'Spring' },
+      { key:'summer', label_he:'Summer' },
+      { key:'autumn', label_he:'Autumn' }
     ];
     // Per-variable colour ramps + display bounds. Bounds are NAMED CONSTANTS so
     // the colours/legend can be retuned once the render is seen (see report).
     // Temperature variables (surfaceTemp / airDelta) defer to Derive.tempColor.
     const RAMP={
       // surfaceTemp uses a wide skin-temp window (gravel can bake well past air).
-      surfaceTemp:{ min:5,   max:60,  unit:'°C',       label_he:'טמפ׳ פני השטח' },
+      surfaceTemp:{ min:5,   max:60,  unit:'°C',       label_he:'Surface temp' },
       // airDelta is a small signed window centred on 0 (cell vs town).
-      airDelta:   { min:-3,  max:3,   unit:'°C',       label_he:'Δ אוויר מול העיר' },
-      dli:        { min:4,   max:45,  unit:'mol/m²/d', label_he:'DLI יומי' },
-      sunHours:   { min:0,   max:12,  unit:'ש׳/יום',   label_he:'שעות שמש ישירה' },
-      frost:      { min:0,   max:100, unit:'0–100',    label_he:'מדד סיכון כפור' },
-      etc:        { min:0,   max:7,   unit:'מ״מ/יום',  label_he:'ביקוש מים (ETc)' },
-      wind:       { min:0,   max:1,   unit:'0–1',      label_he:'חשיפה לרוח' }
+      airDelta:   { min:-3,  max:3,   unit:'°C',       label_he:'Δ air vs city' },
+      dli:        { min:4,   max:45,  unit:'mol/m²/d', label_he:'Daily DLI' },
+      sunHours:   { min:0,   max:12,  unit:'h/day',    label_he:'Direct sun hours' },
+      frost:      { min:0,   max:100, unit:'0–100',    label_he:'Frost risk index' },
+      etc:        { min:0,   max:7,   unit:'mm/day',   label_he:'Water demand (ETc)' },
+      wind:       { min:0,   max:1,   unit:'0–1',      label_he:'Wind exposure' }
     };
     // simple 0..1 ramp helpers for the non-temperature variables.
     const lerp=(a,b,t)=>a+(b-a)*t;
@@ -1048,7 +1048,7 @@
   })();
 
   // ====================================================================
-  //  SPATIAL iNaturalist SIGHTINGS  (the טבע tab, made spatial)
+  //  SPATIAL iNaturalist SIGHTINGS  (the Nature tab, made spatial)
   //  Each live sighting from Derive.fetchSightings() carries its REAL
   //  lon/lat; we place a small pin/billboard at that real world position
   //  around the house — SAME frame as the terrain (+x=E, +z=S; 1 unit = 1 m,
@@ -1056,7 +1056,7 @@
   //  Terrain.sampleHeight. Each pin is tinted by its iconic taxon (plant=green,
   //  bird=blue, insect=amber, …). The group is added to `scene` (NOT houseWrap,
   //  whose 5° yaw + drop is house-only) so geo points land truthfully on the
-  //  ground. A "תצפיות" switch in the layer panel toggles the group. Pins are
+  //  ground. An "Observations" switch in the layer panel toggles the group. Pins are
   //  raycast-clickable → __flyToGround(lng,lat) + surface the sighting name.
   //  Markers are rebuilt whenever the live fetch resolves (see refresh()).
   // ====================================================================
@@ -1129,7 +1129,7 @@
       });
     }
     function setVisible(v){ grp.visible=v; }
-    // pull the live sightings (same source the טבע tab lists) and build pins.
+    // pull the live sightings (same source the Nature tab lists) and build pins.
     // Re-runnable so panels.js / a refresh can rebuild from the latest fetch.
     function refresh(radiusKm){
       if(!(window.Derive&&Derive.fetchSightings)) return Promise.resolve([]);
@@ -1175,7 +1175,7 @@
   })();
   // ROOM PICK — while inside the house (EnterMode), a click (not a drag) on a
   // room's floor/wall raycasts the house, converts the hit to house-LOCAL coords,
-  // and selects that room → frames it + opens its in-world workbench (גישה א׳).
+  // and selects that room → frames it + opens its in-world workbench (Approach A).
   // Hidden meshes (roof/other floor) are skipped by the raycaster, so the hit is
   // on the visible floor you clicked. Sightings pins are hidden inside, so the two
   // click handlers never conflict.
@@ -1197,7 +1197,7 @@
   })();
 
   // ====================================================================
-  //  GARDEN PLANT MARKERS (GardenPins)  — Phase 2 of גישה א׳
+  //  GARDEN PLANT MARKERS (GardenPins)  — Phase 2 of Approach A
   //  ------------------------------------------------------------------
   //  Billboarded plant markers sitting on the REAL garden surface. The
   //  plant DATA + tracking card live in garden.js (DOM); this is the scene
@@ -1351,16 +1351,16 @@
     wrap.appendChild(cv); wrap.appendChild(read);
     // append once the UI root exists (injectUI runs slightly later); poll briefly.
     // Positioned BOTTOM-LEFT (see #compass CSS) — moved there from bottom-right
-    // because the long right-side שמיים tab panel overlapped/hid it. The moon-finder
+    // because the long right-side Sky tab panel overlapped/hid it. The moon-finder
     // pointer on the rose + the readout below it carry the moon bearing/rise info;
-    // the fuller moon block now also lives in the שמיים tab (panels.js).
+    // the fuller moon block now also lives in the Sky tab (panels.js).
     (function attach(t){ const root=document.getElementById('ui');
       if(root){ root.appendChild(wrap); }
       else if((t||0)<200) setTimeout(()=>attach((t||0)+1),40); })(0);
     const x=cv.getContext('2d');
 
-    // cardinal labels (Hebrew, RTL-friendly): צ=north, מז=east, ד=south, מע=west
-    const CARD=[{b:0,t:'צ'},{b:90,t:'מז'},{b:180,t:'ד'},{b:270,t:'מע'}];
+    // cardinal labels: N=north, E=east, S=south, W=west
+    const CARD=[{b:0,t:'N'},{b:90,t:'E'},{b:180,t:'S'},{b:270,t:'W'}];
     const TICKS=[0,45,90,135,180,225,270,315];
     const D2R=Math.PI/180;
 
@@ -1484,15 +1484,15 @@
       }
 
       // readout under the rose: heading cardinal + moon state
-      const CARD8=['צ','צ-מז','מז','ד-מז','ד','ד-מע','מע','צ-מע'];
+      const CARD8=['N','NE','E','SE','S','SW','W','NW'];
       const card=CARD8[Math.round(heading/45)%8];
-      const moonTxt = moonUp ? ('ירח '+Math.round(Mo.altDeg)+'° מעל האופק')
-                             : ('ירח מתחת לאופק'+(()=>{const r=nextMoonrise(date);return r?' · זריחה '+r:'';})());
-      read.innerHTML='<span class="ch">מצפן · '+card+' '+Math.round(heading)+'°</span>'+
+      const moonTxt = moonUp ? ('Moon '+Math.round(Mo.altDeg)+'° above the horizon')
+                             : ('Moon below the horizon'+(()=>{const r=nextMoonrise(date);return r?' · rise '+r:'';})());
+      read.innerHTML='<span class="ch">Compass · '+card+' '+Math.round(heading)+'°</span>'+
                      '<span class="cm '+(moonUp?'up':'down')+'">'+moonTxt+'</span>';
       // NOTE: the old #moonDirArrow / #moonDirState writes (which fed the bottom-left
       // moon card) were removed — that card is gone; its moon-direction arrow + rise
-      // info now lives in the שמיים tab (panels.js). The compass keeps its own
+      // info now lives in the Sky tab (panels.js). The compass keeps its own
       // on-rose moon-finder pointer + the readout above.
     }
     return { update };
@@ -1507,7 +1507,7 @@
     camera.position.set(28,h+20,38);
     controls.update();
     // capture THIS (terrain-correct) pose as the canonical "home" framing so the
-    // הביתה button returns here exactly, not to the pre-terrain fallback.
+    // Home button returns here exactly, not to the pre-terrain fallback.
     _home.tgt.copy(controls.target); _home.cam.copy(camera.position);
   });
 
@@ -1578,7 +1578,7 @@
     if(!ds&&!dl) return; const d=refDate(); const doy=dayOfYear(d);
     if(ds && document.activeElement!==ds) ds.value=doy;
     if(dl) dl.textContent=fmtDate(d); }
-  const MON_HE=['ינו','פבר','מרץ','אפר','מאי','יונ','יול','אוג','ספט','אוק','נוב','דצמ'];
+  const MON_HE=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   function fmtDate(d){ const {Mo,D}=localYMD(d); return D+' '+MON_HE[Mo-1]; }
   function currentDate(dt){
     if(getMode()==='live') return new Date();
@@ -1596,7 +1596,7 @@
   const getWMode=()=>D.dataset.wmode||'live';
   const setWMode=(m)=>{ D.dataset.wmode=m; };
   // pull current conditions once, and (in parallel) the hourly cloud forecast used
-  // for tonight's stargazing verdict in the שמיים tab. ALSO pull the hyper-local
+  // for tonight's stargazing verdict in the Sky tab. ALSO pull the hyper-local
   // data layers the top-left card needs: AIR QUALITY (PM/AQI/dust/UV) and the
   // garden+water ENV (soil temp/moisture, ET0, precip prob, accumulated rain) —
   // these have no manual override, so we always (re)fetch them on the same cadence
@@ -1608,12 +1608,12 @@
     if(Weather.fetchEnv) Weather.fetchEnv().then(()=>updateWeatherUI(Weather.state));
     // POLLEN/ENV (keyless Open-Meteo, optional Google key): refresh() is internally
     // cache-gated (~3h TTL) so this hits the network only when stale, on the same
-    // 12-min cadence + boot + pill-click. Repaint the 'סביבה' tab after each refresh.
+    // 12-min cadence + boot + pill-click. Repaint the 'Environment' tab after each refresh.
     if(window.EnvAPI&&EnvAPI.refresh) EnvAPI.refresh().then(()=>{ if(window.__renderEnv) window.__renderEnv(); });
   }
   refreshLocalData();
   // AUTO-REFRESH: re-pull live conditions every ~12 min, but ONLY while in 'live'
-  // mode so a manually-selected pill (בהיר/אובך/עננים/גשם) is never overwritten.
+  // mode so a manually-selected pill (clear/dust/clouds/rain) is never overwritten.
   // Also refresh the forecast occasionally so 'tonight's cloud' stays current.
   // Air + env refresh on the SAME cadence (they're location facts, not a mood, so
   // they update regardless of the live/override pill state).
@@ -1730,7 +1730,7 @@
     // setLayer caches the desired state, so applying it immediately is safe even
     // though some layer objects (constellations, Milky Way, sats) load async.
     // sky-layer toggles (constellations / Milky Way / sun-moon paths / satellites) now live
-    // ONLY in the שמיים tab as on/off switches (panels.js renderSky → SkyRig.setLayer).
+    // ONLY in the Sky tab as on/off switches (panels.js renderSky → SkyRig.setLayer).
 
     // ---- SPATIAL SIGHTINGS toggle (same switch UI; drives Sightings.setVisible).
     // Not a SkyRig layer — it shows/hides the iNaturalist pin group. State
@@ -1745,10 +1745,10 @@
       sync();
     })();
 
-    // NOTE: the old loose "שכבה תרמית" (thermal) layer toggle that lived here was
+    // NOTE: the old loose "thermal layer" toggle that lived here was
     // REMOVED. The thermal/microclimate visualization is now the full
     // microclimate engine (yard heatmap + per-zone readout + plant recs), driven
-    // from the אנרגיה (energy) panel via window.__microclimate (exposed above).
+    // from the Energy panel via window.__microclimate (exposed above).
     // The house-surface thermal (Building.setThermal) is now slaved to that API
     // for the temperature variables, and the LIVE recolour is gated in the render
     // loop below (see the __microclimate live block).
@@ -1760,7 +1760,7 @@
     if(homeBtn) homeBtn.addEventListener('click',()=>{ if(window.__flyHome) window.__flyHome(); });
 
     // ---- ENTER-THE-HOUSE: the floating #enterBtn was REMOVED — entering now lives in the
-    // הבית tab (panels.js) and exiting in the dollhouse nav pill (#enterNav). EnterMode.toggle/
+    // House tab (panels.js) and exiting in the dollhouse nav pill (#enterNav). EnterMode.toggle/
     // enter/exit are still the public API those call; EnterMode.syncBtn() stays defensive (no-ops
     // when the button is absent) so nothing breaks if a caller still invokes it.
   }
@@ -1783,9 +1783,9 @@
   // Rebuilds the top-left card from the live town reading + the weather.js data
   // layers (air / env) DOWNSCALED to his house via derive.js. Auto-prioritises
   // sections by time-of-day (night → darkness first; day → garden/UV first) and
-  // season (cold months → frost/water surfaced). Modeled values carry a "הערכה"
+  // season (cold months → frost/water surfaced). Modeled values carry an "estimate"
   // tag. Robust to missing pieces (Derive not loaded, air/env null, Astro absent).
-  const _windHe=deg=>{const d=['צפונית','צפ-מזרחית','מזרחית','דר-מזרחית','דרומית','דר-מערבית','מערבית','צפ-מערבית'];
+  const _windHe=deg=>{const d=['Northerly','North-easterly','Easterly','South-easterly','Southerly','South-westerly','Westerly','North-westerly'];
     return d[Math.round(((deg%360)+360)%360/45)%8];};
   // his backyard zone is EAST-facing & wide-open to the desert; the house wall
   // shelters it from W/SW. Give a short shelter/exposure note from wind direction.
@@ -1795,23 +1795,23 @@
     const exposed=from>=45&&from<=135;
     // sheltered ≈ W/SW (200–320): the house body blocks it
     const sheltered=from>=200&&from<=320;
-    if(windKmh<6) return 'רוח קלה — החצר רגועה';
-    if(exposed) return 'רוח '+_windHe(windDir)+' — נושבת חופשי מהעמק אל החצר הפתוחה';
-    if(sheltered) return 'רוח '+_windHe(windDir)+' — קיר הבית מגן על החצר';
-    return 'רוח '+_windHe(windDir);
+    if(windKmh<6) return 'Light wind — the yard is calm';
+    if(exposed) return _windHe(windDir)+' wind — blows in freely from the valley into the open yard';
+    if(sheltered) return _windHe(windDir)+' wind — the house wall shelters the yard';
+    return _windHe(windDir)+' wind';
   }
   // European AQI → {label, class}
   function aqiBadge(a){
     if(a==null) return null;
-    if(a<=20) return {t:'מצוין',c:'bg-good'};
-    if(a<=40) return {t:'טוב',c:'bg-good'};
-    if(a<=60) return {t:'בינוני',c:'bg-fair'};
-    if(a<=80) return {t:'בינוני-ירוד',c:'bg-mod'};
-    if(a<=100) return {t:'ירוד',c:'bg-poor'};
-    return {t:'גרוע',c:'bg-bad'};
+    if(a<=20) return {t:'Excellent',c:'bg-good'};
+    if(a<=40) return {t:'Good',c:'bg-good'};
+    if(a<=60) return {t:'Moderate',c:'bg-fair'};
+    if(a<=80) return {t:'Moderate-poor',c:'bg-mod'};
+    if(a<=100) return {t:'Poor',c:'bg-poor'};
+    return {t:'Very poor',c:'bg-bad'};
   }
-  const uvHe=u=>u==null?'—':u<3?'נמוך':u<6?'בינוני':u<8?'גבוה':u<11?'גבוה מאוד':'קיצוני';
-  const dustHe=d=>d==null?null:d<20?'זניח':d<50?'קל':d<100?'בינוני':d<200?'גבוה':'אובך כבד';
+  const uvHe=u=>u==null?'—':u<3?'low':u<6?'moderate':u<8?'high':u<11?'very high':'extreme';
+  const dustHe=d=>d==null?null:d<20?'Negligible':d<50?'Light':d<100?'Moderate':d<200?'High':'Heavy haze';
   const esc=s=>String(s==null?'':s);
   function backyardZone(){
     const zs=(window.Derive&&Derive.data&&Derive.data.site&&Derive.data.site.zones)||[];
@@ -1848,13 +1848,13 @@
     if(dEl){
       if(mc&&town!=null&&Math.abs(mc.delta)>=0.1){
         const cooler=mc.delta<0;
-        dEl.textContent='~'+Math.abs(mc.delta).toFixed(1)+'° '+(cooler?'קריר':'חם')+' מהעיר ('+town+'° בלרקמונט) · הערכה';
+        dEl.textContent='~'+Math.abs(mc.delta).toFixed(1)+'° '+(cooler?'cooler':'warmer')+' than the city ('+town+'° in Larkmont) · estimate';
         dEl.style.color=cooler?'#9fc2e0':'#e0b070';
-      } else if(town!=null){ dEl.textContent='כמו בלרקמונט ('+town+'°)'; dEl.style.color='#a99b78'; }
+      } else if(town!=null){ dEl.textContent='Same as Larkmont ('+town+'°)'; dEl.style.color='#a99b78'; }
       else dEl.textContent='';
     }
     const fEl=document.getElementById('wFeels');
-    if(fEl) fEl.textContent=(feels!=null)?('מרגיש כמו '+feels+'° · הערכה'):'';
+    if(fEl) fEl.textContent=(feels!=null)?('Feels like '+feels+'° · estimate'):'';
     const descEl=document.getElementById('wDesc'); if(descEl) descEl.textContent=esc(st.desc||'');
 
     // ----- BUILD SECTIONS (each is a string of HTML) -----
@@ -1868,14 +1868,14 @@
     // ALWAYS block — humidity / dew / wind / air / UV / cloud
     const uvNow=(air&&air.uv!=null)?air.uv:null;
     const secAlways=
-      '<div class="sec"><div class="sech">אֲוִיר עַכְשָׁו</div>'+
+      '<div class="sec"><div class="sech">Air Now</div>'+
         '<div class="grid">'+
-          '<div class="cell"><div class="v">'+(hum!=null?hum+'%':'—')+'</div><div class="l">לחות</div></div>'+
-          '<div class="cell"><div class="v">'+(dew!=null?dew+'°':'—')+'</div><div class="l">נק׳ טל</div></div>'+
-          '<div class="cell"><div class="v">'+(cloudPct!=null?cloudPct+'%':'—')+'</div><div class="l">עננות</div></div>'+
+          '<div class="cell"><div class="v">'+(hum!=null?hum+'%':'—')+'</div><div class="l">Humidity</div></div>'+
+          '<div class="cell"><div class="v">'+(dew!=null?dew+'°':'—')+'</div><div class="l">Dew point</div></div>'+
+          '<div class="cell"><div class="v">'+(cloudPct!=null?cloudPct+'%':'—')+'</div><div class="l">Clouds</div></div>'+
         '</div>'+
         '<div class="grid g2" style="margin-top:7px">'+
-          '<div class="cell"><div class="v">'+(windKmh!=null?Math.round(windKmh)+'<small> קמ״ש</small>':'—')+'</div><div class="l">רוח</div></div>'+
+          '<div class="cell"><div class="v">'+(windKmh!=null?Math.round(windKmh)+'<small> km/h</small>':'—')+'</div><div class="l">Wind</div></div>'+
           '<div class="cell"><div class="v">'+(uvNow!=null?uvNow:'—')+'<small> '+uvHe(uvNow)+'</small></div><div class="l">UV</div></div>'+
         '</div>'+
         (windKmh!=null?'<div class="note">'+esc(shelterNote(windDir,windKmh))+'</div>':'')+
@@ -1891,16 +1891,16 @@
       // gracefully absent until env_api.js + a refresh populate it.
       const pol=(window.EnvAPI&&EnvAPI.pollen)||null;
       const pIdx=(pol&&pol.index!=null)?pol.index:null;
-      const polHe=v=>v==null?null:v<0.5?'אין':v<1.5?'נמוך':v<2.5?'בינוני':v<3.5?'גבוה':'גבוה מאוד';
+      const polHe=v=>v==null?null:v<0.5?'None':v<1.5?'Low':v<2.5?'Medium':v<3.5?'High':'Very high';
       const pl=polHe(pIdx);
-      secAir='<div class="sec"><div class="sech">אֵיכוּת אֲוִיר</div>'+
+      secAir='<div class="sec"><div class="sech">Air Quality</div>'+
         '<div class="grid g2">'+
           '<div class="cell"><div class="v">'+(air.pm25!=null?Math.round(air.pm25):'—')+'<small> µg</small></div><div class="l">PM2.5</div></div>'+
           '<div class="cell"><div class="v">'+(air.pm10!=null?Math.round(air.pm10):'—')+'<small> µg</small></div><div class="l">PM10</div></div>'+
         '</div>'+
-        (b?'<div class="aqline"><span class="lab">מדד אוויר אירופי</span><span class="badge '+b.c+'">'+b.t+' · '+Math.round(air.aqi)+'</span></div>':'')+
-        (dl?'<div class="aqline"><span class="lab">אבק מרחף</span><span class="badge '+(air.dust>=100?'bg-poor':air.dust>=50?'bg-mod':'bg-good')+'">'+dl+'</span></div>':'')+
-        (pl?'<div class="aqline"><span class="lab">אֲבָקָנִים</span><span class="badge '+(pIdx>=3.5?'bg-poor':pIdx>=2.5?'bg-mod':pIdx>=1.5?'bg-fair':'bg-good')+'">'+pl+'</span></div>':'')+
+        (b?'<div class="aqline"><span class="lab">European air index</span><span class="badge '+b.c+'">'+b.t+' · '+Math.round(air.aqi)+'</span></div>':'')+
+        (dl?'<div class="aqline"><span class="lab">Airborne dust</span><span class="badge '+(air.dust>=100?'bg-poor':air.dust>=50?'bg-mod':'bg-good')+'">'+dl+'</span></div>':'')+
+        (pl?'<div class="aqline"><span class="lab">Pollen</span><span class="badge '+(pIdx>=3.5?'bg-poor':pIdx>=2.5?'bg-mod':pIdx>=1.5?'bg-fair':'bg-good')+'">'+pl+'</span></div>':'')+
       '</div>';
     }
 
@@ -1912,18 +1912,18 @@
       let darkTxt, darkClass;
       if(moon&&moon.altDeg>0){
         const bright=moon.illum*Math.min(1,(moon.altDeg+5)/40);      // illum scaled by how high it is
-        if(bright<0.12){ darkTxt='הירח כמעט לא מאיר — שמיים חשוכים מאוד'; darkClass='bg-good'; }
-        else if(bright<0.4){ darkTxt='ירח חלקי מבהיר מעט את השמיים'; darkClass='bg-fair'; }
-        else { darkTxt='ירח '+Math.round(moon.illum*100)+'% גבוה — מבהיר חזק את הרקע'; darkClass='bg-mod'; }
-        secNight='<div class="sec"><div class="sech">כַּמָּה חָשׁוּךְ הַלַּיְלָה</div>'+
-          '<div class="aqline"><span class="lab">זיהום אור · Bortle</span><span class="badge bg-good">'+bortle+' (שמיים כהים)</span></div>'+
-          '<div class="dark">ירח '+esc(moon.name||'')+' · <b>'+Math.round(moon.illum*100)+'% מואר</b>, '+Math.round(moon.altDeg)+'° מעל האופק.</div>'+
-          '<div class="aqline"><span class="lab">בהירות שמיים</span><span class="badge '+darkClass+'">'+darkTxt+'</span></div>'+
+        if(bright<0.12){ darkTxt='The moon gives almost no light — very dark sky'; darkClass='bg-good'; }
+        else if(bright<0.4){ darkTxt='A partial moon slightly brightens the sky'; darkClass='bg-fair'; }
+        else { darkTxt='Moon '+Math.round(moon.illum*100)+'% and high — strongly brightens the sky'; darkClass='bg-mod'; }
+        secNight='<div class="sec"><div class="sech">How Dark the Night Is</div>'+
+          '<div class="aqline"><span class="lab">Light pollution · Bortle</span><span class="badge bg-good">'+bortle+' (dark sky)</span></div>'+
+          '<div class="dark">'+esc(moon.name||'')+' moon · <b>'+Math.round(moon.illum*100)+'% illuminated</b>, '+Math.round(moon.altDeg)+'° above the horizon.</div>'+
+          '<div class="aqline"><span class="lab">Sky brightness</span><span class="badge '+darkClass+'">'+darkTxt+'</span></div>'+
         '</div>';
       } else {
-        secNight='<div class="sec"><div class="sech">כַּמָּה חָשׁוּךְ הַלַּיְלָה</div>'+
-          '<div class="aqline"><span class="lab">זיהום אור · Bortle</span><span class="badge bg-good">'+bortle+' (שמיים כהים)</span></div>'+
-          '<div class="dark">הירח מתחת לאופק — <b>שמיים חשוכים מקסימלית</b> מעל הבית.</div>'+
+        secNight='<div class="sec"><div class="sech">How Dark the Night Is</div>'+
+          '<div class="aqline"><span class="lab">Light pollution · Bortle</span><span class="badge bg-good">'+bortle+' (dark sky)</span></div>'+
+          '<div class="dark">The moon is below the horizon — <b>maximally dark sky</b> above the house.</div>'+
         '</div>';
       }
     }
@@ -1934,34 +1934,34 @@
       const moistPct=(envM!=null)?Math.round(envM*100):null;         // m³/m³ → %
       let hint='';
       if(et0Day!=null){
-        hint=(et0Day>6)?'אֵידוי גבוה — השקה בבוקר מוקדם או בערב':
-             (et0Day>3)?'אֵידוי בינוני — בדוק לחות קרקע לפני השקיה':
-                        'אֵידוי נמוך — אפשר לדלל השקיה';
+        hint=(et0Day>6)?'High evaporation — water in early morning or evening':
+             (et0Day>3)?'Moderate evaporation — check soil moisture before watering':
+                        'Low evaporation — you can water less often';
       }
-      secGarden='<div class="sec"><div class="sech">גִּנָּה <span class="est">הערכה</span></div>'+
+      secGarden='<div class="sec"><div class="sech">Garden <span class="est">estimate</span></div>'+
         '<div class="grid">'+
-          '<div class="cell"><div class="v">'+(envT!=null?Math.round(envT)+'°':'—')+'</div><div class="l">טמפ׳ קרקע</div></div>'+
-          '<div class="cell"><div class="v">'+(moistPct!=null?moistPct+'%':'—')+'</div><div class="l">לחות קרקע</div></div>'+
-          '<div class="cell"><div class="v">'+(et0Day!=null?(Math.round(et0Day*10)/10):'—')+'<small> מ״מ</small></div><div class="l">אֵידוי היום</div></div>'+
+          '<div class="cell"><div class="v">'+(envT!=null?Math.round(envT)+'°':'—')+'</div><div class="l">Soil temp</div></div>'+
+          '<div class="cell"><div class="v">'+(moistPct!=null?moistPct+'%':'—')+'</div><div class="l">Soil moisture</div></div>'+
+          '<div class="cell"><div class="v">'+(et0Day!=null?(Math.round(et0Day*10)/10):'—')+'<small> mm</small></div><div class="l">Evaporation today</div></div>'+
         '</div>'+
-        (et0Day!=null?'<div class="note">הערוגות איבדו ~<b>'+(Math.round(et0Day*10)/10)+' מ״מ</b> היום'+(hint?' · '+hint:'')+'</div>':'')+
+        (et0Day!=null?'<div class="note">The beds lost ~<b>'+(Math.round(et0Day*10)/10)+' mm</b> today'+(hint?' · '+hint:'')+'</div>':'')+
       '</div>';
     }
 
     // WINTER / WATER block — precip chance + accumulated + frost risk
     let secWater='';
     const fr=(window.Derive&&Derive.frostRisk)?Derive.frostRisk({town,alt,cloud:cloudFrac,wind:windKmh,hum,backyard:byState}):null;
-    const showFrost=fr&&fr.level&&fr.level!=='אין';
+    const showFrost=fr&&fr.level&&fr.level!=='none';
     if(pProb!=null||accum!=null||showFrost){
-      const frCls=fr?(fr.level==='גבוה'?'bg-poor':fr.level==='בינוני'?'bg-mod':'bg-cool'):'';
-      secWater='<div class="sec"><div class="sech">מַיִם וְקֹר</div>'+
+      const frCls=fr?(fr.level==='high'?'bg-poor':fr.level==='medium'?'bg-mod':'bg-cool'):'';
+      secWater='<div class="sec"><div class="sech">Water &amp; Cold</div>'+
         '<div class="grid g2">'+
-          '<div class="cell"><div class="v">'+(pProb!=null?pProb+'%':'—')+'</div><div class="l">סיכוי גשם היום</div></div>'+
-          '<div class="cell"><div class="v">'+(accum!=null?accum+'<small> מ״מ</small>':'—')+'</div><div class="l">משקעים 30 יום</div></div>'+
+          '<div class="cell"><div class="v">'+(pProb!=null?pProb+'%':'—')+'</div><div class="l">Rain chance today</div></div>'+
+          '<div class="cell"><div class="v">'+(accum!=null?accum+'<small> mm</small>':'—')+'</div><div class="l">Rain, 30 days</div></div>'+
         '</div>'+
-        (showFrost?'<div class="aqline"><span class="lab">סיכון כפור בכתם שלך <span class="est" style="margin-right:4px">הערכה</span></span>'+
+        (showFrost?'<div class="aqline"><span class="lab">Frost risk in your spot <span class="est" style="margin-right:4px">estimate</span></span>'+
             '<span class="badge '+frCls+'">'+fr.level+'</span></div>'+
-            '<div class="note">'+esc(fr.note)+(fr.lowHouse!=null?' · מינ׳ מוערך ~<b>'+fr.lowHouse+'°</b>':'')+'</div>':'')+
+            '<div class="note">'+esc(fr.note)+(fr.lowHouse!=null?' · est. min ~<b>'+fr.lowHouse+'°</b>':'')+'</div>':'')+
       '</div>';
     }
 
@@ -1982,10 +1982,10 @@
     // ----- LIVE STATUS -----
     const live=document.getElementById('wLive');
     if(live){
-      live.textContent = st.live?'נתונים חיים':(st.live===false?'לא מקוון':'טוען…');
+      live.textContent = st.live?'Live data':(st.live===false?'Offline':'Loading…');
       live.style.color = st.live?'#8fc99a':'#c9a06a';
     }
-    // mirror the same weather into the סביבה tab's consolidated block (the floating
+    // mirror the same weather into the Environment tab's consolidated block (the floating
     // #wx card is retired). No-op unless that tab is the active panel.
     if(window.__envWeatherTick) window.__envWeatherTick();
   }
@@ -2002,24 +2002,24 @@
   // raycasting — just 2D distance to pre-projected points.
   (function hoverInfo(){
     const tip=document.getElementById('skytip'); if(!tip) return;
-    const dirHe=az=>{const d=['צפון','צפון-מזרח','מזרח','דרום-מזרח','דרום','דרום-מערב','מערב','צפון-מערב'];return d[Math.round(((az%360)+360)%360/45)%8];};
+    const dirHe=az=>{const d=['North','Northeast','East','Southeast','South','Southwest','West','Northwest'];return d[Math.round(((az%360)+360)%360/45)%8];};
     function html(o){
-      const altaz=`גובה ${Math.round(o.alt)}° · ${dirHe(o.az)} (${Math.round(o.az)}°)`;
+      const altaz=`Alt ${Math.round(o.alt)}° · ${dirHe(o.az)} (${Math.round(o.az)}°)`;
       if(o.kind==='sun') return `<div class="tn"><span>${o.name}</span><span class="tk">SUN</span></div>`+
         `<div class="tm">${altaz}</div>`;
       if(o.kind==='moon') return `<div class="tn"><span>${o.name}</span><span class="tk">MOON</span></div>`+
-        `<div class="tm">${o.phase} · ${Math.round(o.illum*100)}% מואר</div><div class="tm">${altaz}</div>`;
+        `<div class="tm">${o.phase} · ${Math.round(o.illum*100)}% illuminated</div><div class="tm">${altaz}</div>`;
       if(o.kind==='planet') return `<div class="tn"><span>${o.name}</span><span class="tk">${o.en.toUpperCase()}</span></div>`+
-        `<div class="tm">בהירות ${o.mag.toFixed(1)} · ${altaz}</div>`+
+        `<div class="tm">Mag ${o.mag.toFixed(1)} · ${altaz}</div>`+
         (o.fact?`<div class="tf">${o.fact}</div>`:'');
       // constellation: figure name only (NO star-only fields like .mag, which a
       // figure doesn't have — calling o.mag.toFixed here would throw).
       if(o.kind==='constellation') return `<div class="tn"><span>${o.name}</span><span class="tk">${(o.en||'').toUpperCase()}</span></div>`+
-        `<div class="tm">קבוצת כוכבים${(o.alt!=null&&o.az!=null)?' · '+altaz:''}</div>`;
+        `<div class="tm">Constellation${(o.alt!=null&&o.az!=null)?' · '+altaz:''}</div>`;
       // star
       return `<div class="tn"><span>${o.name}</span><span class="tk">${o.en.toUpperCase()}</span></div>`+
-        `<div class="tm">בהירות ${o.mag.toFixed(1)} · ${o.con||''}</div>`+
-        `<div class="tf">מרחק ~${o.ly} שנות אור · ${altaz}</div>`;
+        `<div class="tm">Mag ${o.mag.toFixed(1)} · ${o.con||''}</div>`+
+        `<div class="tf">Distance ~${o.ly} light-years · ${altaz}</div>`;
     }
     function onMove(e){
       const list=(window.SkyRig&&SkyRig.notables)?SkyRig.notables():null;
@@ -2062,7 +2062,7 @@
     garden.sway.forEach(s=>{ s.o.rotation.z=Math.sin(now*0.001+s.ph)*s.amp*wind; });
     stepFocus();          // ease the view toward a clicked sky object (if focusing)
     stepGroundFly();      // ease the view toward a clicked ground sighting (if flying)
-    stepHome();           // ease the view back to the default house framing (הביתה button)
+    stepHome();           // ease the view back to the default house framing (Home button)
     if(window.__enterMode) window.__enterMode.step();   // ease into/out of the dollhouse interior view
     if(window.__sightings) window.__sightings.update(date);  // billboard sightings → face camera
     controls.update();
@@ -2129,7 +2129,7 @@
       // floor overview, even with the heatmap off). RoomHeat.refresh is self-gated: it only
       // rebuilds when the overview is showing AND the scene date crossed an hour bucket, so
       // this is a near-free label re-render (no per-cell bake) and never hitches PLAY.
-      // Same idea for the open workbench אקלים card (the workbench agent exposes
+      // Same idea for the open workbench Climate card (the workbench agent exposes
       // rerenderClimate()). Both stay quiet while actively PLAYING; they catch up on settle.
       if(window.__enterMode && window.__enterMode.on){
         try{ window.__enterMode.refreshHeat(); }catch(e){}
@@ -2154,11 +2154,11 @@
     }
     document.getElementById('clock').textContent=fmtHM(mins);
     // phase label lives in the bottom-centre time bar (NOT the old moon card) — kept.
-    let ph='לילה'; if(info.altDeg>6) ph='יום'; else if(info.altDeg>-1) ph='זריחה/שקיעה'; else if(info.altDeg>-8) ph='דמדומים';
+    let ph='Night'; if(info.altDeg>6) ph='Day'; else if(info.altDeg>-1) ph='Sunrise/Sunset'; else if(info.altDeg>-8) ph='Twilight';
     document.getElementById('phaseLabel').textContent=ph;
     // The standalone bottom-left moon card was removed; its content (phase name,
     // illum %, above/below-horizon, sun altitude, direction arrow + rise) now lives
-    // in the שמיים tab (panels.js). No moon-card DOM to update here anymore.
+    // in the Sky tab (panels.js). No moon-card DOM to update here anymore.
   }
 
   let lastRafTime=performance.now();
@@ -2180,7 +2180,7 @@
      panel (#bld). A flex column anchored top-left so #bld always sits directly
      UNDER the card at the card's REAL rendered height (no magic-pixel offset),
      and the whole stack is bounded so it clears the bottom-left compass + the
-     ⌂ הביתה home button (those are bottom-anchored). The card keeps priority for
+     ⌂ Home button (those are bottom-anchored). The card keeps priority for
      height (it doesn't shrink); on short screens #bld gives way (shrinks + scrolls)
      so nothing ever overlaps the bottom controls. pointer-events:none on the wrap
      (with auto on its children) keeps the transparent gap between the two cards
@@ -2252,7 +2252,7 @@
   #bld .sw.on{ background:linear-gradient(#caa15a,#a07c38); border-color:#e0c483; }
   #bld .sw.on::after{ right:22px; background:#fff7e6; }
   /* (The old #bld thermal-layer legend CSS was removed with the loose thermal
-     toggle; the microclimate legend now lives in the אנרגיה panel — panels.js.) */
+     toggle; the microclimate legend now lives in the Energy panel — panels.js.) */
   #bld .oprow{ display:flex; align-items:center; gap:10px; margin-top:8px; margin-bottom:2px; }
   #bld .opval{ font-family:'Bellefair',serif; letter-spacing:.08em; font-size:12px; color:#caa15a; min-width:38px; text-align:left; }
   #bld.off .oprow{ opacity:.4; }
@@ -2282,14 +2282,14 @@
     max-width:236px; padding:9px 12px; border-radius:7px; transform:translate(14px,14px);
     background:linear-gradient(155deg,rgba(12,14,26,.95),rgba(6,7,15,.96)); backdrop-filter:blur(8px);
     border:1px solid rgba(202,161,90,.5); box-shadow:0 12px 34px rgba(0,0,0,.6);
-    font-family:'Heebo',sans-serif; color:#efe6cf; text-align:right; }
+    font-family:'Heebo',sans-serif; color:#efe6cf; text-align:left; }
   #skytip.on{ opacity:1; }
   #skytip .tn{ font-family:'Frank Ruhl Libre',serif; font-size:15px; color:#fff7e6; display:flex; gap:7px; align-items:baseline; justify-content:flex-end; }
   #skytip .tk{ font-family:'Bellefair'; letter-spacing:.14em; font-size:9.5px; color:#caa15a; }
   #skytip .tm{ font-size:11px; color:#bcae8a; margin-top:3px; line-height:1.45; }
   #skytip .tf{ font-size:10.5px; color:#9fb0c9; margin-top:5px; line-height:1.45; border-top:1px solid rgba(202,161,90,.18); padding-top:5px; }
   /* compass + moon-finder HUD — BOTTOM-LEFT corner (moved from bottom-right, where
-     the long right-side שמיים tab panel overlapped/hid it). It now sits in the
+     the long right-side Sky tab panel overlapped/hid it). It now sits in the
      space the old floating moon card vacated. Bottom-left keeps it clear of the
      weather card (top-left) and the time bar (bottom-centre). */
   #compass{ position:absolute; bottom:30px; left:30px; width:128px; display:flex; flex-direction:column;
@@ -2310,7 +2310,7 @@
   #homeBtn:hover .hg{ color:#e0c07a; }
   #homeBtn:active{ background:linear-gradient(#caa15a,#a07c38); color:#1a1606; border-color:#e0c483; }
   #homeBtn:active .hg{ color:#1a1606; }
-  /* (#enterBtn removed — enter lives in the הבית tab, exit in the #enterNav dollhouse pill.) */
+  /* (#enterBtn removed — enter lives in the House tab, exit in the #enterNav dollhouse pill.) */
   /* INTERIOR NAV PANEL — shown only while INSIDE (enter mode). Top-centre, clear
      of the left weather column (left:30px+268px), the right tabs panel (#inst,
      right:22px+300px), the bottom time bar and the bottom-left compass. Dark-glass
@@ -2334,42 +2334,42 @@
     #enterNav .enPill{ font-size:11.5px; padding:5px 11px; } }
   `; }
   function getUIHTML(){ return `
-  <div class="brand"><div class="k">LARKMONT · 34.0°N -40.0°E</div><h1>הַבַּיִת שֶׁל אלכס</h1></div>
+  <div class="brand"><div class="k">LARKMONT · 34.0°N -40.0°E</div><h1>Alex's House</h1></div>
   <div id="leftcol">
   <!-- The floating weather card (#wx) is RETIRED — its content lives in the
-       instrument panel's סביבה tab (panels.js weatherBlockHTML); movable.js
+       instrument panel's Environment tab (panels.js weatherBlockHTML); movable.js
        force-hid it. updateWeatherUI() now no-ops on its absent body/pills. -->
   <div id="bld" class="panel">
-    <div class="gtitle">שִׁכְבוֹת תְּצוּגָה</div>
-    <div class="lrow"><div class="lbl">מִבְנִים סְבִיב הַבַּיִת</div>
+    <div class="gtitle">Display Layers</div>
+    <div class="lrow"><div class="lbl">Buildings Around the House</div>
       <div class="sw on" id="bldToggle" role="switch" aria-checked="true"></div></div>
     <div class="oprow">
       <input id="opslider" type="range" min="0" max="100" value="45" />
       <div class="opval" id="opVal">45%</div>
     </div>
-    <!-- sky-layer toggles (constellations / Milky Way / paths / satellites) moved to the שמיים tab -->
-    <div class="lrow"><div class="lbl">תַּצְפִּיּוֹת טֶבַע</div>
+    <!-- sky-layer toggles (constellations / Milky Way / paths / satellites) moved to the Sky tab -->
+    <div class="lrow"><div class="lbl">Nature Observations</div>
       <div class="sw on" id="lyr-sightings" role="switch" aria-checked="true"></div></div>
-    <!-- The loose "שכבה תרמית" toggle + its legend were removed; the microclimate
+    <!-- The loose "thermal layer" toggle + its legend were removed; the microclimate
          control (on/off + variable + season), per-zone readout, plant
-         recommendations and the legend now live in the אנרגיה (energy) panel. -->
+         recommendations and the legend now live in the Energy panel. -->
   </div>
   </div>
-  <div id="hint">גררו לסובב · גלגלת לזום · החליקו את הזמן והתאריך</div>
-  <button id="homeBtn" class="panel" type="button" title="חזרה לתצוגת הבית" aria-label="חזרה לתצוגת הבית"><span class="hg">⌂</span> הביתה</button>
-  <!-- #enterBtn removed: entering the house now lives in the הבית tab; exiting in the dollhouse nav pill (#enterNav). -->
+  <div id="hint">Drag to rotate · Scroll to zoom · Slide the time and date</div>
+  <button id="homeBtn" class="panel" type="button" title="Back to house view" aria-label="Back to house view"><span class="hg">⌂</span> Home</button>
+  <!-- #enterBtn removed: entering the house now lives in the House tab; exiting in the dollhouse nav pill (#enterNav). -->
   <div id="skytip"></div>
   <div id="tbar" class="panel">
     <div class="trow">
       <div class="clock" id="clock">—</div>
       <div class="ph" id="phaseLabel">—</div>
       <input id="tslider" type="range" min="0" max="1439" value="720" />
-      <div class="tbtn on" id="liveBtn">חי</div>
+      <div class="tbtn on" id="liveBtn">Live</div>
       <div class="tbtn" id="playBtn">▶</div>
     </div>
     <div class="trow drow">
       <div class="datev" id="dateLabel">—</div>
-      <div class="dk">תַּאֲרִיךְ · עוֹנָה</div>
+      <div class="dk">Date · Season</div>
       <input id="dslider" type="range" min="0" max="365" value="172" />
     </div>
   </div>`; }

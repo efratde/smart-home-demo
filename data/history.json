@@ -4,8 +4,8 @@
     "lat": 34.0,
     "lon": -40.0,
     "range": "1960–2024",
-    "generated_note": "נבנה 2026-06-07 מ-Open-Meteo ERA5 (reanalysis יומי, תא רשת ~11 ק״מ). ערכים מודלים — לא תחנת מדידה מקומית.",
-    "frost_note_he": "\"לילות קרים\" = מספר הלילות בשנה עם טמפ׳ מינימום ≤ ~3°C באוויר בגובה 2 מ׳ (ERA5). זו אינה ספירת \"לילות כפור\": כפור הקרקע האמיתי בלרקמונט הוא קרינתי — בגובה העשב האוויר קר בכמה מעלות מ-2 מ׳ בלילות שמיים בהירים ורגועים — ולכן כפור קרקע מתרחש לעיתים קרובות יותר ממה שמדד ה-2 מ׳ של ERA5 מראה."
+    "generated_note": "Built 2026-06-07 from Open-Meteo ERA5 (daily reanalysis, grid cell ~11 km). Modeled values — not a local measurement station.",
+    "frost_note_he": "\"Cold nights\" = the number of nights per year with a minimum air temperature of ≤ ~3°C at 2 m height (ERA5). This is not a count of \"frost nights\": true ground frost in Larkmont is radiative — at grass height the air is several degrees colder than at 2 m on clear, calm-sky nights — so ground frost occurs more often than the ERA5 2 m measure shows."
   },
   "years": [
     {

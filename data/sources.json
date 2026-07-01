@@ -1,92 +1,92 @@
 {
   "schema": 1,
   "meta": {
-    "title_he": "מָקוֹר וְקִישׁוּרִים — רֶשֶׁם הַמְּקוֹרוֹת",
-    "what_he": "רֶשֶׁם מְרֻכָּז שֶׁל הַמְּקוֹרוֹת הַסַּמְכוּתִיִּים שֶׁהָאַפְּלִיקַצְיָה מִסְתַּמֶּכֶת עֲלֵיהֶם אוֹ יְכוֹלָה לְצַטֵּט. כָּל כַּרְטִיס יָכוֹל לְהַצִּיג «מָקוֹר / לְמַד עוֹד».",
-    "site": { "lat": 34.0, "lon": -40.0, "place_he": "לרקמונט" },
-    "honesty_he": "השדה verify מסמן מה אומת בפועל ביום הבנייה: ok = תגובת HTTP 200 שאומתה; bot-blocked = השרת חוסם curl (403) אך הדף חי בדפדפן; unverified = לא נבדק או הצריך עוגן חלופי. אין כאן נתונים — רק קישורים לגופים האמיתיים.",
+    "title_he": "Sources & Links — Source Registry",
+    "what_he": "A centralized registry of the authoritative sources the app relies on or can cite. Each card can show «Source / Learn more».",
+    "site": { "lat": 34.0, "lon": -40.0, "place_he": "Larkmont" },
+    "honesty_he": "The verify field marks what was actually verified on the build day: ok = a verified HTTP 200 response; bot-blocked = the server blocks curl (403) but the page is live in a browser; unverified = not checked or required an alternative anchor. There is no data here — only links to the real organizations.",
     "verified_date": "2026-06-09",
     "entry_shape": "{ name_he, org, url, what_he, verify }",
-    "explain_compatible_he": "להמרה ל-{label,url} של explain.js: label = name_he + ' · ' + org, url = url."
+    "explain_compatible_he": "For conversion to explain.js's {label,url}: label = name_he + ' · ' + org, url = url."
   },
 
   "weather": [
-    { "name_he": "אוֹפֶּן־מֶטֶאוֹ — אַרְכִיוֹן הִיסְטוֹרִי", "org": "Open-Meteo", "url": "https://archive-api.open-meteo.com/v1/archive", "what_he": "מֶזֶג אֲוִיר שָׁעָתִי הִיסְטוֹרִי (טֶמְפֶּרָטוּרָה, קְרִינָה, ET0, מִשְׁקָע, עֲנָנוּת, רוּחַ, לַחוּת) לְפִי קוֹאוֹרְדִּינָטוֹת הַבַּיִת — מְקוֹר 'הַיּוֹמָן הַחַי' הַמָּדוּד. כִּסּוּי עַד ~5 יָמִים אֲחוֹרָה.", "verify": "ok" },
-    { "name_he": "אוֹפֶּן־מֶטֶאוֹ — תַּחֲזִית", "org": "Open-Meteo", "url": "https://api.open-meteo.com/v1/forecast", "what_he": "תַּחֲזִית שָׁעָתִית + past_days (עַד 92) לְמִלּוּי הַפַּעַר הָאַחֲרוֹן; כּוֹלֵל soil_temperature ו-UV. בְּשִׁמּוּשׁ בּ-weather.js / record_api.js.", "verify": "ok" },
-    { "name_he": "אוֹפֶּן־מֶטֶאוֹ — מִסְמְכֵי API", "org": "Open-Meteo", "url": "https://open-meteo.com/en/docs", "what_he": "תִּעוּד הַשָּׂדוֹת וְהַפָּרָמֶטְרִים — בְּחִינַם, לְלֹא מַפְתֵּחַ, רִשְׁיוֹן CC-BY 4.0.", "verify": "ok" },
-    { "name_he": "הַשֵּׁרוּת הַמֶּטֶאוֹרוֹלוֹגִי הַלְּאֻמִּי", "org": "national meteorological service", "url": "", "what_he": "מֶזֶג אֲוִיר רִשְׁמִי — תַּחֲזִיּוֹת, הַתְרָאוֹת וּנְתוּנֵי תַּחֲנוֹת מְדִידָה. תַּחֲנָה רֶלֶוַנְטִית: לרקמונט.", "verify": "unverified" },
-    { "name_he": "שֵׁרוּת מֶטֶאוֹרוֹלוֹגִי — נְתוּנֵי תַּחֲנוֹת מְדִידָה", "org": "national meteorological service", "url": "", "what_he": "נְתוּנֵי תַּחֲנוֹת מְדִידָה הִיסְטוֹרִיִּים וּבִזְמַן אֱמֶת. תַּחֲנָה רֶלֶוַנְטִית: לרקמונט.", "verify": "unverified" }
+    { "name_he": "Open-Meteo — Historical Archive", "org": "Open-Meteo", "url": "https://archive-api.open-meteo.com/v1/archive", "what_he": "Historical hourly weather (temperature, radiation, ET0, precipitation, cloud cover, wind, humidity) by the home's coordinates — the measured 'live log' source. Coverage up to ~5 days back.", "verify": "ok" },
+    { "name_he": "Open-Meteo — Forecast", "org": "Open-Meteo", "url": "https://api.open-meteo.com/v1/forecast", "what_he": "Hourly forecast + past_days (up to 92) to fill the recent gap; includes soil_temperature and UV. Used in weather.js / record_api.js.", "verify": "ok" },
+    { "name_he": "Open-Meteo — API Docs", "org": "Open-Meteo", "url": "https://open-meteo.com/en/docs", "what_he": "Documentation of the fields and parameters — free, no key, CC-BY 4.0 license.", "verify": "ok" },
+    { "name_he": "The National Meteorological Service", "org": "national meteorological service", "url": "", "what_he": "Official weather — forecasts, alerts, and measurement-station data. Relevant station: Larkmont.", "verify": "unverified" },
+    { "name_he": "Meteorological Service — Measurement-Station Data", "org": "national meteorological service", "url": "", "what_he": "Historical and real-time measurement-station data. Relevant station: Larkmont.", "verify": "unverified" }
   ],
 
   "air_quality": [
-    { "name_he": "אוֹפֶּן־מֶטֶאוֹ — אֵיכוּת אֲוִיר", "org": "Open-Meteo Air Quality", "url": "https://air-quality-api.open-meteo.com/v1/air-quality", "what_he": "PM2.5, PM10, אָבָק מְרַחֵף (dust), אוֹזוֹן, מַדָּד UV וְעֵרֶךְ AQI לְפִי קוֹאוֹרְדִּינָטוֹת — מָקוֹר הָאָבָק/אֵיכוּת הָאֲוִיר בָּאַפְּלִיקַצְיָה.", "verify": "ok" },
-    { "name_he": "הַמַּעֲרֶכֶת הַלְּאֻמִּית לְנִטּוּר אֵיכוּת אֲוִיר", "org": "national air-quality monitoring network", "url": "", "what_he": "נְתוּנֵי תַּחֲנוֹת נִטּוּר אֲוִיר רִשְׁמִיִּים בִּזְמַן אֱמֶת וְהִיסְטוֹרִי — מְקוֹר הַסַּמְכוּת הַמְּקוֹמִי לְאָבָק וְזִהוּם.", "verify": "unverified" },
-    { "name_he": "הָרָשׁוּת לְאֵיכוּת הַסְּבִיבָה", "org": "environmental protection agency", "url": "", "what_he": "הַגּוּף הַמְּפַקֵּחַ עַל אֵיכוּת הָאֲוִיר, אָבָק וְזִהוּם — דּוּחוֹת וּמַאֲגְרֵי מֵידָע.", "verify": "unverified" }
+    { "name_he": "Open-Meteo — Air Quality", "org": "Open-Meteo Air Quality", "url": "https://air-quality-api.open-meteo.com/v1/air-quality", "what_he": "PM2.5, PM10, suspended dust (dust), ozone, UV index, and AQI value by coordinates — the dust/air-quality source in the app.", "verify": "ok" },
+    { "name_he": "The National Air-Quality Monitoring System", "org": "national air-quality monitoring network", "url": "", "what_he": "Official air-monitoring station data, real-time and historical — the local authoritative source for dust and pollution.", "verify": "unverified" },
+    { "name_he": "The Environmental Protection Agency", "org": "environmental protection agency", "url": "", "what_he": "The body overseeing air quality, dust, and pollution — reports and data repositories.", "verify": "unverified" }
   ],
 
   "astronomy": [
-    { "name_he": "מַפַּת זִהוּם אוֹר עוֹלָמִית", "org": "lightpollutionmap.info", "url": "https://www.lightpollutionmap.info/", "what_he": "דֵּרוּג Bortle וּבְהִירוּת שָׁמַיִם לְפִי מִקּוּם — עמק לרקמונט בְּאֵזוֹר Bortle 3 (שְׁמֵי כְּפָר חֲשׁוּכִים). תּוֹמֵךְ בְּעֶרְכֵּי הַ-bortle ב-site.json.", "verify": "ok" },
-    { "name_he": "מְאַתֵּר אֲתָרֵי שָׁמַיִם חֲשׁוּכִים", "org": "Dark Site Finder", "url": "https://www.darksitefinder.com/", "what_he": "מַפָּה אִינְטֶרְאַקְטִיבִית שֶׁל אֵזוֹרֵי חֹשֶׁךְ לְצַפִּיָּה — הַקְשֵׁר לְשָׁמַיִם הַחֲשׁוּכִים שֶׁל לרקמונט.", "verify": "ok" },
-    { "name_he": "DarkSky International", "org": "darksky.org", "url": "https://darksky.org/", "what_he": "הָאִרְגּוּן הַבֵּין־לְאֻמִּי לְשִׁמּוּר שְׁמֵי לַיְלָה חֲשׁוּכִים — תֶּקֶן 'Dark Sky Place', זִהוּם אוֹר וְהֶסְבֵּרִים.", "verify": "ok" },
-    { "name_he": "In-The-Sky.org — שָׁמַיִם הַלַּיְלָה", "org": "in-the-sky.org", "url": "https://in-the-sky.org/", "what_he": "מַעֲבָרֵי כּוֹכָבֵי לֶכֶת, מְטֵאוֹרִים, לִקּוּיִים, חֲלוֹף ISS וְלוּחַ אֵרוּעִים שְׁמֵימִיִּים לְפִי מִקּוּם וְתַאֲרִיךְ.", "verify": "ok" },
-    { "name_he": "סְטֶלַרְיוּם בַּדַּפְדְּפָן", "org": "Stellarium Web", "url": "https://stellarium-web.org/", "what_he": "פְּלָנֶטַרְיוּם אִינְטֶרְאַקְטִיבִי — מַפַּת שָׁמַיִם חַיָּה לְפִי מִקּוּם וּזְמַן (זִהוּי כּוֹכָבִים, קְבוּצוֹת וּפְלָנֵטוֹת).", "verify": "ok" },
-    { "name_he": "Clear Outside — תַּחֲזִית צַפִּיָּה", "org": "First Light Optics", "url": "https://clearoutside.com/forecast/34.0/-40.0", "what_he": "תַּחֲזִית עֲנָנוּת/לַחוּת/seeing סָפֵּצִיפִית לַצַּפִּיָּה הָאַסְטְרוֹנוֹמִית, מְכֻוֶּנֶת לְקוֹאוֹרְדִּינָטוֹת לרקמונט.", "verify": "ok" },
-    { "name_he": "הָאִגּוּד הָאַסְטְרוֹנוֹמִי הַבֵּין־לְאֻמִּי (IAU)", "org": "iau.org", "url": "https://www.iau.org/", "what_he": "הַסַּמְכוּת לִשְׁמוֹת כּוֹכָבִים, קְבוּצוֹת וּגְרָמִים — מָקוֹר רִשְׁמִי לְשֵׁמוֹת בַּשְּׁכָבָה הָאַסְטְרוֹנוֹמִית.", "verify": "ok" }
+    { "name_he": "Global Light-Pollution Map", "org": "lightpollutionmap.info", "url": "https://www.lightpollutionmap.info/", "what_he": "Bortle rating and sky brightness by location — Larkmont Valley is in a Bortle 3 area (dark rural skies). Supports the bortle values in site.json.", "verify": "ok" },
+    { "name_he": "Dark-Sky Site Finder", "org": "Dark Site Finder", "url": "https://www.darksitefinder.com/", "what_he": "An interactive map of dark areas for observation — the context for Larkmont's dark skies.", "verify": "ok" },
+    { "name_he": "DarkSky International", "org": "darksky.org", "url": "https://darksky.org/", "what_he": "The international organization for preserving dark night skies — the 'Dark Sky Place' standard, light pollution, and explanations.", "verify": "ok" },
+    { "name_he": "In-The-Sky.org — The Night Sky", "org": "in-the-sky.org", "url": "https://in-the-sky.org/", "what_he": "Planet transits, meteors, eclipses, ISS passes, and a calendar of celestial events by location and date.", "verify": "ok" },
+    { "name_he": "Stellarium in the Browser", "org": "Stellarium Web", "url": "https://stellarium-web.org/", "what_he": "An interactive planetarium — a live sky map by location and time (identifying stars, constellations, and planets).", "verify": "ok" },
+    { "name_he": "Clear Outside — Observation Forecast", "org": "First Light Optics", "url": "https://clearoutside.com/forecast/34.0/-40.0", "what_he": "A cloud-cover/humidity/seeing forecast specific to astronomical observation, tuned to Larkmont's coordinates.", "verify": "ok" },
+    { "name_he": "The International Astronomical Union (IAU)", "org": "iau.org", "url": "https://www.iau.org/", "what_he": "The authority for the names of stars, constellations, and bodies — the official source for names in the astronomy layer.", "verify": "ok" }
   ],
 
   "geology": [
-    { "name_he": "הַמָּכוֹן הַגֵּאוֹלוֹגִי הַלְּאֻמִּי", "org": "national geological survey", "url": "", "what_he": "מַפּוֹת גֵּאוֹלוֹגִיּוֹת 1:50,000, תַּצְכִּיוֹת סֶלַע וּמֶחְקְרֵי עמק לרקמונט — הַסַּמְכוּת הַגֵּאוֹלוֹגִית הַלְּאֻמִּית.", "verify": "unverified" },
-    { "name_he": "הַסֶּקֶר הַגֵּאוֹלוֹגִי — פּוֹרְטַל מַפּוֹת", "org": "national geological survey", "url": "", "what_he": "מַפּוֹת תַּצְלִיב וּשְׁכָבוֹת GIS לְהוֹרָדָה (תַּצְכִּיּוֹת, שְׁבָרִים, יְחִידוֹת סֶלַע) — בְּסִיס שְׁכָבַת הַגֵּאוֹלוֹגְיָה.", "verify": "unverified" },
-    { "name_he": "מִבְנֶה הָעֵמֶק — רֶקַע גֵּאוֹלוֹגִי", "org": "synthetic demo", "url": "", "what_he": "סְקִירָה שֶׁל מִבְנֶה הָעֵמֶק (erosion valley), גִּיל הַשְּׁכָבוֹת וּפְרוֹסַת זְמַן גֵּאוֹלוֹגִי. (דֶּמוֹ סִינְתֶטִי — נוֹף בְּקַעַת־סְחִיפָה גֵּנֵרִי; אֵין מָקוֹר אֲמִתִּי).", "verify": "unverified" },
-    { "name_he": "עמק לרקמונט — וִיקִיפֶּדְיָה (עִבְרִית)", "org": "Wikipedia (HE)", "url": "https://he.wikipedia.org/wiki/עמק לרקמונט", "what_he": "רֶקַע גֵּאוֹלוֹגִי וְהִיסְטוֹרִי עַל העמק בְּעִבְרִית — מָקוֹר נָגִישׁ לְכַרְטִיסֵי הַסֶּלַע.", "verify": "unverified" }
+    { "name_he": "The National Geological Institute", "org": "national geological survey", "url": "", "what_he": "1:50,000 geological maps, rock outcrops, and Larkmont Valley studies — the national geological authority.", "verify": "unverified" },
+    { "name_he": "The Geological Survey — Maps Portal", "org": "national geological survey", "url": "", "what_he": "Cross-section maps and downloadable GIS layers (outcrops, faults, rock units) — the basis of the geology layer.", "verify": "unverified" },
+    { "name_he": "The Valley's Structure — Geological Background", "org": "synthetic demo", "url": "", "what_he": "An overview of the valley's structure (erosion valley), the age of the strata, and a geological time slice. (Synthetic demo — a generic erosion-basin landscape; no real source).", "verify": "unverified" },
+    { "name_he": "Larkmont Valley — Wikipedia (English)", "org": "Wikipedia (EN)", "url": "https://en.wikipedia.org/wiki/Larkmont_Valley", "what_he": "Geological and historical background on the valley — an accessible source for the rock cards.", "verify": "unverified" }
   ],
 
   "hydrology": [
-    { "name_he": "רְשׁוּת הַמַּיִם הַלְּאֻמִּית", "org": "national water authority", "url": "", "what_he": "מִפְלְסֵי מֵי תְּהוֹם, מַאֲגָרֵי קִדּוּחִים, מַאֲזַן מַיִם וְאֵיכוּת — הַסַּמְכוּת הַהִידְרוֹלוֹגִית הַלְּאֻמִּית (כּוֹלֵל אֵגָן הרמה).", "verify": "unverified" },
-    { "name_he": "מַאֲגַר נְתוּנִים פָּתוּחַ — קִדּוּחִים (boreholes)", "org": "open government data portal", "url": "", "what_he": "מַאֲגַר קִדּוּחֵי מַיִם עִם קוֹאוֹרְדִּינָטוֹת (CSV) — מְסַנְּנִים לְתֵבַת הרמה/לרקמונט לְשִׁכְבַת הַהִידְרוֹלוֹגְיָה.", "verify": "unverified" },
-    { "name_he": "הַשֵּׁרוּת הַהִידְרוֹלוֹגִי", "org": "national hydrological service", "url": "", "what_he": "דּוּחוֹת הַשֵּׁרוּת הַהִידְרוֹלוֹגִי — מִפְלָסִים, סִפְרֵי קִדּוּחַ וּמַאֲזַן מַיִם תַּת־קַרְקָעִי.", "verify": "unverified" }
+    { "name_he": "The National Water Authority", "org": "national water authority", "url": "", "what_he": "Groundwater levels, borehole repositories, water balance, and quality — the national hydrological authority (including the plateau basin).", "verify": "unverified" },
+    { "name_he": "Open Data Repository — Boreholes", "org": "open government data portal", "url": "", "what_he": "A water-borehole repository with coordinates (CSV) — filtered to the plateau/Larkmont bounding box for the hydrology layer.", "verify": "unverified" },
+    { "name_he": "The Hydrological Service", "org": "national hydrological service", "url": "", "what_he": "Hydrological Service reports — levels, borehole logs, and subsurface water balance.", "verify": "unverified" }
   ],
 
   "nature_wildlife": [
-    { "name_he": "iNaturalist — תַּצְפִּיּוֹת מִין", "org": "iNaturalist", "url": "https://www.inaturalist.org/", "what_he": "תַּצְפִּיּוֹת מְמֻקָּמוֹת שֶׁל בַּעֲלֵי חַיִּים וּצְמָחִים עִם תְּמוּנוֹת וְקוֹלוֹת (CC) — מָקוֹר זִהוּי וְטְוָח־תְּפוּצָה לְמִינֵי הרמה.", "verify": "ok" },
-    { "name_he": "GBIF — מַאֲגַר מְגֻוָּנוּת בִּיוֹלוֹגִית", "org": "GBIF", "url": "https://www.gbif.org/", "what_he": "מַאֲגַר עוֹלָמִי שֶׁל רְשׁוּמוֹת מִינִים — נְתוּנֵי תְּפוּצָה וְטְוָח לְהַעֲשָׁרַת רְשִׁימַת מִינֵי הרמה. API: api.gbif.org.", "verify": "bot-blocked" },
-    { "name_he": "GBIF — API", "org": "GBIF", "url": "https://api.gbif.org/v1/", "what_he": "מְמַשֵּׁק תִּכְנוּתִי לִשְׁאִילְתַת רְשׁוּמוֹת מִינִים, טַקְסוֹנוֹמְיָה וּתְפוּצָה (פָּתוּחַ, לְלֹא מַפְתֵּחַ).", "verify": "ok" },
-    { "name_he": "וִיקִימֶדְיָה קוֹמוֹנְס — קוֹלוֹת/תְּמוּנוֹת", "org": "Wikimedia Commons", "url": "https://commons.wikimedia.org/", "what_he": "הַקְלָטוֹת וּתְמוּנוֹת חָפְשִׁיּוֹת (CC/PD) שֶׁל צִפֳּרִים וּבַעֲלֵי חַיִּים — הַמָּקוֹר לְקוֹלוֹת הַטֶּבַע הַבָּנוּי בָּאַפְּלִיקַצְיָה (לְלֹא Xeno-canto).", "verify": "ok" },
-    { "name_he": "Xeno-canto — צְלִילֵי צִפֳּרִים", "org": "xeno-canto.org", "url": "https://xeno-canto.org/", "what_he": "אַרְכִיוֹן הַקְלָטוֹת שֶׁל קוֹלוֹת צִפֳּרִים בָּעוֹלָם (לְעִיּוּן/קִישׁוּר חִיצוֹנִי בִּלְבַד — ה-API שֶׁלּוֹ הוּסַר מֵהַצְּלָלָה הַמְּקוֹמִית).", "verify": "ok" },
-    { "name_he": "רְשׁוּת הַשְּׁמוּרוֹת וְהַטֶּבַע", "org": "national parks service", "url": "", "what_he": "גְּבוּלוֹת שְׁמוּרוֹת טֶבַע וּפַארְקִים, מִינֵי בָּר וּשְׁבִילֵי הֲלִיכָה — כּוֹלֵל שְׁמוּרַת עמק לרקמונט.", "verify": "unverified" },
-    { "name_he": "אֲגֻדָּה לְשִׁמּוּר הַטֶּבַע", "org": "nature protection society", "url": "", "what_he": "מֵידָע עַל צִפֳּרִים, מִינֵי בָּר וּשְׁמִירַת טֶבַע — רֶקַע אֶקוֹלוֹגִי לְמִדְרִיךְ הַטֶּבַע.", "verify": "unverified" }
+    { "name_he": "iNaturalist — Species Observations", "org": "iNaturalist", "url": "https://www.inaturalist.org/", "what_he": "Geolocated observations of animals and plants with photos and sounds (CC) — an identification and distribution-range source for the plateau's species.", "verify": "ok" },
+    { "name_he": "GBIF — Biodiversity Database", "org": "GBIF", "url": "https://www.gbif.org/", "what_he": "A global database of species records — distribution and range data to enrich the plateau's species list. API: api.gbif.org.", "verify": "bot-blocked" },
+    { "name_he": "GBIF — API", "org": "GBIF", "url": "https://api.gbif.org/v1/", "what_he": "A programmatic interface for querying species records, taxonomy, and distribution (open, no key).", "verify": "ok" },
+    { "name_he": "Wikimedia Commons — Sounds/Images", "org": "Wikimedia Commons", "url": "https://commons.wikimedia.org/", "what_he": "Free recordings and images (CC/PD) of birds and animals — the source for the nature sounds built into the app (without Xeno-canto).", "verify": "ok" },
+    { "name_he": "Xeno-canto — Bird Sounds", "org": "xeno-canto.org", "url": "https://xeno-canto.org/", "what_he": "An archive of bird-sound recordings worldwide (for reference/external linking only — its API was removed from the local mirror).", "verify": "ok" },
+    { "name_he": "The Nature & Parks Authority", "org": "national parks service", "url": "", "what_he": "Boundaries of nature reserves and parks, wildlife species, and walking trails — including the Larkmont Valley reserve.", "verify": "unverified" },
+    { "name_he": "Society for the Protection of Nature", "org": "nature protection society", "url": "", "what_he": "Information on birds, wildlife species, and nature conservation — ecological background for the nature guide.", "verify": "unverified" }
   ],
 
   "planning_zoning": [
-    { "name_he": "מִרְשַׁם הַתִּכְנוּן", "org": "cadastral/planning registry", "url": "", "what_he": "תָּכְנִיּוֹת מִתְאָר, יִעוּדֵי קַרְקַע וְזְכֻיּוֹת בְּנִיָּה רִשְׁמִיִּים — הַסַּמְכוּת הַתִּכְנוּנִית לַמִּגְרָשׁ.", "verify": "unverified" },
-    { "name_he": "פּוֹרְטַל מַפּוֹת מֶמְשַׁלְתִּי", "org": "national mapping portal", "url": "", "what_he": "תַּשְׁתִּית מַפּוֹת לְאֻמִּית — אוֹרְתוֹפוֹטוֹ, קַדַּסְטֶר, שִׁכְבוֹת תִּכְנוּן וּגְבוּלוֹת.", "verify": "unverified" },
-    { "name_he": "מֶרְכָּז הַמִּפּוּי הַלְּאֻמִּי", "org": "national mapping center", "url": "", "what_he": "אוֹרְתוֹפוֹטוֹ רִשְׁמִי, מַפּוֹת טוֹפּוֹגְרָפִיּוֹת וְשִׁכְבוֹת בָּסִיס לַ-GIS שֶׁל הַמִּגְרָשׁ.", "verify": "unverified" },
-    { "name_he": "עִירִיַּת לרקמונט", "org": "larkmont.muni", "url": "https://www.larkmont.muni/", "what_he": "תָּכְנִיּוֹת מְקוֹמִיּוֹת, אַרְנוֹנָה, וְעָדוֹת וְהוֹדָעוֹת הָרָשׁוּת הַמְּקוֹמִית הַסְּפֵּצִיפִית לָעִיר.", "verify": "unverified" }
+    { "name_he": "The Planning Registry", "org": "cadastral/planning registry", "url": "", "what_he": "Master plans, land-use designations, and official building rights — the planning authority for the plot.", "verify": "unverified" },
+    { "name_he": "Government Maps Portal", "org": "national mapping portal", "url": "", "what_he": "National maps infrastructure — orthophotos, cadastre, planning layers, and boundaries.", "verify": "unverified" },
+    { "name_he": "The National Mapping Center", "org": "national mapping center", "url": "", "what_he": "Official orthophotos, topographic maps, and base layers for the plot's GIS.", "verify": "unverified" },
+    { "name_he": "Larkmont Municipality", "org": "larkmont.muni", "url": "https://www.larkmont.muni/", "what_he": "Local plans, municipal property tax, committees, and notices from the local authority specific to the city.", "verify": "unverified" }
   ],
 
   "climate_history": [
-    { "name_he": "אוֹפֶּן־מֶטֶאוֹ — Climate API (נוֹרְמָלִים)", "org": "Open-Meteo Climate", "url": "https://open-meteo.com/en/docs/climate-api", "what_he": "נְתוּנֵי אַקְלִים אֲרֻכֵּי טְוָח (1950–2050, מוֹדְלֵי CMIP6) — נוֹרְמָלִים וּמְגַמּוֹת לְפִי מִקּוּם לְמִשְׁבֶּצֶת הַהִיסְטוֹרְיָה הָאַקְלִימִית.", "verify": "unverified" },
-    { "name_he": "שֵׁרוּת מֶטֶאוֹרוֹלוֹגִי — נוֹרְמָלִים", "org": "national meteorological service", "url": "", "what_he": "אַטְלָס אַקְלִים וְנוֹרְמָלִים רַב־שְׁנָתִיִּים — מֵמּוֹצְעֵי טֶמְפֶּרָטוּרָה וּמִשְׁקָע אֵזוֹרִיִּים.", "verify": "unverified" },
-    { "name_he": "Google Earth Engine — NDVI/אַקְלִים", "org": "Google Earth Engine", "url": "https://earthengine.google.com/", "what_he": "אַרְכִיוֹן לַוְיָנִי (NDVI, טֶמְפֶּרָטוּרַת קַרְקַע, מִשְׁקָע) — מָקוֹר הַצִּמְחִיָּה/אַקְלִים הַהִיסְטוֹרִי שֶׁנֶּאֱפָה מְקוֹמִית (גִּישַׁת אַקָדֶמְיָה שֶׁל הַבּוֹנֶה).", "verify": "ok" },
-    { "name_he": "הַלִּשְׁכָּה הַלְּאֻמִּית לִסְטָטִיסְטִיקָה", "org": "national statistics bureau", "url": "", "what_he": "נְתוּנִים סְטָטִיסְטִיִּים לְאֻמִּיִּים — אֻכְלוֹסִיָּה, אַקְלִים וְסִדְרוֹת זְמַן לְהֶקְשֵׁר מְקוֹמִי וְהִיסְטוֹרִי.", "verify": "unverified" }
+    { "name_he": "Open-Meteo — Climate API (Normals)", "org": "Open-Meteo Climate", "url": "https://open-meteo.com/en/docs/climate-api", "what_he": "Long-range climate data (1950–2050, CMIP6 models) — normals and trends by location for the climate-history tile.", "verify": "unverified" },
+    { "name_he": "Meteorological Service — Normals", "org": "national meteorological service", "url": "", "what_he": "A climate atlas and multi-year normals — regional temperature and precipitation averages.", "verify": "unverified" },
+    { "name_he": "Google Earth Engine — NDVI/Climate", "org": "Google Earth Engine", "url": "https://earthengine.google.com/", "what_he": "A satellite archive (NDVI, soil temperature, precipitation) — the historical vegetation/climate source that was cached locally (the builder's academic access).", "verify": "ok" },
+    { "name_he": "The National Statistics Bureau", "org": "national statistics bureau", "url": "", "what_he": "National statistical data — population, climate, and time series for local and historical context.", "verify": "unverified" }
   ],
 
   "agronomy": [
-    { "name_he": "אוֹפֶּן־מֶטֶאוֹ — ET0 (אִיּוּד)", "org": "Open-Meteo", "url": "https://open-meteo.com/en/docs", "what_he": "et0_fao_evapotranspiration (FAO-56 Penman-Monteith) וּקְרִינָה — בְּסִיס חִשּׁוּב דְּרִישַׁת הַמַּיִם (ETc) שֶׁל הַצְּמָחִים.", "verify": "ok" },
-    { "name_he": "FAO — Irrigation & Drainage 56", "org": "FAO", "url": "https://www.fao.org/4/x0490e/x0490e00.htm", "what_he": "הַמַּדְרִיךְ הַקָּנוֹנִי לְחִשּׁוּב ET0 וּמְקַדְּמֵי גִּדּוּל (Kc) — הַבָּסִיס הָאַגְרוֹנוֹמִי לְהַמְלָצוֹת הַהַשְׁקָיָה.", "verify": "unverified" },
-    { "name_he": "שֵׁרוּת הַהַדְרָכָה הַחַקְלָאִי הָאֵזוֹרִי", "org": "ministry of agriculture / extension service", "url": "", "what_he": "מֵידָע אַגְרוֹנוֹמִי וְהַדְרָכָה עַל גִּדּוּלִים וּגְנַּנּוּת בִּתְנָאֵי הָאֵזוֹר.", "verify": "unverified" },
-    { "name_he": "מַאֲגַר נְתוּנִים פָּתוּחַ — חַקְלָאוּת וְקַרְקַע", "org": "open government data portal", "url": "", "what_he": "מַאֲגְרֵי נְתוּנִים פְּתוּחִים (קַרְקַע, חַקְלָאוּת, אֵזוֹרֵי גִּדּוּל) — לְהַעֲשָׁרַת הַשְּׁכָבָה הָאַגְרוֹנוֹמִית.", "verify": "unverified" }
+    { "name_he": "Open-Meteo — ET0 (Evapotranspiration)", "org": "Open-Meteo", "url": "https://open-meteo.com/en/docs", "what_he": "et0_fao_evapotranspiration (FAO-56 Penman-Monteith) and radiation — the basis for computing the plants' water demand (ETc).", "verify": "ok" },
+    { "name_he": "FAO — Irrigation & Drainage 56", "org": "FAO", "url": "https://www.fao.org/4/x0490e/x0490e00.htm", "what_he": "The canonical guide for computing ET0 and crop coefficients (Kc) — the agronomic basis for the irrigation recommendations.", "verify": "unverified" },
+    { "name_he": "The Regional Agricultural Extension Service", "org": "ministry of agriculture / extension service", "url": "", "what_he": "Agronomic information and guidance on crops and gardening in the region's conditions.", "verify": "unverified" },
+    { "name_he": "Open Data Repository — Agriculture & Soil", "org": "open government data portal", "url": "", "what_he": "Open data repositories (soil, agriculture, growing regions) — to enrich the agronomy layer.", "verify": "unverified" }
   ],
 
   "local_larkmont": [
-    { "name_he": "לרקמונט — וִיקִיפֶּדְיָה (עִבְרִית)", "org": "Wikipedia (HE)", "url": "https://he.wikipedia.org/wiki/לרקמונט", "what_he": "רֶקַע עַל הָעִיר — הִיסְטוֹרְיָה, אֻכְלוֹסִיָּה, גֵּאוֹגְרַפְיָה וְאַקְלִים מְקוֹמִי.", "verify": "unverified" },
-    { "name_he": "עִירִיַּת לרקמונט", "org": "larkmont.muni", "url": "https://www.larkmont.muni/", "what_he": "אֲתָר הָרָשׁוּת הַמְּקוֹמִית — הוֹדָעוֹת, שֵׁרוּתִים, תָּכְנִיּוֹת וּמֵידָע עִירוֹנִי.", "verify": "unverified" },
-    { "name_he": "מֶרְכָּז מְבַקְּרֵי עמק לרקמונט", "org": "national parks service", "url": "", "what_he": "מֵידָע רִשְׁמִי עַל שְׁמוּרַת עמק לרקמונט — שְׁבִילִים, גֵּאוֹלוֹגְיָה, חַי וָצֹמֵחַ וּשְׁעוֹת בִּקּוּר.", "verify": "unverified" },
-    { "name_he": "OpenStreetMap — לרקמונט", "org": "OpenStreetMap", "url": "https://www.openstreetmap.org/#map=14/34.0/-40.0", "what_he": "מַפַּת רְחוֹבוֹת, שְׁבִילִים וְנְקֻדּוֹת עִנְיָן פְּתוּחָה (ODbL) — בְּסִיס מַפָּה מְקוֹמִי וּמְדֻיָּק.", "verify": "ok" }
+    { "name_he": "Larkmont — Wikipedia (English)", "org": "Wikipedia (EN)", "url": "https://en.wikipedia.org/wiki/Larkmont", "what_he": "Background on the city — history, population, geography, and local climate.", "verify": "unverified" },
+    { "name_he": "Larkmont Municipality", "org": "larkmont.muni", "url": "https://www.larkmont.muni/", "what_he": "The local authority's website — notices, services, plans, and municipal information.", "verify": "unverified" },
+    { "name_he": "Larkmont Valley Visitor Center", "org": "national parks service", "url": "", "what_he": "Official information on the Larkmont Valley reserve — trails, geology, flora and fauna, and visiting hours.", "verify": "unverified" },
+    { "name_he": "OpenStreetMap — Larkmont", "org": "OpenStreetMap", "url": "https://www.openstreetmap.org/#map=14/34.0/-40.0", "what_he": "An open map of streets, trails, and points of interest (ODbL) — an accurate local map base.", "verify": "ok" }
   ],
 
   "data_portals": [
-    { "name_he": "פּוֹרְטַל נְתוּנִים פְּתוּחִים מֶמְשַׁלְתִּי", "org": "open government data portal (CKAN)", "url": "", "what_he": "פּוֹרְטַל הַנְּתוּנִים הַפְּתוּחִים הַמֶּמְשַׁלְתִּי (קַרְקַע, קִדּוּחִים, סְבִיבָה, תַּחְבּוּרָה) — מָקוֹר הַ'Data Harvest'.", "verify": "unverified" },
-    { "name_he": "קַטָלוֹג מַאֲגָרִים פְּתוּחִים", "org": "open government data portal", "url": "", "what_he": "קַטָלוֹג כְּלָל הַמַּאֲגָרִים לְחִפּוּשׂ וְסִנּוּן (CKAN API).", "verify": "unverified" }
+    { "name_he": "Government Open-Data Portal", "org": "open government data portal (CKAN)", "url": "", "what_he": "The government open-data portal (soil, boreholes, environment, transportation) — the 'Data Harvest' source.", "verify": "unverified" },
+    { "name_he": "Open Repositories Catalog", "org": "open government data portal", "url": "", "what_he": "A catalog of all repositories for searching and filtering (CKAN API).", "verify": "unverified" }
   ]
 }

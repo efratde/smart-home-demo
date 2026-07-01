@@ -41,7 +41,7 @@ const Mats = (function(){
       for(let xx=0;xx<=s;xx+=16) x.lineTo(xx, y+Math.sin(xx*0.05+i)*8); x.stroke(); }
     return tex(c,18); }
 
-  // ---- courtyard paving (ריצוף) ----
+  // ---- courtyard paving (tiling) ----
   function paving(){ const s=256,c=cnv(s),x=c.getContext('2d');
     x.fillStyle='#cdb79a'; x.fillRect(0,0,s,s);
     const n=4, cell=s/n;
@@ -76,7 +76,7 @@ const Mats = (function(){
     const wallTex=plaster();
     const M = {
       // The demo house is the HERO and must read SOLID/opaque. A synthetic
-      // palette: warm sandy "טיח בהיר" stucco, sand-toned flat
+      // palette: warm sandy "light plaster" stucco, sand-toned flat
       // roof/parapet, light grey-tan concrete. (The translucency that lets you
       // see through the SURROUNDING blocks lives on meshes named 'homeblock'
       // in terrain.js — these house materials stay fully opaque.)
@@ -90,7 +90,7 @@ const Mats = (function(){
       deck: new THREE.MeshStandardMaterial({ map:deck(), color:0xd09a6a, roughness:0.8 }),
       wood: new THREE.MeshStandardMaterial({ color:0x6b4a2c, roughness:0.6 }),
       brass: new THREE.MeshStandardMaterial({ color:0xb0894a, roughness:0.34, metalness:0.85 }),
-      // the demo מעקה (terrace/courtyard railing) is GREEN-painted tubular
+      // the demo railing (terrace/courtyard railing) is GREEN-painted tubular
       // metal; weathered sage-olive green.
       railing: new THREE.MeshStandardMaterial({ color:0x68744a, roughness:0.45, metalness:0.55 }),
       // REAL glazing. No env map is wired in this scene (the Sky is a shader

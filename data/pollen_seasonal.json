@@ -1,7 +1,7 @@
 {
-  "_note": "Baked seasonal allergen calendar for the highlands / Larkmont (~34.0N, -40.0E, 300m). month -> { type: level }, level 0..4 (0 none, 1 low, 2 moderate, 3 high, 4 very high). OFFLINE / no-network fallback so the 'סביבה' allergen card is never blank; labeled 'לוח עונתי' in the UI to distinguish it from live measured pollen. Sources: regional aerobiology pattern for the arid highland edge — olive Mar-May, grasses spring flush Mar-Jun, weeds (ragweed/mugwort/chenopod) late-summer to autumn, tree pollen (cypress/olive) late-winter to spring. Conservative for the arid zone (lower grass than a humid lowland).",
+  "_note": "Baked seasonal allergen calendar for the highlands / Larkmont (~34.0N, -40.0E, 300m). month -> { type: level }, level 0..4 (0 none, 1 low, 2 moderate, 3 high, 4 very high). OFFLINE / no-network fallback so the 'Environment' allergen card is never blank; labeled 'Seasonal calendar' in the UI to distinguish it from live measured pollen. Sources: regional aerobiology pattern for the arid highland edge — olive Mar-May, grasses spring flush Mar-Jun, weeds (ragweed/mugwort/chenopod) late-summer to autumn, tree pollen (cypress/olive) late-winter to spring. Conservative for the arid zone (lower grass than a humid lowland).",
   "_types": ["grass", "tree", "weed", "olive", "ragweed", "mugwort"],
-  "_levelHe": ["אין", "נמוך", "בינוני", "גבוה", "גבוה מאוד"],
+  "_levelHe": ["none", "low", "moderate", "high", "very high"],
   "months": {
     "1":  { "grass": 0, "tree": 1, "weed": 0, "olive": 0, "ragweed": 0, "mugwort": 0 },
     "2":  { "grass": 1, "tree": 2, "weed": 0, "olive": 1, "ragweed": 0, "mugwort": 0 },

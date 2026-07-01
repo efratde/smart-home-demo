@@ -11,7 +11,7 @@ const SkyRig = (function(){
 
   let scene,renderer,sky,sunLight,moonLight,hemi,ambient,stars,milky,moonMesh,moonMat,glass=[],ilights=[];
   let starGroup, moonTexCanvas, lastPhaseKey='', nightDome, domeMat;
-  let nightViewOn=false;   // "darken sky / show stars" override (panels.js שמיים toggle) — a night look WITHOUT changing the clock
+  let nightViewOn=false;   // "darken sky / show stars" override (panels.js sky toggle) — a night look WITHOUT changing the clock
   let cloudGroup=null, _cloudPhase=0;   // soft drifting clouds — opacity tied to live weather.cloud, fade at night
   let sunMesh, sunMat, sunGlow;          // VISIBLE sun disc + halo
   let planetGroup, planetSprites=[];     // the five naked-eye planets (sprites on BODY_R)
@@ -21,7 +21,7 @@ const SkyRig = (function(){
   let lastPathKey='', lastMoonPathKey=''; // rebuild arcs only when the calendar day changes
   let satGroup, satObjs=[];              // ISS + bright sats: {sprite,glow,line,meta,pass,passKey}
   let satTipEl=null;                     // sky.js-owned cursor hover-tip on a sat dot
-  let SAT_PASSES=[];                     // structured next-pass info, surfaced to panels.js (שמיים tab)
+  let SAT_PASSES=[];                     // structured next-pass info, surfaced to panels.js (sky tab)
   const notable=[];                      // {kind,name,...,wpos,screen} — projected each frame for hover info
   const STAR_R = 9000;                   // radius the starfield (Points) sits on
   // THREE.Sprite fails to rasterize at very large camera distances (~9000), so
@@ -608,7 +608,7 @@ const SkyRig = (function(){
     // seeds synchronously from the baked TLEs, then upgrades to live in place).
     // NOTE: the former floating bottom-left #satInfo panel (which overlapped and
     // hid the moon card) has been REMOVED. The satellite-pass info now lives in
-    // the שמיים tab (panels.js), which reads SkyRig.satPasses() / window.__satPasses
+    // the sky tab (panels.js), which reads SkyRig.satPasses() / window.__satPasses
     // — refreshed each frame in updateSatellites(). We keep only the lightweight
     // cursor hover-tip on the dot itself.
     // cursor-following hover tip for a satellite under the pointer (sky.js owns
@@ -616,7 +616,7 @@ const SkyRig = (function(){
     // with satellites — their tooltip template there would mis-render them).
     satTipEl=document.createElement('div');
     Object.assign(satTipEl.style,{position:'fixed',zIndex:'42',pointerEvents:'none',
-      font:"500 12px/1.4 'Heebo',sans-serif",color:'#eaf2ff',direction:'rtl',
+      font:"500 12px/1.4 'Heebo',sans-serif",color:'#eaf2ff',direction:'ltr',
       background:'linear-gradient(rgba(14,20,40,0.96),rgba(10,14,30,0.96))',
       border:'1px solid rgba(150,180,235,0.4)',borderRadius:'9px',padding:'7px 10px',
       whiteSpace:'nowrap',opacity:'0',transition:'opacity .12s',transform:'translate(14px,14px)'});
@@ -653,27 +653,27 @@ const SkyRig = (function(){
   }
 
   // ---- NOTABLE NAMED STARS (for hover info) ---------------------------------
-  // The brightest stars visible from this latitude, with Hebrew name, magnitude,
+  // The brightest stars visible from this latitude, with name, magnitude,
   // constellation, and distance (light-years). RA/Dec match data/stars.json so
   // the hover marker lands exactly on the rendered star.
   const BRIGHT_STARS=[
-    {he:'סיריוס',  en:'Sirius',     ra:6.7525, dec:-16.716, mag:-1.44, con:'הכלב הגדול', ly:8.6},
-    {he:'קנופוס',  en:'Canopus',    ra:6.3992, dec:-52.696, mag:-0.62, con:'קרינה',      ly:310},
-    {he:'ארקטורוס',en:'Arcturus',   ra:14.261, dec:19.182,  mag:-0.05, con:'רועה הדובים',ly:37},
-    {he:'וגה',     en:'Vega',       ra:18.6156,dec:38.784,  mag:0.03,  con:'הנשר/הנבל',  ly:25},
-    {he:'קאפלה',   en:'Capella',    ra:5.2782, dec:45.998,  mag:0.08,  con:'העגלון',     ly:43},
-    {he:'ריגל',    en:'Rigel',      ra:5.2423, dec:-8.202,  mag:0.18,  con:'אוריון',     ly:860},
-    {he:'פרוקיון', en:'Procyon',    ra:7.655,  dec:5.225,   mag:0.40,  con:'הכלב הקטן',  ly:11.5},
-    {he:'בטלגז',   en:'Betelgeuse', ra:5.9195, dec:7.407,   mag:0.45,  con:'אוריון',     ly:640},
-    {he:'אלטאיר',  en:'Altair',     ra:19.8464,dec:8.868,   mag:0.76,  con:'הנשר',       ly:17},
-    {he:'אלדברן',  en:'Aldebaran',  ra:4.599,  dec:16.509,  mag:0.87,  con:'השור',       ly:65},
-    {he:'אנטארס',  en:'Antares',    ra:16.490, dec:-26.432, mag:1.06,  con:'עקרב',       ly:550},
-    {he:'ספיקה',   en:'Spica',      ra:13.420, dec:-11.161, mag:0.98,  con:'בתולה',      ly:250},
-    {he:'דנב',     en:'Deneb',      ra:20.690, dec:45.280,  mag:1.25,  con:'הברבור',     ly:1400},
-    {he:'פומלהאוט',en:'Fomalhaut',  ra:22.961, dec:-29.622, mag:1.16,  con:'הדג הדרומי', ly:25},
-    {he:'רגולוס',  en:'Regulus',    ra:10.139, dec:11.967,  mag:1.35,  con:'אריה',       ly:79},
-    {he:'פולוקס',  en:'Pollux',     ra:7.755,  dec:28.026,  mag:1.14,  con:'תאומים',     ly:34},
-    {he:'פולאריס', en:'Polaris',    ra:2.530,  dec:89.264,  mag:1.98,  con:'הדוב הקטן',  ly:430}
+    {he:'Sirius',    en:'Sirius',     ra:6.7525, dec:-16.716, mag:-1.44, con:'Canis Major',      ly:8.6},
+    {he:'Canopus',   en:'Canopus',    ra:6.3992, dec:-52.696, mag:-0.62, con:'Carina',           ly:310},
+    {he:'Arcturus',  en:'Arcturus',   ra:14.261, dec:19.182,  mag:-0.05, con:'Boötes',           ly:37},
+    {he:'Vega',      en:'Vega',       ra:18.6156,dec:38.784,  mag:0.03,  con:'Aquila/Lyra',      ly:25},
+    {he:'Capella',   en:'Capella',    ra:5.2782, dec:45.998,  mag:0.08,  con:'Auriga',           ly:43},
+    {he:'Rigel',     en:'Rigel',      ra:5.2423, dec:-8.202,  mag:0.18,  con:'Orion',            ly:860},
+    {he:'Procyon',   en:'Procyon',    ra:7.655,  dec:5.225,   mag:0.40,  con:'Canis Minor',      ly:11.5},
+    {he:'Betelgeuse',en:'Betelgeuse', ra:5.9195, dec:7.407,   mag:0.45,  con:'Orion',            ly:640},
+    {he:'Altair',    en:'Altair',     ra:19.8464,dec:8.868,   mag:0.76,  con:'Aquila',           ly:17},
+    {he:'Aldebaran', en:'Aldebaran',  ra:4.599,  dec:16.509,  mag:0.87,  con:'Taurus',           ly:65},
+    {he:'Antares',   en:'Antares',    ra:16.490, dec:-26.432, mag:1.06,  con:'Scorpius',         ly:550},
+    {he:'Spica',     en:'Spica',      ra:13.420, dec:-11.161, mag:0.98,  con:'Virgo',            ly:250},
+    {he:'Deneb',     en:'Deneb',      ra:20.690, dec:45.280,  mag:1.25,  con:'Cygnus',           ly:1400},
+    {he:'Fomalhaut', en:'Fomalhaut',  ra:22.961, dec:-29.622, mag:1.16,  con:'Piscis Austrinus', ly:25},
+    {he:'Regulus',   en:'Regulus',    ra:10.139, dec:11.967,  mag:1.35,  con:'Leo',              ly:79},
+    {he:'Pollux',    en:'Pollux',     ra:7.755,  dec:28.026,  mag:1.14,  con:'Gemini',           ly:34},
+    {he:'Polaris',   en:'Polaris',    ra:2.530,  dec:89.264,  mag:1.98,  con:'Ursa Minor',       ly:430}
   ];
 
   // project the `notable[]` world positions to screen pixels (CSS px). Sets each
@@ -707,9 +707,9 @@ const SkyRig = (function(){
     }
     if(!best){ satTipEl.style.opacity='0'; return; }
     const m=best.meta, cur=best.cur;
-    const visTxt = best.vis ? '<span style="color:#ffd27a">נראה לעין</span>' : 'בצל / יום';
+    const visTxt = best.vis ? '<span style="color:#ffd27a">Naked-eye visible</span>' : 'In shadow / daytime';
     let h=`<div style="font-weight:700;color:#fff">${m.he} <span style="opacity:.6;font-weight:500">${m.short}</span></div>`;
-    if(cur) h+=`<div style="opacity:.85">גובה ${Math.round(cur.altDeg)}° · ${Satellites.dirHe(cur.azDeg)} (${Math.round(cur.azDeg)}°)</div>`;
+    if(cur) h+=`<div style="opacity:.85">Elevation ${Math.round(cur.altDeg)}° · ${Satellites.dirHe(cur.azDeg)} (${Math.round(cur.azDeg)}°)</div>`;
     h+=`<div style="opacity:.85">${visTxt}</div>`;
     satTipEl.innerHTML=h;
     const flipX=mx>window.innerWidth-220;
@@ -738,13 +738,13 @@ const SkyRig = (function(){
     ensureSatVisuals();
     // hard on/off from the layer toggle: a Group with .visible=false hides every
     // dot/glow/arc inside it regardless of their per-sat opacity logic below. We
-    // still RUN the per-frame math (so pass info for the שמיים tab stays live even
+    // still RUN the per-frame math (so pass info for the sky tab stays live even
     // when the dots are hidden), but the group flag keeps them off-screen.
     satGroup.visible = layerOn.satellites;
     if(!satObjs.length) return;
     const sunU=Astro.sunEciUnit?Astro.sunEciUnit(date):null;
     const observerDark = sunAltDeg < -4;     // civil-ish darkness for naked-eye sats
-    // structured pass info for the שמיים tab (panels.js reads SkyRig.satPasses()).
+    // structured pass info for the sky tab (panels.js reads SkyRig.satPasses()).
     // One entry per sat with a known pass; updated with the scrubbed time.
     const passInfo=[];
     for(const s of satObjs){
@@ -802,7 +802,7 @@ const SkyRig = (function(){
         const arcOp = clamp(faintVis,0,1) * (passVisible?0.55:0.22) * (s.pass?1:0);
         s.line.material.opacity=arcOp; s.line.visible=arcOp>0.02 && !!s.pass;
       }
-      // ----- collect structured pass info for the שמיים tab (panels.js) -----
+      // ----- collect structured pass info for the sky tab (panels.js) -----
       if(s.pass){
         const m=s.meta, p=s.pass;
         passInfo.push({
@@ -820,7 +820,7 @@ const SkyRig = (function(){
         });
       }
     }
-    // ----- publish pass info for panels.js (שמיים tab) -----
+    // ----- publish pass info for panels.js (sky tab) -----
     // Sorted: currently-up first, then by soonest rise. Carries the TLE-source note.
     passInfo.sort((a,b)=> (b.up?1:0)-(a.up?1:0) || a.rise-b.rise);
     SAT_PASSES = passInfo;
@@ -899,7 +899,7 @@ const SkyRig = (function(){
       sunGlow.material.color.copy(lerpCol(0xffd9a0,0xff7e3c,goldF));
       sunGlow.scale.setScalar(angScale(lerp(3.0,6.0,goldF),BODY_R,1));
       sunGlow.visible=sunMesh.visible;
-      if(sunMesh.visible) notable.push({kind:'sun',name:'השמש',wpos:sunMesh.position.clone(),
+      if(sunMesh.visible) notable.push({kind:'sun',name:'Sun',wpos:sunMesh.position.clone(),
         alt:S.altDeg, az:S.azDeg, pick:Math.max(angScale(sunAng,BODY_R,1),14)});
     }
 
@@ -927,7 +927,7 @@ const SkyRig = (function(){
     const moonVis=smooth(-1.5,2.5,Mo.altDeg)*lerp(0.35,1.0,nightF);
     moonMat.opacity=moonVis; moonMesh.userData.glow.material.opacity=moonVis*0.5*Mo.illum*nightF;
     moonMesh.visible=moonVis>0.01; moonMesh.userData.glow.visible=moonMesh.visible;
-    if(moonMesh.visible) notable.push({kind:'moon',name:'הירח',wpos:moonMesh.position.clone(),
+    if(moonMesh.visible) notable.push({kind:'moon',name:'Moon',wpos:moonMesh.position.clone(),
       phase:Mo.name, illum:Mo.illum, alt:Mo.altDeg, az:Mo.azDeg,
       pick:angScale(Math.max(Mo.angDiamDeg,1.0),BODY_R,1)});
     // orient the bright limb toward the Sun: position angle of the sun relative
@@ -1157,10 +1157,10 @@ const SkyRig = (function(){
     return { S, Mo, dayF: smooth(-6,6,realAlt), altDeg: realAlt };
   }
 
-  // satellite next-pass info for panels.js (שמיים tab); also on window.__satPasses
+  // satellite next-pass info for panels.js (sky tab); also on window.__satPasses
   function satPasses(){ return SAT_PASSES; }
   return { init, update, setWeather, notables, satPasses, setLayer,
-    // "darken sky / show stars" override for the שמיים tab (reversible; no clock change)
+    // "darken sky / show stars" override for the sky tab (reversible; no clock change)
     setNightView:function(b){ nightViewOn=!!b; }, isNightView:function(){ return nightViewOn; } };
 })();
 window.SkyRig = SkyRig;

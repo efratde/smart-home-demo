@@ -1,24 +1,24 @@
 [
 {
 "id": "blueberries",
-"name_he": "אוכמניות",
+"name_he": "Blueberries",
 "name_latin": "Vaccinium corymbosum",
 "emoji": "🫐",
 "icon_kind": "png",
 "icon_rel_path": "static/img/plants/blueberries.png",
 "best_zone_id": "backyard",
-"best_zone_name_he": "החצר האחורית",
-"zone_reason_he": "אדמת הרמה בסיסית; באזור האחורי תוכל לתת לעציץ אקספוזיציה למזרח בלבד — שמש בוקר חזקה ובצל אחר הצהריים. הצמח רגיש לחום קיצוני, ופחות מתח חום במזרח.",
+"best_zone_name_he": "The backyard",
+"zone_reason_he": "The plateau soil is alkaline; in the back area you can give the pot east-only exposure — strong morning sun and shade in the afternoon. The plant is sensitive to extreme heat, and there is less heat stress on the east side.",
 "planting_months_he": [
-"נובמבר",
-"דצמבר",
-"ינואר",
-"פברואר"
+"november",
+"december",
+"january",
+"february"
 ],
-"planting_note_he": "שתילת זמיר חשופי שורש — סוף הסתיו עד תחילת האביב.",
+"planting_note_he": "Plant bare-root saplings — late autumn through early spring.",
 "warnings_he": [
-"🧂 דורש אדמה חומצית (pH 4.5–5.5) — שונה מאוד מאדמת הרמה. עציץ עם תערובת חומצית מומלץ.",
-"💧 רגיש לחוסר מים — לא יסבול את הקיץ ללא טפטוף קבוע."
+"🧂 Requires acidic soil (pH 4.5–5.5) — very different from the plateau soil. A pot with an acidic mix is recommended.",
+"💧 Sensitive to water shortage — it won't survive the summer without regular drip irrigation."
 ],
 "water_winter_l_week": 10.8,
 "water_spring_l_week": 24.3,
@@ -37,22 +37,22 @@
 },
 {
 "id": "apricot",
-"name_he": "משמש",
+"name_he": "Apricot",
 "name_latin": "Prunus armeniaca",
 "emoji": "🍑",
 "icon_kind": "png",
 "icon_rel_path": "static/img/plants/apricot.png",
 "best_zone_id": "backyard",
-"best_zone_name_he": "החצר האחורית",
-"zone_reason_he": "עץ נשיר אוהב שמש מלאה. החצר האחורית מאפשרת התפתחות חופשית של נוף, ולקצוות הצמרת יש מקום לקבל שמש בוקר חזקה.",
+"best_zone_name_he": "The backyard",
+"zone_reason_he": "A deciduous tree that loves full sun. The backyard lets the canopy develop freely, and the edges of the crown have room to catch strong morning sun.",
 "planting_months_he": [
-"דצמבר",
-"ינואר",
-"פברואר"
+"december",
+"january",
+"february"
 ],
-"planting_note_he": "שתילת שתילי חשופי שורש בעונת השלכת — שורשים מתפתחים לפני האביב.",
+"planting_note_he": "Plant bare-root saplings during the dormant season — the roots develop before spring.",
 "warnings_he": [
-"❄️ פריחה מוקדמת (פברואר–מרץ) רגישה לקרה מאוחרת. כיסוי ביריעה בלילות קור עשוי להציל יבול שלם."
+"❄️ Early blossoming (February–March) is sensitive to late frost. Covering it with a sheet on cold nights can save an entire crop."
 ],
 "water_winter_l_week": 11.4,
 "water_spring_l_week": 25.6,
@@ -71,24 +71,24 @@
 },
 {
 "id": "pomegranate",
-"name_he": "רימון",
+"name_he": "Pomegranate",
 "name_latin": "Punica granatum",
 "emoji": "🍎",
 "icon_kind": "png",
 "icon_rel_path": "static/img/plants/pomegranate.png",
 "best_zone_id": "balcony",
-"best_zone_name_he": "מרפסת קומה ראשונה",
-"zone_reason_he": "צמח אידיאלי לתנאי הרמה — חסכוני במים, סובל יובש וחום. מתאים לכל אזור בחצר; במרפסת הוא יקבל הכי הרבה שמש לאורך כל היום ויחנט בשפע.",
+"best_zone_name_he": "First-floor balcony",
+"zone_reason_he": "An ideal plant for the plateau conditions — thrifty with water, tolerant of drought and heat. Suitable for any area of the yard; on the balcony it gets the most sun all day long and sets fruit abundantly.",
 "planting_months_he": [
-"נובמבר",
-"דצמבר",
-"ינואר",
-"פברואר",
-"מרץ"
+"november",
+"december",
+"january",
+"february",
+"march"
 ],
-"planting_note_he": "שתילה בעונת השלכת או בתחילת האביב, לפני שמתחיל החום.",
+"planting_note_he": "Plant during the dormant season or in early spring, before the heat sets in.",
 "warnings_he": [
-"🌵 צמח אידיאלי לתנאים שלך — חסכוני במים ועומד מצוין בחום ובמליחות הרמה."
+"🌵 An ideal plant for your conditions — thrifty with water and stands up beautifully to the heat and salinity of the plateau."
 ],
 "water_winter_l_week": 7.8,
 "water_spring_l_week": 17.5,
@@ -107,22 +107,22 @@
 },
 {
 "id": "fig",
-"name_he": "תאנה",
+"name_he": "Fig",
 "name_latin": "Ficus carica",
 "emoji": "🌳",
 "icon_kind": "png",
 "icon_rel_path": "static/img/plants/fig.png",
 "best_zone_id": "balcony",
-"best_zone_name_he": "מרפסת קומה ראשונה",
-"zone_reason_he": "עץ ים-תיכוני שמשגשג בשמש מלאה. גם החצר האחורית וגם המרפסת יתאימו; המרפסת נותנת לו את שעות השמש המקסימליות לאורך השנה.",
+"best_zone_name_he": "First-floor balcony",
+"zone_reason_he": "A Mediterranean tree that thrives in full sun. Both the backyard and the balcony would suit it; the balcony gives it the maximum sun hours throughout the year.",
 "planting_months_he": [
-"דצמבר",
-"ינואר",
-"פברואר"
+"december",
+"january",
+"february"
 ],
-"planting_note_he": "שתילה בעונת השלכת. בעציץ — הקפד על ניקוז טוב; הצמח אוהב יובש בין השקיות.",
+"planting_note_he": "Plant during the dormant season. In a pot — make sure drainage is good; the plant likes to dry out between waterings.",
 "warnings_he": [
-"☀️ נעמדת מצוין בשמש החזקה, מקבלת פירות גם בלי מים רבים — אבל קצת השקיה תעלה משמעותית את כמות הפרי."
+"☀️ Stands up beautifully to strong sun and bears fruit even without much water — but a little irrigation will significantly boost the amount of fruit."
 ],
 "water_winter_l_week": 8.4,
 "water_spring_l_week": 18.9,
@@ -141,22 +141,22 @@
 },
 {
 "id": "avocado",
-"name_he": "אבוקדו",
+"name_he": "Avocado",
 "name_latin": "Persea americana",
 "emoji": "🥑",
 "icon_kind": "png",
 "icon_rel_path": "static/img/plants/avocado.png",
 "best_zone_id": "balcony",
-"best_zone_name_he": "מרפסת קומה ראשונה",
-"zone_reason_he": "רגיש לקרה. במרפסת הקומה השנייה האוויר הקר נישא מטה ומתנקז למפלסים הנמוכים; הצמח על גובה ייהנה מטמפרטורות מינימליות גבוהות יותר בכמה מעלות בלילות הקרים של הרמה.",
+"best_zone_name_he": "First-floor balcony",
+"zone_reason_he": "Sensitive to frost. On the second-floor balcony the cold air sinks and drains to the lower levels; up high, the plant enjoys minimum temperatures a few degrees warmer on the plateau's cold nights.",
 "planting_months_he": [
-"מרץ",
-"אפריל"
+"march",
+"april"
 ],
-"planting_note_he": "שתילת שתיל מבית-משתלה אחרי שעבר סכנת הקרה האחרונה. לא לשתול בסתיו בלרקמונט.",
+"planting_note_he": "Plant a nursery-grown seedling after the last frost danger has passed. Do not plant in autumn in Larkmont.",
 "warnings_he": [
-"🥶 רגיש לקרה — הטמפרטורות החורפיות בלרקמונט יכולות לפגוע. גן ממוקם, מוגן מרוח, וכיסוי בלילות קרים מומלץ.",
-"💧 צורך מים גבוה — לא חוסך מים, בניגוד לרוב שאר העצים שבחצר. נטף קבוע חיוני בקיץ."
+"🥶 Sensitive to frost — Larkmont's winter temperatures can do damage. A well-sited, wind-sheltered garden spot, plus covering on cold nights, is recommended.",
+"💧 High water demand — not thrifty with water, unlike most of the other trees in the yard. Steady drip irrigation is essential in summer."
 ],
 "water_winter_l_week": 12.0,
 "water_spring_l_week": 26.9,
@@ -175,23 +175,23 @@
 },
 {
 "id": "mint",
-"name_he": "נענע",
+"name_he": "Mint",
 "name_latin": "Mentha spicata",
 "emoji": "🌿",
 "icon_kind": "png",
 "icon_rel_path": "static/img/plants/mint.png",
 "best_zone_id": "front",
-"best_zone_name_he": "חזית הבית",
-"zone_reason_he": "בחזית הבית, הפונה למערב, היא מקבלת בוקר בצל ושמש אחר-צהריים — מתאים מאוד לנענע שלא אוהבת חום בוקר חזק על אדמה לחה. סובלת חלקית צל ולא נשרפת.",
+"best_zone_name_he": "Front of the house",
+"zone_reason_he": "At the front of the house, which faces west, it gets shade in the morning and sun in the afternoon — a great fit for mint, which doesn't like strong morning heat on moist soil. It tolerates partial shade and doesn't scorch.",
 "planting_months_he": [
-"מרץ",
-"אפריל",
-"אוקטובר",
-"נובמבר"
+"march",
+"april",
+"october",
+"november"
 ],
-"planting_note_he": "שתילה באביב או בסתיו — להימנע משיא הקיץ שיכול לשרוף שתיל צעיר.",
+"planting_note_he": "Plant in spring or autumn — avoid the peak of summer, which can scorch a young seedling.",
 "warnings_he": [
-"✂️ דורש קציצה — מתפשט, אבל נוח בעציצים. אהוב מים, כיוון מערב פוטר את שמש הצהריים."
+"✂️ Needs trimming — it spreads, but is easy to keep in pots. It loves water, and the western exposure spares it the midday sun."
 ],
 "water_winter_l_week": 10.2,
 "water_spring_l_week": 22.9,

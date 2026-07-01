@@ -1,5 +1,5 @@
 /* ===========================================================================
- * feedback.js — "הַצָּעוֹת לְשִׁדְרוּג" : a place for ALEX to jot down changes /
+ * feedback.js — "Upgrade suggestions" : a place for ALEX to jot down changes /
  * improvements wanted in the app, so the demo keeps growing. The notes live
  * in LogStore ('app_feedback'), so they ride along in the backup export AND can
  * be mailed to the developer (demo@example.com) in one tap. No backend — the device
@@ -25,7 +25,7 @@
     st.textContent =
       "#ofb{font-family:'Heebo',sans-serif;color:#efe6cf}" +
       "#ofb .fb-intro{font-size:11.5px;color:#bdb091;line-height:1.6;margin:2px 0 10px}" +
-      "#ofb textarea{width:100%;min-height:64px;resize:vertical;background:rgba(255,255,255,.05);border:1px solid rgba(202,161,90,.3);border-radius:8px;color:#fff7e6;font-family:'Heebo',sans-serif;font-size:13px;padding:9px 11px;direction:rtl}" +
+      "#ofb textarea{width:100%;min-height:64px;resize:vertical;background:rgba(255,255,255,.05);border:1px solid rgba(202,161,90,.3);border-radius:8px;color:#fff7e6;font-family:'Heebo',sans-serif;font-size:13px;padding:9px 11px;direction:ltr}" +
       "#ofb .fb-add{margin-top:7px;font-size:12.5px;color:#1a1606;background:linear-gradient(160deg,#caa15a,#a07c38);border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-weight:600;font-family:'Heebo',sans-serif}" +
       "#ofb .fb-row{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(202,161,90,.13)}" +
       "#ofb .fb-row:first-of-type{border-top:none}" +
@@ -54,10 +54,10 @@
 
   function mailtoHref() {
     var items = list();
-    var body = 'הַצָּעוֹת וְשִׁפּוּרִים שֶׁאֲלֶכְּס רוֹצֶה בָּאַפְּלִיקַצְיָה:\n\n';
-    if (!items.length) body += '(עוֹד אֵין הַצָּעוֹת)';
-    else items.forEach(function (it, i) { body += (i + 1) + '. ' + (it.text || '') + (it.done ? '  [טֻפַּל]' : '') + '\n'; });
-    return 'mailto:' + TO + '?subject=' + encodeURIComponent('האפליקציה של אלכס — הצעות לשדרוג') + '&body=' + encodeURIComponent(body);
+    var body = 'Suggestions and improvements Alex would like in the app:\n\n';
+    if (!items.length) body += '(No suggestions yet)';
+    else items.forEach(function (it, i) { body += (i + 1) + '. ' + (it.text || '') + (it.done ? '  [done]' : '') + '\n'; });
+    return 'mailto:' + TO + '?subject=' + encodeURIComponent('Alex\'s app — upgrade suggestions') + '&body=' + encodeURIComponent(body);
   }
 
   var _host = null;
@@ -67,17 +67,17 @@
     ensureCSS();
     var root = el('div'); root.id = 'ofb';
     var items = list();
-    var h = '<div class="fb-intro">רוֹשֵׁם פֹּה כָּל שִׁנּוּי, תּוֹסֶפֶת אוֹ רַעְיוֹן שֶׁתִּרְצֶה בָּאַפְּלִיקַצְיָה — וְזֶה יִשָּׁמֵר. אֶפְשָׁר לִשְׁלֹחַ הַכֹּל לְהמפתח בִּלְחִיצָה, וְזֶה גַּם נִכְלָל בַּגִּבּוּי.</div>';
-    h += '<textarea id="fb-input" placeholder="לְמָשָׁל: לְהוֹסִיף תְּזְכֹּרֶת הַשְׁקָיָה / לְשַׁנּוֹת אֶת הַצֶּבַע שֶׁל… / רַעְיוֹן חָדָשׁ ל…"></textarea>';
-    h += '<button class="fb-add" id="fb-add">＋ שְׁמֹר הַצָּעָה</button>';
-    if (!items.length) h += '<div class="fb-empty">עוֹד אֵין הַצָּעוֹת — מַה תִּרְצֶה לְשַׁנּוֹת?</div>';
+    var h = '<div class="fb-intro">Jot down here any change, addition, or idea you would like in the app — and it will be saved. You can send everything to the developer with one tap, and it is also included in the backup.</div>';
+    h += '<textarea id="fb-input" placeholder="For example: add a watering reminder / change the color of… / a new idea for…"></textarea>';
+    h += '<button class="fb-add" id="fb-add">＋ Save suggestion</button>';
+    if (!items.length) h += '<div class="fb-empty">No suggestions yet — what would you like to change?</div>';
     else h += items.map(function (it, i) {
-      return '<div class="fb-row' + (it.done ? ' done' : '') + '"><button class="fb-x" data-fb-done="' + i + '" title="טֻפַּל">✓</button>' +
+      return '<div class="fb-row' + (it.done ? ' done' : '') + '"><button class="fb-x" data-fb-done="' + i + '" title="Done">✓</button>' +
         '<div style="flex:1"><div class="fb-t">' + esc(it.text || '') + '</div>' + (it.date ? '<div class="fb-d">' + esc(it.date) + '</div>' : '') + '</div>' +
-        '<button class="fb-x" data-fb-del="' + i + '" title="מְחַק">✕</button></div>';
+        '<button class="fb-x" data-fb-del="' + i + '" title="Delete">✕</button></div>';
     }).join('');
-    h += '<a class="fb-send" id="fb-send" href="' + mailtoHref() + '">📧 שְׁלַח אֶת כָּל הַהַצָּעוֹת לְהמפתח</a>';
-    h += '<div class="fb-foot">הַהַצָּעוֹת נִשְׁמָרוֹת עַל הַמַּכְשִׁיר הַזֶּה (localStorage) וְנִכְלָלוֹת בַּגִּבּוּי. אֵין שְׁלִיחָה אוֹטוֹמָטִית — הַשְּׁלִיחָה הִיא דֶּרֶךְ הַמֵּייל שֶׁלְּךָ.</div>';
+    h += '<a class="fb-send" id="fb-send" href="' + mailtoHref() + '">📧 Send all suggestions to the developer</a>';
+    h += '<div class="fb-foot">Suggestions are saved on this device (localStorage) and included in the backup. There is no automatic sending — sending goes through your own email.</div>';
     root.innerHTML = h;
 
     var ta = root.querySelector('#fb-input');

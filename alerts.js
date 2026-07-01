@@ -95,10 +95,10 @@ const Alerts = (function(){
     return null;
   }
   // dustHe() thresholds, mirrored from app.js:1691 so the banner text matches the card:
-  //   <20 זניח · <50 קל · <100 בינוני · <200 גבוה · else אובך כבד  (µg/m³ scale)
+  //   <20 negligible · <50 light · <100 moderate · <200 high · else heavy haze  (µg/m³ scale)
   function dustHe(d){
     if(d==null) return null;
-    return d<20?'זניח':d<50?'קל':d<100?'בינוני':d<200?'גבוה':'אובך כבד';
+    return d<20?'negligible':d<50?'light':d<100?'moderate':d<200?'high':'heavy haze';
   }
 
   /* =================================================================
@@ -106,7 +106,7 @@ const Alerts = (function(){
      id   : stable DOM id for the banner element (one per rule kind)
      sev  : 'warn' | 'cold' | 'good' | 'info'  (drives the accent colour)
      icon : a single glyph
-     he   : Hebrew banner text
+     he   : English banner text
      key  : suppression key (rule-key, combined with civil-day in the store)
      ================================================================= */
 
@@ -130,12 +130,12 @@ const Alerts = (function(){
       soilT: (soilT!=null?soilT:undefined),
       date
     });
-    if(!fr || !fr.level || fr.level==='אין' || fr.level==='נמוך') return null;
-    const lowTxt=(fr.lowHouse!=null)?` · מינ׳ מוערך ~${fr.lowHouse}°`:'';
+    if(!fr || !fr.level || fr.level==='none' || fr.level==='low') return null;
+    const lowTxt=(fr.lowHouse!=null)?` · est. min ~${fr.lowHouse}°`:'';
     return {
       id:'al-frost', sev:'cold', icon:'❄️', key:'frost',
-      goto:{ alert:'frost' },          // → סביבה (env)
-      he:`סיכון כפור בכתם החשוף שלך הלילה (${fr.level})${lowTxt} — כסה צמחים רגישים או הזז עציצים פנימה`
+      goto:{ alert:'frost' },          // → environment (env)
+      he:`Frost risk on your exposed plot tonight (${fr.level})${lowTxt} — cover sensitive plants or move pots indoors`
     };
   }
 
@@ -146,16 +146,16 @@ const Alerts = (function(){
     const pm=(W.air && W.air.pm10!=null)?W.air.pm10:null;
     const real=(pm!=null);
     // GUESS path: Weather.state.dust is a 0..1 scene value; map to µg/m³ so the
-    // dustHe() threshold logic is identical either way. dust>=~0.5 → ~100µg ('גבוה').
+    // dustHe() threshold logic is identical either way. dust>=~0.5 → ~100µg ('high').
     const guess=(W.state && W.state.dust!=null)? W.state.dust*200 : null;
     const dustLevel = real ? pm : guess;
-    if(dustLevel==null || dustLevel<100) return null;          // fire at 'גבוה' (PM10>=100 / dust>=~0.5)
+    if(dustLevel==null || dustLevel<100) return null;          // fire at 'high' (PM10>=100 / dust>=~0.5)
     const lvl=dustHe(dustLevel);
-    const src = real ? `PM10 ~${Math.round(pm)} µg/m³` : 'הערכה לפי רוח/לחות';
+    const src = real ? `PM10 ~${Math.round(pm)} µg/m³` : 'estimate from wind/humidity';
     return {
       id:'al-dust', sev:'warn', icon:'🌫️', key:'dust',
-      goto:{ alert:'dust' },           // → סביבה (env)
-      he:`אבק מרחף ${lvl} (${src}) — סגור חלונות והכנס כביסה`
+      goto:{ alert:'dust' },           // → environment (env)
+      he:`Airborne dust ${lvl} (${src}) — close windows and bring in laundry`
     };
   }
 
@@ -174,16 +174,16 @@ const Alerts = (function(){
     const arr=W.hazardForecast(); // today first; null if not loaded
     return (Array.isArray(arr)&&arr.length)? arr : null;
   }
-  // "today / מחר / בעוד N ימים" for a YYYY-MM-DD forecast day vs the civil now.
+  // "today / tomorrow / in N days" for a YYYY-MM-DD forecast day vs the civil now.
   function whenHe(ymd,date){
     const today=civilDay(date);
     if(!ymd) return '';
-    if(ymd===today) return 'היום';
+    if(ymd===today) return 'today';
     // days difference by parsing both as local midnights
     const p=s=>{ const a=String(s).split('-'); return new Date(+a[0],+a[1]-1,+a[2]).getTime(); };
     const diff=Math.round((p(ymd)-p(today))/86400000);
-    if(diff===1) return 'מחר';
-    if(diff>1) return 'בעוד '+diff+' ימים';
+    if(diff===1) return 'tomorrow';
+    if(diff>1) return 'in '+diff+' days';
     return ''; // past day (shouldn't happen — forecast starts today)
   }
   // is this a SNOW weather_code? WMO 71-77 (snow/grains) + 85/86 (snow showers).
@@ -200,13 +200,13 @@ const Alerts = (function(){
       const meaningful = (mm!=null && mm>=5) || (prob!=null && prob>=70 && mm!=null && mm>=1);
       if(meaningful && !(mm!=null && mm>=20)){   // >=20mm is flashFlood's territory, not this gentle nudge
         const when=whenHe(d.date,date);
-        const mmTxt=(mm!=null)?`~${Math.round(mm)} מ"מ`:'';
-        const pTxt=(prob!=null)?`${Math.round(prob)}% סיכוי`:'';
+        const mmTxt=(mm!=null)?`~${Math.round(mm)} mm`:'';
+        const pTxt=(prob!=null)?`${Math.round(prob)}% chance`:'';
         const detail=[mmTxt,pTxt].filter(Boolean).join(' · ');
         return {
           id:'al-rain', sev:'info', icon:'🌧️', key:'rain-'+d.date,
-          goto:{ tab:'env' },          // מזג-אוויר → סביבה
-          he:`גשם צפוי ${when}${detail?` (${detail})`:''} — נקה ופתח מרזבים ובדוק שאין סתימות`
+          goto:{ tab:'env' },          // weather → environment
+          he:`Rain expected ${when}${detail?` (${detail})`:''} — clear and open gutters and check for blockages`
         };
       }
     }
@@ -223,8 +223,8 @@ const Alerts = (function(){
         const when=whenHe(d.date,date);
         return {
           id:'al-flood', sev:'warn', icon:'⚠️', key:'flood-'+d.date,
-          goto:{ tab:'env' },          // מזג-אוויר → סביבה
-          he:`גשם כבד צפוי ${when} (~${Math.round(mm)} מ"מ) — סכנת שיטפון/נגר בערוצי הנחל. הרחק חפצים מנתיבי מים והימנע מנסיעה בערוצים מוצפים`
+          goto:{ tab:'env' },          // weather → environment
+          he:`Heavy rain expected ${when} (~${Math.round(mm)} mm) — flood/runoff danger in the streambed channels. Keep objects away from water paths and avoid driving through flooded channels`
         };
       }
     }
@@ -239,11 +239,11 @@ const Alerts = (function(){
       const gust=d.gustMax, wmax=d.windMax;
       if((gust!=null && gust>=60) || (wmax!=null && wmax>=45)){
         const when=whenHe(d.date,date);
-        const g=(gust!=null)?`משבים עד ~${Math.round(gust)} קמ"ש`:(wmax!=null?`רוח עד ~${Math.round(wmax)} קמ"ש`:'');
+        const g=(gust!=null)?`gusts up to ~${Math.round(gust)} km/h`:(wmax!=null?`wind up to ~${Math.round(wmax)} km/h`:'');
         return {
           id:'al-wind', sev:'warn', icon:'💨', key:'wind-'+d.date,
-          goto:{ tab:'env' },          // מזג-אוויר → סביבה
-          he:`רוח חזקה צפויה ${when}${g?` (${g})`:''} — קבע רעפים וחפצים חופשיים בחצר וסגור תריסים/חלונות`
+          goto:{ tab:'env' },          // weather → environment
+          he:`Strong wind expected ${when}${g?` (${g})`:''} — secure roof tiles and loose objects in the yard and close shutters/windows`
         };
       }
     }
@@ -261,10 +261,10 @@ const Alerts = (function(){
         const when=whenHe(d.date,date);
         let txt;
         if(snow){
-          const cm=(d.snowCm!=null && d.snowCm>0)?` (~${Math.round(d.snowCm)} ס"מ)`:'';
-          txt=`שלג צפוי ${when}${cm} — הגן על צנרת ומדי מים, הכנס צמחים רגישים ונהג בזהירות`;
+          const cm=(d.snowCm!=null && d.snowCm>0)?` (~${Math.round(d.snowCm)} cm)`:'';
+          txt=`Snow expected ${when}${cm} — protect pipes and water meters, bring in sensitive plants and drive carefully`;
         } else {
-          txt=`קרה קשה צפויה ${when} (מינ׳ ~${Math.round(d.tmin)}°) — סכנת קרח וצנרת קפואה. עטוף ברזים חשופים`;
+          txt=`Hard frost expected ${when} (min ~${Math.round(d.tmin)}°) — risk of ice and frozen pipes. Wrap exposed faucets`;
         }
         return { id:'al-snow', sev:'cold', icon:'❄️', key:'snowice-'+d.date, goto:{ tab:'env' }, he:txt };
       }
@@ -279,9 +279,9 @@ const Alerts = (function(){
      them even if the fetch fails (file:// CORS) — not fabricated data.            */
   // inline fallback === data/milestones.json (kept in sync; the wishlist dates).
   const MILESTONES_FALLBACK=[
-    { date:'2020-03-05', he:'יום-המעבר — היום שעברת ללרקמונט', emoji:'🏜️' },
-    { date:'2021-08-01', he:'יום-הבית — היום שנכנסת לבית',       emoji:'🏡' },
-    { date:'2022-06-30', he:'יום המשכנתא — היום שלקחת את המשכנתא', emoji:'🔑' }
+    { date:'2020-03-05', he:'Moving day — the day you moved to Larkmont', emoji:'🏜️' },
+    { date:'2021-08-01', he:'Home day — the day you moved into the house',       emoji:'🏡' },
+    { date:'2022-06-30', he:'Mortgage day — the day you took the mortgage', emoji:'🔑' }
   ];
   let _milestones=null;            // resolved array once loaded
   (function loadMilestones(){
@@ -322,12 +322,12 @@ const Alerts = (function(){
                                        - (off<0 && (date.getMonth()+1)===1  && MO===12? 1 : 0);
       const n=occYear-Y;
       if(n<0) continue;
-      const label=(m.he||'').split('—')[0].trim() || m.he || 'אבן דרך';
-      const dayWord = off===0?'היום':(off>0?'מחר':'אתמול');
-      const yearTxt = n>0? ` — ${n} שנים!` : '';
+      const label=(m.he||'').split('—')[0].trim() || m.he || 'milestone';
+      const dayWord = off===0?'today':(off>0?'tomorrow':'yesterday');
+      const yearTxt = n>0? ` — ${n} years!` : '';
       return {
         id:'al-anniv-'+m.date, sev:'good', icon:m.emoji||'🎂', key:'anniv-'+m.date,
-        goto:{ tab:'brain' },          // אבן-דרך/תזכורת → מוח
+        goto:{ tab:'brain' },          // milestone/reminder → brain
         he:`${dayWord} ${label}${yearTxt}`
       };
     }
@@ -349,13 +349,13 @@ const Alerts = (function(){
       if(window.Astro && Astro.moon){
         const mo=Astro.moon(date);
         if(mo && mo.altDeg>0 && mo.illum>0.6)
-          moonTxt=` · אך הירח ${Math.round(mo.illum*100)}% מבהיר את הרקע`;
+          moonTxt=` · but the moon (${Math.round(mo.illum*100)}%) brightens the backdrop`;
       }
     }catch(e){}
     return {
       id:'al-stars', sev:'good', icon:'✨', key:'stars',
-      goto:{ alert:'sky' },            // → שמיים (sky)
-      he:`שמיים בהירים הערב (~${Math.round(cloud*100)}% עננות) מעל השמיים החשוכים שלך — ערב מצוין לצפייה בכוכבים${moonTxt}`
+      goto:{ alert:'sky' },            // → sky (sky)
+      he:`Clear skies tonight (~${Math.round(cloud*100)}% cloud) over your dark skies — an excellent evening for stargazing${moonTxt}`
     };
   }
 
@@ -365,7 +365,7 @@ const Alerts = (function(){
   //       (illum <50%) AND a meteor-shower PEAK is within ~1 day (Derive.nextMeteor), or
   //   (B) a VISIBLE ISS pass is imminent — the next naked-eye pass rises within ~30 min.
   // All from the real Astro/Satellites/Derive engines; honest in-app banner only.
-  // Anchored to the upcoming dark window (~21:00 local), like the שמיים summary.
+  // Anchored to the upcoming dark window (~21:00 local), like the sky summary.
   function localTimeMs(ref, hh){
     try{
       const f=new Intl.DateTimeFormat('en-CA',{timeZone:'Etc/GMT+3',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
@@ -405,8 +405,8 @@ const Alerts = (function(){
             const when=new Date(pass.rise).toLocaleTimeString('he-IL',{timeZone:'Etc/GMT+3',hour:'2-digit',minute:'2-digit'});
             return {
               id:'al-iss', sev:'good', icon:'🛰️', key:'iss',
-              goto:{ alert:'sky' },        // → שמיים (sky)
-              he:`מעבר נראה לעין של תחנת החלל (ISS) ב-${when} — שיא ${dir} בגובה ${Math.round(pass.peakAlt)}°. צא החוצה והבט מעלה`
+              goto:{ alert:'sky' },        // → sky (sky)
+              he:`Naked-eye pass of the Space Station (ISS) at ${when} — peak ${dir} at ${Math.round(pass.peakAlt)}° altitude. Step outside and look up`
             };
           }
         }
@@ -424,18 +424,18 @@ const Alerts = (function(){
       if(!met || met.days>1) return null;                   // peak within ~1 day
       // honest moon caveat at the meteor peak itself.
       let moonTxt='';
-      try{ const mp=A.moon(met.date); if(mp && mp.illum>0.45) moonTxt=` (הירח ${Math.round(mp.illum*100)}% — צפה אחרי שקיעת הירח)`; }catch(e){}
+      try{ const mp=A.moon(met.date); if(mp && mp.illum>0.45) moonTxt=` (moon ${Math.round(mp.illum*100)}% — watch after moonset)`; }catch(e){}
       return {
         id:'al-sky', sev:'good', icon:'🌠', key:'sky-tonight',
-        goto:{ alert:'sky' },          // → שמיים (sky)
-        he:`לילה מצוין לכוכבים מעל השמיים החשוכים שלך — שיא מטר ${met.name} ${met.days<=0?'הלילה':'בעוד '+met.days+' ימים'}, שמיים בהירים (~${Math.round(cloud*100)}% עננות) וירח חלש${moonTxt}`
+        goto:{ alert:'sky' },          // → sky (sky)
+        he:`Excellent night for stars over your dark skies — ${met.name} meteor shower peak ${met.days<=0?'tonight':'in '+met.days+' days'}, clear skies (~${Math.round(cloud*100)}% cloud) and a faint moon${moonTxt}`
       };
     }catch(e){}
     return null;
   }
 
   // DATE REMINDERS — LogStore.upcoming('schedule',2) + upcoming('lending',2).
-  // Maintenance / מיצי pet-food / lending returns due within 2 days. Returns an
+  // Maintenance / Mitzi pet-food / lending returns due within 2 days. Returns an
   // ARRAY of rule objects (zero or more), unlike the single-object rules above.
   function dateReminders(date){
     const LS=window.LogStore; if(!LS||!LS.upcoming) return [];
@@ -447,47 +447,47 @@ const Alerts = (function(){
     const out=[];
     (Array.isArray(sched)?sched:[]).forEach(r=>{
       if(!r) return;
-      const what=r.t || r.title || r.name || r.label || 'תזכורת';
+      const what=r.t || r.title || r.name || r.label || 'reminder';
       const when=r.d || r.due || '';
       out.push({
         id:'al-sched-'+(r.id!=null?r.id:Math.abs(hashStr(String(what)))),
         sev:'info', icon:'🔔', key:'sched-'+(r.id!=null?r.id:String(what)),
-        goto:{ tab:'brain' },          // תזכורת תחזוקה → מוח
-        he:`${esc(what)}${when?` · ל-${esc(when)}`:''}`
+        goto:{ tab:'brain' },          // maintenance reminder → brain
+        he:`${esc(what)}${when?` · for ${esc(when)}`:''}`
       });
     });
     (Array.isArray(lend)?lend:[]).forEach(r=>{
       if(!r) return;
-      const item=r.t || r.item || r.title || r.name || 'פריט מושאל';
+      const item=r.t || r.item || r.title || r.name || 'lent item';
       const who =r.who || r.to || r.borrower || '';
       const when=r.d || r.due || '';
       out.push({
         id:'al-lend-'+(r.id!=null?r.id:Math.abs(hashStr(String(item)))),
         sev:'info', icon:'↩️', key:'lend-'+(r.id!=null?r.id:String(item)),
-        goto:{ tab:'brain' },          // השאלות → מוח
-        he:`להחזיר/לקבל בחזרה: ${esc(item)}${who?` · ${esc(who)}`:''}${when?` · עד ${esc(when)}`:''}`
+        goto:{ tab:'brain' },          // lending → brain
+        he:`Return/get back: ${esc(item)}${who?` · ${esc(who)}`:''}${when?` · by ${esc(when)}`:''}`
       });
     });
     (Array.isArray(bnb)?bnb:[]).forEach(r=>{
       if(!r) return;
-      const what=r.text || r.t || r.title || r.name || 'אירוח Airbnb';
+      const what=r.text || r.t || r.title || r.name || 'Airbnb hosting';
       const when=r.due || r.d || '';
       out.push({
         id:'al-bnb-'+(r.id!=null?r.id:Math.abs(hashStr(String(what)))),
         sev:'info', icon:'🏠', key:'bnb-'+(r.id!=null?r.id:String(what)),
-        goto:{ tab:'brain' },          // אירוח → מוח
-        he:`אירוח: ${esc(what)}${when?` · ${esc((when.slice?when.slice(0,10):when))}`:''}`
+        goto:{ tab:'brain' },          // hosting → brain
+        he:`Hosting: ${esc(what)}${when?` · ${esc((when.slice?when.slice(0,10):when))}`:''}`
       });
     });
     (Array.isArray(inv)?inv:[]).forEach(r=>{
       if(!r) return;
-      const what=r.text || r.t || r.title || r.name || 'חשבונית';
+      const what=r.text || r.t || r.title || r.name || 'invoice';
       const when=r.due || r.d || '';
       out.push({
         id:'al-inv-'+(r.id!=null?r.id:Math.abs(hashStr(String(what)))),
         sev:'info', icon:'🧾', key:'inv-'+(r.id!=null?r.id:String(what)),
-        goto:{ tab:'brain' },          // חשבוניות → מוח
-        he:`חשבונית לתשלום/גבייה: ${esc(what)}${when?` · עד ${esc((when.slice?when.slice(0,10):when))}`:''}`
+        goto:{ tab:'brain' },          // invoices → brain
+        he:`Invoice to pay/collect: ${esc(what)}${when?` · by ${esc((when.slice?when.slice(0,10):when))}`:''}`
       });
     });
     return out;
@@ -495,7 +495,7 @@ const Alerts = (function(){
   function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=((h<<5)-h+s.charCodeAt(i))|0; } return h; }
 
   // The ordered rule set. Single-object rules first; dateReminders expands to many.
-  // GARDEN WEEKLY — a gentle once-a-week nudge to read "הָעִתּוֹן הַשָּׁבוּעַ"; all logic +
+  // GARDEN WEEKLY — a gentle once-a-week nudge to read "the weekly paper"; all logic +
   // week-seen state live in garden.js, this is just the bridge. Returns {…, action, onDismiss}.
   function gardenWeekly(date){ try{ return (window.__garden&&window.__garden.weeklyNudge)?window.__garden.weeklyNudge(date):null; }catch(e){ return null; } }
 
@@ -512,7 +512,7 @@ const Alerts = (function(){
     const css=`
     #alertHost{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
       width:min(440px,calc(100vw - 28px));z-index:40;display:flex;flex-direction:column;gap:8px;
-      font-family:'Heebo',sans-serif;pointer-events:none;direction:rtl}
+      font-family:'Heebo',sans-serif;pointer-events:none;direction:ltr}
     #alertHost .alert{pointer-events:auto;display:flex;align-items:flex-start;gap:10px;
       background:linear-gradient(160deg,rgba(12,14,26,.95),rgba(6,7,15,.97));
       border:1px solid rgba(202,161,90,.32);border-right:3px solid #caa15a;
@@ -569,8 +569,8 @@ const Alerts = (function(){
     const acts = preview
       ? ''  // in preview (scrub) mode there is nothing to dismiss permanently
       : `<div class="acts">`+
-          `<span class="x" data-act="dismiss">סגור</span>`+
-          `<span class="x" data-act="snooze">דחה 3ש׳</span>`+
+          `<span class="x" data-act="dismiss">Close</span>`+
+          `<span class="x" data-act="snooze">Snooze 3h</span>`+
         `</div>`;
     div.innerHTML =
       `<div class="ic">${rule.icon||'•'}</div>`+
@@ -579,12 +579,12 @@ const Alerts = (function(){
     // optional click-to-act on the banner body (e.g. the garden weekly → open the magazine)
     if(typeof rule.action==='function'){
       const tx=div.querySelector('.tx');
-      if(tx){ tx.style.cursor='pointer'; tx.title='פתח';
+      if(tx){ tx.style.cursor='pointer'; tx.title='Open';
         tx.onclick=()=>{ try{ rule.action(); }catch(e){} div.remove(); }; }
     } else if(rule.goto){
       // ONE-BRAIN: tap the banner body → jump to the relevant tab (not on dismiss/snooze).
       const tx=div.querySelector('.tx');
-      if(tx){ tx.style.cursor='pointer'; tx.title='פתח את הלשונית הרלוונטית';
+      if(tx){ tx.style.cursor='pointer'; tx.title='Open the relevant tab';
         tx.onclick=()=>{ emitGoto(rule); }; }   // keep the banner; user can still dismiss/snooze
     }
     if(!preview){
@@ -623,7 +623,7 @@ const Alerts = (function(){
     let hdr=h.querySelector('.preview');
     if(preview && rules.length){
       if(!hdr){ hdr=document.createElement('div'); hdr.className='preview'; h.insertBefore(hdr, h.firstChild); }
-      hdr.textContent='תצוגה מקדימה (זמן מגולגל) · ההתרעות האמיתיות מופיעות במצב חי';
+      hdr.textContent='Preview (scrubbed time) · real alerts appear in live mode';
     } else if(hdr){ hdr.remove(); }
 
     // filter by suppression ONLY in live mode (scrubbed previews always show).
@@ -659,7 +659,7 @@ const Alerts = (function(){
 
   // Auto-banner: only in the STANDALONE app (index.html). In the Stage-2 shell
   // (home.html, where window.Shell exists by DOMContentLoaded) the same alerts are
-  // surfaced by the persistent now-strip + the dashboard "צריך תשומת לב" feed, so
+  // surfaced by the persistent now-strip + the dashboard "needs attention" feed, so
   // the legacy bottom banner would be a duplicate — suppress it. Alerts.collect()
   // stays public for those consumers either way.
   function maybeStart(){ if(!window.Shell) start(); }

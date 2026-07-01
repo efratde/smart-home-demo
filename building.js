@@ -11,8 +11,8 @@
      NORTH band       x 0.00..8.41   z 0.00..3.60   (top chain 841 = 144+637+60)
      SOUTH band       x 0.00..10.50  z 3.60..7.20   (living+terrace; juts +2.09 m E,
                         stepping at z=GZ=3.60; bottom courtyard chain 1050)
-     back strip       z 7.20..10.29  (309 deep): חצר (courtyard, now to x 10.50) + מחסן
-     storage (מחסן)   2.72 × 2.94  →  x 7.78..10.50  z 7.20..10.14  (SE of the wider courtyard)
+     back strip       z 7.20..10.29  (309 deep): courtyard (now to x 10.50) + storage
+     storage          2.72 × 2.94  →  x 7.78..10.50  z 7.20..10.14  (SE of the wider courtyard)
    LEVELS (from sections/elevations):
      ground floor finish ............. +0.00
      first-floor / terrace finish .... +2.80   (ground storey ≈ 2.80)
@@ -45,7 +45,7 @@ const Building = (function(){
   //     convention; the 841/1050 plan chains are outer faces).
   const BX = 8.41, BZ = 7.20, SITE_Z = 10.29;
   const BXS = BX + 2.09;                        // 10.50 — south-band / courtyard east extent
-  // back strip: courtyard fills it; storage (מחסן) sits SE against the BXS edge
+  // back strip: courtyard fills it; storage sits SE against the BXS edge
   const STW = 2.72, STD = 2.94;                // storage 272 × 294
   const ST_X0 = BXS - STW;                      // 7.78  (SE corner of the now-wider courtyard)
   const ST_Z1 = BZ + STD;                      // 10.14
@@ -258,13 +258,13 @@ const Building = (function(){
 
     // ============================================================
     //  GROUND FLOOR — exterior shell  (z=0 street/north … z=BZ courtyard)
-    //  Facade openings transcribed from חזית קדמית / אחורית / צדדית.
+    //  Facade openings transcribed from the front / rear / side elevations.
     // ============================================================
     // NORTH facade (z=0): kitchen window (east) + bedroom window (west).
     //   NOTE: the real ENTRANCE is on the WEST facade (front=west per his
     //   site/zone data: site.json front offset_e=-6.85 & shades open to the
     //   west arc; zones.json front bbox is the westernmost; resident_plants
-    //   "חזית הבית הפונה למערב"). The model's live front sun-zone is placed at
+    //   "the house front facing west"). The model's live front sun-zone is placed at
     //   the WEST wall (x≈0) by app.js's YardShade, so the door belongs there —
     //   NOT here. This opening is therefore a WINDOW, not the entry door.
     // This is the narrow-band outer wall. After the +90° re-orientation it faces
@@ -276,7 +276,7 @@ const Building = (function(){
       {u:6.55, v:1.05, w:1.20, h:1.20, glass:1},          // kitchen window
     ], M.wall);
     // EAST facade — STEPPED L (the SE living band juts +2.09 m east at z=GZ).
-    //   Both east ground-floor windows are SEALED on the plan ("סגירת פתח חלון",
+    //   Both east ground-floor windows are SEALED on the plan ("window-opening sealed",
     //   filled-in wall — this face abuts the neighbour), so this whole east run is
     //   now SOLID (no glass holes).
     seg(BX,0, BX,GZ, GH,0, [ {u:1.00, v:1.30, w:0.80, h:1.20, glass:1} ], M.wall);   // kitchen EAST window 80/120 — OPEN per plan (AC beside it)
@@ -289,7 +289,7 @@ const Building = (function(){
     //   bedroom 100/130 window (was wrongly 150/140).
     seg(0,BZ, BXS,BZ, GH,0, [
       {u:1.30, v:1.00, w:1.00, h:1.30, glass:1},          // bedroom window 100/130 (its back-yard wall)
-      {u:4.00, v:0.05, w:2.40, h:2.10, glass:1, door:1},  // LIVING big SLIDING glass door → back yard (חצר אחורי); reality (permit drew 70/205 ×2)
+      {u:4.00, v:0.05, w:2.40, h:2.10, glass:1, door:1},  // LIVING big SLIDING glass door → back yard (rear courtyard); reality (permit drew 70/205 ×2)
     ], M.wall);
     // WEST facade (x=0): SOLID wall, WINDOWS ONLY — there is NO entry door here.
     //   (Correcting an earlier mistake: the entrance was wrongly forced onto the
@@ -345,9 +345,9 @@ const Building = (function(){
     }
 
     // ---- GROUND FLOOR interior partitions (ground-floor partitions) ----
-    //  North band (z 0..GZ):  מזווה (pantry, x 0..1.44) | bathroom (1.44..2.62)
-    //    | stairs (2.62..3.59) | hall passage | מטבח (kitchen, x 4.37..east).
-    //  South band (z GZ..BZ): ח.שינה (bedroom, x 0..GX=3.18) | סלון (living).
+    //  North band (z 0..GZ):  pantry (x 0..1.44) | bathroom (1.44..2.62)
+    //    | stairs (2.62..3.59) | hall passage | kitchen (x 4.37..east).
+    //  South band (z GZ..BZ): bedroom (x 0..GX=3.18) | living.
     const GFh = GH;
     // pantry east wall (solid; pantry opens south into the hall) x=1.44
     seg(1.44,0, 1.44,GZ, GFh,0, [], M.wall, IW);
@@ -445,8 +445,8 @@ const Building = (function(){
 
     // ---- FIRST-FLOOR interior partitions (first-floor partitions) ----
     //  North band (z 0..GZ): stair landing/void (x 0..2.55) | bathroom w/
-    //    tub (2.55..4.55) | ח.שינה NE bedroom (x 5.47..BX, 294 interior).  South band:
-    //    ח.שינה SW bedroom (x 0..GX) — rest of the south band is the open
+    //    tub (2.55..4.55) | NE bedroom (x 5.47..BX, 294 interior).  South band:
+    //    SW bedroom (x 0..GX) — rest of the south band is the open
     //    terrace (no interior here).  Interior partitions: no glass.
     const Uh = UH, uy = yb;
     // bathroom west wall (separates bathroom from the stair landing) x=2.55
@@ -467,7 +467,7 @@ const Building = (function(){
     floorTile(5.47,0, BX,GZ,    GH+SLAB, M.wood);       // NE bedroom (timber) — 294 wide, west wall at 5.47
     floorTile(0,GZ,   GX,BZ,    GH+SLAB, M.wood);       // SW bedroom (timber)
 
-    // ---- BATHROOM tub (אמבטיה ~1.60 m) along the bathroom's north wall ----
+    // ---- BATHROOM tub (bath ~1.60 m) along the bathroom's north wall ----
     box(0.75, 0.50, 1.55, 2.55+0.40, GH+SLAB+0.27, 0.18+0.78, M.wallWarm); // tub body
     box(0.69, 0.18, 1.49, 2.55+0.40, GH+SLAB+0.52, 0.18+0.78, M.concrete, true); // tub rim/inner
 
@@ -489,11 +489,11 @@ const Building = (function(){
       .forEach(s=>seg(s[0],s[1],s[2],s[3], PARA, yr, [], M.wall, 0.16));
 
     // ============================================================
-    //  TERRACE (מרפסת ריצוף) — tiled deck at +2.80 over the living room.
+    //  TERRACE (tiled terrace) — tiled deck at +2.80 over the living room.
     //  The living room (and so the terrace over it) is the WIDE south band, so
     //  the deck + its east kerb/railing run to BXS (=10.50). Terrace interior
     //  ≈ 714 (x GX..BXS minus the wall reveal), per plan / site.json (7.14).
-    //  Railing (מעקה) on the open south & east edges.
+    //  Railing on the open south & east edges.
     // ============================================================
     const tdx0=GX, tdz0=GZ, tdw=BXS-GX, tdd=BZ-GZ;
     // subdivided so the thermal heatmap shows the terrace splitting warm/cool as
@@ -514,7 +514,7 @@ const Building = (function(){
     railing(BX,GZ, BXS,GZ, TER, G, M);                  // north step railing (jutting NE edge)
 
     // ============================================================
-    //  COURTYARD (חצר) — paved back strip
+    //  COURTYARD — paved back strip
     // ============================================================
     const yard=new THREE.Mesh(new THREE.PlaneGeometry(ST_X0, SITE_Z-BZ, segCount(ST_X0), segCount(SITE_Z-BZ)), M.paving);
     yard.rotation.x=-Math.PI/2;
@@ -522,8 +522,8 @@ const Building = (function(){
     yard.receiveShadow=true; G.add(yard);
 
     // ============================================================
-    //  COURTYARD / BACK-YARD PERIMETER WALL (קיר)
-    //  Ground-truth: site plan 03-site-and-garden-plan.jpg marks "קיר" along
+    //  COURTYARD / BACK-YARD PERIMETER WALL
+    //  Ground-truth: site plan 03-site-and-garden-plan.jpg marks "wall" along
     //  the WEST, SOUTH and EAST plot edges (segment dims 13.13/10.48/11.62/7.40
     //  /3.25 west; 6.76/3.05/7.82 south; 7.05/7.23/10.35 east). His photos show
     //  this as a TALL (~2 m) SANDY STUCCO wall — same M.wall stucco family as
@@ -549,7 +549,7 @@ const Building = (function(){
     })();
 
     // ============================================================
-    //  STORAGE (מחסן) + pitched שינגלס roof  (SE of the back strip)
+    //  STORAGE + pitched shingle roof  (SE of the back strip)
     //  Walls are the same sandy stucco; per his photo the courtyard-facing
     //  side has a WOODEN door (single timber leaf), NOT glazing.
     // ============================================================
@@ -562,7 +562,7 @@ const Building = (function(){
     seg(ST_X0,ST_Z1, BXS,ST_Z1, 2.40,0, [ {u:1.20, v:0.02, w:0.80, h:2.05, door:1} ], M.wall); // SOUTH wall door (exterior)
     seg(BXS,BZ, BXS,ST_Z1, 2.40,0, [], M.wall);                                         // east wall of store (at BXS)
     box(STW, 0.04, STD, ST_X0+STW/2, -0.01, BZ+STD/2, M.concrete, true);                // store floor (−0.01 per plan)
-    // TRUE pitched שינגלס roof — two slopes meeting at a ridge (~2.62) dropping to
+    // TRUE pitched shingle roof — two slopes meeting at a ridge (~2.62) dropping to
     //   eaves (~2.30), per the elevation, with a small overhang (was a flat box).
     (function(){
       const rw=STW+0.30, rd=STD+0.30, eave=2.30, ridge=2.62;
@@ -635,7 +635,7 @@ const Building = (function(){
   //   shadow eval per vertex, not the lag filter's three).
   //
   //   This is an ESTIMATE from a physical model (see derive.js surfaceTemp) —
-  //   the UI labels it "מודל · הערכה". The temperature RANGE used for the colour
+  //   the UI labels it "model · estimate". The temperature RANGE used for the colour
   //   ramp is returned to the caller (app.js) so the legend can show real °C.
   let _thermalOn=false, _lastRange=null;
   function _roleMap(G){
@@ -851,7 +851,7 @@ const Building = (function(){
   let _activeGroup=null;
   function _register(G){ _activeGroup=G; }
 
-  // ---- terrace/courtyard railing (מעקה): green-painted tubular metal ----
+  // ---- terrace/courtyard railing: green-painted tubular metal ----
   function railing(x1,z1,x2,z2, baseY, G, M){
     const horiz=Math.abs(z2-z1)<1e-6, len=horiz?Math.abs(x2-x1):Math.abs(z2-z1);
     const ox=Math.min(x1,x2), oz=Math.min(z1,z2);

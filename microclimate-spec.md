@@ -2,7 +2,7 @@
 
 Replaces the current one-term surface-temperature overlay (`T = T_air + 28·cos(incidence)·α − windCool`) with a physically-grounded **surface energy balance**, resolved per ~0.5 m cell over Alex's three yard zones + the house surfaces, feeding a **plant-suitability ranking** ("which plant in which corner of which terrace in which season"). Target: vanilla JS in-browser, building on the existing `Astro` sun engine + Open-Meteo (`Weather`) + `data/site.json` + `data/horizon.json` + `data/resident_plants.json` + the Three.js scene.
 
-Honest framing for the UI: this is a **physically-grounded ESTIMATE, not a measurement and not a CFD/ENVI-met solve.** Label it "מודל · הערכה."
+Honest framing for the UI: this is a **physically-grounded ESTIMATE, not a measurement and not a CFD/ENVI-met solve.** Label it "Model · Estimate."
 
 ---
 
@@ -126,9 +126,9 @@ score = w1·fit(DLI, dli_min, dli_max)
 
 ## 5. Visualization
 
-**5a. 3-D heatmap** — reuse `building.js → setThermal` for house surfaces; **add a `YardGrid`** fine `BufferGeometry` of the ground cells, vertex-colored via `Derive.tempColor` (+ new ramps), unlit `MeshBasicMaterial`, added to the same `houseWrap` frame as the existing `YardShade` (`grp.position.set(-HCX,0,-HCZ)`). **Variable dropdown:** surfaceTemp (default) · air-Δ · DLI/sun-hours · frost-risk · ETc/water · wind. **Season toggle** (חורף/אביב/קיץ/סתיו) selects the precomputed table; scrub clock = intra-day; "now" = live. Wire via `documentElement.dataset.tmode/tscrub` + `__thermalSig`.
+**5a. 3-D heatmap** — reuse `building.js → setThermal` for house surfaces; **add a `YardGrid`** fine `BufferGeometry` of the ground cells, vertex-colored via `Derive.tempColor` (+ new ramps), unlit `MeshBasicMaterial`, added to the same `houseWrap` frame as the existing `YardShade` (`grp.position.set(-HCX,0,-HCZ)`). **Variable dropdown:** surfaceTemp (default) · air-Δ · DLI/sun-hours · frost-risk · ETc/water · wind. **Season toggle** (Winter/Spring/Summer/Autumn) selects the precomputed table; scrub clock = intra-day; "now" = live. Wire via `documentElement.dataset.tmode/tscrub` + `__thermalSig`.
 
-**5b. אנרגיה (energy) panel** (`panels.js → renderEnergy`) — per-zone microclimate card: sun-hours, DLI, peak/dawn T_surf, ΔT vs town, frost level, ETc + weekly liters, wind exposure, **top-3 recommended plants** with reason strings. Keep `estimate:true` "מודל · הערכה" label. **This is where the thermal control now lives** (moved off the loose layer toggle).
+**5b. Energy panel** (`panels.js → renderEnergy`) — per-zone microclimate card: sun-hours, DLI, peak/dawn T_surf, ΔT vs town, frost level, ETc + weekly liters, wind exposure, **top-3 recommended plants** with reason strings. Keep `estimate:true` "Model · Estimate" label. **This is where the thermal control now lives** (moved off the loose layer toggle).
 
 ---
 

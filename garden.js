@@ -1,5 +1,5 @@
 /* ===================================================================
-   garden.js — IN-WORLD plant tracking (Make pillar, גישה א׳, Phase 2).
+   garden.js — IN-WORLD plant tracking (Make pillar, approach A, Phase 2).
    Plants live as markers on the REAL garden in 3D (the scene half is
    GardenPins in app.js); clicking a marker opens THIS card in the #inst
    instrument skin — tracking (status / water ± / notes) made smart by the
@@ -17,38 +17,38 @@
 
   /* ---------------- zones / seasons ---------------- */
   const ZONES=[
-    { id:'backyard', name_he:'חצר אחורית', emoji:'🌄', sub:'מזרח · שמש בוקר' },
-    { id:'balcony',  name_he:'מרפסת',       emoji:'☀️', sub:'מורמת · הכי הרבה שמש' },
-    { id:'front',    name_he:'חצר קדמית',   emoji:'🌅', sub:'מערב · שמש אחה״צ' },
+    { id:'backyard', name_he:'Backyard', emoji:'🌄', sub:'East · morning sun' },
+    { id:'balcony',  name_he:'Balcony',  emoji:'☀️', sub:'Elevated · most sun' },
+    { id:'front',    name_he:'Front yard', emoji:'🌅', sub:'West · afternoon sun' },
   ];
   const zoneHe=id=>(ZONES.find(z=>z.id===id)||{}).name_he||id;
-  const SEASONS=[['winter','חורף'],['spring','אביב'],['summer','קיץ'],['autumn','סתיו']];
+  const SEASONS=[['winter','Winter'],['spring','Spring'],['summer','Summer'],['autumn','Autumn']];
   const seasonHe=s=>(SEASONS.find(x=>x[0]===s)||[,s])[1];
   const WATER_FIELD={ winter:'water_winter_l_week', spring:'water_spring_l_week',
                       summer:'water_summer_l_week', autumn:'water_autumn_l_week' };
-  const STATUSES=[['נשתל','planted'],['משגשג','thriving'],['זקוק לטיפול','care']];
+  const STATUSES=[['Planted','planted'],['Thriving','thriving'],['Needs care','care']];
   const POT_PRESETS=[0,3,5,10,20,40];     // litres; 0 = planted in the ground (no pot)
 
   /* ---------------- data: curated plants + add-catalog ---------------- */
   let CURATED=[], CATALOG=null;
   const CATALOG_FALLBACK=[
-    {id:'tomato_cherry',name_he:'עגבניות שרי',emoji:'🍅',kc:1.05},{id:'basil',name_he:'בזיליקום',emoji:'🌿',kc:0.9},
-    {id:'rosemary',name_he:'רוזמרין',emoji:'🌿',kc:0.5},{id:'sage',name_he:'מרווה',emoji:'🌿',kc:0.6},
-    {id:'thyme',name_he:'טימין',emoji:'🌿',kc:0.6},{id:'oregano',name_he:'אורגנו',emoji:'🌿',kc:0.7},
-    {id:'lavender',name_he:'לבנדר',emoji:'💜',kc:0.5},{id:'olive',name_he:'זית',emoji:'🫒',kc:0.7},
-    {id:'lemon',name_he:'לימון',emoji:'🍋',kc:0.85},{id:'grape',name_he:'גפן',emoji:'🍇',kc:0.85},
-    {id:'strawberry',name_he:'תות שדה',emoji:'🍓',kc:0.85},{id:'pepper',name_he:'פלפל',emoji:'🌶️',kc:1.05},
-    {id:'cucumber',name_he:'מלפפון',emoji:'🥒',kc:1.0},{id:'parsley',name_he:'פטרוזיליה',emoji:'🌱',kc:1.0},
-    {id:'cilantro',name_he:'כוסברה',emoji:'🌱',kc:1.0},{id:'lettuce',name_he:'חסה',emoji:'🥬',kc:1.0},
-    {id:'spinach',name_he:'תרד',emoji:'🥬',kc:1.0},{id:'carrot',name_he:'גזר',emoji:'🥕',kc:1.05},
-    {id:'garlic',name_he:'שום',emoji:'🧄',kc:0.95},{id:'almond',name_he:'שקד',emoji:'🌰',kc:0.9},
+    {id:'tomato_cherry',name_he:'Cherry tomatoes',emoji:'🍅',kc:1.05},{id:'basil',name_he:'Basil',emoji:'🌿',kc:0.9},
+    {id:'rosemary',name_he:'Rosemary',emoji:'🌿',kc:0.5},{id:'sage',name_he:'Sage',emoji:'🌿',kc:0.6},
+    {id:'thyme',name_he:'Thyme',emoji:'🌿',kc:0.6},{id:'oregano',name_he:'Oregano',emoji:'🌿',kc:0.7},
+    {id:'lavender',name_he:'Lavender',emoji:'💜',kc:0.5},{id:'olive',name_he:'Olive',emoji:'🫒',kc:0.7},
+    {id:'lemon',name_he:'Lemon',emoji:'🍋',kc:0.85},{id:'grape',name_he:'Grapevine',emoji:'🍇',kc:0.85},
+    {id:'strawberry',name_he:'Strawberry',emoji:'🍓',kc:0.85},{id:'pepper',name_he:'Pepper',emoji:'🌶️',kc:1.05},
+    {id:'cucumber',name_he:'Cucumber',emoji:'🥒',kc:1.0},{id:'parsley',name_he:'Parsley',emoji:'🌱',kc:1.0},
+    {id:'cilantro',name_he:'Cilantro',emoji:'🌱',kc:1.0},{id:'lettuce',name_he:'Lettuce',emoji:'🥬',kc:1.0},
+    {id:'spinach',name_he:'Spinach',emoji:'🥬',kc:1.0},{id:'carrot',name_he:'Carrot',emoji:'🥕',kc:1.05},
+    {id:'garlic',name_he:'Garlic',emoji:'🧄',kc:0.95},{id:'almond',name_he:'Almond',emoji:'🌰',kc:0.9},
   ];
   function loadCurated(){
     return fetch('data/resident_plants.json').then(r=>r.ok?r.json():[]).then(a=>{CURATED=Array.isArray(a)?a:[];return CURATED;}).catch(()=>{CURATED=[];return CURATED;});
   }
-  // candidate plants Alex does NOT own (the "כדאי להוסיף לגינה" suggestions).
+  // candidate plants Alex does NOT own (the "worth adding to the garden" suggestions).
   // Loaded once, then cross-checked against the curated set by name_latin so we
-  // never suggest a plant he already has (e.g. רימון/pomegranate).
+  // never suggest a plant he already has (e.g. pomegranate).
   let CANDIDATES=[];
   function loadCandidates(){
     return fetch('data/plant_candidates.json').then(r=>r.ok?r.json():[]).then(a=>{
@@ -117,7 +117,7 @@
     return out;
   }
   let DOC;
-  // readiness (delay fix): panels.js mounts the embedded חצר overview the instant DOC
+  // readiness (delay fix): panels.js mounts the embedded yard overview the instant DOC
   // is built, via onReady() — no 120ms poll lag. markReady() fires once DOC exists.
   let _ready=false; const _readyCbs=[];
   function markReady(){ if(_ready) return; _ready=true; const cbs=_readyCbs.splice(0); cbs.forEach(fn=>{ try{ fn(); }catch(e){} }); }
@@ -195,8 +195,8 @@
   }
   function scheduleText(p,season){
     const s=wateringSchedule(p,season); if(!s) return '—';
-    if(!s.potted) return '~'+s.weekly+' ל׳/שב׳';
-    return `~${s.per} ל׳ כל ${s.days===1?'יום':s.days+' ימים'} · ~${s.weekly} ל׳/שב׳`;
+    if(!s.potted) return '~'+s.weekly+' L/wk';
+    return `~${s.per} L every ${s.days===1?'day':s.days+' days'} · ~${s.weekly} L/wk`;
   }
 
   /* ---------------- marker positions (fed to GardenPins in app.js) ----------------
@@ -327,7 +327,7 @@
   #gardenCard .tlc.now{border-color:#caa15a;box-shadow:0 0 0 1px rgba(202,161,90,.45)}
   #gardenCard .tlc .tle{font-size:10px;height:13px;line-height:13px}
   #gardenCard .tlc .tlm{font-size:8px;color:#8a7a52}
-  /* the "+ צמח" garden control (bottom-left, above the home/enter stack) */
+  /* the "+ plant" garden control (bottom-left, above the home/enter stack) */
   #gardenAdd{position:absolute;left:30px;bottom:296px;display:flex;align-items:center;gap:7px;z-index:7;
     font-family:'Heebo',sans-serif;font-size:12.5px;color:#e7dcc0;cursor:pointer;border-radius:7px;padding:8px 13px;
     background:linear-gradient(150deg,rgba(14,16,30,.72),rgba(8,9,18,.66));backdrop-filter:blur(11px);
@@ -407,7 +407,7 @@
   #gardenOverview .add:hover{border-color:rgba(202,161,90,.7);color:#fff7e6}
   #gardenOverview .foot{font-size:9.5px;color:#7d7150;margin-top:10px}
   #gardenOverview .reason{font-size:11px;color:#a99b78}
-  /* "כדאי להוסיף לגינה" candidate suggestions (#6) — same row skin, a why-line + a hint */
+  /* "worth adding to the garden" candidate suggestions (#6) — same row skin, a why-line + a hint */
   #gardenOverview .ovcsub{font-size:9.5px;color:#8a7a52;font-style:italic;margin:1px 2px 3px;line-height:1.4}
   #gardenOverview .ovcand .ove{align-self:flex-start;padding-top:2px}
   #gardenOverview .ovcand .ovn{display:flex;flex-direction:column;gap:2px}
@@ -419,7 +419,7 @@
     border:1px solid rgba(202,161,90,.4);transition:.18s;display:flex;align-items:baseline;gap:8px}
   #gardenOverview .magbtn:hover{border-color:rgba(202,161,90,.7);background:linear-gradient(150deg,rgba(202,161,90,.26),rgba(202,161,90,.1))}
   #gardenOverview .magbtn span{font-family:'Heebo';font-size:9.5px;color:#a99b78;letter-spacing:.04em}
-  /* ---- the weekly garden MAGAZINE (הָעִתּוֹן הַשָּׁבוּעַ) ---- */
+  /* ---- the weekly garden MAGAZINE (The Weekly) ---- */
   #gardenMag{position:absolute;top:18px;right:22px;width:384px;max-height:calc(100vh - 40px);
     display:none;flex-direction:column;font-family:'Heebo',sans-serif;color:#efe6cf;z-index:10;
     text-shadow:0 1px 2px rgba(0,0,0,.5)}
@@ -502,7 +502,7 @@
   let card=null, body=null, cur=null, _instPrev=null, catBox=null;
   // iNaturalist "seen near you" per-plant cache (undefined=not yet fetched, []=fetched-empty)
   const _obsCache={};
-  // ONE shared hidden file input for the Pl@ntNet "📷 צלם וזהה" flow
+  // ONE shared hidden file input for the Pl@ntNet "📷 photograph & identify" flow
   let _fileInput=null;
   // iNat query name for a plant: prefer the curated/catalog name_latin, else a Pl@ntNet ID
   function obsName(p){ const m=plantMeta(p.id)||{}; return m.name_latin||p.id_latin||null; }
@@ -526,9 +526,9 @@
       if(cur===want) render();
     }).catch(()=>{ _obsCache[want]=[]; if(cur===want) render(); });
   }
-  /* ---- EMBEDDED-skin shim: re-scope the overview's look for the חצר tab ----------
+  /* ---- EMBEDDED-skin shim: re-scope the overview's look for the yard tab ----------
      The whole overview stylesheet is scoped under "#gardenOverview …". When the
-     overview is mounted INSIDE the #inst חצר tab (renderOverviewInto → #yard-garden),
+     overview is mounted INSIDE the #inst yard tab (renderOverviewInto → #yard-garden),
      none of those rules would match, so the plant table / magazine / recommendations
      would render unstyled. Mirroring panels.js's own "#inst2" approach, we duplicate
      just the overview's DESCENDANT rules ("#gardenOverview .x" / "#gardenOverview h3")
@@ -555,7 +555,7 @@
   function ensure(){
     if(card) return;
     ensureCSS();
-    card=el('div'); card.id='gardenCard'; card.setAttribute('dir','rtl');
+    card=el('div'); card.id='gardenCard'; card.setAttribute('dir','ltr');
     body=el('div','body'); card.appendChild(body); document.body.appendChild(card);
     body.addEventListener('click',onClick);
     body.addEventListener('input',onInput);
@@ -612,13 +612,13 @@
     return Math.round(v*(1+(p.water_adjust_pct||0)/100)*10)/10;
   }
 
-  /* ---------------- care calendar card (PlantCare, "טיפול החודש") ----------------
+  /* ---------------- care calendar card (PlantCare, "care this month") ----------------
      A baked per-plant month-by-month task list (when to fertilize/prune/thin/
      harvest…) + companion/pollinator notes, surfaced as one more .card right
      after fitHtml. Each task has a 🔔 chip that pushes it to LogStore 'schedule'
      so the existing Alerts engine reminds Alex. Care content is GENERAL the highlands-rim
      guidance (disclaimer shown), not a prescription. */
-  const HE_MONTHS=['יָנוּאָר','פֶבְּרוּאָר','מֵרְץ','אַפְּרִיל','מַאי','יוּנִי','יוּלִי','אוֹגוּסְט','סֶפְּטֶמְבֶּר','אוֹקְטוֹבֶּר','נוֹבֶמְבֶּר','דֶצֶמְבֶּר'];
+  const HE_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
   function careCard(p){
     if(!window.PlantCare) return '';
     const nm=obsName(p);                       // name_latin join key (curated/catalog or a Pl@ntNet ID)
@@ -631,22 +631,22 @@
     const pollTip=(PlantCare.pollinatorTipFor&&PlantCare.pollinatorTipFor(nm))||''; // #15 actionable
     const pests=(PlantCare.pestsFor&&PlantCare.pestsFor(nm))||[];                    // #14 pests
     const due=PlantCare.dueDateForThisMonth(7);
-    let html=`<div class="card"><div class="ct">טִיפּוּל הַחֹדֶשׁ · ${HE_MONTHS[mi]}</div>`;
+    let html=`<div class="card"><div class="ct">Care this month · ${HE_MONTHS[mi]}</div>`;
     if(tasks.length){
       html+=`<div class="caretasks">`+tasks.map((t,i)=>{
         const km=PlantCare.kindMeta(t.kind)||{};
         return `<div class="caretask"><span class="ce">${km.emoji||'•'}</span>`+
           `<span class="ctx">${esc(t.task_he)}</span>`+
           `<span class="chip cadd" data-act="caretask" data-i="${i}" `+
-            `data-task="${esc(t.task_he)}" data-kind="${esc(t.kind||'')}" data-due="${esc(due)}">🔔 הוסף</span>`+
+            `data-task="${esc(t.task_he)}" data-kind="${esc(t.kind||'')}" data-due="${esc(due)}">🔔 Add</span>`+
           `</div>`;
       }).join('')+`</div>`;
     } else {
-      html+=`<div class="reason">אֵין מְשִׂימוֹת מְיֻחָדוֹת הַחֹדֶשׁ — הַמְשֵׁךְ בַּשִּׁגְרָה.</div>`;
+      html+=`<div class="reason">No special tasks this month — carry on with the routine.</div>`;
     }
     if(comps.length||polls.length||compTip||pollTip){
       html+=`<div class="best">`+
-        (comps.length?`🤝 שְׁכֵנִים טוֹבִים: ${esc(comps.join(' · '))}`:'')+
+        (comps.length?`🤝 Good companions: ${esc(comps.join(' · '))}`:'')+
         (compTip?`${comps.length?'<br>':''}<span class="caretip">${esc(compTip)}</span>`:'')+
         ((comps.length||compTip)&&(polls.length||pollTip)?`<br>`:'')+
         (polls.length?`🐝 ${esc(polls.join(' · '))}`:'')+
@@ -655,7 +655,7 @@
     }
     // #14 — common high-the highlands pests for this crop: how to spot + an organic-first remedy
     if(pests.length){
-      html+=`<div class="best"><div class="pesthd">🐜 מַזִּיקִים נְפוֹצִים</div>`+
+      html+=`<div class="best"><div class="pesthd">🐜 Common pests</div>`+
         pests.map(x=>`<div class="pest"><b>${esc(x.name_he)}</b>`+
           (x.sign_he?`<span class="psign">🔍 ${esc(x.sign_he)}</span>`:'')+
           (x.remedy_he?`<span class="prem">🌿 ${esc(x.remedy_he)}</span>`:'')+
@@ -670,7 +670,7 @@
      (DLI / sun-hours / frost / GDD / water), PREFER the measured record when it covers
      the date, else fall back to the model — and LABEL which is showing. Per the
      integration spec: if RecordStore.status().days===0 we show the MODEL, labelled
-     "מודל · הערכה"; otherwise we show the MEASURED totals, labelled "מבוסס מדידות אמת".
+     "model · estimate"; otherwise we show the MEASURED totals, labelled "based on real measurements".
      Both blocks are fully DEFENSIVE — guarded on window.RecordStore / window.Predict,
      never throw, never block on the idle backfill (days===0 tolerated). ============== */
   const _r1=v=>(v==null||!isFinite(v))?null:Math.round(v*10)/10;
@@ -682,7 +682,7 @@
   // the plant's own cell seasonal profile × ~365 days so the labels stay parallel.
   function _modelTotals(p){
     const prof=profileOfPlant(p,DOC.season); if(!prof) return null;
-    // crude annual estimate: per-day model values × 365 (clearly labelled "מודל · הערכה")
+    // crude annual estimate: per-day model values × 365 (clearly labelled "model · estimate")
     const litresWk=waterWeekly(p,DOC.season);
     return {
       dliSum:(prof.DLI!=null)?prof.DLI*365:null,
@@ -691,7 +691,7 @@
       waterWk:litresWk
     };
   }
-  /* "כך באמת היה עד כה" — the real-data block on the per-plant card. */
+  /* "how it actually was so far" — the real-data block on the per-plant card. */
   function realHistoryCard(p){
     const RS=window.RecordStore; if(!RS) return '';            // not wired → no block (honest)
     let st={}; try{ st=(RS.status&&RS.status())||{}; }catch(e){ st={}; }
@@ -701,53 +701,53 @@
       const from=st.firstDate||_isoDaysAgo(365), to=st.lastDate||_isoUTC(new Date());
       let tot=null; try{ tot=RS.plantTotals(p.id,from,to); }catch(e){ tot=null; }
       if(tot && tot.days){
-        let h=`<div class="card"><div class="ct lr">כָּךְ בֶּאֱמֶת הָיָה עַד כֹּה <span class="lab real">מְבֻסָּס מְדִידוֹת אֱמֶת</span></div>`+
+        let h=`<div class="card"><div class="ct lr">How it actually was so far <span class="lab real">Based on real measurements</span></div>`+
           `<div class="zg">`+
-          `<span class="k">יָמִים מְתֻעָדִים</span><b>${tot.days}</b>`+
-          `<span class="k">לֵילוֹת כְּפוֹר</span><b>${tot.frostNights}</b>`+
-          `<span class="k">סַךְ DLI</span><b>${_r0(tot.dliSum)} mol/m²</b>`+
-          `<span class="k">שְׁעוֹת שֶׁמֶשׁ</span><b>${_r0(tot.sunHoursSum)} ש׳</b>`+
-          `<span class="k">GDD מְצֻבָּר</span><b>${_r0(tot.gddSum)}</b>`+
-          `<span class="k">מַיִם (ETc)</span><b>${_r1(tot.etcSum)} מ״מ</b>`+
-          `<span class="k">גֶּשֶׁם שֶׁקִּבֵּל</span><b>${_r1(tot.rainSum)} מ״מ</b>`+
-          (tot.tMinAbs!=null?`<span class="k">קֹר קִיצוֹנִי</span><b>${_r1(tot.tMinAbs)}°</b>`:'')+
+          `<span class="k">Days recorded</span><b>${tot.days}</b>`+
+          `<span class="k">Frost nights</span><b>${tot.frostNights}</b>`+
+          `<span class="k">Total DLI</span><b>${_r0(tot.dliSum)} mol/m²</b>`+
+          `<span class="k">Sun hours</span><b>${_r0(tot.sunHoursSum)} h</b>`+
+          `<span class="k">Accumulated GDD</span><b>${_r0(tot.gddSum)}</b>`+
+          `<span class="k">Water (ETc)</span><b>${_r1(tot.etcSum)} mm</b>`+
+          `<span class="k">Rain received</span><b>${_r1(tot.rainSum)} mm</b>`+
+          (tot.tMinAbs!=null?`<span class="k">Coldest low</span><b>${_r1(tot.tMinAbs)}°</b>`:'')+
           `</div>`;
         // GDD-toward-fruit gauge (measured accumulation vs the curated varietal threshold)
         const meta=plantMeta(p.id)||{};
         if(meta.gdd_to_fruit>0 && tot.gddSum!=null){
           const pct=Math.max(0,Math.min(100,Math.round(100*tot.gddSum/meta.gdd_to_fruit)));
-          h+=`<div class="lrrow"><span>צְבִירַת חֹם לִקְרַאת פְּרִי (מָדוּד)</span><b>${_r0(tot.gddSum)} / ${meta.gdd_to_fruit}</b></div>`+
+          h+=`<div class="lrrow"><span>Heat accumulation toward fruit (measured)</span><b>${_r0(tot.gddSum)} / ${meta.gdd_to_fruit}</b></div>`+
              `<div class="zbar" style="height:7px;border-radius:20px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:5px">`+
              `<i style="display:block;height:100%;border-radius:20px;width:${pct}%;background:linear-gradient(90deg,#4da866,#e6bd4d,#db4d38)"></i></div>`;
         }
-        h+=`<div class="lrbasis">${esc(st.note_he||'מְבֻסָּס מְדִידוֹת אֱמֶת (Open-Meteo) דֶּרֶךְ הַגֵּאוֹמֶטְרְיָה שֶׁל הַבַּיִת — לֹא חַיְשָׁן פִיזִי')}`+
+        h+=`<div class="lrbasis">${esc(st.note_he||'Based on real measurements (Open-Meteo) through the house geometry — not a physical sensor')}`+
           (st.firstDate?` · ${_ddmm(st.firstDate)}–${_ddmm(st.lastDate)}`:'')+`</div></div>`;
         return h;
       }
     }
     // FALLBACK path — days===0 (still building / nothing yet) → show the MODEL, labelled.
     const mt=_modelTotals(p);
-    let h=`<div class="card"><div class="ct lr">כָּךְ בֶּאֱמֶת הָיָה עַד כֹּה <span class="lab model">מוֹדֵל · הַעֲרָכָה</span></div>`;
+    let h=`<div class="card"><div class="ct lr">How it actually was so far <span class="lab model">Model · estimate</span></div>`;
     if(st.building){
-      h+=`<div class="reason">בּוֹנֶה אֶת הַיּוֹמָן${st.pct!=null?(' · '+st.pct+'%'):''}… בֵּינְתַיִם — הַעֲרָכַת מוֹדֵל.</div>`;
+      h+=`<div class="reason">Building the log${st.pct!=null?(' · '+st.pct+'%'):''}… meanwhile — a model estimate.</div>`;
     } else {
-      h+=`<div class="reason">עֲדַיִן אֵין יָמִים מְתֻעָדִים — מֻצֶּגֶת הַעֲרָכַת מוֹדֵל עַד שֶׁיִּצְטַבֵּר תִּעוּד אֲמִתִּי.</div>`;
+      h+=`<div class="reason">No recorded days yet — a model estimate is shown until real records accumulate.</div>`;
     }
     if(mt){
       h+=`<div class="zg" style="margin-top:7px">`+
-        (mt.dliSum!=null?`<span class="k">DLI (~שָׁנָה)</span><b>~${_r0(mt.dliSum)} mol/m²</b>`:'')+
-        (mt.sunHoursSum!=null?`<span class="k">שֶׁמֶשׁ (~שָׁנָה)</span><b>~${_r0(mt.sunHoursSum)} ש׳</b>`:'')+
-        (mt.etcSum!=null?`<span class="k">מַיִם (ETc ~שָׁנָה)</span><b>~${_r1(mt.etcSum)} מ״מ</b>`:'')+
-        (mt.waterWk!=null?`<span class="k">הַשְׁקָיָה/שָׁבוּעַ</span><b>~${mt.waterWk} ל׳</b>`:'')+
+        (mt.dliSum!=null?`<span class="k">DLI (~year)</span><b>~${_r0(mt.dliSum)} mol/m²</b>`:'')+
+        (mt.sunHoursSum!=null?`<span class="k">Sun (~year)</span><b>~${_r0(mt.sunHoursSum)} h</b>`:'')+
+        (mt.etcSum!=null?`<span class="k">Water (ETc ~year)</span><b>~${_r1(mt.etcSum)} mm</b>`:'')+
+        (mt.waterWk!=null?`<span class="k">Irrigation/week</span><b>~${mt.waterWk} L</b>`:'')+
         `</div>`;
     }
-    h+=`<div class="lrbasis">הַעֲרָכָה מֵהַמּוֹדֵל הַפִיזִיקָלִי לַנְּקֻדָּה (לֹא מְדִידָה). כְּשֶׁיִּצְטַבֵּר תִּעוּד אֲמִתִּי — יֻחְלָף בַּמָּדוּד.</div></div>`;
+    h+=`<div class="lrbasis">An estimate from the physical model for the point (not a measurement). Once real records accumulate — it will be replaced by the measured value.</div></div>`;
     return h;
   }
   /* model basis → a real|model pill (Predict carries its own honest basis per field) */
   function _basisLab(basis){
     const b=String(basis||'').toLowerCase();
-    return (b.indexOf('real')>=0) ? '<span class="lab real">מָדוּד</span>' : '<span class="lab model">מוֹדֵל</span>';
+    return (b.indexOf('real')>=0) ? '<span class="lab real">Measured</span>' : '<span class="lab model">Model</span>';
   }
   /* Predict outlook — best window / season forecast / frost, each with its OWN basis +
      confidence. Snapshot is pulled async (loadPredictFor) and cached; render is sync. */
@@ -771,32 +771,32 @@
     const P=window.Predict; if(!P) return '';                  // not wired → no block (honest)
     const snap=_predCache[p.id];
     if(snap===undefined){ loadPredictFor(p.id);                // kick the async pull, show a placeholder
-      return `<div class="card"><div class="ct lr">תַּחֲזִית קְדִימָה <span class="lab model">תַּחֲזִית</span></div><div class="reason">מְחַשֵּׁב תַּחֲזִית…</div></div>`; }
-    let h=`<div class="card"><div class="ct lr">תַּחֲזִית קְדִימָה <span class="lab model">תַּחֲזִית — לֹא עֻבְדָּה</span></div>`;
+      return `<div class="card"><div class="ct lr">Forecast ahead <span class="lab model">Forecast</span></div><div class="reason">Computing forecast…</div></div>`; }
+    let h=`<div class="card"><div class="ct lr">Forecast ahead <span class="lab model">Forecast — not a fact</span></div>`;
     let any=false;
     if(snap && snap.win && (snap.win.windowStart||snap.win.windowEnd)){ any=true;
-      h+=`<div class="lrrow"><span>חַלּוֹן מֻמְלָץ ${_basisLab(snap.win.basis)}</span>`+
+      h+=`<div class="lrrow"><span>Recommended window ${_basisLab(snap.win.basis)}</span>`+
         `<b>${esc(_ddmm(snap.win.windowStart)||'—')}–${esc(_ddmm(snap.win.windowEnd)||'—')}</b></div>`+
         (snap.win.reason_he?`<div class="lrbasis">${esc(snap.win.reason_he)}</div>`:'');
     }
     if(snap && snap.season){ const s=snap.season; any=true;
       const bits=[];
       if(s.gddToDate!=null) bits.push(`GDD ${_r0(s.gddToDate)}${s.gddExpected!=null?(' / '+_r0(s.gddExpected)):''}`);
-      if(s.chillToDate!=null) bits.push(`קֹר ${_r0(s.chillToDate)}${s.chillExpected!=null?(' / '+_r0(s.chillExpected)):''}`);
-      h+=`<div class="lrrow"><span>עוֹנָה עַד כֹּה ${_basisLab(s.basis)}</span><b>${bits.join(' · ')||'—'}</b></div>`+
+      if(s.chillToDate!=null) bits.push(`Chill ${_r0(s.chillToDate)}${s.chillExpected!=null?(' / '+_r0(s.chillExpected)):''}`);
+      h+=`<div class="lrrow"><span>Season so far ${_basisLab(s.basis)}</span><b>${bits.join(' · ')||'—'}</b></div>`+
         (s.note_he?`<div class="lrbasis">${esc(s.note_he)}</div>`:'');
     }
     if(snap && snap.frost && (snap.frost.lastFrostEst||snap.frost.firstFrostEst)){ const f=snap.frost; any=true;
-      h+=`<div class="lrrow"><span>כְּפוֹר אַחֲרוֹן/רִאשׁוֹן מְשֹׁעָר ${_basisLab(f.basis)}</span>`+
+      h+=`<div class="lrrow"><span>Estimated last/first frost ${_basisLab(f.basis)}</span>`+
         `<b>${esc(_ddmm(f.lastFrostEst)||'—')} · ${esc(_ddmm(f.firstFrostEst)||'—')}</b></div>`+
-        (f.confidence_he?`<div class="lrbasis">בִּטָּחוֹן: ${esc(f.confidence_he)}${f.n_years?(' · '+f.n_years+' שָׁנִים'):''}</div>`:'');
+        (f.confidence_he?`<div class="lrbasis">Confidence: ${esc(f.confidence_he)}${f.n_years?(' · '+f.n_years+' years'):''}</div>`:'');
     }
     if(snap && snap.water && snap.water.totalLiters!=null){ const w=snap.water; any=true;
-      h+=`<div class="lrrow"><span>מַיִם הַשָּׁבוּעַ הַקָּרוֹב ${_basisLab(w.basis)}</span><b>~${_r1(w.totalLiters)} ל׳</b></div>`+
+      h+=`<div class="lrrow"><span>Water next week ${_basisLab(w.basis)}</span><b>~${_r1(w.totalLiters)} L</b></div>`+
         (w.note_he?`<div class="lrbasis">${esc(w.note_he)}</div>`:'');
     }
-    if(!any) h+=`<div class="reason">אֵין עֲדַיִן תַּחֲזִית זְמִינָה לַצֶּמַח הַזֶּה.</div>`;
-    h+=`<div class="lrbasis">כָּל שׁוּרָה נוֹשֵׂאת אֶת תָּו הַבָּסִיס שֶׁלָּהּ (מָדוּד / מוֹדֵל). תַּחֲזִית הִיא הַעֲרָכָה, לֹא עֻבְדָּה.</div></div>`;
+    if(!any) h+=`<div class="reason">No forecast available for this plant yet.</div>`;
+    h+=`<div class="lrbasis">Each row carries its own basis tag (measured / model). A forecast is an estimate, not a fact.</div></div>`;
     return h;
   }
 
@@ -807,17 +807,17 @@
        months). • The heat/chill line is the hyper-local gem: his rim site's derived
        winter chill-hours + growing-season GDD vs THIS plant's chill_hours_req /
        gdd_to_fruit — "will my desert spot chill this enough to fruit?" (labelled est). */
-  const TL_MON=['ינ','פב','מר','אפ','מא','יו','יל','אג','ספ','אק','נו','דצ'];
+  const TL_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   function todayISO(){ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10); }
   function ageText(iso){
     if(!iso) return null; const d=new Date(iso); if(isNaN(d.getTime())) return null;
     const now=new Date(); const days=Math.floor((now-d)/864e5); if(days<0) return null;
     let mo=(now.getFullYear()-d.getFullYear())*12+(now.getMonth()-d.getMonth()); if(now.getDate()<d.getDate()) mo--;
-    if(mo<1) return days<=1?'נִשְׁתַּל אֶתְמוֹל':`נִשְׁתַּל לִפְנֵי ${days} יָמִים`;
+    if(mo<1) return days<=1?'Planted yesterday':`Planted ${days} days ago`;
     const y=Math.floor(mo/12), m=mo%12, parts=[];
-    if(y) parts.push(y===1?'שָׁנָה':y===2?'שְׁנָתַיִם':`${y} שָׁנִים`);
-    if(m) parts.push(m===1?'חֹדֶשׁ':m===2?'חֳדָשַׁיִם':`${m} חֳדָשִׁים`);
-    return 'נִשְׁתַּל לִפְנֵי '+parts.join(' וְ');
+    if(y) parts.push(y===1?'1 year':`${y} years`);
+    if(m) parts.push(m===1?'1 month':`${m} months`);
+    return 'Planted '+parts.join(' and ')+' ago';
   }
   function lifecycleEvents(p){            // [ [kinds…] × 12 ] from the care calendar, or null
     const nm=obsName(p); if(!nm||!window.PlantCare||!PlantCare.has(nm)) return null;
@@ -842,8 +842,8 @@
   }
   function lifecycleCard(p){
     const meta=plantMeta(p.id)||{}, ev=lifecycleEvents(p), age=ageText(p.planted);
-    let html=`<div class="card"><div class="ct">מַחְזוֹר חַיִּים</div>`+
-      `<div class="plrow"><label>תַּאֲרִיךְ שְׁתִילָה</label>`+
+    let html=`<div class="card"><div class="ct">Life cycle</div>`+
+      `<div class="plrow"><label>Planting date</label>`+
       `<input type="date" class="pldate" data-act="planted" value="${esc(p.planted||'')}" max="${todayISO()}"></div>`;
     if(age) html+=`<div class="agerow">🌱 ${age}</div>`;
     if(ev){
@@ -853,19 +853,19 @@
           `<span class="tle">${TL_EMOJI[hk]}</span><span class="tlm">${TL_MON[m]}</span></div>`; }).join('')+`</div>`;
       const hv=harvestInfo(ev);
       if(hv){ const w=hv.window, win=w[0]===w[1]?HE_MONTHS[w[0]]:`${HE_MONTHS[w[0]]}–${HE_MONTHS[w[1]]}`;
-        const away=hv.inSeason?'עַכְשָׁו בָּעוֹנָה ✓':(hv.monthsAway<=1?'בְּקָרוֹב':`בְּעוֹד ~${hv.monthsAway} חֳדָשִׁים`);
-        html+=`<div class="lcrow">🧺 <b>הַקָּצִיר הַבָּא:</b> ${win} · ${away}</div>`; }
+        const away=hv.inSeason?'In season now ✓':(hv.monthsAway<=1?'Soon':`In ~${hv.monthsAway} months`);
+        html+=`<div class="lcrow">🧺 <b>Next harvest:</b> ${win} · ${away}</div>`; }
     }
     const hc=(window.Derive&&Derive.siteHeatChill)?Derive.siteHeatChill():null;
     if(hc&&(meta.chill_hours_req||meta.gdd_to_fruit)){
       const bits=[];
       if(meta.chill_hours_req){ const ok=hc.chillHours>=meta.chill_hours_req;
-        bits.push(`קֹר ~${hc.chillHours}/${meta.chill_hours_req} ${ok?'✓':'⚠️'}`); }
+        bits.push(`Chill ~${hc.chillHours}/${meta.chill_hours_req} ${ok?'✓':'⚠️'}`); }
       if(meta.gdd_to_fruit){ const ok=hc.gddGrowing>=meta.gdd_to_fruit;
-        bits.push(`חֹם ~${hc.gddGrowing}/${meta.gdd_to_fruit} ${ok?'✓':'⚠️'}`); }
-      html+=`<div class="lcrow" title="צבירת קור חורפית ומנות חום (GDD) עונתיות באתר של אלכס מול דרישות הצמח">🌡️ <b>אַקְלִים בָּאֲתָר:</b> ${bits.join(' · ')}</div>`;
+        bits.push(`Heat ~${hc.gddGrowing}/${meta.gdd_to_fruit} ${ok?'✓':'⚠️'}`); }
+      html+=`<div class="lcrow" title="Winter chill accumulation and seasonal heat units (GDD) at Alex's site vs the plant's requirements">🌡️ <b>Climate at the site:</b> ${bits.join(' · ')}</div>`;
     }
-    html+=`<div class="cdisc">גִּיל מְדֻיָּק · חַלּוֹן קָצִיר מֵהַלּוּחַ · אַקְלִים = אֹמֶד מְקוֹמִי</div></div>`;
+    html+=`<div class="cdisc">Exact age · harvest window from the calendar · climate = local estimate</div></div>`;
     return html;
   }
 
@@ -894,16 +894,16 @@
     const warns=Array.isArray(m.warnings_he)?m.warnings_he.filter(Boolean):[];
     const hasHardy=(m.frost_hardy_c!=null||m.t_max_tol!=null);
     if(!m.zone_reason_he && !months.length && !m.planting_note_he && !warns.length && !hasHardy) return '';
-    let html=`<div class="card"><div class="ct">מֵהַמַּדְרִיךְ · ${esc(p.name_he||m.name_he||p.id)}</div>`;
+    let html=`<div class="card"><div class="ct">From the guide · ${esc(p.name_he||m.name_he||p.id)}</div>`;
     // why this zone
     if(m.zone_reason_he){
       html+=`<div class="arow"><span class="ai">📍</span><span class="at">`+
-        `<span class="ak">לָמָּה ${esc(zoneHe(m.best_zone_id||p.zoneId))}? </span>${esc(m.zone_reason_he)}</span></div>`;
+        `<span class="ak">Why ${esc(zoneHe(m.best_zone_id||p.zoneId))}? </span>${esc(m.zone_reason_he)}</span></div>`;
     }
     // planting window + note
     if(months.length||m.planting_note_he){
       html+=`<div class="arow"><span class="ai">🗓️</span><span class="at">`+
-        (months.length?`<span class="ak">חַלּוֹן שְׁתִילָה: </span><b>${esc(months.join(' · '))}</b>`:'')+
+        (months.length?`<span class="ak">Planting window: </span><b>${esc(months.join(' · '))}</b>`:'')+
         (m.planting_note_he?`<span class="anote">${esc(m.planting_note_he)}</span>`:'')+`</span></div>`;
     }
     // hardiness limits, each cross-checked against the plant's derived microclimate.
@@ -912,17 +912,17 @@
       const dawn=wp?(wp.frostTdawn!=null?wp.frostTdawn:wp.Tdawn):null;
       const risk=(dawn!=null && dawn<m.frost_hardy_c);
       const cls=dawn==null?'':(risk?' risk':' ok');
-      let txt=`<span class="ak">עֲמִידוּת לְקֹר: </span>עַד <b>${m.frost_hardy_c}°C</b>`;
+      let txt=`<span class="ak">Cold hardiness: </span>down to <b>${m.frost_hardy_c}°C</b>`;
       if(dawn!=null) txt+= risk
-        ? `<span class="anote">⚠️ מִינִימוּם שַׁחַר בַּחֹרֶף בַּנְּקֻדָּה ~${dawn}°C — נְמוּךְ מֵהַסַּף; סִכּוּן קֹר. כִּסּוּי בְּלֵילוֹת קָרִים מוּמְלָץ.</span>`
-        : `<span class="anote">מִינִימוּם שַׁחַר בַּחֹרֶף בַּנְּקֻדָּה ~${dawn}°C — בְּתוֹךְ הַטְּוָח ✓</span>`;
+        ? `<span class="anote">⚠️ Winter dawn minimum at the point ~${dawn}°C — below the threshold; cold risk. Covering on cold nights is recommended.</span>`
+        : `<span class="anote">Winter dawn minimum at the point ~${dawn}°C — within range ✓</span>`;
       html+=`<div class="arow${cls}"><span class="ai">${risk?'❄️':'❄️'}</span><span class="at">${txt}`+
-        chipSlot('frost-'+p.id,{ title:'עֲמִידוּת לְקֹר', estimate:true,
-          summary:'הַסַּף הַזַּנִּי (frost_hardy_c) מֵהַמַּדְרִיךְ מוּל מִינִימוּם הַשַּׁחַר הַחֹרְפִּי הַמְחֻשָּׁב לַנְּקֻדָּה הַמְּדֻיֶּקֶת שֶׁל הַצֶּמַח.',
-          gloss:'עֲמִידוּת הַזַּן לְקֹר מוּל הַקֹּר בַּנְּקֻדָּה.',
-          data:[{k:'סַף הַזַּן',v:m.frost_hardy_c+'°C'},{k:'מִינִימוּם שַׁחַר חֹרֶף (נְקֻדָּה)',v:(dawn!=null?dawn+'°C':'—')}],
-          assumptions:['מִינִימוּם הַשַּׁחַר מְשַׁקְלֵל נִקּוּז אֲוִיר קַר (מִקּוּם מוּרָם חַם יוֹתֵר) וְקֵרוּר קַרְינַתִּי.','הֶעֱרָכָה אַקְלִימִית — לֹא מְדִידַת שָׂדֶה.'],
-          sources:[{label:'מַדְרִיךְ הַצְּמָחִים (resident_plants.json)'}] })+
+        chipSlot('frost-'+p.id,{ title:'Cold hardiness', estimate:true,
+          summary:'The varietal threshold (frost_hardy_c) from the guide vs the computed winter dawn minimum at the plant\'s exact point.',
+          gloss:'The variety\'s cold hardiness vs the cold at the point.',
+          data:[{k:'Variety threshold',v:m.frost_hardy_c+'°C'},{k:'Winter dawn minimum (point)',v:(dawn!=null?dawn+'°C':'—')}],
+          assumptions:['The dawn minimum accounts for cold-air drainage (an elevated spot stays warmer) and radiative cooling.','A climatic estimate — not a field measurement.'],
+          sources:[{label:'The plant guide (resident_plants.json)'}] })+
         `</span></div>`;
     }
     if(m.t_max_tol!=null){
@@ -930,26 +930,26 @@
       const peak=sp?(sp.airPeak!=null?sp.airPeak:sp.Tpeak):null;
       const risk=(peak!=null && peak>m.t_max_tol);
       const cls=peak==null?'':(risk?' risk':' ok');
-      let txt=`<span class="ak">סַף חֹם: </span>עַד <b>${m.t_max_tol}°C</b>`;
+      let txt=`<span class="ak">Heat threshold: </span>up to <b>${m.t_max_tol}°C</b>`;
       if(peak!=null) txt+= risk
-        ? `<span class="anote">⚠️ שִׂיא חֹם קֵיצִי בַּנְּקֻדָּה ~${peak}°C — מֵעַל הַסַּף; סִכּוּן עֲקַת חֹם. הַצְלָלָה בְּשַׁעוֹת הַצָּהֳרַיִם תַּעֲזֹר.</span>`
-        : `<span class="anote">שִׂיא חֹם קֵיצִי בַּנְּקֻדָּה ~${peak}°C — בְּתוֹךְ הַטְּוָח ✓</span>`;
+        ? `<span class="anote">⚠️ Summer heat peak at the point ~${peak}°C — above the threshold; heat-stress risk. Midday shading will help.</span>`
+        : `<span class="anote">Summer heat peak at the point ~${peak}°C — within range ✓</span>`;
       html+=`<div class="arow${cls}"><span class="ai">🌡️</span><span class="at">${txt}`+
-        chipSlot('heat-'+p.id,{ title:'סַף חֹם', estimate:true,
-          summary:'תִּקְרַת הַחֹם הַזַּנִּית (t_max_tol) מֵהַמַּדְרִיךְ מוּל שִׂיא חֹם אֲוִיר-הַנּוֹף הַקֵּיצִי הַמְחֻשָּׁב לַנְּקֻדָּה.',
-          gloss:'סְבִילוּת הַחֹם שֶׁל הַזַּן מוּל שִׂיא הַחֹם בַּנְּקֻדָּה.',
-          data:[{k:'סַף הַזַּן',v:m.t_max_tol+'°C'},{k:'שִׂיא חֹם אֲוִיר קַיִץ (נְקֻדָּה)',v:(peak!=null?peak+'°C':'—')}],
-          assumptions:['שִׂיא הַחֹם הוּא אֲוִיר-הַנּוֹף (שִׂיא עוֹנָתִי + Δ-הַתָּא הַמּוּגָן), לֹא קַרְקַע גָּרָב חַמָּה.','הֶעֱרָכָה אַקְלִימִית — לֹא מְדִידַת שָׂדֶה.'],
-          sources:[{label:'מַדְרִיךְ הַצְּמָחִים (resident_plants.json)'}] })+
+        chipSlot('heat-'+p.id,{ title:'Heat threshold', estimate:true,
+          summary:'The varietal heat ceiling (t_max_tol) from the guide vs the computed summer canopy-air heat peak at the point.',
+          gloss:'The variety\'s heat tolerance vs the heat peak at the point.',
+          data:[{k:'Variety threshold',v:m.t_max_tol+'°C'},{k:'Summer air heat peak (point)',v:(peak!=null?peak+'°C':'—')}],
+          assumptions:['The heat peak is canopy-air (seasonal peak + the sheltered-cell Δ), not hot bare soil.','A climatic estimate — not a field measurement.'],
+          sources:[{label:'The plant guide (resident_plants.json)'}] })+
         `</span></div>`;
     }
     // free-text warnings (authored), each on its own row.
     warns.forEach(w=>{ html+=`<div class="arow"><span class="ai">⚠️</span><span class="at">${esc(w)}</span></div>`; });
-    html+=`<div class="cdisc">מִתּוֹךְ הַמַּדְרִיךְ הַמְקוֹמִי · הַשְׁוָאַת עֲמִידוּת = אֹמֶד אַקְלִימִי</div></div>`;
+    html+=`<div class="cdisc">From the local guide · hardiness comparison = climatic estimate</div></div>`;
     return html;
   }
 
-  /* ---------------- 🌱 שְׁתִילָה וְטִפּוּחַ (planting & care advice) ----------------
+  /* ---------------- 🌱 Planting & cultivation (planting & care advice) ----------------
      Per-plant horticultural guidance from data/planting_tips.json — grounded in HIS
      site soil (X1 / USDA Aridisols-Cambids: shallow, calcareous, loess-over-rock,
      ~1700–1800 mm/yr evaporation, aridic) and in species lore. Four practical rows:
@@ -960,18 +960,18 @@
   function plantingCard(p){
     const t=tipFor(p); if(!t) return '';
     const rows=[];
-    if(t.soil_he)        rows.push(['🪨','קַרְקַע',  t.soil_he]);
-    if(t.container_he)   rows.push(['🪴','עָצִיץ אוֹ אֲדָמָה', t.container_he]);
-    if(t.fertilizer_he)  rows.push(['🌾','דִּשּׁוּן',  t.fertilizer_he]);
-    if(t.special_he)     rows.push(['✨','מְיֻחָד',    t.special_he]);
+    if(t.soil_he)        rows.push(['🪨','Soil',  t.soil_he]);
+    if(t.container_he)   rows.push(['🪴','Pot or ground', t.container_he]);
+    if(t.fertilizer_he)  rows.push(['🌾','Fertilizing',  t.fertilizer_he]);
+    if(t.special_he)     rows.push(['✨','Special',    t.special_he]);
     if(!rows.length) return '';
-    let html=`<div class="card"><div class="ct">🌱 שְׁתִילָה וְטִפּוּחַ</div>`+
+    let html=`<div class="card"><div class="ct">🌱 Planting & cultivation</div>`+
       rows.map(([ic,k,v])=>`<div class="arow"><span class="ai">${ic}</span>`+
         `<span class="at"><span class="ak">${esc(k)}: </span>${esc(v)}</span></div>`).join('');
     // sources (ids → label from _meta if loadable; else show the raw id list)
     const srcs=Array.isArray(t.sources)?t.sources.filter(Boolean):[];
-    const srcTxt=srcs.length?(' · מְקוֹרוֹת: '+srcs.map(esc).join(', ')):'';
-    html+=`<div class="cdisc">הַנְחָיָה כְּלָלִית לִתְנָאֵי הָאֲתָר (קַרְקַע X1 / Aridisols, אִיּוּד גָּבוֹהַּ) — לֹא הַבְטָחָה${srcTxt}</div></div>`;
+    const srcTxt=srcs.length?(' · Sources: '+srcs.map(esc).join(', ')):'';
+    html+=`<div class="cdisc">General guidance for the site conditions (X1 / Aridisols soil, high evaporation) — not a guarantee${srcTxt}</div></div>`;
     return html;
   }
 
@@ -982,11 +982,11 @@
     const hN=magHarvest().filter(x=>x.hs.inSeason).length;
     const tN=magTasks().length;
     let line = lead ? esc(lead.title)
-      : (hN?`🧺 ${hN} צְמָחִים בְּעוֹנַת קָטִיף`
-        : (tN?`🔔 ${tN} מְשִׂימוֹת הַשָּׁבוּעַ`:'הַגִּנָּה שֶׁלְּךָ הַשָּׁבוּעַ'));
+      : (hN?`🧺 ${hN} plants in harvest season`
+        : (tN?`🔔 ${tN} tasks this week`:'Your garden this week'));
     const extra=[]; if(hN) extra.push(`🧺 ${hN}`); if(tN) extra.push(`🔔 ${tN}`);
     return `<div class="magteaser" data-act="openmag"><span class="mte">📖</span>`+
-      `<span class="mtt"><span>הָעִתּוֹן הַשָּׁבוּעַ</span>${line}${extra.length?` · ${extra.join(' · ')}`:''}</span>`+
+      `<span class="mtt"><span>The Weekly</span>${line}${extra.length?` · ${extra.join(' · ')}`:''}</span>`+
       `<span class="mtgo">←</span></div>`;
   }
 
@@ -994,7 +994,7 @@
   function photoStripHtml(p){
     const ph=Array.isArray(p.photos)?p.photos.filter(x=>x&&x.dataUrl):[];
     if(ph.length<2) return '';                 // photos[0] already shown as the ID thumb
-    return `<div class="lbl">תְּמוּנוֹת לְאֹרֶךְ הַזְּמַן <span class="sublbl">(${ph.length})</span></div>`+
+    return `<div class="lbl">Photos over time <span class="sublbl">(${ph.length})</span></div>`+
       `<div class="photostrip">`+ph.map(x=>`<div class="pcell">`+
         `<img src="${esc(x.dataUrl)}" alt="">`+
         `<span class="pcd">${esc(x.date||'')}</span></div>`).join('')+`</div>`;
@@ -1011,31 +1011,31 @@
     const seasonChips=`<span class="chips">${SEASONS.map(([k,l])=>`<span class="chip season${k===season?' on':''}" data-act="season" data-s="${k}">${l}</span>`).join('')}</span>`;
     let mc='';
     if(prof){
-      const fr=prof.frost?'גבוה':((prof.frostTdawn!=null?prof.frostTdawn:prof.Tdawn)<=3?'בינוני':'נמוך');
-      mc=`<div class="card"><div class="ct">מִיקְרוֹאַקְלִים · ${zoneHe(p.zoneId)}${isPlaced(p)?' · 📍 נְקֻדָּה מְדֻיֶּקֶת':''} · ${seasonHe(season)}</div>`+
+      const fr=prof.frost?'high':((prof.frostTdawn!=null?prof.frostTdawn:prof.Tdawn)<=3?'medium':'low');
+      mc=`<div class="card"><div class="ct">Microclimate · ${zoneHe(p.zoneId)}${isPlaced(p)?' · 📍 exact point':''} · ${seasonHe(season)}</div>`+
         `<div class="zg">`+
-        `<span class="k">שמש ישירה</span><b>${prof.sunHours} ש׳</b>`+
+        `<span class="k">Direct sun</span><b>${prof.sunHours} h</b>`+
         `<span class="k">DLI</span><b>${prof.DLI}</b>`+
-        `<span class="k">שיא · שחר</span><b>${prof.Tpeak}°/${prof.Tdawn}°</b>`+
-        `<span class="k">כפור</span><b>${fr}</b>`+
-        `<span class="k">רוח</span><b>${Math.round((prof.exposure||0)*100)}%</b>`+
-        `<span class="k">מים/שבוע</span><b>${litres!=null?'~'+litres+' ל׳':'—'}</b>`+
+        `<span class="k">Peak · dawn</span><b>${prof.Tpeak}°/${prof.Tdawn}°</b>`+
+        `<span class="k">Frost</span><b>${fr}</b>`+
+        `<span class="k">Wind</span><b>${Math.round((prof.exposure||0)*100)}%</b>`+
+        `<span class="k">Water/week</span><b>${litres!=null?'~'+litres+' L':'—'}</b>`+
         `</div></div>`;
     } else {
-      mc=`<div class="card"><div class="ct">מיקרואקלים</div><div class="reason">המודל נטען…</div></div>`;
+      mc=`<div class="card"><div class="ct">Microclimate</div><div class="reason">The model is loading…</div></div>`;
     }
     let fitHtml='';
     if(fit){
-      fitHtml=`<div class="card"><div class="ct">הַתְאָמָה לָאֵזוֹר</div>`+
+      fitHtml=`<div class="card"><div class="ct">Zone fit</div>`+
         `<div style="display:flex;align-items:baseline;gap:6px"><span class="score ${scCls}">${sc}</span><span style="font-size:11px;color:#a99b78">/100</span></div>`+
         `<div class="reason">${esc(fit.reason_he||'')}</div>`+
-        (bz&&bz.zoneId!==p.zoneId?`<div class="best">💡 אזור מיטבי: <b style="color:#fff7e6">${zoneHe(bz.zoneId)}</b> (${bz.score}/100)</div>`:
-          (bz?`<div class="best">✓ זה האזור המיטבי עבורו</div>`:''))+
+        (bz&&bz.zoneId!==p.zoneId?`<div class="best">💡 Best zone: <b style="color:#fff7e6">${zoneHe(bz.zoneId)}</b> (${bz.score}/100)</div>`:
+          (bz?`<div class="best">✓ This is the best zone for it</div>`:''))+
         `</div>`;
     }
     // (a) Pl@ntNet identification block — shows last ID + thumb if present; camera chip only when a key is set
     const idThumb = (Array.isArray(p.photos)&&p.photos[0]&&p.photos[0].dataUrl) ? p.photos[0].dataUrl : null;
-    let idHtml=`<div class="card"><div class="ct">זִהוּי צֶמַח · Pl@ntNet</div>`;
+    let idHtml=`<div class="card"><div class="ct">Plant identification · Pl@ntNet</div>`;
     if(p.id_latin){
       idHtml+=`<div class="idrow">`+
         (idThumb?`<img class="idthumb" src="${esc(idThumb)}" alt="">`:'')+
@@ -1047,36 +1047,36 @@
     // On the gift device there is no key, so we must NOT dead-end the recipient in
     // a window.prompt asking for an API key (garden_id.js promptKey). No key → no chip.
     const _hasIdKey = !!(window.GardenID && GardenID.hasKey && GardenID.hasKey());
-    idHtml+=(_hasIdKey?`<div class="chips" style="margin-top:7px"><span class="chip" data-act="plantnet">📷 צלם וזהה</span></div>`:'')+`</div>`;
+    idHtml+=(_hasIdKey?`<div class="chips" style="margin-top:7px"><span class="chip" data-act="plantnet">📷 Photograph & identify</span></div>`:'')+`</div>`;
     // (b) iNaturalist "seen near you" block — lazy-loaded via _obsCache + Derive.fetchObservations
     let obsHtml='';
     if(obsName(p)){
       loadObs(p);
       const obs=_obsCache[p.id];
-      const inner = (obs===undefined||obs===null) ? `<div class="reason">טוֹעֵן…</div>`
-        : (obs.length ? obs.map(obsRow).join('') : `<div class="reason">לא נמצאו תצפיות סמוכות</div>`);
-      obsHtml=`<div class="card"><div class="ct">תַּצְפִּיּוֹת בַּסְּבִיבָה · iNaturalist</div>`+
+      const inner = (obs===undefined||obs===null) ? `<div class="reason">Loading…</div>`
+        : (obs.length ? obs.map(obsRow).join('') : `<div class="reason">No nearby observations found</div>`);
+      obsHtml=`<div class="card"><div class="ct">Observations nearby · iNaturalist</div>`+
         `<div data-inat>${inner}</div></div>`;
     }
     body.innerHTML=
       `<div class="hd"><h3><span class="e">${p.emoji||meta.emoji||'🌱'}</span>${esc(p.name_he||meta.name_he||p.id)}</h3>`+
-        `<span class="x" data-act="close" title="סגור">✕</span></div>`+
+        `<span class="x" data-act="close" title="Close">✕</span></div>`+
       `<div class="sub">${zoneSel} ${seasonChips}</div>`+
       magTeaserHtml()+
-      `<div class="draghint">📍 גְּרֹר אֶת סַמָּן הַצֶּמַח בַּמּוֹדֵל אֶל מְקוֹמוֹ הַמְּדֻיָּק — הָאַקְלִים מְחֻשָּׁב לְפִי הַנְּקֻדָּה.</div>`+
+      `<div class="draghint">📍 Drag the plant's marker in the model to its exact spot — the climate is computed for that point.</div>`+
       mc+fitHtml+realHistoryCard(p)+forecastCard(p)+authoredCard(p)+plantingCard(p)+lifecycleCard(p)+careCard(p)+idHtml+obsHtml+
-      `<div class="lbl">סְטָטוּס</div><div class="chips">`+
+      `<div class="lbl">Status</div><div class="chips">`+
         STATUSES.map(([l])=>`<span class="chip${p.status===l?' on':''}" data-act="status" data-v="${l}">${l}</span>`).join('')+`</div>`+
-      `<div class="lbl">גֹּדֶל עָצִיץ <span class="sublbl">(לְחִשּׁוּב תְּדִירוּת הַהַשְׁקָיָה)</span></div>`+
+      `<div class="lbl">Pot size <span class="sublbl">(for watering-frequency calc)</span></div>`+
         `<div class="chips potchips">`+
-        POT_PRESETS.map(v=>`<span class="chip${(+p.pot||0)===v?' on':''}" data-act="pot" data-v="${v}">${v===0?'בָּאֲדָמָה':v+' ל׳'}</span>`).join('')+
-        `<input class="potfree" type="number" min="0" step="1" placeholder="ל׳" value="${p.pot>0?p.pot:''}" data-act="potfree" title="נפח עציץ בליטרים"></div>`+
-      `<div class="lbl">הַשְׁקָיָה <span class="sublbl">(${(p.water_adjust_pct||0)>=0?'+':''}${p.water_adjust_pct||0}% יְדָנִי)</span></div>`+
+        POT_PRESETS.map(v=>`<span class="chip${(+p.pot||0)===v?' on':''}" data-act="pot" data-v="${v}">${v===0?'In ground':v+' L'}</span>`).join('')+
+        `<input class="potfree" type="number" min="0" step="1" placeholder="L" value="${p.pot>0?p.pot:''}" data-act="potfree" title="Pot volume in litres"></div>`+
+      `<div class="lbl">Irrigation <span class="sublbl">(${(p.water_adjust_pct||0)>=0?'+':''}${p.water_adjust_pct||0}% manual)</span></div>`+
         `<div class="water"><input type="range" min="-50" max="50" step="5" value="${p.water_adjust_pct||0}" data-act="water">`+
         `<span class="wv">${scheduleText(p,season)}</span></div>`+
-      `<div class="lbl">הֶעָרוֹת</div><textarea rows="2" data-act="notes" placeholder="מתי נשתל, מה שמת לב…">${esc(p.notes_he||'')}</textarea>`+
+      `<div class="lbl">Notes</div><textarea rows="2" data-act="notes" placeholder="When planted, what you noticed…">${esc(p.notes_he||'')}</textarea>`+
       photoStripHtml(p)+
-      `<div class="foot"><span class="save">נשמר אוטומטית</span><span class="rm" data-act="remove">הסר מהגינה</span></div>`;
+      `<div class="foot"><span class="save">Saved automatically</span><span class="rm" data-act="remove">Remove from garden</span></div>`;
     flushChips();   // mount any deferred Explain "?" chips after the card HTML is in the DOM
   }
   function onClick(e){
@@ -1099,7 +1099,7 @@
         // brain list both show the real task name; `due` drives upcoming('schedule',2).
         try{ LogStore.add('schedule', { t:taskHe, title:taskHe, text:taskHe, due,
           plant:p.id, name_he:p.name_he||'', kind, src:'care' }); }catch(e){}
-        t.textContent='✓ נוסף'; t.classList.add('on'); t.removeAttribute('data-act');
+        t.textContent='✓ Added'; t.classList.add('on'); t.removeAttribute('data-act');
       }
       return;
     }
@@ -1108,7 +1108,7 @@
     else if(act==='pot'){ p.pot=parseInt(t.dataset.v,10)||0; save(); render(); }
     else if(act==='season'){ DOC.season=t.dataset.s; save(); render(); }
     else if(act==='remove'){
-      if(!confirm('להסיר את הצמח מהגינה?')) return;
+      if(!confirm('Remove this plant from the garden?')) return;
       DOC.plants=DOC.plants.filter(x=>x.id!==p.id);
       if(p.source==='curated'&&DOC.removed.indexOf(p.id)<0) DOC.removed.push(p.id);
       save(); refreshPins(); hide();
@@ -1119,7 +1119,7 @@
     const p=plant(cur); if(!p) return; p.water_adjust_pct=parseInt(t.value,10)||0;
     const wv=body.querySelector('.wv'); if(wv) wv.textContent=scheduleText(p,DOC.season);
     const lbl=t.closest('.water').previousElementSibling;
-    if(lbl) lbl.innerHTML=`הַשְׁקָיָה <span class="sublbl">(${p.water_adjust_pct>=0?'+':''}${p.water_adjust_pct}% יְדָנִי)</span>`;
+    if(lbl) lbl.innerHTML=`Irrigation <span class="sublbl">(${p.water_adjust_pct>=0?'+':''}${p.water_adjust_pct}% manual)</span>`;
   }
   function onChange(e){
     const t=e.target.closest('[data-act]'); if(!t) return; const p=plant(cur); if(!p) return;
@@ -1133,15 +1133,15 @@
   /* ---------------- add-plant catalog ---------------- */
   function ensureCat(){
     if(catBox) return;
-    const wrap=el('div'); wrap.id='gardenCat'; wrap.setAttribute('dir','rtl');
-    wrap.innerHTML=`<div class="box"><span class="gx" data-cat="close">✕</span><h4>＋ הוסף צמח לגינה</h4>`+
-      `<div class="gsub">ייווסף לאזור המיטבי — אחר כך גָּרֹר את הסמן במודל למיקום המדויק</div>`+
-      `<input class="s" placeholder="חיפוש…" data-cat="search"><div class="grid" data-cat="grid"></div>`+
-      `<div class="gplan" data-cat="plan">📄 מודל האתר והגינה (דמו)</div></div>`;
+    const wrap=el('div'); wrap.id='gardenCat'; wrap.setAttribute('dir','ltr');
+    wrap.innerHTML=`<div class="box"><span class="gx" data-cat="close">✕</span><h4>＋ Add a plant to the garden</h4>`+
+      `<div class="gsub">It will be added to the best zone — then drag the marker in the model to the exact spot</div>`+
+      `<input class="s" placeholder="Search…" data-cat="search"><div class="grid" data-cat="grid"></div>`+
+      `<div class="gplan" data-cat="plan">📄 Site & garden model (demo)</div></div>`;
     document.body.appendChild(wrap); catBox=wrap;
     wrap.addEventListener('click',e=>{
       if(e.target===wrap||e.target.closest('[data-cat=close]')){ closeCat(); }
-      else if(e.target.closest('[data-cat=plan]')&&window.__planView){ window.__planView('','מודל האתר והגינה · דמו'); }
+      else if(e.target.closest('[data-cat=plan]')&&window.__planView){ window.__planView('','Site & garden model · demo'); }
     });
     wrap.querySelector('[data-cat=search]').addEventListener('input',e=>renderCat(e.target.value));
     wrap.querySelector('[data-cat=grid]').addEventListener('click',e=>{
@@ -1153,7 +1153,7 @@
     const have={}; DOC.plants.forEach(p=>have[p.id]=1);
     const list=catalog().filter(c=>!q||(c.name_he||'').includes(q));
     grid.innerHTML=list.map(c=>`<div class="gp" data-id="${c.id}"><span class="e">${c.emoji||'🌱'}</span>`+
-      `<span class="n">${esc(c.name_he)}${have[c.id]?' ✓':''}</span></div>`).join('')||'<div class="gsub">אין תוצאות</div>';
+      `<span class="n">${esc(c.name_he)}${have[c.id]?' ✓':''}</span></div>`).join('')||'<div class="gsub">No results</div>';
   }
   function openCat(){ ensureCat(); renderCat(''); catBox.classList.add('on'); const s=catBox.querySelector('[data-cat=search]'); if(s){s.value='';s.focus();} }
   function closeCat(){ if(catBox) catBox.classList.remove('on'); }
@@ -1169,14 +1169,14 @@
       if(cand){ const bc=(window.Derive&&Derive.bestCellForCandidate)?Derive.bestCellForCandidate(cand,season):null;
         zoneId=(bc&&bc.zoneId)||cand.best_zone_hint||'balcony'; }
       else { const bz=bestZone(id,season); zoneId=(bz&&bz.zoneId)||meta.best_zone_id||'balcony'; }
-      p={ id, zoneId, status:'נשתל', water_adjust_pct:0, notes_he:'',
+      p={ id, zoneId, status:'Planted', water_adjust_pct:0, notes_he:'',
         emoji:meta.emoji, name_he:meta.name_he, source:(meta._curated?'curated':cand?'candidate':'user'), xL:null, zL:null, pot:null, planted:null };
       DOC.plants.push(p); DOC.removed=DOC.removed.filter(x=>x!==id); save();
     }
     closeCat(); refreshPins(); open(id);
   }
-  // RETIRED: the floating "🌿 הגינה" launcher button. The garden overview now lives
-  // INSIDE the #inst חצר tab (Garden.renderOverviewInto, mounted by panels.js), so the
+  // RETIRED: the floating "🌿 The garden" launcher button. The garden overview now lives
+  // INSIDE the #inst yard tab (Garden.renderOverviewInto, mounted by panels.js), so the
   // standalone button + floating panel are no longer created/shown. Kept as a no-op
   // that also removes any stale button (e.g. left by a hot-reload) so nothing dangles.
   function ensureAddBtn(){ const b=$('gardenAdd'); if(b&&b.parentNode) b.parentNode.removeChild(b); }
@@ -1185,7 +1185,7 @@
      One scrollable view of ALL plants (grouped by zone, searchable) so the garden
      scales past clicking markers one-by-one. Rows show water / fit / attention
      (⚠️ poor fit · 🔔 care due this month · 💧 high water); click → the rich per-plant
-     card (open). Plus "מה לשתול החודש" — plantable-now picks (PlantCare 'plant' tasks)
+     card (open). Plus "what to plant this month" — plantable-now picks (PlantCare 'plant' tasks)
      with their best zone. Built entirely on the existing data/engine/PlantCare. ====== */
   let ov=null, ovBody=null, ovQuery='', ovEmbed=false, _ovEmbedWired=false;
   function isHarvestSoon(p){                      // {inSeason|soon} from the care calendar, or null
@@ -1197,18 +1197,18 @@
   }
   function attn(p,season){                       // attention flags for a plant row
     const f=[]; const fit=fitInForPlant(p,season);
-    if(fit&&fit.score<40) f.push({e:'⚠️',t:'התאמה נמוכה לאזור'});
+    if(fit&&fit.score<40) f.push({e:'⚠️',t:'Low zone fit'});
     const nm=obsName(p);
-    if(nm&&window.PlantCare&&PlantCare.has(nm)&&(PlantCare.tasksFor(nm,new Date().getMonth())||[]).length) f.push({e:'🔔',t:'משימת טיפול החודש'});
+    if(nm&&window.PlantCare&&PlantCare.has(nm)&&(PlantCare.tasksFor(nm,new Date().getMonth())||[]).length) f.push({e:'🔔',t:'Care task this month'});
     const hs=isHarvestSoon(p);
-    if(hs) f.push({e:'🧺',t:hs.inSeason?'בְּעוֹנַת קָטִיף':'קָטִיף בְּקָרוֹב'});
+    if(hs) f.push({e:'🧺',t:hs.inSeason?'In harvest season':'Harvest soon'});
     const meta=plantMeta(p.id)||{}, hc=(window.Derive&&Derive.siteHeatChill)?Derive.siteHeatChill():null;
     if(hc&&((meta.chill_hours_req&&hc.chillHours<meta.chill_hours_req)||(meta.gdd_to_fruit&&hc.gddGrowing<meta.gdd_to_fruit)))
-      f.push({e:'🌡️',t:'אַקְלִים גְּבוּלִי לַחֲנָטָה'});
-    const w=waterWeekly(p,season); if(w!=null&&w>=25) f.push({e:'💧',t:'צריכת מים גבוהה'});
+      f.push({e:'🌡️',t:'Marginal climate for fruit set'});
+    const w=waterWeekly(p,season); if(w!=null&&w>=25) f.push({e:'💧',t:'High water use'});
     return f;
   }
-  // subtle "כך באמת היה עד כה" hint for an overview row: a small 📋 with the measured
+  // subtle "how it actually was so far" hint for an overview row: a small 📋 with the measured
   // span / frost-nights as a tooltip — ONLY when the Living Record actually covers
   // days for this plant's zone (defensive; absent store or days===0 → no hint).
   function realHint(p){
@@ -1217,24 +1217,24 @@
     if(!(st.days>0) || !RS.plantTotals) return '';
     let tot=null; try{ tot=RS.plantTotals(p.id, st.firstDate||_isoDaysAgo(365), st.lastDate||_isoUTC(new Date())); }catch(e){ return ''; }
     if(!tot || !tot.days) return '';
-    const ti=`מדידות אמת · ${tot.days} ימים${tot.frostNights?` · ${tot.frostNights} לילות כפור`:''}`;
+    const ti=`Real measurements · ${tot.days} days${tot.frostNights?` · ${tot.frostNights} frost nights`:''}`;
     return ` <span class="ovreal" title="${esc(ti)}">📋</span>`;
   }
   function ovRow(p,season){
     const meta=plantMeta(p.id)||{}; const fit=fitInForPlant(p,season); const sc=fit?fit.score:null;
     const scCls=sc==null?'':sc>=66?'':sc>=40?'mid':'lo'; const w=waterWeekly(p,season);
     const sch=wateringSchedule(p,season);
-    const potBadge=(sch&&sch.potted)?` <span class="ovpot" title="עציץ ${sch.pot} ל׳ · ~${sch.per} ל׳ לְמַשְׁקֶה">🪴 כל ${sch.days===1?'יום':sch.days+' ימים'}</span>`:'';
-    const placed=isPlaced(p)?` <span class="ovplaced" title="מְמֻקָּם בִּמְדֻיָּק">📍</span>`:'';
+    const potBadge=(sch&&sch.potted)?` <span class="ovpot" title="Pot ${sch.pot} L · ~${sch.per} L per watering">🪴 every ${sch.days===1?'day':sch.days+' days'}</span>`:'';
+    const placed=isPlaced(p)?` <span class="ovplaced" title="Placed precisely">📍</span>`:'';
     const fl=attn(p,season).map(a=>`<span title="${a.t}">${a.e}</span>`).join('');
     return `<div class="ovrow" data-act="open" data-id="${esc(p.id)}">`+
       `<span class="ove">${p.emoji||meta.emoji||'🌱'}</span>`+
       `<span class="ovn">${esc(p.name_he||meta.name_he||p.id)}${placed}${realHint(p)}${potBadge}${p.status?` <span class="ovst">${esc(p.status)}</span>`:''}</span>`+
-      `<span class="ovw">${w!=null?'~'+w+' ל׳':''}</span>`+
+      `<span class="ovw">${w!=null?'~'+w+' L':''}</span>`+
       `<span class="ovfit ${scCls}">${sc!=null?sc:''}</span>`+
       `<span class="ovfl">${fl}</span></div>`;
   }
-  function plannerHTML(season){                   // "מה לשתול החודש" (pillar 4, lightweight)
+  function plannerHTML(season){                   // "what to plant this month" (pillar 4, lightweight)
     if(!window.PlantCare) return '';
     const mi=new Date().getMonth(), have={}; DOC.plants.forEach(p=>have[p.id]=1);
     const picks=[];
@@ -1243,14 +1243,14 @@
       picks.push({c, bz:bestZone(c.id,season)}); });
     picks.sort((a,b)=>((b.bz&&b.bz.score)||0)-((a.bz&&a.bz.score)||0));
     if(!picks.length) return '';
-    return `<div class="ovsec">🪴 מָה לִשְׁתֹּל הַחֹדֶשׁ</div>`+
+    return `<div class="ovsec">🪴 What to plant this month</div>`+
       picks.slice(0,6).map(({c,bz})=>`<div class="ovrow" data-act="add" data-id="${esc(c.id)}">`+
         `<span class="ove">${c.emoji||'🌱'}</span><span class="ovn">${esc(c.name_he)}</span>`+
         `<span class="ovw">${bz?zoneHe(bz.zoneId):''}</span>`+
         `<span class="ovfit ${bz&&bz.score>=66?'':bz&&bz.score>=40?'mid':'lo'}">${bz?bz.score:''}</span>`+
         `<span class="ovfl">＋</span></div>`).join('');
   }
-  /* ---- "🌱 כדאי להוסיף לגינה" — candidate plants ranked against HIS zones ----
+  /* ---- "🌱 worth adding to the garden" — candidate plants ranked against HIS zones ----
      Pillar 4 (#6). Scores each the highlands/high-desert candidate (data/plant_candidates.json,
      plants he does NOT own) against his REAL zones via the microclimate engine
      (Derive.bestCellForCandidate → best cell + score + zone), then shows the top
@@ -1285,12 +1285,12 @@
       .sort((a,b)=>(b.r.score||0)-(a.r.score||0))
       .slice(0,5);
     if(!ranked.length) return '';
-    return `<div class="ovsec">🌱 כְּדַאי לְהוֹסִיף לַגִּנָּה</div>`+
-      `<div class="ovcsub">הַצָּעוֹת מֻתְאָמוֹת לָאֵזוֹרִים שֶׁלְּךָ — הַנְחָיָה כְּלָלִית, לֹא מִרְשָׁם.</div>`+
+    return `<div class="ovsec">🌱 Worth adding to the garden</div>`+
+      `<div class="ovcsub">Suggestions matched to your zones — general guidance, not a prescription.</div>`+
       ranked.map(({c,r})=>{
         const scCls=r.score>=66?'':r.score>=40?'mid':'lo';
         const why=c.why_he||r.reason||'';
-        return `<div class="ovrow ovcand" data-act="add" data-id="${esc(c.id)}" title="הוֹסֵף לַגִּנָּה">`+
+        return `<div class="ovrow ovcand" data-act="add" data-id="${esc(c.id)}" title="Add to the garden">`+
           `<span class="ove">${c.emoji||'🌱'}</span>`+
           `<span class="ovn">${esc(c.name_he)}${c.name_latin?` <span class="ovst">${esc(c.name_latin)}</span>`:''}`+
             (why?`<span class="ovwhy">${esc(why)}</span>`:'')+`</span>`+
@@ -1302,7 +1302,7 @@
   /* ---- DEFERRED candidates (perf / "freeze" fix) ----------------------------------
      candidatesHTML() scores every candidate against the WHOLE 235-cell grid; the first
      touch bakes each cell's seasonal profile (Derive._bakeSeason) — measured at ~1.4 s
-     to bake + ~0.7 s to score = ~2 s of SYNCHRONOUS work, which froze the חצר tab on
+     to bake + ~0.7 s to score = ~2 s of SYNCHRONOUS work, which froze the yard tab on
      first open. Fix: render a light placeholder, warm the cellProfile + ranking caches
      in idle-time CHUNKS (no single long task), then build the real section once and
      re-render in place. Cached by season + owned-plant signature; after the first warm
@@ -1313,8 +1313,8 @@
     const sig=_candSig(season);
     if(_candCache[sig]!=null) return _candCache[sig];      // already warm → instant (may be '')
     warmCandidates(season,sig);                            // cold → compute off the main thread
-    return `<div id="ovCandidates" class="ovsec ovcand-wait">🌱 כְּדַאי לְהוֹסִיף לַגִּנָּה`+
-      `<div class="ovcsub">מְחַשֵּׁב הַמְלָצוֹת מֻתְאָמוֹת לָאֵזוֹרִים שֶׁלְּךָ…</div></div>`;
+    return `<div id="ovCandidates" class="ovsec ovcand-wait">🌱 Worth adding to the garden`+
+      `<div class="ovcsub">Computing recommendations matched to your zones…</div></div>`;
   }
   function warmCandidates(season,sig){
     if(_candCache[sig]!=null || _candWarming===sig) return;
@@ -1355,34 +1355,34 @@
     const tw=plants.reduce((a,p)=>a+(waterWeekly(p,season)||0),0);
     const need=plants.filter(p=>attn(p,season).length).length;
     const harvestN=plants.filter(p=>isHarvestSoon(p)).length;
-    // EMBEDDED (inside the #inst חצר tab): no header/close ✕ — the tab owns the
+    // EMBEDDED (inside the #inst yard tab): no header/close ✕ — the tab owns the
     // chrome. FLOATING (legacy): keep the titled header + close button. The body
     // we paint into is `ovBody`, which renderOverviewInto() repoints at the tab's
     // own sub-container.
     let html = ovEmbed
-      ? `<div class="sub" style="margin-top:2px">${plants.length} צמחים · ${seasonHe(season)} · מים ~${Math.round(tw)} ל׳/שב׳${need?` · ${need} דורשים תשומת לב`:''}${harvestN?` · 🧺 ${harvestN} לְקָטִיף`:''}</div>`
-      : `<div class="hd"><h3>הַגִּנָּה</h3><span class="x" data-act="close" title="סגור">✕</span></div>`+
-        `<div class="sub">${plants.length} צמחים · ${seasonHe(season)} · מים ~${Math.round(tw)} ל׳/שב׳${need?` · ${need} דורשים תשומת לב`:''}${harvestN?` · 🧺 ${harvestN} לְקָטִיף`:''}</div>`;
-    html+=`<div class="magbtn" data-act="mag">📖 הָעִתּוֹן הַשָּׁבוּעַ <span>הַגִּנָּה שֶׁל אֲלֶכְּס · ${seasonHe(season)}</span></div>`+
-      `<input class="ovq" placeholder="חיפוש צמח…" value="${esc(ovQuery)}">`+
-      `<div class="ovhdr"><span class="ove"></span><span class="ovn">צמח</span><span class="ovw">מים/שב׳</span><span class="ovfit">התאמה</span><span class="ovfl"></span></div>`;
+      ? `<div class="sub" style="margin-top:2px">${plants.length} plants · ${seasonHe(season)} · water ~${Math.round(tw)} L/wk${need?` · ${need} need attention`:''}${harvestN?` · 🧺 ${harvestN} to harvest`:''}</div>`
+      : `<div class="hd"><h3>The garden</h3><span class="x" data-act="close" title="Close">✕</span></div>`+
+        `<div class="sub">${plants.length} plants · ${seasonHe(season)} · water ~${Math.round(tw)} L/wk${need?` · ${need} need attention`:''}${harvestN?` · 🧺 ${harvestN} to harvest`:''}</div>`;
+    html+=`<div class="magbtn" data-act="mag">📖 The Weekly <span>Alex's garden · ${seasonHe(season)}</span></div>`+
+      `<input class="ovq" placeholder="Search a plant…" value="${esc(ovQuery)}">`+
+      `<div class="ovhdr"><span class="ove"></span><span class="ovn">Plant</span><span class="ovw">Water/wk</span><span class="ovfit">Fit</span><span class="ovfl"></span></div>`;
     ZONES.forEach(z=>{
       const inZ=plants.filter(p=>p.zoneId===z.id); if(!inZ.length) return;
       const prof=profileOf(z.id,season);
-      const mini=prof?`${prof.sunHours} ש׳ · כפור ${prof.frost?'גבוה':((prof.frostTdawn!=null?prof.frostTdawn:prof.Tdawn)<=3?'בינוני':'נמוך')}`:'';
+      const mini=prof?`${prof.sunHours} h · frost ${prof.frost?'high':((prof.frostTdawn!=null?prof.frostTdawn:prof.Tdawn)<=3?'medium':'low')}`:'';
       html+=`<div class="ovz">${z.emoji} ${z.name_he}<span class="ovzm">${mini}</span></div>`;
       html+=inZ.map(p=>ovRow(p,season)).join('');
     });
-    if(!plants.length) html+=`<div class="reason" style="padding:6px 2px">${q?'אֵין תּוֹצָאוֹת':'אֵין צְמָחִים עֲדַיִן — הוֹסֵף לְמַטָּה.'}</div>`;
+    if(!plants.length) html+=`<div class="reason" style="padding:6px 2px">${q?'No results':'No plants yet — add one below.'}</div>`;
     html+=plannerHTML(season);
     if(!q) html+=candidatesSection(season);         // DEFERRED off the main thread (see candidatesSection) — was a ~2s freeze
-    html+=`<div class="add" data-act="addnew">＋ הוסף צמח לגינה</div>`;
-    html+=`<div class="foot">לְחַץ עַל צֶמַח לַכַּרְטִיס הַמָּלֵא · נִשְׁמָר אוֹטוֹמָטִית</div>`;
+    html+=`<div class="add" data-act="addnew">＋ Add a plant to the garden</div>`;
+    html+=`<div class="foot">Click a plant for the full card · saved automatically</div>`;
     ovBody.innerHTML=html;
   }
   function ensureOverview(){
     if(ov) return; ensure();                      // ensure() injects the shared CSS + #gardenCard infra
-    ov=el('div'); ov.id='gardenOverview'; ov.setAttribute('dir','rtl');
+    ov=el('div'); ov.id='gardenOverview'; ov.setAttribute('dir','ltr');
     ovBody=el('div','body'); ov.appendChild(ovBody); document.body.appendChild(ov);
     ovBody.addEventListener('click',e=>{ const t=e.target.closest('[data-act]'); if(!t) return; const a=t.dataset.act;
       if(a==='close') closeOverview();
@@ -1395,14 +1395,14 @@
   function openOverview(){ ensureOverview(); ov.classList.add('on'); hideInst(); renderOverview(); }
   function closeOverview(){ if(ov) ov.classList.remove('on'); restoreInst(); }
 
-  /* ---- EMBEDDED overview: mount the SAME overview into the #inst חצר tab ----------
+  /* ---- EMBEDDED overview: mount the SAME overview into the #inst yard tab ----------
      panels.js renderYard() keeps a persistent sub-container (#yard-garden) that the
      1-second microclimate tick does NOT touch, and calls Garden.renderOverviewInto(el)
      once per tab-show. We repoint the overview's body (`ovBody`) at that container,
      wire its click/search handlers ONCE (idempotent across re-shows), and render in
      EMBEDDED mode (no titled header / close ✕ — the tab owns the chrome). All the
      interactions are preserved: plant row → its full card (open), ＋recommendation →
-     addPlant, "הוסף צמח" → openCat, 📖 → openMag. The standalone floating panel +
+     addPlant, "add a plant" → openCat, 📖 → openMag. The standalone floating panel +
      its launcher button are retired (no longer created/shown). ensure() is still
      called for the shared CSS + the plant-card (#gardenCard) infra the rows open. */
   function renderOverviewInto(host){
@@ -1431,14 +1431,14 @@
     renderOverview();
   }
 
-  /* ================= "הָעִתּוֹן הַשָּׁבוּעַ" — the weekly garden magazine ==============
+  /* ================= "The Weekly" — the weekly garden magazine ==============
      A magazine ABOUT his garden THIS WEEK, generated fresh from real derived data (NOT a
      passive almanac): masthead + a synthesized lead cover-story + departments —
-     🧺 קטיף · 🔔 משימות · 💧 השקיה ואקלים · 🪴 צמח השבוע. Every plant line opens its card;
+     🧺 harvest · 🔔 tasks · 💧 watering & climate · 🪴 plant of the week. Every plant line opens its card;
      care lines push to LogStore('schedule') so Alerts nudges Alex. Lead + spotlight rotate
      by the week, so each issue feels new. ============================================= */
   let mag=null, magBody=null;
-  const MON_B=['בְּיָנוּאָר','בְּפֶבְּרוּאָר','בְּמֵרְץ','בְּאַפְּרִיל','בְּמַאי','בְּיוּנִי','בְּיוּלִי','בְּאוֹגוּסְט','בְּסֶפְּטֶמְבֶּר','בְּאוֹקְטוֹבֶּר','בְּנוֹבֶמְבֶּר','בְּדֶצֶמְבֶּר'];
+  const MON_B=['January','February','March','April','May','June','July','August','September','October','November','December'];
   function weekIdx(){ return Math.floor(Date.now()/6048e5); }       // stable within a calendar week
   function magPlants(){ return DOC.plants.slice(); }
   function magTasks(){                            // care tasks this month → [{p,task_he,kind,due}]
@@ -1469,11 +1469,11 @@
   function magLead(season,spot){
     const inS=magHarvest().filter(x=>x.hs.inSeason);
     if(inS.length){ const {p,hv}=inS[0], m=plantMeta(p.id)||{}, w=hv.window, win=w[0]===w[1]?HE_MONTHS[w[0]]:`${HE_MONTHS[w[0]]}–${HE_MONTHS[w[1]]}`;
-      return { id:p.id, emoji:p.emoji||m.emoji||'🌱', kicker:'בְּשִׂיא הָעוֹנָה',
-        title:`${p.name_he||m.name_he} בְּשִׂיא הַקָּטִיף`,
-        line:`חַלּוֹן הַקָּטִיף ${win}. ${inS.length>1?`וְעוֹד ${inS.length-1} מְחַכִּים — `:''}קְטֹף בְּשִׁיא הַטַּעַם.`, spot:false }; }
+      return { id:p.id, emoji:p.emoji||m.emoji||'🌱', kicker:'Peak season',
+        title:`${p.name_he||m.name_he} at peak harvest`,
+        line:`Harvest window ${win}. ${inS.length>1?`and ${inS.length-1} more waiting — `:''}pick at peak flavor.`, spot:false }; }
     if(spot){ const m=plantMeta(spot.id)||{};
-      return { id:spot.id, emoji:spot.emoji||m.emoji||'🌱', kicker:'צֶמַח הַשָּׁבוּעַ',
+      return { id:spot.id, emoji:spot.emoji||m.emoji||'🌱', kicker:'Plant of the week',
         title:`${spot.name_he||m.name_he}`, line:magBlurb(spot,season), spot:true }; }
     return null;
   }
@@ -1488,33 +1488,33 @@
     const season=DOC.season, d=new Date();
     const spot=spotlightPlant(), lead=magLead(season,spot), harvest=magHarvest(), tasks=magTasks(), marginal=magMarginal();
     const tw=Math.round(magPlants().reduce((a,p)=>a+(waterWeekly(p,season)||0),0));
-    let html=`<div class="mast"><span class="x" data-act="magclose" title="סגור">✕</span>`+
-      `<h2>הַגִּנָּה הַשָּׁבוּעַ</h2><div class="date">גִּלָּיוֹן · ${d.getDate()} ${MON_B[d.getMonth()]} · ${seasonHe(season)}</div></div>`;
+    let html=`<div class="mast"><span class="x" data-act="magclose" title="Close">✕</span>`+
+      `<h2>The garden this week</h2><div class="date">Issue · ${d.getDate()} ${MON_B[d.getMonth()]} · ${seasonHe(season)}</div></div>`;
     if(lead) html+=`<div class="lead" data-act="magopen" data-id="${esc(lead.id)}">`+
       `<span class="le">${lead.emoji}</span><div><div class="lk">${lead.kicker}</div>`+
       `<div class="lt">${esc(lead.title)}</div><div class="ll">${esc(lead.line)}</div></div></div>`;
-    if(harvest.length){ html+=`<div class="dept"><div class="dh">🧺 קָטִיף הַשָּׁבוּעַ</div>`+
+    if(harvest.length){ html+=`<div class="dept"><div class="dh">🧺 This week's harvest</div>`+
       harvest.map(({p,hs,hv})=>{ const w=hv.window, win=w[0]===w[1]?HE_MONTHS[w[0]]:`${HE_MONTHS[w[0]]}–${HE_MONTHS[w[1]]}`;
-        return magItem(p, hs.inSeason?`בָּעוֹנָה · ${win}`:`בְּקָרוֹב · ${win}`); }).join('')+`</div>`; }
-    if(tasks.length){ html+=`<div class="dept"><div class="dh">🔔 מְשִׂימוֹת הַשָּׁבוּעַ</div>`+
+        return magItem(p, hs.inSeason?`In season · ${win}`:`Soon · ${win}`); }).join('')+`</div>`; }
+    if(tasks.length){ html+=`<div class="dept"><div class="dh">🔔 This week's tasks</div>`+
       tasks.slice(0,7).map(t=>{ const km=(PlantCare.kindMeta&&PlantCare.kindMeta(t.kind))||{};
         return `<div class="mi" data-act="magopen" data-id="${esc(t.p.id)}">`+
           `<span class="mie">${km.emoji||'•'}</span>`+
           `<span class="min">${esc(t.task_he)} <span class="mid">${esc(t.p.name_he||(plantMeta(t.p.id)||{}).name_he||'')}</span></span>`+
-          `<span class="mik" data-act="magtask" data-id="${esc(t.p.id)}" data-task="${esc(t.task_he)}" data-kind="${esc(t.kind||'')}" data-due="${esc(t.due||'')}">🔔 הוסף</span>`+
+          `<span class="mik" data-act="magtask" data-id="${esc(t.p.id)}" data-task="${esc(t.task_he)}" data-kind="${esc(t.kind||'')}" data-due="${esc(t.due||'')}">🔔 Add</span>`+
           `</div>`; }).join('')+`</div>`; }
-    let wnote=`<div class="note">סַךְ הַשְׁקָיָה הַשָּׁבוּעַ: <b>~${tw} ל׳</b>.`;
+    let wnote=`<div class="note">Total watering this week: <b>~${tw} L</b>.`;
     const potted=magPlants().map(p=>({p,s:wateringSchedule(p,season)})).filter(x=>x.s&&x.s.potted);
-    if(potted.length) wnote+=` עֲצִיצִים: ${potted.map(x=>`${x.p.emoji||''}${x.p.name_he||''} כָּל ${x.s.days===1?'יוֹם':x.s.days+' י׳'}`).join(' · ')}.`;
+    if(potted.length) wnote+=` Pots: ${potted.map(x=>`${x.p.emoji||''}${x.p.name_he||''} every ${x.s.days===1?'day':x.s.days+' d'}`).join(' · ')}.`;
     wnote+=`</div>`;
-    if(marginal.length) wnote+=`<div class="note" style="margin-top:6px">🌡️ אַקְלִים גְּבוּלִי לַחֲנָטָה: ${marginal.map(p=>`${p.emoji||''}${p.name_he||''}`).join(' · ')} — הָאֲתָר בַּגְּבוּל לִדְרִישׁוֹת הַקֹּר/הַחֹם שֶׁלָּהֶם.</div>`;
-    html+=`<div class="dept"><div class="dh">💧 הַשְׁקָיָה וַאֲקְלִים</div>${wnote}</div>`;
+    if(marginal.length) wnote+=`<div class="note" style="margin-top:6px">🌡️ Marginal climate for fruit set: ${marginal.map(p=>`${p.emoji||''}${p.name_he||''}`).join(' · ')} — the site is at the edge of their chill/heat requirements.</div>`;
+    html+=`<div class="dept"><div class="dh">💧 Watering & climate</div>${wnote}</div>`;
     if(spot&&!(lead&&lead.spot)){ const m=plantMeta(spot.id)||{};
-      html+=`<div class="dept"><div class="dh">🪴 צֶמַח הַשָּׁבוּעַ</div>`+
+      html+=`<div class="dept"><div class="dh">🪴 Plant of the week</div>`+
         `<div class="spot" data-act="magopen" data-id="${esc(spot.id)}"><span class="se">${spot.emoji||m.emoji||'🌱'}</span>`+
         `<div><div class="st">${esc(spot.name_he||m.name_he||spot.id)}</div><div class="ss">${esc(magBlurb(spot,season))}</div></div></div></div>`; }
-    html+=`<div class="magfoot"><span>נִבְנֶה מֵהַנְּתוּנִים שֶׁל הַגִּנָּה · אֹמֶד מְקוֹמִי</span>`+
-      (tasks.length?`<span class="allbtn" data-act="magall">📌 הוֹסֵף מְשִׂימוֹת לַיּוֹמָן</span>`:'')+`</div>`;
+    html+=`<div class="magfoot"><span>Built from the garden's data · local estimate</span>`+
+      (tasks.length?`<span class="allbtn" data-act="magall">📌 Add tasks to the log</span>`:'')+`</div>`;
     magBody.innerHTML=html;
   }
   function addTaskToAlerts(pid,task_he,kind,due){
@@ -1523,13 +1523,13 @@
   }
   function ensureMag(){
     if(mag) return; ensure();
-    mag=el('div'); mag.id='gardenMag'; mag.setAttribute('dir','rtl');
+    mag=el('div'); mag.id='gardenMag'; mag.setAttribute('dir','ltr');
     magBody=el('div','body'); mag.appendChild(magBody); document.body.appendChild(mag);
     magBody.addEventListener('click',e=>{ const t=e.target.closest('[data-act]'); if(!t) return; const a=t.dataset.act;
       if(a==='magclose') closeMag();
       else if(a==='magtask'){ e.stopPropagation();
-        if(addTaskToAlerts(t.dataset.id,t.dataset.task,t.dataset.kind,t.dataset.due)){ t.textContent='✓ נוֹסַף'; t.classList.add('on'); t.removeAttribute('data-act'); } }
-      else if(a==='magall'){ const ts=magTasks(); let n=0; ts.forEach(x=>{ if(addTaskToAlerts(x.p.id,x.task_he,x.kind,x.due)) n++; }); t.textContent=`✓ ${n} נוֹסְפוּ`; t.removeAttribute('data-act'); }
+        if(addTaskToAlerts(t.dataset.id,t.dataset.task,t.dataset.kind,t.dataset.due)){ t.textContent='✓ Added'; t.classList.add('on'); t.removeAttribute('data-act'); } }
+      else if(a==='magall'){ const ts=magTasks(); let n=0; ts.forEach(x=>{ if(addTaskToAlerts(x.p.id,x.task_he,x.kind,x.due)) n++; }); t.textContent=`✓ ${n} added`; t.removeAttribute('data-act'); }
       else if(a==='magopen'){ closeMag(); open(t.dataset.id); } });
   }
   function openMag(){ ensureMag(); markMagWeek(); mag.classList.add('on'); hideInst(); renderMag(); }
@@ -1547,14 +1547,14 @@
     if(!DOC || magSeenWeek()===weekIdx() || !magHasContent()) return null;       // already seen / nothing to say
     const lead=magLead(DOC.season, spotlightPlant());
     const hv=magHarvest().filter(x=>x.hs.inSeason).length;
-    const he=lead?`הָעִתּוֹן הַשָּׁבוּעַ מוּכָן — ${lead.title}${hv?` · 🧺 ${hv} לְקָטִיף`:''}`:'הָעִתּוֹן הַשָּׁבוּעַ מוּכָן';
+    const he=lead?`The Weekly is ready — ${lead.title}${hv?` · 🧺 ${hv} to harvest`:''}`:'The Weekly is ready';
     return { id:'garden-weekly', sev:'good', icon:'📖', key:'gardenWeekly', he,
       action:()=>{ markMagWeek(); openMag(); }, onDismiss:markMagWeek };
   }
 
   /* ---------------- public API (wired from GardenPins click/drag in app.js) ---------------- */
   function open(id){ if(!plant(id)) return; ensure(); cur=id; card.classList.add('on'); hideInst(); render();
-    // one-brain: a user-initiated plant open brings the חצר tab forward (deep-link from
+    // one-brain: a user-initiated plant open brings the yard tab forward (deep-link from
     // home/alerts lands in the yard context). Safe no-op if nobody's subscribed / already on yard.
     if(window.Bus&&window.Bus.emit) window.Bus.emit('tab:open',{tab:'yard'}); }
   function hide(){ if(card) card.classList.remove('on'); restoreInst(); cur=null; }
@@ -1569,7 +1569,7 @@
     if(ov&&ov.classList.contains('on')) renderOverview();
     refreshEmbeddedOverview();
   }
-  // re-render the overview when it's EMBEDDED in the חצר tab and currently on screen
+  // re-render the overview when it's EMBEDDED in the yard tab and currently on screen
   // (its host has size). Lets a 3D drag / late data refresh update the in-tab list
   // without the floating panel. Cheap + guarded; no-op if not embedded/visible.
   function refreshEmbeddedOverview(){
@@ -1600,7 +1600,7 @@
       // embedded overview so its 🔔/🧺 attention flags + planner appear when care loads.
       if(_p&&_p.then) _p.then(()=>{ if(cur&&card&&card.classList.contains('on')) render(); refreshEmbeddedOverview(); }); }catch(e){} }
     // (1b) planting & care tips (data/planting_tips.json) — pure network, independent of
-    // Derive; fire now so the 🌱 שתילה וטיפוח card is ready the moment a plant opens.
+    // Derive; fire now so the 🌱 Planting & cultivation card is ready the moment a plant opens.
     try{ loadPlantingTips(); }catch(e){}
     // (2) curated plants (data/resident_plants.json) — fire NOW, in parallel with Derive.
     const curatedP = loadCurated();

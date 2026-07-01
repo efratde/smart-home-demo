@@ -1,11 +1,11 @@
 {
-  "region": "לרקמונט ועמק לרקמונט (אזור דמו)",
+  "region": "Larkmont and the Larkmont Valley (demo area)",
   "count": 29,
-  "note": "מדריך שדה כללי להדגמה — מיני בר נפוצים וקוסמופוליטיים. הנתונים אינם מתעדים אזור גאוגרפי אמיתי מסוים ואינם כוללים מינים מוגנים, נדירים או בסכנת הכחדה.",
+  "note": "A general demo field guide — common, cosmopolitan wild species. The data does not document any specific real geographic area and does not include protected, rare, or endangered species.",
   "species": [
     {
       "id": "dandelion",
-      "he": "שן-הארי המצויה",
+      "he": "Common dandelion",
       "sci": "Taraxacum officinale",
       "en": "Common dandelion",
       "cat": "plant",
@@ -24,26 +24,26 @@
         12
       ],
       "lifeform": "perennial",
-      "peak": "פריחה עיקרית באביב, אך פורח כמעט כל השנה",
+      "peak": "Main bloom in spring, but flowers almost year-round",
       "iconic": true,
       "id_marks": [
-        "פרח צהוב יחיד על גבעול חלול",
-        "עלים משוננים בשושנת-עלים בסיסית",
-        "כדור-מוך לבן של זרעים מוטסי-רוח"
+        "A single yellow flower on a hollow stem",
+        "Toothed leaves in a basal rosette",
+        "A white fluff-ball of wind-borne seeds"
       ],
-      "info": "עשב רב-שנתי קוסמופוליטי הנפוץ כמעט בכל אזור ממוזג בעולם; אחד הצמחים המוכרים ביותר במדשאות ובגינות.",
-      "habitat": "מדשאות, גינות, שולי דרכים ושטחים מופרים",
-      "link": "https://he.wikipedia.org/wiki/שן_הארי",
+      "info": "A cosmopolitan perennial herb common in almost every temperate region of the world; one of the most familiar plants on lawns and in gardens.",
+      "habitat": "Lawns, gardens, roadsides, and disturbed ground",
+      "link": "https://en.wikipedia.org/wiki/Taraxacum_officinale",
       "photo": null,
       "audio": null,
-      "blurb_he": "שן-הארי היא ה'עשב הרע' האהוב על כולם: פרח צהוב זוהר שנפתח עם השמש ונסגר בערב, ולאחר ההפריה הופך לכדור-מוך מושלם של זרעים. כל ילד מכיר את הטקס של נשיפה על הכדור ופיזור הזרעים ברוח.",
-      "where_when_he": "נפוצה כמעט בכל מדשאה, גינה ושטח מופר. הפריחה העיקרית באביב, אך בתנאים נוחים אפשר לראות פרחים כמעט כל ימות השנה.",
-      "folklore_he": "במסורות רבות נהגו לספור 'כמה נשיפות' צריך כדי לפזר את כל המוך – כמשחק ניחוש שעות או משאלות. העלים הצעירים נאכלים בסלט והשורש שימש כתחליף קפה.",
-      "fun_fact_he": "כל זרע נושא 'מצנח' זעיר מסיבים, וכשלחות האוויר עולה המצנח נסגר – מנגנון שמונע מהזרע להמריא ביום גשום שבו לא יתפזר רחוק."
+      "blurb_he": "The dandelion is everyone's favorite 'weed': a bright yellow flower that opens with the sun and closes in the evening, and after pollination turns into a perfect fluff-ball of seeds. Every child knows the ritual of blowing on the ball and scattering the seeds in the wind.",
+      "where_when_he": "Found on almost every lawn, garden, and patch of disturbed ground. The main bloom is in spring, but under favorable conditions flowers can be seen nearly year-round.",
+      "folklore_he": "In many traditions people counted 'how many puffs' it takes to scatter all the fluff — as a game for guessing the hour or making wishes. The young leaves are eaten in salads, and the root was used as a coffee substitute.",
+      "fun_fact_he": "Each seed carries a tiny 'parachute' of fibers, and when the air's humidity rises the parachute closes — a mechanism that keeps the seed from taking off on a rainy day, when it wouldn't disperse far."
     },
     {
       "id": "white-clover",
-      "he": "תלתן לבן",
+      "he": "White clover",
       "sci": "Trifolium repens",
       "en": "White clover",
       "cat": "plant",
@@ -57,26 +57,26 @@
         9
       ],
       "lifeform": "perennial",
-      "peak": "פריחה מאביב עד סוף הקיץ",
+      "peak": "Blooms from spring to late summer",
       "iconic": false,
       "id_marks": [
-        "עלה משולש (שלושה עלעלים) עם כתם בהיר",
-        "ראש פרחים לבן כדורי",
-        "גבעולים זוחלים שמכים שורש"
+        "A three-part leaf (three leaflets) with a pale marking",
+        "A round white flower head",
+        "Creeping stems that take root"
       ],
-      "info": "קטנית רב-שנתית זוחלת, נפוצה במדשאות בכל העולם הממוזג; מקובעת חנקן ומשמשת מאכל חשוב לדבורים.",
-      "habitat": "מדשאות, אחו ושולי שבילים",
-      "link": "https://he.wikipedia.org/wiki/תלתן_לבן",
+      "info": "A creeping perennial legume, common on lawns throughout the temperate world; it fixes nitrogen and is an important food source for bees.",
+      "habitat": "Lawns, meadows, and path edges",
+      "link": "https://en.wikipedia.org/wiki/Trifolium_repens",
       "photo": null,
       "audio": null,
-      "blurb_he": "התלתן הלבן הוא שטיח נמוך של עלים משולשים וראשי פרחים לבנים שמושכים דבורים. הוא 'מתקן' את הקרקע בכך שהוא קושר חנקן מהאוויר, ולכן חקלאים ומגדלי מדשאות דווקא אוהבים אותו.",
-      "where_when_he": "כמעט בכל מדשאה ואחו. פורח מהאביב ולאורך הקיץ, וראשי הפרחים הלבנים בולטים מעל העשב הירוק.",
-      "folklore_he": "עלה התלתן בעל ארבעה עלעלים (במקום שלושה) נחשב בתרבות המערבית לסמל מזל נדיר – מוטציה שמופיעה בערך באחד מכל כמה אלפי עלים.",
-      "fun_fact_he": "ראש פרחים אחד מורכב מעשרות פרחים זעירים, וכל אחד מהם מספק טיפת צוף – ולכן שדה תלתן יכול להזין מושבת דבורים שלמה."
+      "blurb_he": "White clover is a low carpet of three-part leaves and white flower heads that attract bees. It 'improves' the soil by fixing nitrogen from the air, which is exactly why farmers and lawn growers actually like it.",
+      "where_when_he": "On almost every lawn and meadow. It blooms from spring through summer, and the white flower heads stand out above the green grass.",
+      "folklore_he": "A clover leaf with four leaflets (instead of three) is regarded in Western culture as a rare symbol of luck — a mutation that appears in roughly one of every several thousand leaves.",
+      "fun_fact_he": "A single flower head is made up of dozens of tiny flowers, each offering a drop of nectar — so a clover field can feed an entire bee colony."
     },
     {
       "id": "common-daisy",
-      "he": "חיננית רב-שנתית",
+      "he": "Common daisy",
       "sci": "Bellis perennis",
       "en": "Common daisy",
       "cat": "plant",
@@ -95,26 +95,26 @@
         12
       ],
       "lifeform": "perennial",
-      "peak": "שיא פריחה באביב",
+      "peak": "Peak bloom in spring",
       "iconic": false,
       "id_marks": [
-        "'פרח' קטן עם עלי-כותרת לבנים ומרכז צהוב",
-        "עלים בכפית בשושנת-עלים נמוכה",
-        "נסגר בלילה ונפתח עם אור היום"
+        "A small 'flower' with white petals and a yellow center",
+        "Spoon-shaped leaves in a low rosette",
+        "Closes at night and opens with daylight"
       ],
-      "info": "צמח מדשאה ננסי ורב-שנתי, נפוץ בכל אזור ממוזג; פורח שוב ושוב גם אחרי כיסוח.",
-      "habitat": "מדשאות מכוסחות, גינות ופארקים",
-      "link": "https://he.wikipedia.org/wiki/חיננית",
+      "info": "A dwarf perennial lawn plant, common in every temperate region; it blooms again and again even after mowing.",
+      "habitat": "Mown lawns, gardens, and parks",
+      "link": "https://en.wikipedia.org/wiki/Bellis_perennis",
       "photo": null,
       "audio": null,
-      "blurb_he": "החיננית היא הפרח הקטן והעקשן של המדשאה: כיסוח אחרי כיסוח היא חוזרת ופורחת. שמה הלועזי 'daisy' נגזר מ-'day's eye' – 'עין היום' – כי היא נפתחת עם הבוקר ונסגרת בלילה.",
-      "where_when_he": "מדשאות מכוסחות, פארקים וגינות. הפריחה הצפופה ביותר באביב, אך פרחים בודדים אפשר לראות לאורך רוב השנה.",
-      "folklore_he": "שרשרת חיננית – שזירת הגבעולים זה בזה – היא משחק ילדים קלאסי, וגם מקור לביטוי על משחק 'אוהב / לא אוהב' תוך מריטת עלי-הכותרת.",
-      "fun_fact_he": "מה שנראה כמו 'פרח' אחד הוא בעצם תפרחת של מאות פרחיקים זעירים: הלבנים שבהיקף וצהובים שבמרכז."
+      "blurb_he": "The daisy is the small, stubborn flower of the lawn: mowing after mowing, it keeps coming back and blooming. Its English name 'daisy' derives from 'day's eye' — because it opens in the morning and closes at night.",
+      "where_when_he": "Mown lawns, parks, and gardens. The densest bloom is in spring, but individual flowers can be seen for most of the year.",
+      "folklore_he": "A daisy chain — weaving the stems together — is a classic children's game, and also the source of the 'loves me / loves me not' game of plucking the petals.",
+      "fun_fact_he": "What looks like a single 'flower' is actually an inflorescence of hundreds of tiny florets: the white ones around the rim and the yellow ones in the center."
     },
     {
       "id": "common-poppy",
-      "he": "פרג אדום",
+      "he": "Common poppy",
       "sci": "Papaver rhoeas",
       "en": "Common poppy",
       "cat": "plant",
@@ -125,26 +125,26 @@
         6
       ],
       "lifeform": "annual",
-      "peak": "פריחה אדומה בשיא האביב",
+      "peak": "Red bloom at the height of spring",
       "iconic": true,
       "id_marks": [
-        "ארבעה עלי-כותרת אדומים דקים כמשי",
-        "כתם כהה לעיתים בבסיס העלה",
-        "הלקט (קופסית) זרעים בצורת מלחייה"
+        "Four red petals, thin as silk",
+        "Sometimes a dark spot at the base of the petal",
+        "A seed capsule shaped like a saltshaker"
       ],
-      "info": "חד-שנתי נפוץ בשדות ובשולי דרכים בעולם הממוזג; פורח בשטף אדום אחרי גשמי החורף.",
-      "habitat": "שדות, שולי דרכים ושטחים מופרים",
-      "link": "https://he.wikipedia.org/wiki/פרג_אדום",
+      "info": "A common annual of fields and roadsides in the temperate world; it blooms in a red flood after the winter rains.",
+      "habitat": "Fields, roadsides, and disturbed ground",
+      "link": "https://en.wikipedia.org/wiki/Papaver_rhoeas",
       "photo": null,
       "audio": null,
-      "blurb_he": "הפרג האדום הוא הבזק הצבע של האביב: עלי-כותרת דקיקים כנייר משי שמרצדים ברוח. הוא חד-שנתי שמנביט המוני זרעים אחרי הגשם, וצובע שדות שלמים באדום לכמה שבועות.",
-      "where_when_he": "שדות, שולי כבישים ושטחים מופרים. השיא באביב; אחרי שבוע-שבועיים עלי-הכותרת נושרים והפרח הופך לקופסית זרעים.",
-      "folklore_he": "הפרג האדום הפך לסמל הזיכרון במלחמות העולם, ובמקומות רבים עונדים אותו כפרח-בד לזכר הנופלים.",
-      "fun_fact_he": "קופסית הזרעים מנוקבת בחורים זעירים מתחת ל'כובע', וכשהרוח מנענעת את הגבעול הזרעים מתפזרים החוצה כמו ממלחייה."
+      "blurb_he": "The red poppy is spring's flash of color: petals as thin as silk paper that shimmer in the wind. It is an annual that germinates masses of seeds after the rain, painting whole fields red for a few weeks.",
+      "where_when_he": "Fields, roadsides, and disturbed ground. The peak is in spring; after a week or two the petals fall and the flower turns into a seed capsule.",
+      "folklore_he": "The red poppy became a symbol of remembrance in the world wars, and in many places people wear it as a cloth flower in memory of the fallen.",
+      "fun_fact_he": "The seed capsule is perforated with tiny holes beneath its 'cap,' and when the wind shakes the stem the seeds scatter out as if from a saltshaker."
     },
     {
       "id": "ribwort-plantain",
-      "he": "לחך איזמלני",
+      "he": "Ribwort plantain",
       "sci": "Plantago lanceolata",
       "en": "Ribwort plantain",
       "cat": "plant",
@@ -160,23 +160,23 @@
       "lifeform": "perennial",
       "iconic": false,
       "id_marks": [
-        "עלים ארוכים וצרים עם עורקים בולטים מקבילים",
-        "שיבולת פרחים קצרה על גבעול מחורץ",
-        "טבעת אבקנים לבנבנה סביב השיבולת"
+        "Long, narrow leaves with prominent parallel veins",
+        "A short flower spike on a grooved stem",
+        "A whitish ring of stamens around the spike"
       ],
-      "info": "עשב רב-שנתי קוסמופוליטי של שולי שבילים ומדשאות; עמיד מאוד לדריכה.",
-      "habitat": "מדשאות, שולי שבילים וקרקע דרוכה",
-      "link": "https://he.wikipedia.org/wiki/לחך_איזמלני",
+      "info": "A cosmopolitan perennial herb of path edges and lawns; very resistant to trampling.",
+      "habitat": "Lawns, path edges, and trodden ground",
+      "link": "https://en.wikipedia.org/wiki/Plantago_lanceolata",
       "photo": null,
       "audio": null,
-      "blurb_he": "הלחך הוא צמח 'שולי השביל' הקלאסי – הוא דווקא משגשג היכן שדורכים עליו. עליו הצרים בעלי העורקים המקבילים והשיבולת הקטנה עם טבעת האבקנים מוכרים מכל גינה ומדרכה.",
-      "where_when_he": "שולי שבילים, מדשאות וקרקע דרוכה. פעיל מהאביב ולאורך הקיץ.",
-      "folklore_he": "במסורת העממית מעכו עלה לחך והניחו על עקיצות ושריטות כ'תחבושת שדה' מאלתרת.",
-      "fun_fact_he": "הגבעול הגמיש שימש דורות של ילדים למשחק 'יריית פרחים' – כורכים לולאה סביב הראש ויורים אותו כמו קלע."
+      "blurb_he": "The plantain is the classic 'path-edge' plant — it actually thrives where it gets trodden on. Its narrow, parallel-veined leaves and the small spike with its ring of stamens are familiar from every garden and sidewalk.",
+      "where_when_he": "Path edges, lawns, and trodden ground. Active from spring through summer.",
+      "folklore_he": "In folk tradition people crushed a plantain leaf and placed it on stings and scratches as an improvised 'field dressing.'",
+      "fun_fact_he": "The flexible stem served generations of children for a 'flower-shooting' game — looping it around the head and firing it off like a sling."
     },
     {
       "id": "common-reed",
-      "he": "קנה מצוי",
+      "he": "Common reed",
       "sci": "Phragmites australis",
       "en": "Common reed",
       "cat": "plant",
@@ -195,26 +195,26 @@
         12
       ],
       "lifeform": "perennial",
-      "peak": "מלבלב באביב-קיץ, מניב מכבדים בסתיו",
+      "peak": "Sprouts in spring–summer, produces plumes in autumn",
       "iconic": false,
       "id_marks": [
-        "גבעול חלול וגבוה (עד כמה מטרים)",
-        "מכבד פרחים נוצתי סגלגל-כסוף",
-        "עלים ארוכים ושטוחים מסודרים בשתי שורות"
+        "A hollow, tall stem (up to several meters)",
+        "A feathery, purplish-silver flower plume",
+        "Long, flat leaves arranged in two rows"
       ],
-      "info": "אחד הצמחים הפורחים הנפוצים בעולם; יוצר סבכי-קנים צפופים סביב מים מתוקים.",
-      "habitat": "גדות אגמים, בריכות ותעלות מים",
-      "link": "https://he.wikipedia.org/wiki/קנה_מצוי",
+      "info": "One of the most widespread flowering plants in the world; it forms dense reed thickets around fresh water.",
+      "habitat": "Lake shores, ponds, and water channels",
+      "link": "https://en.wikipedia.org/wiki/Phragmites_australis",
       "photo": null,
       "audio": null,
-      "blurb_he": "קנה הביצה הוא מהצמחים הנפוצים בעולם כולו – סבך גבוה ולוחש סביב כל אגם ותעלת מים. המכבדים הנוצתיים שלו נעים ברוח, וביניהם מקננות ציפורי-מים רבות.",
-      "where_when_he": "גדות אגמים, בריכות, ביצות ותעלות. ירוק בקיץ; בסתיו ובחורף הגבעולים מצהיבים והמכבדים מכסיפים.",
-      "folklore_he": "קני סוף שימשו מאז ימי קדם לגגות, למחצלות ולכלי-נשיפה פשוטים, וצליל הרוח בסבך הקנים מופיע בשירה ובמוזיקה.",
-      "fun_fact_he": "מקטע קנה אחד יכול לשלוח שלוחות תת-קרקעיות לעשרות מטרים, כך ש'יער קנים' שלם הוא לעיתים שיבוט אחד ענק."
+      "blurb_he": "The common reed is one of the most widespread plants in the entire world — a tall, whispering thicket around every lake and water channel. Its feathery plumes sway in the wind, and many water birds nest among them.",
+      "where_when_he": "Lake shores, ponds, marshes, and channels. Green in summer; in autumn and winter the stems yellow and the plumes turn silvery.",
+      "folklore_he": "Reeds have been used since ancient times for roofs, mats, and simple wind instruments, and the sound of the wind in the reed thicket appears in poetry and music.",
+      "fun_fact_he": "A single reed segment can send underground runners for tens of meters, so an entire 'reed forest' is sometimes one giant clone."
     },
     {
       "id": "house-sparrow",
-      "he": "דרור הבית",
+      "he": "House sparrow",
       "sci": "Passer domesticus",
       "en": "House sparrow",
       "cat": "bird",
@@ -235,23 +235,23 @@
       "residency": "resident",
       "iconic": true,
       "id_marks": [
-        "זכר עם 'כיפה' אפורה וסנטר שחור",
-        "נקבה חום-חולי אחיד",
-        "מקור עבה וקצר של אוכל-זרעים"
+        "Male with a gray 'cap' and a black chin",
+        "Female a uniform sandy brown",
+        "A thick, short seed-eater's bill"
       ],
-      "info": "אחת הציפורים הנפוצות בעולם, מלווה את האדם כמעט בכל יישוב; אוכלת זרעים ופירורים.",
-      "habitat": "ערים, גינות וסביבת מבני אדם",
-      "link": "https://he.wikipedia.org/wiki/דרור_הבית",
+      "info": "One of the most common birds in the world, accompanying humans in almost every settlement; it eats seeds and crumbs.",
+      "habitat": "Cities, gardens, and around human buildings",
+      "link": "https://en.wikipedia.org/wiki/House_sparrow",
       "photo": null,
       "audio": null,
-      "blurb_he": "דרור הבית הוא שכן עירוני ותיק: להקות מצייצות שמתגוררות סביב בתים, גינות ובתי-קפה ומלקטות פירורים מתחת לשולחנות. הוא אחד מבני-הכנף שהתפשטו בעקבות האדם כמעט לכל פינה ביישוב.",
-      "where_when_he": "כל ימות השנה סביב מבנים, גינות ושטחים בנויים. מקנן בחורים ובמרזבים ומגדל כמה מחזורי גוזלים בעונה.",
-      "folklore_he": "הדרור מופיע בפתגמים ובשירה כסמל לדבר הקטן והמצוי שדווקא בגללו הוא יקר – 'ציפור דרור' של היומיום.",
-      "fun_fact_he": "דרורים אוהבים 'אמבט אבק': הם מתפלשים בעפר יבש כדי לנקות את הנוצות מטפילים – מראה מוכר בכל ערוגה."
+      "blurb_he": "The house sparrow is a long-standing urban neighbor: chirping flocks that live around houses, gardens, and cafés, gleaning crumbs from under the tables. It is one of the birds that spread in humanity's wake to almost every corner of every settlement.",
+      "where_when_he": "Year-round around buildings, gardens, and built-up areas. It nests in holes and gutters and raises several broods of chicks per season.",
+      "folklore_he": "The sparrow appears in proverbs and poetry as a symbol of the small, everyday thing that is precious precisely because of it — the everyday 'free bird' (in Hebrew, 'dror' means both sparrow and freedom).",
+      "fun_fact_he": "Sparrows love a 'dust bath': they roll in dry soil to clean parasites from their feathers — a familiar sight in any flower bed."
     },
     {
       "id": "rock-dove",
-      "he": "יונת הבר",
+      "he": "Rock dove",
       "sci": "Columba livia",
       "en": "Rock dove / Feral pigeon",
       "cat": "bird",
@@ -272,23 +272,23 @@
       "residency": "resident",
       "iconic": false,
       "id_marks": [
-        "גוף אפור עם שני פסים כהים על הכנף",
-        "ברק ירוק-סגול בצוואר",
-        "גוונים רבים בפרטים העירוניים"
+        "A gray body with two dark bars on the wing",
+        "A green-purple sheen on the neck",
+        "Many color variations among city individuals"
       ],
-      "info": "אבי-אבותיהם של יוני-הבית; הצורה העירונית נפוצה בכל עיר בעולם.",
-      "habitat": "ערים, כיכרות, גשרים ומבנים",
-      "link": "https://he.wikipedia.org/wiki/יונת_הבר",
+      "info": "The ancestor of all domestic pigeons; the urban form is common in every city in the world.",
+      "habitat": "Cities, squares, bridges, and buildings",
+      "link": "https://en.wikipedia.org/wiki/Rock_dove",
       "photo": null,
       "audio": null,
-      "blurb_he": "יונת הבר היא היונה העירונית הקלאסית – זו שמתהלכת בכיכרות ומקננת על אדני חלונות וגשרים. מהזן הבר הזה בויתו כל זני יוני-הבית, ומכאן גם יוני הדואר המפורסמות.",
-      "where_when_he": "כל השנה בכל סביבה בנויה, מכיכר העיר ועד מבני חווה. מקננת על מדפי בטון וקורות, ומגדלת גוזלים כמעט בכל חודש.",
-      "folklore_he": "יונה כסמל שלום ושליחות מלווה את התרבות אלפי שנים; יוני דואר נשאו הודעות בקרבות ובמשלחות חשובות.",
-      "fun_fact_he": "יונים מנווטות גם לפי השדה המגנטי של כדור-הארץ, ולכן יונת דואר יודעת לחזור הביתה ממרחק מאות קילומטרים."
+      "blurb_he": "The rock dove is the classic city pigeon — the one that struts in the squares and nests on window ledges and bridges. From this wild form all breeds of domestic pigeons were tamed, including the famous homing pigeons.",
+      "where_when_he": "Year-round in any built environment, from the city square to farm buildings. It nests on concrete ledges and beams and raises chicks in almost every month.",
+      "folklore_he": "The dove as a symbol of peace and of carrying messages has accompanied culture for thousands of years; homing pigeons carried messages in battles and important missions.",
+      "fun_fact_he": "Pigeons also navigate by the Earth's magnetic field, which is how a homing pigeon can find its way home from hundreds of kilometers away."
     },
     {
       "id": "common-blackbird",
-      "he": "שחרור",
+      "he": "Common blackbird",
       "sci": "Turdus merula",
       "en": "Common blackbird",
       "cat": "bird",
@@ -309,23 +309,23 @@
       "residency": "resident",
       "iconic": true,
       "id_marks": [
-        "זכר שחור מבריק עם מקור וטבעת-עין כתומים",
-        "נקבה חומה-כהה",
-        "שירה חלילית עשירה מראש עץ או גג"
+        "A glossy black male with an orange bill and eye-ring",
+        "A dark brown female",
+        "A rich, flute-like song from a treetop or roof"
       ],
-      "info": "ציפור-שיר נפוצה בגינות ובפארקים; ידועה בשירתה היפה בבוקר ובערב.",
-      "habitat": "גינות, פארקים וחורשות",
-      "link": "https://he.wikipedia.org/wiki/שחרור",
+      "info": "A common songbird of gardens and parks; known for its beautiful song in the morning and evening.",
+      "habitat": "Gardens, parks, and groves",
+      "link": "https://en.wikipedia.org/wiki/Common_blackbird",
       "photo": null,
       "audio": null,
-      "blurb_he": "השחרור הוא הזמר של הגינה: זכר שחור-פחם עם מקור כתום זוהר, ששר מנגינות חלילִיות ארוכות מראש גג או עץ, בעיקר עם שחר ולפנות ערב. הוא חופר במצע העלים בחיפוש אחר תולעים.",
-      "where_when_he": "כל השנה בגינות, פארקים וחורשות. השירה מתגברת מאוד באביב, בעונת הקינון וסימון הטריטוריה.",
-      "folklore_he": "קולו של השחרור נחשב לאחת השירות היפות שבעולם הציפורים, והוא מופיע בשירה ובמוזיקה כסמל לשירת הבוקר.",
-      "fun_fact_he": "כל זכר מאלתר וריאציות משלו על הלחן, ושחרורים עירוניים אף 'מצטטים' לעיתים צלילי טלפון או אזעקה ששמעו."
+      "blurb_he": "The blackbird is the garden's singer: a coal-black male with a bright orange bill that sings long, flute-like melodies from a rooftop or tree, mainly at dawn and dusk. It digs through the leaf litter in search of worms.",
+      "where_when_he": "Year-round in gardens, parks, and groves. The song intensifies greatly in spring, during the nesting and territory-marking season.",
+      "folklore_he": "The blackbird's voice is considered one of the most beautiful songs in the bird world, and it appears in poetry and music as a symbol of the morning song.",
+      "fun_fact_he": "Each male improvises its own variations on the tune, and city blackbirds sometimes even 'quote' phone tones or alarm sounds they have heard."
     },
     {
       "id": "barn-swallow",
-      "he": "סנונית הרפת",
+      "he": "Barn swallow",
       "sci": "Hirundo rustica",
       "en": "Barn swallow",
       "cat": "bird",
@@ -338,26 +338,26 @@
         9
       ],
       "residency": "summer",
-      "peak": "נוכחת באביב ובקיץ, בעונת הקינון",
+      "peak": "Present in spring and summer, during the nesting season",
       "iconic": false,
       "id_marks": [
-        "גב כחול-מתכתי וגחון בהיר",
-        "מצח וגרון חלודים-אדמדמים",
-        "זנב מזלגי ארוך עם שני 'חוטים'"
+        "A metallic-blue back and a pale underside",
+        "A rusty-red forehead and throat",
+        "A long forked tail with two 'streamers'"
       ],
-      "info": "ציפור נודדת המקננת בקיץ; טסה במהירות מעל שדות ומים בציד חרקים מעופפים.",
-      "habitat": "שטחים פתוחים, רפתות ומבני חווה",
-      "link": "https://he.wikipedia.org/wiki/סנונית_הרפת",
+      "info": "A migratory bird that nests in summer; it flies fast over fields and water hunting flying insects.",
+      "habitat": "Open areas, cowsheds, and farm buildings",
+      "link": "https://en.wikipedia.org/wiki/Barn_swallow",
       "photo": null,
       "audio": null,
-      "blurb_he": "הסנונית היא טייסת-הקרב של השמיים הפתוחים: בזנבה המזלגי הארוך היא חותכת פניות חדות מעל שדות ומים וצדה חרקים תוך כדי תעופה. היא בונה קן-בוץ מסודר על קורות וסככות.",
-      "where_when_he": "באה באביב, מקננת לאורך הקיץ ויוצאת בסתיו למסע נדידה ארוך. נראית מרחפת מעל שטחים פתוחים ומקורות מים.",
-      "folklore_he": "חזרת הסנוניות באביב נחשבה מאז ומתמיד כבשורת חילופי העונה, ומכאן הפתגם 'סנונית אחת אינה מבשרת את האביב'.",
-      "fun_fact_he": "זוג סנוניות חוזר פעמים רבות בדיוק לאותו קן משנה לשנה, אחרי מסע נדידה של אלפי קילומטרים הלוך ושוב."
+      "blurb_he": "The swallow is the fighter pilot of the open skies: with its long forked tail it cuts sharp turns over fields and water, catching insects on the wing. It builds a neat mud nest on beams and under canopies.",
+      "where_when_he": "It arrives in spring, nests through the summer, and sets out in autumn on a long migration. It is seen gliding over open areas and water sources.",
+      "folklore_he": "The return of the swallows in spring has always been seen as a herald of the changing season, hence the saying 'one swallow does not make a spring.'",
+      "fun_fact_he": "A pair of swallows often returns to the very same nest year after year, after a migration of thousands of kilometers each way."
     },
     {
       "id": "common-starling",
-      "he": "זרזיר מצוי",
+      "he": "Common starling",
       "sci": "Sturnus vulgaris",
       "en": "Common starling",
       "cat": "bird",
@@ -378,23 +378,23 @@
       "residency": "resident",
       "iconic": false,
       "id_marks": [
-        "נוצות שחורות עם ברק סגול-ירוק ונקודות בהירות",
-        "מקור צהוב בעונת הרבייה",
-        "מעופף בלהקות צפופות ומתואמות"
+        "Black feathers with a purple-green sheen and pale spots",
+        "A yellow bill in the breeding season",
+        "Flies in dense, coordinated flocks"
       ],
-      "info": "ציפור חברתית מאוד היוצרת להקות-ענק; חקיין קולות מוכשר. נפוצה ברחבי העולם.",
-      "habitat": "שדות, מדשאות וסביבת יישוב",
-      "link": "https://he.wikipedia.org/wiki/זרזיר_מצוי",
+      "info": "A highly social bird that forms huge flocks; a talented vocal mimic. Common around the world.",
+      "habitat": "Fields, lawns, and around settlements",
+      "link": "https://en.wikipedia.org/wiki/Common_starling",
       "photo": null,
       "audio": null,
-      "blurb_he": "הזרזיר מפורסם בזכות ה'מורמורציה' – להקות ענק של אלפי פרטים שמתפתלות בשמיים כעננה חיה ומשתנה. מקרוב הוא ציפור מנומרת ומבריקה, וחקיין קולות מצוין שמשלב בשירתו צלילים שאסף מהסביבה.",
-      "where_when_he": "כל השנה בשדות, מדשאות וסביבת יישוב; הלהקות הגדולות והמופעים בשמיים בולטים במיוחד לפני שקיעה בעונה הקרה.",
-      "folklore_he": "כושר החיקוי של הזרזיר העסיק סופרים ומלחינים; יש שטיפחו זרזירים שלמדו לחקות מנגינות ומילים.",
-      "fun_fact_he": "במופע המורמורציה כל ציפור מתאמת תנועה רק עם כשבעת שכניה הקרובים – וכך נוצרת ה'גלישה' המתואמת של כל הלהקה בלי 'מנצח'."
+      "blurb_he": "The starling is famous for its 'murmuration' — huge flocks of thousands of birds that twist through the sky like a living, shifting cloud. Up close it is a spotted, glossy bird, and an excellent vocal mimic that weaves into its song sounds it has gathered from its surroundings.",
+      "where_when_he": "Year-round in fields, lawns, and around settlements; the large flocks and the aerial displays are especially striking before sunset in the cold season.",
+      "folklore_he": "The starling's mimicry has occupied writers and composers; some kept starlings that learned to imitate melodies and words.",
+      "fun_fact_he": "In a murmuration each bird coordinates its movement with only about its seven nearest neighbors — and so the coordinated 'flow' of the whole flock arises without a 'conductor.'"
     },
     {
       "id": "mallard",
-      "he": "ברכיה",
+      "he": "Mallard",
       "sci": "Anas platyrhynchos",
       "en": "Mallard",
       "cat": "bird",
@@ -415,23 +415,23 @@
       "residency": "resident",
       "iconic": true,
       "id_marks": [
-        "זכר עם ראש ירוק-מתכתי וטבעת לבנה בצוואר",
-        "נקבה חומה-מנומרת",
-        "מראָה כחולה-סגולה על הכנף"
+        "A male with a metallic-green head and a white neck ring",
+        "A mottled brown female",
+        "A blue-purple speculum on the wing"
       ],
-      "info": "ברווז-הבר הנפוץ בעולם ואב-הטיפוס של רוב ברווזי-הבית; נפוץ בכל גוף מים מתוק.",
-      "habitat": "אגמים, בריכות ונחלים איטיים",
-      "link": "https://he.wikipedia.org/wiki/ברכיה",
+      "info": "The most widespread wild duck in the world and the ancestor of most domestic ducks; common on every body of fresh water.",
+      "habitat": "Lakes, ponds, and slow streams",
+      "link": "https://en.wikipedia.org/wiki/Mallard",
       "photo": null,
       "audio": null,
-      "blurb_he": "הברכיה היא ברווז-הבר הקלאסי של האגם והבריכה: זכר עם ראש ירוק נוצץ וטבעת לבנה, ונקבה חומה ומוסווית. הזוגות שטים יחד, 'עומדים על הראש' כדי ללקט מזון מהקרקעית, ומגדלים שרשרת אפרוחים נחמדה.",
-      "where_when_he": "כל השנה בכל גוף מים מתוק – אגם, בריכת פארק או נחל איטי. גוזלי הברווז בולטים בעיקר באביב ובתחילת הקיץ.",
-      "folklore_he": "הברווז המוכר מספרי ילדים ומשירי פעוטות נשען לרוב על דמותה של הברכיה – ה'קוואק' של בריכת הפארק.",
-      "fun_fact_he": "אפרוחי הברכיה 'מטביעים' (imprinting) על הדמות הראשונה שהם רואים בבקיעה ועוקבים אחריה – לרוב האם, אך לעיתים כל יצור נע אחר."
+      "blurb_he": "The mallard is the classic wild duck of the lake and pond: a male with a glossy green head and white ring, and a brown, camouflaged female. The pairs swim together, 'stand on their heads' to gather food from the bottom, and raise a charming string of ducklings.",
+      "where_when_he": "Year-round on every body of fresh water — a lake, a park pond, or a slow stream. The ducklings are most conspicuous in spring and early summer.",
+      "folklore_he": "The duck familiar from children's books and nursery songs is usually based on the mallard — the 'quack' of the park pond.",
+      "fun_fact_he": "Mallard ducklings 'imprint' on the first figure they see upon hatching and follow it — usually the mother, but sometimes any other moving creature."
     },
     {
       "id": "barn-owl",
-      "he": "תנשמת לבנה",
+      "he": "Barn owl",
       "sci": "Tyto alba",
       "en": "Barn owl",
       "cat": "bird",
@@ -452,23 +452,23 @@
       "residency": "resident",
       "iconic": true,
       "id_marks": [
-        "פנים לבנות בצורת לב",
-        "גחון לבן וגב זהוב-מנומר",
-        "תעופה לילית שקטה לחלוטין"
+        "A white, heart-shaped face",
+        "A white underside and a golden, mottled back",
+        "Completely silent nocturnal flight"
       ],
-      "info": "ינשוף לילי קוסמופוליטי הנפוץ כמעט בכל היבשות; צד מכרסמים בשטחים פתוחים. מסייע לחקלאות כ'הדברה ביולוגית'.",
-      "habitat": "שטחים פתוחים, מבני חווה ומחסנים",
-      "link": "https://he.wikipedia.org/wiki/תנשמת",
+      "info": "A cosmopolitan nocturnal owl found on almost every continent; it hunts rodents in open areas. It aids agriculture as 'biological pest control.'",
+      "habitat": "Open areas, farm buildings, and barns",
+      "link": "https://en.wikipedia.org/wiki/Barn_owl",
       "photo": null,
       "audio": null,
-      "blurb_he": "התנשמת היא רוח-הרפאים הלבנה של הלילה: פניה הלבנות בצורת הלב ותעופתה השקטה לחלוטין הופכות אותה לציידת מכרסמים מושלמת. היא אחת הציפורים הנפוצות בעולם ונמצאת כמעט בכל יבשת.",
-      "where_when_he": "כל השנה, פעילה בעיקר בלילה מעל שדות ושטחים פתוחים. מקננת בעליות-גג, מחסנים ותיבות-קינון ייעודיות.",
-      "folklore_he": "פניה הלבנות וקריאתה הצורמת בלילה עטפו את התנשמת בהילה מסתורית בתרבויות רבות, אף שהיא בעצם ידידת החקלאי.",
-      "fun_fact_he": "חקלאים רבים מציבים תיבות-קינון לתנשמות כ'הדברה ביולוגית': משפחת תנשמות אחת טורפת אלפי מכרסמים בעונה, וחוסכת ריסוס."
+      "blurb_he": "The barn owl is the white ghost of the night: its white, heart-shaped face and utterly silent flight make it a perfect rodent hunter. It is one of the most widespread birds in the world and is found on almost every continent.",
+      "where_when_he": "Year-round, active mainly at night over fields and open areas. It nests in attics, barns, and dedicated nest boxes.",
+      "folklore_he": "Its white face and harsh nighttime call wrapped the barn owl in an aura of mystery in many cultures, even though it is actually the farmer's friend.",
+      "fun_fact_he": "Many farmers put up nest boxes for barn owls as 'biological pest control': a single barn owl family preys on thousands of rodents in a season, saving on spraying."
     },
     {
       "id": "osprey",
-      "he": "שלך",
+      "he": "Osprey",
       "sci": "Pandion haliaetus",
       "en": "Osprey",
       "cat": "bird",
@@ -481,26 +481,26 @@
         11
       ],
       "residency": "passage",
-      "peak": "נראה בעיקר בעונות המעבר ליד מים",
+      "peak": "Seen mainly during the migration seasons near water",
       "iconic": false,
       "id_marks": [
-        "גב חום-כהה וגחון לבן בולט",
-        "פס-עין כהה דרך הלחי",
-        "צולל רגליים-קדימה אל המים לתפיסת דגים"
+        "A dark brown back and a strikingly white underside",
+        "A dark eye-stripe across the cheek",
+        "Dives feet-first into the water to catch fish"
       ],
-      "info": "דורס-דגים קוסמופוליטי הנמצא כמעט בכל היבשות; ניזון כמעט אך ורק מדגים שהוא צד מהמים.",
-      "habitat": "חופי אגמים, מאגרים ונחלים",
-      "link": "https://he.wikipedia.org/wiki/שלך",
+      "info": "A cosmopolitan fish-eating raptor found on almost every continent; it feeds almost exclusively on fish it catches from the water.",
+      "habitat": "Lake shores, reservoirs, and rivers",
+      "link": "https://en.wikipedia.org/wiki/Osprey",
       "photo": null,
       "audio": null,
-      "blurb_he": "השלך הוא נשר-הדגה: דורס גדול וכמעט קוסמופוליטי שמתמחה אך ורק בציד דגים. הוא מרחף מעל המים, מאתר דג, ואז צולל רגליים-קדימה ושולה אותו בטפרים בהתזת מים מרשימה.",
-      "where_when_he": "נראה בעיקר בעונות המעבר (אביב וסתיו) מעל אגמים, מאגרים ונחלים בדרכו בין אזורי הקינון לחורף.",
-      "folklore_he": "צלילת-הדיג המרהיבה של השלך הפכה אותו לסמל אהוב על דייגים וצופי-ציפורים בכל העולם.",
-      "fun_fact_he": "לכף-רגלו של השלך אצבע חיצונית שמסתובבת קדימה ואחורה וכריות קוצניות – התאמות שמאפשרות לאחוז דג חלקלק בלי שיחמוק."
+      "blurb_he": "The osprey is the fish-eagle: a large, nearly cosmopolitan raptor that specializes exclusively in catching fish. It hovers over the water, spots a fish, then dives feet-first and snatches it in its talons with an impressive splash.",
+      "where_when_he": "Seen mainly during the migration seasons (spring and autumn) over lakes, reservoirs, and rivers on its way between its nesting and wintering grounds.",
+      "folklore_he": "The osprey's spectacular fishing dive has made it a favorite symbol among anglers and birdwatchers all over the world.",
+      "fun_fact_he": "The osprey's foot has an outer toe that rotates forward and backward and spiny pads — adaptations that let it grip a slippery fish without it slipping away."
     },
     {
       "id": "painted-lady",
-      "he": "נימפית החורשף",
+      "he": "Painted lady",
       "sci": "Vanessa cardui",
       "en": "Painted lady",
       "cat": "insect",
@@ -514,26 +514,26 @@
         9,
         10
       ],
-      "peak": "נפוצה מאביב עד סתיו",
+      "peak": "Common from spring to autumn",
       "iconic": true,
       "id_marks": [
-        "כנפיים כתומות-ורודות עם שחור ולבן בקצה",
-        "נקודות-עין קטנות בשולי הכנף האחורית",
-        "מעופפת מהירה ונודדת"
+        "Orange-pink wings with black and white at the tips",
+        "Small eyespots along the edge of the hindwing",
+        "A fast, migratory flier"
       ],
-      "info": "אחד הפרפרים הנפוצים בעולם – נמצא כמעט בכל יבשת ומבצע נדידות ארוכות-טווח.",
-      "habitat": "שדות פרחים, גינות ושטחים פתוחים",
-      "link": "https://he.wikipedia.org/wiki/נימפית_החורשף",
+      "info": "One of the most widespread butterflies in the world — found on almost every continent and performing long-distance migrations.",
+      "habitat": "Flower fields, gardens, and open areas",
+      "link": "https://en.wikipedia.org/wiki/Vanessa_cardui",
       "photo": null,
       "audio": null,
-      "blurb_he": "נימפית החורשף היא ככל הנראה הפרפר הנפוץ בעולם: היא נמצאת כמעט בכל יבשת ומבצעת נדידות עונתיות ארוכות, לעיתים אלפי קילומטרים, בדורות עוקבים. כנפיה הכתומות-ורודות מנומרות בשחור ולבן.",
-      "where_when_he": "גינות, שדות-פרחים ושטחים פתוחים, בעיקר מהאביב ועד הסתיו. בשנים טובות מופיעות 'שנות נדידה' עם מאות פרטים בבת-אחת.",
-      "folklore_he": "בשל תפוצתה העולמית ונדידותיה היא נחשבת לסמל הקלאסי של פרפר ה'נדודים' – פרפר שאינו שייך למקום אחד.",
-      "fun_fact_he": "אף פרפר בודד אינו משלים את כל הנדידה: המסע מתבצע על פני כמה דורות, וצאצאים ממשיכים את המסלול שהוריהם החלו."
+      "blurb_he": "The painted lady is probably the most widespread butterfly in the world: it is found on almost every continent and performs long seasonal migrations, sometimes thousands of kilometers, over successive generations. Its orange-pink wings are mottled with black and white.",
+      "where_when_he": "Gardens, flower fields, and open areas, mainly from spring to autumn. In good years there are 'migration years' with hundreds of individuals at once.",
+      "folklore_he": "Because of its worldwide distribution and migrations, it is regarded as the classic symbol of the 'wandering' butterfly — a butterfly that belongs to no single place.",
+      "fun_fact_he": "No single butterfly completes the whole migration: the journey takes place over several generations, and the offspring continue the route their parents began."
     },
     {
       "id": "cabbage-white",
-      "he": "לבנין הכרוב",
+      "he": "Cabbage white",
       "sci": "Pieris rapae",
       "en": "Small white",
       "cat": "insect",
@@ -547,26 +547,26 @@
         9,
         10
       ],
-      "peak": "נפוץ מאביב עד סתיו",
+      "peak": "Common from spring to autumn",
       "iconic": false,
       "id_marks": [
-        "כנפיים לבנות עם קצה אפור-שחור",
-        "נקודה כהה אחת (זכר) או שתיים (נקבה) על כנף קדמית",
-        "זחל ירוק קטיפתי על עלי מצליבים"
+        "White wings with gray-black tips",
+        "One dark spot (male) or two (female) on the forewing",
+        "A velvety green caterpillar on brassica leaves"
       ],
-      "info": "פרפר לבן נפוץ מאוד, שהתפשט עם החקלאות כמעט לכל העולם; הזחל אוהב כרוב וצמחי גינה.",
-      "habitat": "גינות ירק, שדות וערוגות",
-      "link": "https://he.wikipedia.org/wiki/לבנין_הכרוב",
+      "info": "A very common white butterfly that spread with agriculture to almost the whole world; the caterpillar loves cabbage and garden plants.",
+      "habitat": "Vegetable gardens, fields, and beds",
+      "link": "https://en.wikipedia.org/wiki/Pieris_rapae",
       "photo": null,
       "audio": null,
-      "blurb_he": "הלבנין הוא הפרפר הלבן שכולם מכירים מהגינה: מתעופף בקלילות בין הערוגות ומטיל ביצים על עלי כרוב, צנון וצמחי-גינה אחרים. הוא התפשט בעקבות החקלאות וכיום נפוץ כמעט בכל העולם.",
-      "where_when_he": "גינות ירק, שדות וערוגות, מהאביב ועד הסתיו – לעיתים כמה דורות באותה שנה.",
-      "folklore_he": "הזחל הירוק שלו מוכר לכל גנן כ'אוכל הכרוב', ומאבק הגננים בו הוא חלק קבוע מתרבות גינות-הירק.",
-      "fun_fact_he": "הזחל מצוין בהסוואה: ירוק-קטיפתי בדיוק כצבע העלה, עם פס בהיר עדין שמדמה את העורק המרכזי של העלה."
+      "blurb_he": "The cabbage white is the white butterfly everyone knows from the garden: it flutters lightly between the beds and lays eggs on the leaves of cabbage, radish, and other garden plants. It spread in the wake of agriculture and is now common across almost the whole world.",
+      "where_when_he": "Vegetable gardens, fields, and beds, from spring to autumn — sometimes several generations in the same year.",
+      "folklore_he": "Its green caterpillar is known to every gardener as the 'cabbage eater,' and the gardeners' struggle against it is a fixed part of vegetable-garden culture.",
+      "fun_fact_he": "The caterpillar is excellent at camouflage: velvety green exactly the color of the leaf, with a fine pale stripe that mimics the leaf's central vein."
     },
     {
       "id": "seven-spot-ladybird",
-      "he": "מושית שבע-הנקודות",
+      "he": "Seven-spot ladybird",
       "sci": "Coccinella septempunctata",
       "en": "Seven-spot ladybird",
       "cat": "insect",
@@ -580,26 +580,26 @@
         9,
         10
       ],
-      "peak": "פעילה מאביב עד סתיו",
+      "peak": "Active from spring to autumn",
       "iconic": true,
       "id_marks": [
-        "כיפה אדומה עם שבע נקודות שחורות",
-        "ראש שחור עם שני כתמים לבנים",
-        "זחל אפרפר-מנוקד דמוי 'תנין' זעיר"
+        "A red dome with seven black spots",
+        "A black head with two white patches",
+        "A grayish, spotted larva like a tiny 'crocodile'"
       ],
-      "info": "חיפושית-מזל מוכרת; טורפת כנימות-עלה ולכן נחשבת ידידת הגנן.",
-      "habitat": "גינות, שדות וצמחייה עשבונית",
-      "link": "https://he.wikipedia.org/wiki/מושית_שבע_הנקודות",
+      "info": "A familiar lucky beetle; it preys on aphids and is therefore considered the gardener's friend.",
+      "habitat": "Gardens, fields, and herbaceous vegetation",
+      "link": "https://en.wikipedia.org/wiki/Coccinella_septempunctata",
       "photo": null,
       "audio": null,
-      "blurb_he": "מושית שבע-הנקודות היא 'פרת משה רבנו' הקלאסית – כיפה אדומה עם שבע נקודות שחורות. גם הבוגרת וגם הזחל שלה טורפים כנימות-עלה בכמויות, ולכן גננים וחקלאים מקבלים אותה בברכה.",
-      "where_when_he": "גינות, שדות וצמחייה ירוקה, מהאביב ועד הסתיו; בחורף היא מתכנסת לעיתים בקבוצות במקומות מוגנים.",
-      "folklore_he": "בשפות רבות שמה קשור בברכה ובמזל ('beetle of Our Lady'), ובמשחקי ילדים מניחים אותה על האצבע ומבקשים שתעוף ל'משאלה'.",
-      "fun_fact_he": "כשהיא מותקפת היא מפרישה מפרקי-הרגליים טיפת נוזל צהוב מר ('דימום רֵפלקסי') שמרתיע טורפים – ומכאן גם הצבע האדום המזהיר."
+      "blurb_he": "The seven-spot ladybird is the classic ladybug — a red dome with seven black spots. Both the adult and its larva prey on aphids in great numbers, so gardeners and farmers welcome it gladly.",
+      "where_when_he": "Gardens, fields, and green vegetation, from spring to autumn; in winter it sometimes gathers in groups in sheltered spots.",
+      "folklore_he": "In many languages its name is linked to blessing and luck ('beetle of Our Lady'), and in children's games people place it on a finger and ask it to fly off for a 'wish.'",
+      "fun_fact_he": "When attacked it secretes a drop of bitter yellow fluid from its leg joints ('reflex bleeding') that deters predators — hence also its warning red color."
     },
     {
       "id": "western-honey-bee",
-      "he": "דבורת הדבש",
+      "he": "Western honey bee",
       "sci": "Apis mellifera",
       "en": "Western honey bee",
       "cat": "insect",
@@ -615,26 +615,26 @@
         10,
         11
       ],
-      "peak": "פעילה כל עוד יש פריחה",
+      "peak": "Active as long as there is bloom",
       "iconic": true,
       "id_marks": [
-        "גוף חום-זהוב עם פסים כהים ושיעור",
-        "'סלסילות אבקה' על הרגליים האחוריות",
-        "חיה במושבה חברתית גדולה"
+        "A golden-brown body with dark stripes and hairiness",
+        "'Pollen baskets' on the hind legs",
+        "Lives in a large social colony"
       ],
-      "info": "המאביקה החשובה בעולם; חיה במושבות חברתיות ומייצרת דבש. קריטית להאבקת גידולים חקלאיים.",
-      "habitat": "כל מקום עם פרחים – גינות, שדות וחורשות",
-      "link": "https://he.wikipedia.org/wiki/דבורת_הדבש",
+      "info": "The most important pollinator in the world; it lives in social colonies and produces honey. Critical for pollinating agricultural crops.",
+      "habitat": "Anywhere with flowers — gardens, fields, and groves",
+      "link": "https://en.wikipedia.org/wiki/Western_honey_bee",
       "photo": null,
       "audio": null,
-      "blurb_he": "דבורת הדבש היא מהמאביקות החשובות בעולם: מושבה אחת מונה עשרות אלפי פועלות שאוספות צוף ואבקה, מתקשרות במחול ומייצרות דבש. בלעדיהן חלק גדול מהפירות והירקות שלנו פשוט לא היו נקשרים.",
-      "where_when_he": "בכל מקום שיש בו פריחה – גינות, שדות, פארקים וחורשות – לאורך רוב השנה כל עוד יש פרחים פתוחים.",
-      "folklore_he": "הדבש והכוורת מלווים את התרבות אלפי שנים כסמל לחריצות, למתיקות ולעבודת-צוות; 'חרוצה כדבורה' הוא שבח ותיק.",
-      "fun_fact_he": "פועלת שמצאה מקור צוף עשיר מבצעת בכוורת 'ריקוד כשכוש' שמקודד בזווית ובמשך שלו את הכיוון והמרחק אל הפרחים."
+      "blurb_he": "The honey bee is one of the most important pollinators in the world: a single colony numbers tens of thousands of workers that gather nectar and pollen, communicate through dance, and produce honey. Without them a large share of our fruits and vegetables simply would not set.",
+      "where_when_he": "Anywhere there is bloom — gardens, fields, parks, and groves — for most of the year, as long as there are open flowers.",
+      "folklore_he": "Honey and the hive have accompanied culture for thousands of years as a symbol of diligence, sweetness, and teamwork; 'busy as a bee' is an old compliment.",
+      "fun_fact_he": "A worker that has found a rich nectar source performs a 'waggle dance' in the hive that encodes, in its angle and duration, the direction and distance to the flowers."
     },
     {
       "id": "wandering-glider",
-      "he": "שפירית נודדת",
+      "he": "Wandering glider",
       "sci": "Pantala flavescens",
       "en": "Wandering glider",
       "cat": "insect",
@@ -646,26 +646,26 @@
         8,
         9
       ],
-      "peak": "נפוצה בקיץ ובסתיו ליד מים",
+      "peak": "Common in summer and autumn near water",
       "iconic": false,
       "id_marks": [
-        "גוף צהוב-כתום תפוז",
-        "כנפיים אחוריות רחבות המותאמות לדאייה",
-        "מרחפת לאורך זמן כמעט בלי לנחות"
+        "A yellow-orange body",
+        "Broad hindwings adapted for gliding",
+        "Hovers for long stretches almost without landing"
       ],
-      "info": "ככל הנראה השפירית הנפוצה בעולם; דאיינית מעולה המבצעת נדידות חוצות-יבשות.",
-      "habitat": "בריכות, שלוליות וגופי מים זמניים",
-      "link": "https://he.wikipedia.org/wiki/שפירית_נודדת",
+      "info": "Probably the most widespread dragonfly in the world; an excellent glider that makes cross-continental migrations.",
+      "habitat": "Ponds, puddles, and temporary bodies of water",
+      "link": "https://en.wikipedia.org/wiki/Pantala_flavescens",
       "photo": null,
       "audio": null,
-      "blurb_he": "השפירית הנודדת היא אלופת הדאייה: כנפיה האחוריות הרחבות מאפשרות לה לרחף שעות ארוכות ולגמוא מרחקים עצומים. היא ככל הנראה השפירית הנפוצה בעולם, ומבצעת נדידות עונתיות בין יבשות.",
-      "where_when_he": "ליד בריכות, שלוליות וגופי מים זמניים, בעיקר בקיץ ובסתיו. לרוב נראית מרחפת בלהקה מעל שטח פתוח.",
-      "folklore_he": "הופעתה הפתאומית של נחיל שפיריות אחרי גשם נקשרה בתרבויות רבות לבוא המים ולשפע.",
-      "fun_fact_he": "הזחלים שלה מתפתחים במהירות שיא בשלוליות-גשם זמניות – מירוץ נגד הזמן להשלים גלגול לפני שהמים מתאדים."
+      "blurb_he": "The wandering glider is the champion of gliding: its broad hindwings let it hover for long hours and cover enormous distances. It is probably the most widespread dragonfly in the world and makes seasonal migrations between continents.",
+      "where_when_he": "Near ponds, puddles, and temporary bodies of water, mainly in summer and autumn. It is usually seen hovering in a swarm over open ground.",
+      "folklore_he": "The sudden appearance of a swarm of dragonflies after rain has been linked in many cultures to the coming of water and abundance.",
+      "fun_fact_he": "Its larvae develop at record speed in temporary rain puddles — a race against time to complete metamorphosis before the water evaporates."
     },
     {
       "id": "common-house-gecko",
-      "he": "שממית הבתים הטרופית",
+      "he": "Common house gecko",
       "sci": "Hemidactylus frenatus",
       "en": "Common house gecko",
       "cat": "reptile",
@@ -683,26 +683,26 @@
         11,
         12
       ],
-      "peak": "פעילה בעיקר בערב ובלילה החמים",
+      "peak": "Active mainly on warm evenings and nights",
       "iconic": false,
       "id_marks": [
-        "עור חלק אפרפר-שקוף",
-        "כריות-אחיזה מתחת לאצבעות",
-        "פעילה בלילה ליד מקורות אור"
+        "Smooth, grayish, semi-translucent skin",
+        "Adhesive pads under the toes",
+        "Active at night near light sources"
       ],
-      "info": "לטאה ביתית קטנה ולילית, נפוצה באזורים חמים בכל העולם; ניזונה מחרקים ליד תאורה.",
-      "habitat": "קירות בתים, תקרות וסביב תאורת חוץ",
-      "link": "https://he.wikipedia.org/wiki/שממית_הבתים",
+      "info": "A small, nocturnal house lizard, common in warm regions all over the world; it feeds on insects near lights.",
+      "habitat": "House walls, ceilings, and around outdoor lighting",
+      "link": "https://en.wikipedia.org/wiki/Common_house_gecko",
       "photo": null,
       "audio": null,
-      "blurb_he": "השממית היא שכנת-הקיר הלילית: לטאה קטנה ושקופה-אפרפרה שמטפסת בקלות על קירות ותקרות בזכות כריות-אחיזה מיוחדות באצבעות, ואורבת לחרקים סביב מנורת חצר. נפוצה באזורים חמים בכל העולם.",
-      "where_when_he": "כל השנה על קירות בתים, תקרות ומשטחים סביב תאורת חוץ; פעילה בעיקר אחרי רדת החשכה.",
-      "folklore_he": "בתרבויות רבות נחשבת שממית בבית לסימן טוב ולשומרת בית טבעית – שהרי היא אוכלת יתושים וזבובים.",
-      "fun_fact_he": "כשטורף תופס אותה בזנב, השממית 'משילה' את הזנב – הוא ממשיך להתפתל ומסיח את הטורף בזמן שהיא נמלטת, ולאחר זמן צומח זנב חדש."
+      "blurb_he": "The house gecko is the nocturnal wall-neighbor: a small, translucent-gray lizard that climbs walls and ceilings with ease thanks to special adhesive pads on its toes, lying in wait for insects around a yard lamp. It is common in warm regions all over the world.",
+      "where_when_he": "Year-round on house walls, ceilings, and surfaces around outdoor lighting; active mainly after dark.",
+      "folklore_he": "In many cultures a gecko in the house is considered a good sign and a natural house-guard — after all, it eats mosquitoes and flies.",
+      "fun_fact_he": "When a predator grabs it by the tail, the gecko 'sheds' the tail — it keeps wriggling and distracts the predator while the gecko escapes, and after a while a new tail grows back."
     },
     {
       "id": "brahminy-blindsnake",
-      "he": "נחשון עיוור",
+      "he": "Brahminy blind snake",
       "sci": "Indotyphlops braminus",
       "en": "Brahminy blind snake",
       "cat": "reptile",
@@ -722,23 +722,23 @@
       ],
       "iconic": false,
       "id_marks": [
-        "גוף קטן וחלק הדומה לתולעת",
-        "עיניים זעירות מנוונות מתחת לקשקשים",
-        "צבע חום-סגלגל אחיד"
+        "A small, smooth, worm-like body",
+        "Tiny, vestigial eyes beneath the scales",
+        "A uniform purplish-brown color"
       ],
-      "info": "נחש קטנטן ולא-ארסי החי בקרקע ובמצע; אחד הנחשים הנפוצים בעולם, ומתפשט עם אדמת עציצים.",
-      "habitat": "קרקע גינה, מתחת לאבנים ובעציצים",
-      "link": "https://he.wikipedia.org/wiki/נחשון_עיוור",
+      "info": "A tiny, non-venomous snake that lives in the soil and litter; one of the most widespread snakes in the world, spreading with potting soil.",
+      "habitat": "Garden soil, under stones, and in flowerpots",
+      "link": "https://en.wikipedia.org/wiki/Indotyphlops_braminus",
       "photo": null,
       "audio": null,
-      "blurb_he": "הנחשון העיוור נראה יותר כמו תולעת-אדמה מבריקה מאשר כנחש: הוא זעיר, חסר-מזיק לחלוטין, וחי מתחת לאבנים ובאדמת גינה. בזכות גודלו והרגליו הוא התפשט עם אדמת עציצים כמעט לכל העולם.",
-      "where_when_he": "כל השנה בקרקע לחה, מתחת לאבנים, בערימות עלים ובעציצים; כמעט תמיד מתחת לפני השטח.",
-      "folklore_he": "קל מאוד לטעות בינו לבין תולעת, וכך הוא 'מטייל' בין גינות בתוך עציצים בלי שאיש מבחין בו.",
-      "fun_fact_he": "כל הפרטים הם נקבות שמתרבות ללא הפריה (פרתנוגנזה) – ולכן פרט בודד שמגיע באדמת עציץ יכול לייסד אוכלוסייה חדשה לבדו."
+      "blurb_he": "The brahminy blind snake looks more like a shiny earthworm than a snake: it is tiny, completely harmless, and lives under stones and in garden soil. Thanks to its size and habits it has spread with potting soil to almost the whole world.",
+      "where_when_he": "Year-round in moist soil, under stones, in leaf piles, and in flowerpots; almost always below the surface.",
+      "folklore_he": "It is very easy to mistake for a worm, and so it 'travels' between gardens inside flowerpots without anyone noticing.",
+      "fun_fact_he": "All individuals are females that reproduce without fertilization (parthenogenesis) — so a single individual arriving in potting soil can found a new population on its own."
     },
     {
       "id": "fly-agaric",
-      "he": "אמנית אדומה",
+      "he": "Fly agaric",
       "sci": "Amanita muscaria",
       "en": "Fly agaric",
       "cat": "fungi",
@@ -747,26 +747,26 @@
         10,
         11
       ],
-      "peak": "מבצבצת בסתיו הלח, בעיקר תחת עצים",
+      "peak": "Pops up in the moist autumn, mainly under trees",
       "iconic": true,
       "id_marks": [
-        "כובע אדום זוהר עם פתיתים לבנים",
-        "טבעת לבנה על הגבעול",
-        "בסיס מעובה עם שרידי 'ביצה'"
+        "A bright red cap with white flecks",
+        "A white ring on the stem",
+        "A swollen base with remnants of an 'egg'"
       ],
-      "info": "הפטרייה ה'אגדית' עם הכובע האדום-לבן; רעילה. יוצרת קשרי-שורש (מיקוריזה) עם עצים.",
-      "habitat": "חורשות לחות, מתחת לעצים",
-      "link": "https://he.wikipedia.org/wiki/אמנית_אדומה",
+      "info": "The 'fairy-tale' mushroom with the red-and-white cap; poisonous. It forms root partnerships (mycorrhiza) with trees.",
+      "habitat": "Moist groves, under trees",
+      "link": "https://en.wikipedia.org/wiki/Amanita_muscaria",
       "photo": null,
       "audio": null,
-      "blurb_he": "אמנית אדומה היא 'פטריית האגדות' עם הכובע האדום הזוהר והנקודות הלבנות – זו שמצוירת בכל ספר ילדים ופונפון של שמרטף. למרות יופייה היא רעילה, ואסור לאכול אותה.",
-      "where_when_he": "בצצה בסתיו הלח, בעיקר בחורשות וביערות מתחת לעצים, שעמם היא חיה ביחסי-גומלין של שורשים.",
-      "folklore_he": "הכובע האדום-לבן הפך לאיקון של 'פטרייה' בתרבות הפופולרית – ממשחקי מחשב ועד קישוטי גינה.",
-      "fun_fact_he": "הנקודות הלבנות אינן חלק קבוע מהכובע אלא שאריות של ה'קרום' שעטף את הפטרייה הצעירה – וגשם חזק יכול לשטוף אותן."
+      "blurb_he": "The fly agaric is the 'fairy-tale mushroom' with the bright red cap and white dots — the one pictured in every children's book and nursery decoration. Despite its beauty it is poisonous, and must not be eaten.",
+      "where_when_he": "It emerges in the moist autumn, mainly in groves and forests under trees, with which it lives in a root-level symbiosis.",
+      "folklore_he": "The red-and-white cap has become the icon of a 'mushroom' in popular culture — from video games to garden ornaments.",
+      "fun_fact_he": "The white dots are not a permanent part of the cap but remnants of the 'veil' that wrapped the young mushroom — and heavy rain can wash them away."
     },
     {
       "id": "field-mushroom",
-      "he": "פטריית השדה",
+      "he": "Field mushroom",
       "sci": "Agaricus campestris",
       "en": "Field mushroom",
       "cat": "fungi",
@@ -775,26 +775,26 @@
         10,
         11
       ],
-      "peak": "עולה אחרי גשמי הסתיו במדשאות",
+      "peak": "Appears after the autumn rains on lawns",
       "iconic": false,
       "id_marks": [
-        "כובע לבן עגול וחלק",
-        "דפים ורודים שמשחירים עם הגיל",
-        "ריח פטרייתי נעים"
+        "A round, smooth white cap",
+        "Pink gills that darken with age",
+        "A pleasant mushroomy smell"
       ],
-      "info": "קרובת-משפחה בר של פטריית-התרבות (שמפיניון); עולה במדשאות אחרי גשם.",
-      "habitat": "מדשאות, אחו ושדות מרעה",
-      "link": "https://he.wikipedia.org/wiki/פטריית_השדה",
+      "info": "A wild relative of the cultivated mushroom (button mushroom); it appears on lawns after rain.",
+      "habitat": "Lawns, meadows, and grazing fields",
+      "link": "https://en.wikipedia.org/wiki/Agaricus_campestris",
       "photo": null,
       "audio": null,
-      "blurb_he": "פטריית השדה היא בת-הדודה הבר של ה'שמפיניון' מהסופר: כובע לבן עגול שמבצבץ בקבוצות במדשאה אחרי גשם, עם דפים ורודים שמשחירים ככל שהיא מתבגרת.",
-      "where_when_he": "עולה אחרי גשמי הסתיו במדשאות, באחו ובשדות-מרעה, לעיתים ב'טבעות פיות' עגולות.",
-      "folklore_he": "קבוצות פטריות שעולות במעגל מכונות בפולקלור 'טבעות פיות', ויוחס להן בעבר כוח קסום.",
-      "fun_fact_he": "ה'טבעת' נוצרת כי הפטרייה גדלה תת-קרקעית כלפי חוץ במעגל מתרחב, ופוטרת גופי-פרי בדיוק בקצה הגדל."
+      "blurb_he": "The field mushroom is the wild cousin of the 'button mushroom' from the supermarket: a round white cap that pops up in groups on the lawn after rain, with pink gills that darken as it matures.",
+      "where_when_he": "It appears after the autumn rains on lawns, in meadows, and in grazing fields, sometimes in round 'fairy rings.'",
+      "folklore_he": "Groups of mushrooms that come up in a circle are called 'fairy rings' in folklore, and in the past they were attributed magical power.",
+      "fun_fact_he": "The 'ring' forms because the fungus grows underground outward in an expanding circle, producing fruiting bodies exactly at the growing edge."
     },
     {
       "id": "shaggy-inkcap",
-      "he": "פטריית הדיו השעירה",
+      "he": "Shaggy ink cap",
       "sci": "Coprinus comatus",
       "en": "Shaggy ink cap",
       "cat": "fungi",
@@ -803,26 +803,26 @@
         10,
         11
       ],
-      "peak": "צצה בסתיו בשולי שבילים ומדשאות",
+      "peak": "Emerges in autumn along path edges and lawns",
       "iconic": false,
       "id_marks": [
-        "כובע גבוה ולבן מכוסה קשקשים שעירים",
-        "נמס לדיו שחור מהקצה כלפי מעלה",
-        "צומחת מהר וקצרת-חיים"
+        "A tall white cap covered in shaggy scales",
+        "Dissolves into black ink from the edge upward",
+        "Grows fast and is short-lived"
       ],
-      "info": "פטרייה לבנה גבוהה שמתפרקת לנוזל שחור דמוי-דיו בתוך יום-יומיים.",
-      "habitat": "מדשאות, שולי דרכים וקרקע מופרת",
-      "link": "https://he.wikipedia.org/wiki/פטריית_הדיו",
+      "info": "A tall white mushroom that breaks down into a black, ink-like liquid within a day or two.",
+      "habitat": "Lawns, roadsides, and disturbed ground",
+      "link": "https://en.wikipedia.org/wiki/Coprinus_comatus",
       "photo": null,
       "audio": null,
-      "blurb_he": "פטריית הדיו מתחילה ככובע לבן גבוה ומקושקש, ותוך יום-יומיים 'נמסה' מקצה הכובע כלפי מעלה לנוזל שחור דמוי-דיו. ההופעה המהירה והקצרה שלה הופכת כל מפגש איתה לעניין של תזמון.",
-      "where_when_he": "צצה בסתיו לאורך שבילים, במדשאות ובקרקע מופרת – לעיתים בקבוצה שקמה בן-לילה ונעלמת תוך יומיים.",
-      "folklore_he": "הנוזל השחור שימש בעבר ממש כדיו לכתיבה, ומכאן שמה.",
-      "fun_fact_he": "ה'המסה' אינה ריקבון אקראי אלא דרך פיזור: הכובע ממיס את עצמו לנוזל כדי לשחרר את נבגיו ולתת להם להישטף ולהתפזר."
+      "blurb_he": "The ink cap starts as a tall, scaly white cap, and within a day or two 'melts' from the edge of the cap upward into a black, ink-like liquid. Its fast, brief appearance makes any encounter with it a matter of timing.",
+      "where_when_he": "It emerges in autumn along paths, on lawns, and in disturbed ground — sometimes in a group that springs up overnight and vanishes within two days.",
+      "folklore_he": "The black liquid was once actually used as writing ink, hence its name.",
+      "fun_fact_he": "The 'melting' is not random decay but a means of dispersal: the cap dissolves itself into liquid to release its spores and let them be washed away and scattered."
     },
     {
       "id": "red-fox",
-      "he": "שועל מצוי",
+      "he": "Red fox",
       "sci": "Vulpes vulpes",
       "en": "Red fox",
       "cat": "mammal",
@@ -840,26 +840,26 @@
         11,
         12
       ],
-      "peak": "נראה לרוב בדמדומים ובלילה",
+      "peak": "Usually seen at dusk and at night",
       "iconic": true,
       "id_marks": [
-        "פרווה חום-אדמדמה וגחון בהיר",
-        "זנב עבה ושעיר עם קצה לבן",
-        "אוזניים זקופות וחרטום מחודד"
+        "Reddish-brown fur and a pale underside",
+        "A thick, bushy tail with a white tip",
+        "Erect ears and a pointed snout"
       ],
-      "info": "הטורף הנפוץ והמופץ בעולם; חי כמעט בכל בית-גידול, כולל שולי ערים. ניזון ממכרסמים, חרקים ופירות.",
-      "habitat": "שדות, חורשות, פארקים ושולי יישוב",
-      "link": "https://he.wikipedia.org/wiki/שועל_מצוי",
+      "info": "The most common and widespread carnivore in the world; it lives in almost every habitat, including the edges of cities. It feeds on rodents, insects, and fruit.",
+      "habitat": "Fields, groves, parks, and the edges of settlements",
+      "link": "https://en.wikipedia.org/wiki/Red_fox",
       "photo": null,
       "audio": null,
-      "blurb_he": "השועל המצוי הוא הטורף בעל התפוצה הרחבה ביותר בעולם: מהשדה והחורשה ועד שולי הערים. פרוותו האדמדמה, זנבו השעיר עם הקצה הלבן וחוכמתו הפתגמית הפכו אותו לדמות מרכזית באגדות ובמשלים.",
-      "where_when_he": "כל השנה, פעיל בעיקר בדמדומים ובלילה, בשדות, חורשות, פארקים ושולי יישוב. אוכל-כול גמיש – מכרסמים, חרקים, פירות ושאריות.",
-      "folklore_he": "בעשרות תרבויות השועל הוא סמל הערמומיות והתחכום – מ'השועל והענבים' של איזופוס ועד שועלים ערמומיים באגדות עם.",
-      "fun_fact_he": "שמיעתו חדה כל-כך שהוא מאתר מכרסם תחת השלג או העפר לפי הקול בלבד, ואז מזנק 'צלילת-עכבר' אנכית כדי לנחות בדיוק עליו."
+      "blurb_he": "The red fox is the most widely distributed carnivore in the world: from field and grove to the edges of cities. Its reddish fur, its bushy white-tipped tail, and its proverbial cleverness have made it a central figure in fables and tales.",
+      "where_when_he": "Year-round, active mainly at dusk and at night, in fields, groves, parks, and the edges of settlements. A flexible omnivore — rodents, insects, fruit, and scraps.",
+      "folklore_he": "In dozens of cultures the fox is the symbol of cunning and sophistication — from Aesop's 'The Fox and the Grapes' to cunning foxes in folk tales.",
+      "fun_fact_he": "Its hearing is so sharp that it locates a rodent under snow or soil by sound alone, then leaps in a vertical 'mouse-dive' to land precisely on it."
     },
     {
       "id": "european-rabbit",
-      "he": "ארנבון מצוי",
+      "he": "European rabbit",
       "sci": "Oryctolagus cuniculus",
       "en": "European rabbit",
       "cat": "mammal",
@@ -877,26 +877,26 @@
         11,
         12
       ],
-      "peak": "נראה בעיקר בבוקר המוקדם ובדמדומים",
+      "peak": "Seen mainly in the early morning and at dusk",
       "iconic": false,
       "id_marks": [
-        "גוף אפרפר-חום קומפקטי",
-        "אוזניים בינוניות (קצרות מארנבת)",
-        "זנב קצר עם תחתית לבנה"
+        "A compact grayish-brown body",
+        "Medium ears (shorter than a hare's)",
+        "A short tail with a white underside"
       ],
-      "info": "אב-הטיפוס של ארנבי-הבית; חי במושבות חופרות-מחילות. הוטבע בידי אדם לאזורים רבים בעולם.",
-      "habitat": "שדות, מדשאות ושטחים פתוחים עם מחילות",
-      "link": "https://he.wikipedia.org/wiki/ארנבון_מצוי",
+      "info": "The ancestor of domestic rabbits; it lives in burrow-digging colonies. It was introduced by humans to many regions of the world.",
+      "habitat": "Fields, lawns, and open areas with burrows",
+      "link": "https://en.wikipedia.org/wiki/European_rabbit",
       "photo": null,
       "audio": null,
-      "blurb_he": "הארנבון הוא אב-הטיפוס הבר של כל ארנבי-הבית. הוא חי במושבות חברתיות שחופרות מערכת מחילות מסועפת, ניזון מעשב, ובורח למחילה בקפיצות-זיגזג ברגע של סכנה. בני-אדם הפיצו אותו לאזורים רבים בעולם.",
-      "where_when_he": "שדות, מדשאות ושטחים פתוחים, לרוב סמוך לפתחי מחילות; פעיל בעיקר בשעות הקרירות של הבוקר והערב.",
-      "folklore_he": "ארנבים מסמלים פוריות ואביב בתרבויות רבות, ודמות הארנב מופיעה החל מאגדות-עם ועד 'ארנב הפסחא'.",
-      "fun_fact_he": "מושבת ארנבונים חופרת 'עיר' תת-קרקעית שלמה (warren) עם חדרים ומסדרונות ופתחי-מילוט מרובים, שעוברת בירושה לדורות."
+      "blurb_he": "The European rabbit is the wild ancestor of all domestic rabbits. It lives in social colonies that dig an extensive system of burrows, feeds on grass, and bolts for the burrow in zigzag hops at a moment of danger. Humans have spread it to many regions of the world.",
+      "where_when_he": "Fields, lawns, and open areas, usually near burrow entrances; active mainly during the cool hours of morning and evening.",
+      "folklore_he": "Rabbits symbolize fertility and spring in many cultures, and the figure of the rabbit appears from folk tales to the 'Easter bunny.'",
+      "fun_fact_he": "A rabbit colony digs an entire underground 'city' (a warren) with rooms, corridors, and multiple escape exits, passed down through generations."
     },
     {
       "id": "house-mouse",
-      "he": "עכבר הבית",
+      "he": "House mouse",
       "sci": "Mus musculus",
       "en": "House mouse",
       "cat": "mammal",
@@ -916,23 +916,23 @@
       ],
       "iconic": false,
       "id_marks": [
-        "גוף קטן אפרפר-חום וזנב ארוך וחשוף",
-        "אוזניים גדולות יחסית",
-        "פעיל בעיקר בלילה"
+        "A small grayish-brown body and a long, bare tail",
+        "Relatively large ears",
+        "Active mainly at night"
       ],
-      "info": "אחד היונקים הנפוצים בעולם; מלווה את האדם בכל מקום. גם חיית-המעבדה הנחקרת ביותר.",
-      "habitat": "בתים, מחסנים, שדות וסביבת אדם",
-      "link": "https://he.wikipedia.org/wiki/עכבר_הבית",
+      "info": "One of the most common mammals in the world; it accompanies humans everywhere. Also the most studied laboratory animal.",
+      "habitat": "Houses, warehouses, fields, and around humans",
+      "link": "https://en.wikipedia.org/wiki/House_mouse",
       "photo": null,
       "audio": null,
-      "blurb_he": "עכבר הבית הוא בן-הלוויה הזעיר של האדם בכל מקום בעולם: זריז, סקרן ומסתגל, חי בקירות, במחסנים ובשדות. הוא גם היונק הנחקר ביותר במדע, ותרם רבות להבנת הביולוגיה והרפואה.",
-      "where_when_he": "כל השנה, פעיל בעיקר בלילה, בבתים, מחסנים, מבני-חווה ושדות סמוכים.",
-      "folklore_he": "העכבר הקטן והפיקח מככב באינספור אגדות, ציורים מצוירים ופתגמים – לרוב כדמות חלשה אך נבונה שמתחכמת לחזק ממנה.",
-      "fun_fact_he": "עכברים 'שרים' שירי-חיזור בתדרים על-קוליים שאוזן אדם אינה קולטת – מנגינות שלמות שאנו מגלים רק בעזרת מכשור."
+      "blurb_he": "The house mouse is humanity's tiny companion everywhere in the world: quick, curious, and adaptable, living in walls, warehouses, and fields. It is also the most studied mammal in science, and has contributed greatly to our understanding of biology and medicine.",
+      "where_when_he": "Year-round, active mainly at night, in houses, warehouses, farm buildings, and nearby fields.",
+      "folklore_he": "The small, clever mouse stars in countless tales, cartoons, and proverbs — usually as a weak but smart character that outwits someone stronger.",
+      "fun_fact_he": "Mice 'sing' courtship songs at ultrasonic frequencies that the human ear cannot detect — whole melodies that we discover only with instruments."
     },
     {
       "id": "grey-squirrel",
-      "he": "סנאי אפור",
+      "he": "Eastern grey squirrel",
       "sci": "Sciurus carolinensis",
       "en": "Eastern grey squirrel",
       "cat": "mammal",
@@ -950,26 +950,26 @@
         11,
         12
       ],
-      "peak": "פעיל ביום, בעיקר בבוקר ואחר-הצהריים",
+      "peak": "Active by day, mainly in the morning and afternoon",
       "iconic": true,
       "id_marks": [
-        "פרווה אפרפרה וזנב מטופח ומבריק",
-        "אוזניים מעוגלות",
-        "טיפוס וקפיצה זריזים בין ענפים"
+        "Grayish fur and a well-groomed, glossy tail",
+        "Rounded ears",
+        "Nimble climbing and leaping among branches"
       ],
-      "info": "מכרסם מטפס פעיל-יום הנפוץ בפארקים ובחורשות; הוטבע לאזורים שונים בעולם והתאקלם בהצלחה.",
-      "habitat": "פארקים, חורשות ועצי-נוי",
-      "link": "https://he.wikipedia.org/wiki/סנאי_אפור",
+      "info": "A diurnal climbing rodent common in parks and groves; it was introduced to various regions of the world and acclimatized successfully.",
+      "habitat": "Parks, groves, and ornamental trees",
+      "link": "https://en.wikipedia.org/wiki/Eastern_gray_squirrel",
       "photo": null,
       "audio": null,
-      "blurb_he": "הסנאי האפור הוא כוכב הפארק: מכרסם זריז ופעיל-יום שמטפס, קופץ בין ענפים, ומבלה את היום באיסוף אגוזים. בפארקים עירוניים הוא לעיתים מתרגל לאדם עד שהוא ניגש לבקש פינוק.",
-      "where_when_he": "כל השנה, ביום, בפארקים, חורשות ושדרות עצים. בסתיו הוא עסוק במיוחד באגירת מזון לקראת החורף.",
-      "folklore_he": "דמות הסנאי האוגר אגוזים לחורף הפכה לסמל החיסכון והדאגה למחר בסיפורי ילדים ובפתגמים.",
-      "fun_fact_he": "הסנאי טומן אלפי אגוזים בסתיו ושוכח חלק מהמחבואים – וכך הוא בלי-משים 'שותל' עצים חדשים ומסייע ליער להתחדש."
+      "blurb_he": "The grey squirrel is the star of the park: a nimble, diurnal rodent that climbs, leaps between branches, and spends the day gathering nuts. In urban parks it sometimes grows so used to people that it comes up to beg for a treat.",
+      "where_when_he": "Year-round, by day, in parks, groves, and tree-lined avenues. In autumn it is especially busy storing food for the winter.",
+      "folklore_he": "The image of the squirrel hoarding nuts for the winter has become a symbol of thrift and planning ahead in children's stories and proverbs.",
+      "fun_fact_he": "The squirrel buries thousands of nuts in autumn and forgets some of the caches — and so it inadvertently 'plants' new trees and helps the forest renew itself."
     },
     {
       "id": "common-pipistrelle",
-      "he": "נשפון מצוי",
+      "he": "Common pipistrelle",
       "sci": "Pipistrellus pipistrellus",
       "en": "Common pipistrelle",
       "cat": "mammal",
@@ -983,22 +983,22 @@
         9,
         10
       ],
-      "peak": "פעיל בערבי הקיץ אחרי השקיעה",
+      "peak": "Active on summer evenings after sunset",
       "iconic": false,
       "id_marks": [
-        "עטלף זעיר (כ-5 גרם)",
-        "פרווה חומה ופנים כהות",
-        "תעופה מרפרפת וזריזה אחרי שקיעה"
+        "A tiny bat (about 5 grams)",
+        "Brown fur and a dark face",
+        "Fluttering, agile flight after sunset"
       ],
-      "info": "אחד מעטלפי-החרקים הקטנים והנפוצים; צד יתושים וחרקים מעופפים בלילה. ידיד הגנן.",
-      "habitat": "גינות, פארקים וסביבת מים, ליד מבנים",
-      "link": "https://he.wikipedia.org/wiki/נשפון_מצוי",
+      "info": "One of the small, common insect-eating bats; it hunts mosquitoes and flying insects at night. The gardener's friend.",
+      "habitat": "Gardens, parks, and around water, near buildings",
+      "link": "https://en.wikipedia.org/wiki/Common_pipistrelle",
       "photo": null,
       "audio": null,
-      "blurb_he": "הנשפון הוא עטלף-חרקים זעיר – כה קטן שהוא נכנס לכף-יד – שמופיע עם רדת החשכה ומרפרף מעל גינות ומים בציד יתושים. הוא 'רואה' בחושך בעזרת אקולוקציה: גלי-קול שמוחזרים אליו ומציירים את הסביבה.",
-      "where_when_he": "פעיל בלילות מהאביב ועד הסתיו מעל גינות, פארקים וסביבת מים; בחורף הקר הוא שוקע בתרדמה.",
-      "folklore_he": "עטלפים זכו בפולקלור להילה מסתורית של יצורי-לילה, אף שרובם – כמו הנשפון – אינם אלא ציידי-יתושים קטנים ובלתי-מזיקים.",
-      "fun_fact_he": "נשפון בודד טורף אלפי יתושים וחרקים קטנים בלילה אחד – 'שירות הדברה' טבעי וחינמי לכל גינה."
+      "blurb_he": "The pipistrelle is a tiny insect-eating bat — so small it fits in the palm of a hand — that appears at nightfall and flutters over gardens and water hunting mosquitoes. It 'sees' in the dark using echolocation: sound waves that bounce back and map its surroundings.",
+      "where_when_he": "Active at night from spring to autumn over gardens, parks, and around water; in the cold winter it goes into hibernation.",
+      "folklore_he": "In folklore bats acquired a mysterious aura as creatures of the night, even though most of them — like the pipistrelle — are nothing but small, harmless mosquito-hunters.",
+      "fun_fact_he": "A single pipistrelle preys on thousands of mosquitoes and small insects in one night — a free, natural 'pest-control service' for any garden."
     }
   ]
 }
