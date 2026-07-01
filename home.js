@@ -249,7 +249,7 @@
     var dow = DOW_HE[d.getDay()], mn = MONTHS_HE[d.getMonth()];
     var head = '<div class="ohHero"><div class="ohHi">' + greetHe(d) + ', Alex</div>' +
       '<div class="ohDate">' + dow + ' · ' + d.getDate() + ' ' + mn + '</div>' +
-      '<div class="ohPlace">Your home · Larchmont</div></div>';
+      '<div class="ohPlace">Your home · Larkmont</div></div>';
 
     return '<div class="ohWrap" dir="ltr">' + head +
       '<div class="ohGrid">' +
